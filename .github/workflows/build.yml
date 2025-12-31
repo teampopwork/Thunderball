@@ -1,0 +1,170 @@
+name: Build
+
+on: [push, pull_request]
+
+jobs:
+  fetch-deps:
+    name: Download Original Binary
+    uses: ./.github/workflows/pegglebin.yml
+    secrets:
+      BIN_URL: ${{ secrets.BIN_URL }}
+
+  build:
+    name: Build
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: 'recursive'
+        fetch-depth: 0
+
+    - uses: actions/checkout@v4
+      with:
+        repository: bananapizzuh/msvc80-sp1
+        path: msvc80
+
+    - name: Setup cmake
+      uses: jwlawson/actions-setup-cmake@v2
+      with:
+        cmake-version: '3.18.x'
+
+    - name: Build
+      shell: cmd
+      run: |
+        call .\msvc80\vcvars32.bat
+        cmake -B build -DCMAKE_BUILD_TYPE=Release -G "NMake Makefiles"
+        cmake --build build
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@main
+      with:
+        name: Win32
+        path: |
+          build/source/Thunderball/popcapgame1.exe
+          build/source/Thunderball/popcapgame1.pdb
+
+  compare:
+    name: Compare With Original
+    needs: [build]
+    runs-on: windows-latest
+    steps:
+
+    - uses: actions/checkout@v4
+      with:
+        submodules: 'recursive'
+        fetch-depth: 0
+
+    - uses: actions/download-artifact@main
+      with:
+        name: Win32
+        path: build
+
+    - name: Restore cached original binary
+      id: restore-original-binary
+      uses: actions/cache/restore@v4
+      with:
+        enableCrossOsArchive: true
+        path: peggle
+        key: pegglebin
+
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install reccmp
+      shell: bash
+      run: |
+        pip install git+https://github.com/isledecomp/reccmp
+
+    - name: Detect binaries
+      run: |
+        reccmp-project detect --what original   --search-path peggle
+        reccmp-project detect --what recompiled --search-path build
+
+    - name: Summarize Accuracy
+      shell: bash
+      run: |
+        reccmp-reccmp -S progress.svg --svg-icon assets/popcapgame1.png --target POPCAPGAME1 --json progress.json --html progress.html --total 10791
+
+    - name: Test Exports
+      shell: bash
+      run: |
+        reccmp-verexp --target POPCAPGAME1 || true
+
+    - name: Check Vtables
+      shell: bash
+      run: |
+        reccmp-vtable --target POPCAPGAME1 || true
+
+    - name: Check Variables
+      shell: bash
+      run: |
+        reccmp-datacmp --target POPCAPGAME1 || true
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@main
+      with:
+        name: Accuracy Report
+        path: |
+          progress*
+
+  upload:
+    name: Upload Continuous Release
+    needs: [compare]
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Download Win32 artifact
+      uses: actions/download-artifact@main
+      with:
+        name: Win32
+        path: build
+
+    - name: Download Accuracy Report
+      uses: actions/download-artifact@main
+      with:
+        name: Accuracy Report
+        path: .
+
+    - name: Remove existing 'continuous' release if it exists
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git push origin :refs/tags/continuous
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: continuous
+        name: "Continuous build"
+        files: |
+          build/popcapgame1.exe
+          progress.json
+          progress.svg
+          progress.html
+        body: |
+          GitHub Action logs: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        overwrite_files: true
+        make_latest: true
+      env:
+
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Organize files for GitHub Pages
+      run: |
+        mkdir -p public
+        cp progress.svg public/
+        cp progress.json public/
+        cp progress.html public/index.html
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./public/
+        publish_branch: gh-pages
+        allow_empty_commit: true
+

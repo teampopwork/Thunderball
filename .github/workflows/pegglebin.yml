@@ -1,0 +1,36 @@
+name: Download original binary
+
+on:
+  workflow_call:
+    secrets:
+      BIN_URL:
+        required: true
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Restore cached original binary
+      id: cache-original-binary
+      uses: actions/cache/restore@v4
+      with:
+        enableCrossOsArchive: true
+        path: peggle
+        key: pegglebin
+
+    - name: Download original binary
+      if: ${{ !steps.cache-original-binary.outputs.cache-hit }}
+      env:
+        BIN_URL: ${{ secrets.BIN_URL }}
+      run: |
+        mkdir -p peggle
+        wget "$BIN_URL" --directory-prefix=peggle
+
+    - name: Cache original binary
+      if: ${{ !steps.cache-original-binary.outputs.cache-hit }}
+      uses: actions/cache/save@v4
+      with:
+        enableCrossOsArchive: true
+        path: peggle
+        key: pegglebin

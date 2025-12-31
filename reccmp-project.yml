@@ -1,0 +1,13 @@
+targets:
+  POPCAPGAME1:
+    filename: popcapgame1.exe
+    source_root: ./source/
+    hash:
+      sha256: b9eb2638945cf85f24bc9abe4667da6263e0a0a92d8fa8119dc5e2ae16d86dac
+    ghidra:
+      ignore_types: []
+      ignore_functions: []
+      name_substitutions: []
+    report:
+      ignore_functions: []
+    

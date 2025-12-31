@@ -1,0 +1,3 @@
+[submodule "3rdparty/directx9"]
+	path = 3rdparty/directx9
+	url = https://github.com/PeggleDecomp/directx9.git
