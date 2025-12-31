@@ -1,10 +1,10 @@
 # Peggle Deluxe Decompilation  
-[Discord](https://discord.gg/83D3CSVxsj) | [Contributing](https://github.com/bananapizzuh/deluxe/blob/main/CONTRIBUTING.md) | [License](https://github.com/bananapizzuh/deluxe/blob/main/LICENSE.md)  
+[Discord](https://discord.gg/83D3CSVxsj) | [Contributing](https://github.com/teampopwork/Thunderball/blob/main/CONTRIBUTING.md) | [License](https://github.com/teampopwork/Thunderball/blob/main/LICENSE.md)  
 
 This project aims to decompile the English 1.01 executable of Peggle Deluxe from the steam release. Many variable and function names have been taken from the Mac OS port, as PopCap generously built those executables with debug symbols.
 
 <p align="center">
- <img src="https://github.com/bananapizzuh/deluxe/raw/refs/heads/gh-pages/progress.svg" alt="Progress" />
+ <img src="https://github.com/teampopwork/Thunderball/raw/refs/heads/gh-pages/progress.svg" alt="Progress" />
 </p>
 
 ## Building
@@ -23,6 +23,7 @@ For accuracy checking, we are using a tool derived from the Lego Island decompil
 
 ## Legal
 - This repository does not contain any game assets; you will need to get them from your own copy of the game. If you don't already own it, the Steam version is easily available to purchase: https://store.steampowered.com/app/3480/Peggle_Deluxe/
+
 
 
 
