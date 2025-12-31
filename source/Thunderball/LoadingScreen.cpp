@@ -230,45 +230,49 @@ void LoadingScreen::DrawOverlay(Graphics* g)
 // FUNCTION: POPCAPGAME1 0x004948d0
 void LoadingScreen::ButtonDepress(int theId)
 {
-    // dVar1 was the WidgetManager accessed via the this-pointer adjustment
-    // field_0x105 is mKeyDown[VK_CONTROL] (0xF4 + 0x11)
-    if (!mWidgetManager->mKeyDown[0x11]) // 0x11 = VK_CONTROL
+    if (!mWidgetManager->mKeyDown[KEYCODE_CONTROL])
     {
-        // 0x13C, 0x138, and 0x135 are likely other mKeyDown keys or flags
-        // For example: SHIFT (0x10) or ALT (0x12)
-        if (mWidgetManager->mKeyDown[72]) 
-        {
-            mApp->ShowHelpScreen(false, false);
-            return;
-        }
 
-        if (!mWidgetManager->mKeyDown[0x138 - 0xF4]) 
-        {
-            if (!mWidgetManager->mKeyDown[0x135 - 0xF4]) 
-            {
-                if (mApp->mCurProfile == 0) 
-                {
-					// STRING: POPCAPGAME1 0x005fa490
-                    if (ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp467,745", 1) != 0)
-                    {
-                        mPlayNowButton->SetDisabled(true);
-						mApp->DoCreateUserDialog();
-                        return;
-                    }
-                }
-                mApp->ShowMainMenu();
-                return;
-            }
-            mApp->m_unk0x760 = 2; 
-        }
-        else 
-        {
-            mApp->m_unk0x760 = 3; 
-        }
+		if (mWidgetManager->mKeyDown[0x48]) 
+		{
+			mApp->ShowHelpScreen(false, false);
+			return;
+		}
 
-        //this->FinishLoadingSequencer();
-    }
-    mApp->ShowBoard(true, true);
+		if (mWidgetManager->mKeyDown[0x44]) 
+		{
+			mApp->m_unk0x760 = 3; 
+		}
+
+		if (mApp->mAdd8BitMaxTable[0x18]) 
+		{
+			mApp->m_unk0x760 = 2;
+			QuickPlay();
+			mApp->ShowBoard(true, true);
+			return;
+			
+		}
+
+		if (mApp->mCurProfile == NULL) 
+		{
+			// STRING: POPCAPGAME1 0x005fa490
+			if (ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp467,745", 1) != 0)
+			{
+				mPlayNowButton->SetDisabled(true);
+				mApp->DoCreateUserDialog();
+				return;
+			}
+		}
+
+		mApp->ShowMainMenu();
+		return;
+	} 
+	mApp->ShowBoard(true, true);
+}
+
+// STUB: POPCAPGAME1 0x00494850
+void LoadingScreen::QuickPlay() {
+	printf("QuickPlay invoked\n");
 }
 
 // FUNCTION: POPCAPGAME1 0x004948b0
@@ -410,14 +414,14 @@ void LoadingScreen::Draw(Graphics* g)
 	g->SetColorizeImages(true);
 
 	// STRING: POPCAPGAME1 0x00607500
-	int val120 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp450,612", 120);
+	int shadowBase = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp450,612", 120);
 
-	float fShadow = (float)val120 * m_unk0xA4 * m_unk0xA4;
-	int iShadow = (int)fShadow;
+	float shadowFloat = (float)shadowBase * m_unk0xA4 * m_unk0xA4;
+	int shadowIntensity = (int)shadowFloat;
 
 	// STRING: POPCAPGAME1 0x006074b8
-	int valColor = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp449,612", 0x101010);
-	g->SetColor(Color(valColor, iShadow));
+	int shadowColorVal = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp449,612", 0x101010);
+	g->SetColor(Color(shadowColorVal, shadowIntensity));
 
 	// STRING: POPCAPGAME1 0x00607470
 	int shadowY = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp452,615", 290);
@@ -470,9 +474,9 @@ void LoadingScreen::Draw(Graphics* g)
 	}
 
 	// STRING: POPCAPGAME1 0x00607278
-	int textY = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp458,645", 200);
+	int loadingTextBaseY = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp458,645", 200);
 	// STRING: POPCAPGAME1 0x00607230
-	int textX = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp459,646", 460);
+	int loadingTextBaseX = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp459,646", 460);
 
 	std::string loadingText;
 
@@ -501,11 +505,11 @@ void LoadingScreen::Draw(Graphics* g)
 		Color textColor(fontColor);
 		g->SetColor(textColor);
 
-		int textX = (g->GetFont()->StringWidth(loadingText) - mWidth) / 2;
+		int loadingTextXCentered = (g->GetFont()->StringWidth(loadingText) - mWidth) / 2;
 
 		g->DrawString(loadingText,
 			// STRING: POPCAPGAME1 0x00607120
-			textX + ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp461,659", 0),
+			loadingTextXCentered + ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp461,659", 0),
 			// STRING: POPCAPGAME1 0x00607168
 			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp462,659", 0x22b));
 	}

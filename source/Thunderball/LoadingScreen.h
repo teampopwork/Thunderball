@@ -70,6 +70,7 @@ public:
 	void SpawnParticles();
 	void UpdateBall();
 	void UpdateParticles();
+	void QuickPlay();
 
 	static void LevelLoadMusicThreadProc(void* theArg);
 };
