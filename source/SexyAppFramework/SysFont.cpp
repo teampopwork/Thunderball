@@ -11,16 +11,19 @@
 
 using namespace Sexy;
 
+// FUNCTION: POPCAPGAME1 0x004dcb00
 SysFont::SysFont(const std::string& theFace, int thePointSize, bool bold, bool italics, bool underline)
 {
 	Init(gSexyAppBase,theFace,thePointSize,ANSI_CHARSET,bold,italics,underline,false);
 }
 
+// FUNCTION: POPCAPGAME1 0x004dcb40
 SysFont::SysFont(SexyAppBase* theApp, const std::string& theFace, int thePointSize, int theScript, bool bold, bool italics, bool underline)
 {
 	Init(theApp,theFace,thePointSize,theScript,bold,italics,underline,true);
 }
 
+// FUNCTION: POPCAPGAME1 0x004dc5c0
 void SysFont::Init(SexyAppBase* theApp, const std::string& theFace, int thePointSize, int theScript, bool bold, bool italics, bool underline, bool useDevCaps)
 {
 	mApp = theApp;
@@ -46,6 +49,7 @@ void SysFont::Init(SexyAppBase* theApp, const std::string& theFace, int thePoint
 	mSimulateBold = false;
 }
 
+// FUNCTION: POPCAPGAME1 0x004d2ee0
 SysFont::SysFont(const SysFont& theSysFont)
 {
 	LOGFONT aLogFont;
@@ -60,6 +64,10 @@ SysFont::SysFont(const SysFont& theSysFont)
 	mSimulateBold = false;
 }
 
+// SYNTHETIC: POPCAPGAME1 0x004db340
+// Sexy::SysFont::`scalar deleting destructor'
+
+// FUNCTION: POPCAPGAME1 0x004d2f50
 SysFont::~SysFont()
 {
 	DeleteObject(mHFont);
@@ -156,6 +164,7 @@ ImageFont* SysFont::CreateImageFont()
 	return aFont;
 }
 
+// FUNCTION: POPCAPGAME1 0x004dc6a0
 int	SysFont::StringWidth(const SexyString& theString)
 {
 	HDC aDC = ::GetDC(mApp->mHWnd);
@@ -183,6 +192,7 @@ int	SysFont::StringWidth(const SexyString& theString)
 	return aWidth;
 }
 
+// FUNCTION: POPCAPGAME1 0x004e3e50
 void SysFont::DrawString(Graphics* g, int theX, int theY, const SexyString& theString, const Color& theColor, const Rect& theClipRect)
 {
 	DDImage* aDDImage = dynamic_cast<DDImage*>(g->mDestImage);
@@ -313,6 +323,7 @@ void SysFont::DrawString(Graphics* g, int theX, int theY, const SexyString& theS
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004d2f70
 Font* SysFont::Duplicate()
 {
 	return new SysFont(*this);

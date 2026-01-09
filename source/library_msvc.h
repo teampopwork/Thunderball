@@ -2178,3 +2178,47 @@
 // LIBRARY: popcapgame1 0x005b151a
 // __tzset
 
+// GLOBAL: POPCAPGAME1 0x0064fe94
+// use_w
+
+// GLOBAL: POPCAPGAME1 0x0064fe9c
+// _confh
+
+// LIBRARY: POPCAPGAME1 0x005ba976
+// __crtGetLocaleInfoW_stat
+
+// GLOBAL: POPCAPGAME1 0x00688ea4
+// f_use
+
+// GLOBAL: POPCAPGAME1 0x00688434
+// _cflush
+
+// LIBRARY: POPCAPGAME1 0x005bb878
+// _wsopen_s
+
+// LIBRARY: POPCAPGAME1 0x005ad61c
+// write_multi_char
+
+// LIBRARY: POPCAPGAME1 0x005b81bd
+// write_string
+
+// GLOBAL: POPCAPGAME1 0x0064f4a8
+// __nullstring
+
+// GLOBAL: POPCAPGAME1 0x0064f4ac
+// __wnullstring
+
+// LIBRARY: POPCAPGAME1 0x005ad5e9
+// write_char
+
+// GLOBAL: POPCAPGAME1 0x0062dd30
+// __lookuptable_s
+
+// GLOBAL: POPCAPGAME1 0x0064f4b0
+// __badioinfo
+
+// GLOBAL: POPCAPGAME1 0x0062dbf0
+// nameTable
+
+// LIBRARY: POPCAPGAME1 0x005bb7ac
+// _wsopen_helper

@@ -10,6 +10,7 @@ SharedImage::SharedImage()
 	mRefCount = 0;
 }
 
+// FUNCTION: POPCAPGAME1 0x004d3160
 SharedImageRef::SharedImageRef(const SharedImageRef& theSharedImageRef)
 {
 	mSharedImage = theSharedImageRef.mSharedImage;
@@ -19,6 +20,7 @@ SharedImageRef::SharedImageRef(const SharedImageRef& theSharedImageRef)
 	mOwnsUnshared = false;
 }
 
+// FUNCTION: POPCAPGAME1 0x004d3190
 SharedImageRef::SharedImageRef()
 {
 	mSharedImage = NULL;
@@ -26,6 +28,7 @@ SharedImageRef::SharedImageRef()
 	mOwnsUnshared = false;
 }
 
+// FUNCTION: POPCAPGAME1 0x004d31a0
 SharedImageRef::SharedImageRef(SharedImage* theSharedImage)
 {
 	mSharedImage = theSharedImage;
@@ -42,6 +45,7 @@ SharedImageRef::~SharedImageRef()
 	Release();
 }
 
+// FUNCTION: POPCAPGAME1 0x004d31c0
 void SharedImageRef::Release()
 {	
 	if (mOwnsUnshared)
@@ -55,6 +59,7 @@ void SharedImageRef::Release()
 	mSharedImage = NULL;
 }
 
+// FUNCTION: POPCAPGAME1 0x004d3210
 SharedImageRef& SharedImageRef::operator=(const SharedImageRef& theSharedImageRef)
 {
 	Release();
@@ -64,6 +69,7 @@ SharedImageRef& SharedImageRef::operator=(const SharedImageRef& theSharedImageRe
 	return *this;
 }
 
+// FUNCTION: POPCAPGAME1 0x004d3240
 SharedImageRef&	SharedImageRef::operator=(SharedImage* theSharedImage)
 {
 	Release();
@@ -72,6 +78,7 @@ SharedImageRef&	SharedImageRef::operator=(SharedImage* theSharedImage)
 	return *this;
 }
 
+// FUNCTION: POPCAPGAME1 0x004d3260
 SharedImageRef& SharedImageRef::operator=(MemoryImage* theUnsharedImage)
 {
 	Release();
@@ -98,6 +105,7 @@ SharedImageRef::operator MemoryImage*()
 		return (DDImage*) *this;
 }
 
+// FUNCTION: POPCAPGAME1 0x004d3280
 SharedImageRef::operator DDImage*()
 {
 	if (mSharedImage != NULL)

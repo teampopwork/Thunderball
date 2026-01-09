@@ -4,6 +4,7 @@
 
 using namespace Sexy;
 
+// FUNCTION: POPCAPGAME1 0x0050f120
 XMLParser::XMLParser()
 {
 	mFile = NULL;
@@ -13,11 +14,16 @@ XMLParser::XMLParser()
 	mForcedEncodingType = false;
 }
 
+// SYNTHETIC: POPCAPGAME1 0x00501ed0
+// Sexy::XmlParser::`scalar deleting destructor'
+
+// FUNCTION: POPCAPGAME1 0x00500080
 XMLParser::~XMLParser()
 {
 	if (mFile != NULL)
 		p_fclose(mFile);
 }
+
 
 void XMLParser::SetEncodingType(XMLEncodingType theEncoding)
 {
@@ -31,12 +37,14 @@ void XMLParser::SetEncodingType(XMLEncodingType theEncoding)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x00506260
 void XMLParser::Fail(const SexyString& theErrorText)
 {
 	mHasFailed = true;
 	mErrorText = theErrorText;
 }
 
+// STRING: POPCAPGAME1 0x00506280
 void XMLParser::Init()
 {
 	mSection = _S("");
@@ -61,6 +69,7 @@ bool XMLParser::AddAttribute(XMLElement* theElement, const SexyString& theAttrib
 	return aRet.second;
 }
 
+// FUNCTION: POPCAPGAME1 0x004faa90
 bool XMLParser::GetAsciiChar(wchar_t* theChar, bool* error)
 {
 	wchar_t aChar = 0;
@@ -71,6 +80,7 @@ bool XMLParser::GetAsciiChar(wchar_t* theChar, bool* error)
 	return true;
 }
 
+// FUNCTION: POPCAPGAME1 0x004faae0
 bool XMLParser::GetUTF8Char(wchar_t* theChar, bool* error)
 {
 	static const unsigned short aMaskData[] = {
@@ -158,6 +168,7 @@ bool XMLParser::GetUTF8Char(wchar_t* theChar, bool* error)
 	return false;
 }
 
+// FUNCTION: POPCAPGAME1 0x004facd0
 bool XMLParser::GetUTF16Char(wchar_t* theChar, bool* error)
 {
 	wchar_t aTempChar = 0;
@@ -248,6 +259,7 @@ bool XMLParser::GetUTF16BEChar(wchar_t* theChar, bool* error)
 	return true;
 }
 
+// FUNCTION: POPCAPGAME1 0x005062c0
 bool XMLParser::OpenFile(const std::string& theFileName)
 {		
 	mFile = p_fopen(theFileName.c_str(), "r");
@@ -299,6 +311,7 @@ bool XMLParser::OpenFile(const std::string& theFileName)
 	return true;
 }
 
+// FUNCTION: POPCAPGAME1 0x00510b50
 void XMLParser::SetStringSource(const std::wstring& theString)
 {
 	Init();
@@ -315,6 +328,7 @@ void XMLParser::SetStringSource(const std::string& theString)
 	SetStringSource(StringToWString(theString));
 }
 
+// FUNCTION: POPCAPGAME1 0x00514ef0
 bool XMLParser::NextElement(XMLElement* theElement)
 {
 	for (;;)
