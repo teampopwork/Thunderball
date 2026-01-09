@@ -17,6 +17,8 @@ extern "C"
 
 using namespace ImageLib;
 
+
+// FUNCTION: POPCAPGAME1 0x00550220
 Image::Image()
 {
 	mWidth = 0;
@@ -24,6 +26,10 @@ Image::Image()
 	mBits = NULL;
 }
 
+// SYNTHETIC: POPCAPGAME1 0x00550730
+// ImageLib::Image::`scalar deleting destructor'
+
+// FUNCTION: POPCAPGAME1 0x00550240
 Image::~Image()
 {
 	delete mBits;
@@ -47,6 +53,7 @@ unsigned long* Image::GetBits()
 //////////////////////////////////////////////////////////////////////////
 // PNG Pak Support
 
+// FUNCTION: POPCAPGAME1 0x00550260
 static void png_pak_read_data(png_structp png_ptr, png_bytep data, png_size_t length)
 {
 	png_size_t check;
@@ -63,6 +70,7 @@ static void png_pak_read_data(png_structp png_ptr, png_bytep data, png_size_t le
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x00550760
 Image* GetPNGImage(const std::string& theFileName)
 {
 	png_structp png_ptr;
@@ -149,6 +157,7 @@ Image* GetPNGImage(const std::string& theFileName)
 	return anImage;
 }
 
+// FUNCTION: POPCAPGAME1 0x00550930
 Image* GetTGAImage(const std::string& theFileName)
 {
 	PFILE* aTGAFile = p_fopen(theFileName.c_str(), "rb");
@@ -211,6 +220,7 @@ Image* GetTGAImage(const std::string& theFileName)
 	return anImage;
 }
 
+// FUNCTION: POPCAPGAME1 0x005502a0
 int ReadBlobBlock(PFILE* fp, char* data)
 {
 	unsigned char aCount = 0;
@@ -218,7 +228,7 @@ int ReadBlobBlock(PFILE* fp, char* data)
 	p_fread(data, sizeof(char), aCount, fp);
 	return aCount;
 }
-
+// FUNCTION: POPCAPGAME1 0x00550a90
 Image* GetGIFImage(const std::string& theFileName)
 {
 	#define BitSet(byte,bit)  (((byte) & (bit)) == (bit))
@@ -1125,7 +1135,7 @@ void jpeg_pak_src (j_decompress_ptr cinfo, PFILE* infile)
 	src->pub.next_input_byte = NULL; /* until buffer loaded */
 }
 
-
+// FUNCTION: POPCAPGAME1 0x00553f50
 Image* GetJPEGImage(const std::string& theFileName)
 {
 	PFILE *fp;

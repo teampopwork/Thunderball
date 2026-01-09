@@ -11,6 +11,7 @@
 using namespace Sexy;
 using namespace std;
 
+// FUNCTION: POPCAPGAME1 0x00547950
 WidgetManager::WidgetManager(SexyAppBase* theApp)
 {
 	mApp = theApp;
@@ -41,6 +42,10 @@ WidgetManager::WidgetManager(SexyAppBase* theApp)
 		mKeyDown[i] = false;
 }
 
+// SYNTHETIC: POPCAPGAME1 0x005470a0
+// Sexy::WidgetManager::`scalar deleting destructor'
+
+// FUNCTION: POPCAPGAME1 0x00543ba0
 WidgetManager::~WidgetManager()
 {	
 	FreeResources();	
@@ -51,6 +56,7 @@ void WidgetManager::FreeResources()
 	
 }
 
+// FUNCTION: POPCAPGAME1 0x00540fb0
 void WidgetManager::DisableWidget(Widget* theWidget)
 {
 	if (mOverWidget == theWidget)
@@ -79,17 +85,20 @@ void WidgetManager::DisableWidget(Widget* theWidget)
 		mBaseModalWidget = NULL;
 }
 
+// FUNCTION: POPCAPGAME1 0x0053e340
 int WidgetManager::GetWidgetFlags()
 {
 	return mHasFocus ? mWidgetFlags : GetModFlags(mWidgetFlags, mLostFocusFlagsMod);
 }
 
+// FUNCTION: POPCAPGAME1 0x005427a0
 Widget* WidgetManager::GetAnyWidgetAt(int x, int y, int* theWidgetX, int* theWidgetY)
 {
 	bool found;
 	return GetWidgetAtHelper(x, y, GetWidgetFlags(), &found, theWidgetX, theWidgetY);
 }
 
+// FUNCTION: POPCAPGAME1 0x005427d0
 Widget* WidgetManager::GetWidgetAt(int x, int y, int* theWidgetX, int* theWidgetY)
 {	
 	Widget* aWidget = GetAnyWidgetAt(x, y, theWidgetX, theWidgetY);
@@ -113,6 +122,7 @@ bool WidgetManager::IsRightButtonDown()
 	return (mActualDownButtons&2)?true:false;
 }
 
+// FUNCTION: POPCAPGAME1 0x00541030
 void WidgetManager::DoMouseUps()
 {
 	if (mLastDownWidget!=NULL && mDownButtons!=0)
@@ -123,6 +133,7 @@ void WidgetManager::DoMouseUps()
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x005482a0
 void WidgetManager::DeferOverlay(Widget* theWidget, int thePriority)
 {
 	mDeferredOverlayWidgets.push_back(std::pair<Widget*, int>(theWidget, thePriority));
@@ -130,6 +141,7 @@ void WidgetManager::DeferOverlay(Widget* theWidget, int thePriority)
 		mMinDeferredOverlayPriority = thePriority;
 }
 
+// FUNCTION: POPCAPGAME1 0x005482e0
 void WidgetManager::FlushDeferredOverlayWidgets(int theMaxPriority)
 {
 	for (;;)
@@ -178,6 +190,7 @@ void WidgetManager::FlushDeferredOverlayWidgets(int theMaxPriority)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x0053e380
 void WidgetManager::DoMouseUps(Widget* theWidget, ulong theDownCode)
 {
 	int aClickCountTable[3] = { 1,-1, 3 };
@@ -197,6 +210,7 @@ void WidgetManager::RemapMouse(int& theX, int& theY)
 	theY = ( theY - mMouseSourceRect.mY ) * mMouseDestRect.mHeight / mMouseSourceRect.mHeight + mMouseDestRect.mY;
 }
 
+// FUNCTION: POPCAPGAME1 0x0053e450
 void WidgetManager::MouseEnter(Widget* theWidget)
 {
 	theWidget->mIsOver = true;
@@ -206,6 +220,7 @@ void WidgetManager::MouseEnter(Widget* theWidget)
 		theWidget->ShowFinger(true);	
 }
 
+// FUNCTION: POPCAPGAME1 0x0053e480
 void WidgetManager::MouseLeave(Widget* theWidget)
 {
 	theWidget->mIsOver = false;
@@ -215,6 +230,7 @@ void WidgetManager::MouseLeave(Widget* theWidget)
 		theWidget->ShowFinger(false);
 }
 
+// FUNCTION: POPCAPGAME1 0x0053e4b0
 void WidgetManager::SetBaseModal(Widget* theWidget, const FlagsMod& theBelowFlagsMod)
 {
 	mBaseModalWidget = theWidget;
@@ -247,6 +263,7 @@ void WidgetManager::SetBaseModal(Widget* theWidget, const FlagsMod& theBelowFlag
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x00547aa0
 void WidgetManager::AddBaseModal(Widget* theWidget, const FlagsMod& theBelowFlagsMod)
 {
 	PreModalInfo aPreModalInfo;
@@ -259,11 +276,14 @@ void WidgetManager::AddBaseModal(Widget* theWidget, const FlagsMod& theBelowFlag
 	SetBaseModal(theWidget, theBelowFlagsMod);
 }
 
+// FUNCTION: POPCAPGAME1 0x00547b20
 void WidgetManager::AddBaseModal(Widget* theWidget)
 {
 	AddBaseModal(theWidget, mDefaultBelowModalFlagsMod);
 }
 
+
+// FUNCTION: POPCAPGAME1 0x00542800
 void WidgetManager::RemoveBaseModal(Widget* theWidget)
 {
 	DBG_ASSERT(mPreModalInfoList.size() > 0);
@@ -306,6 +326,7 @@ void WidgetManager::RemoveBaseModal(Widget* theWidget)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x0053e5a0
 void WidgetManager::Resize(const Rect& theMouseDestRect, const Rect& theMouseSourceRect)
 {	
 	mWidth = theMouseDestRect.mWidth + 2 * theMouseDestRect.mX;
@@ -314,6 +335,7 @@ void WidgetManager::Resize(const Rect& theMouseDestRect, const Rect& theMouseSou
 	mMouseSourceRect = theMouseSourceRect;
 }
 
+// FUNCTION: POPCAPGAME1 0x0053e610
 void WidgetManager::SetFocus(Widget* aWidget)
 {	
 	if (aWidget==mFocusWidget)
@@ -333,6 +355,7 @@ void WidgetManager::SetFocus(Widget* aWidget)
 		mFocusWidget = NULL;
 }
 
+// FUNCTION: POPCAPGAME1 0x0053e670
 void WidgetManager::GotFocus()
 {
 	if (!mHasFocus)
@@ -344,6 +367,7 @@ void WidgetManager::GotFocus()
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x00541070
 void WidgetManager::LostFocus()
 {
 	if (mHasFocus)
@@ -362,6 +386,7 @@ void WidgetManager::LostFocus()
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x0053e6a0
 void WidgetManager::InitModalFlags(ModalFlags* theModalFlags)
 {
 	theModalFlags->mIsOver = mBaseModalWidget == NULL;
@@ -395,6 +420,7 @@ void WidgetManager::DrawWidgetsTo(Graphics* g)
 	mCurG = NULL;
 }
 
+// FUNCTION: POPCAPGAME1 0x005484a0
 bool WidgetManager::DrawScreen()
 {
 	SEXY_AUTO_PERF("WidgetManager::DrawScreen");
@@ -471,6 +497,7 @@ bool WidgetManager::DrawScreen()
 	return drewStuff;
 }
 
+// FUNCTION: POPCAPGAME1 0x0053e6e0
 bool WidgetManager::UpdateFrame()
 {
 	SEXY_AUTO_PERF("WidgetManager::UpdateFrame");
@@ -486,6 +513,7 @@ bool WidgetManager::UpdateFrame()
 	return mDirty;
 }
 
+// FUNCTION: POPCAPGAME1 0x0053e720
 bool WidgetManager::UpdateFrameF(float theFrac)
 {
 	SEXY_AUTO_PERF("WidgetManager::UpdateFrame");
@@ -503,6 +531,7 @@ void WidgetManager::SetPopupCommandWidget(Widget* theList)
 	AddWidget(mPopupCommandWidget);
 }
 
+// FUNCTION: POPCAPGAME1 0x0053e770
 void WidgetManager::RemovePopupCommandWidget()
 {
 	if (mPopupCommandWidget != NULL)
@@ -513,6 +542,7 @@ void WidgetManager::RemovePopupCommandWidget()
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x005428f0
 void WidgetManager::MousePosition(int x, int y)
 {
 
@@ -548,6 +578,7 @@ void WidgetManager::MousePosition(int x, int y)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x005429a0
 void WidgetManager::RehupMouse()
 {
 	if (mLastDownWidget != NULL)
@@ -568,6 +599,7 @@ void WidgetManager::RehupMouse()
 		MousePosition(mLastMouseX, mLastMouseY);
 }
 
+// FUNCTION: POPCAPGAME1 0x00542a10
 bool WidgetManager::MouseUp(int x, int y, int theClickCount)
 {	
 	mLastInputUpdateCnt = mUpdateCnt;
@@ -603,6 +635,7 @@ bool WidgetManager::MouseUp(int x, int y, int theClickCount)
 	return true;
 }
 
+// FUNCTION: POPCAPGAME1 0x00542ab0
 bool WidgetManager::MouseDown(int x, int y, int theClickCount) 
 {	
 	mLastInputUpdateCnt = mUpdateCnt;
@@ -670,6 +703,7 @@ bool WidgetManager::MouseDown(int x, int y, int theClickCount)
 	return true;
 }
 
+// FUNCTION: POPCAPGAME1 0x00543270
 bool WidgetManager::MouseMove(int x, int y) 
 {	
 	mLastInputUpdateCnt = mUpdateCnt;
@@ -683,6 +717,7 @@ bool WidgetManager::MouseMove(int x, int y)
 	return true;
 }
 
+// FUNCTION: POPCAPGAME1 0x00542bc0
 bool WidgetManager::MouseDrag(int x, int y) 
 {	
 	mLastInputUpdateCnt = mUpdateCnt;
@@ -730,6 +765,7 @@ bool WidgetManager::MouseDrag(int x, int y)
 	return true;	
 }
 
+// FUNCTION: POPCAPGAME1 0x0053e790
 bool WidgetManager::MouseExit(int x, int y)
 {	
 	mLastInputUpdateCnt = mUpdateCnt;
@@ -745,6 +781,7 @@ bool WidgetManager::MouseExit(int x, int y)
 	return true;
 }
 
+// FUNCTION: POPCAPGAME1 0x0053e7d0
 void WidgetManager::MouseWheel(int theDelta)
 {
 	mLastInputUpdateCnt = mUpdateCnt;
@@ -753,6 +790,7 @@ void WidgetManager::MouseWheel(int theDelta)
 		mFocusWidget->MouseWheel(theDelta);
 }
 
+// FUNCTION: POPCAPGAME1 0x0053e800
 bool WidgetManager::KeyChar(SexyChar theChar)
 {
 	mLastInputUpdateCnt = mUpdateCnt;
@@ -776,6 +814,7 @@ bool WidgetManager::KeyChar(SexyChar theChar)
 	return true;
 }
 
+// FUNCTION: POPCAPGAME1 0x0053e850
 bool WidgetManager::KeyDown(KeyCode key)
 {
 	mLastInputUpdateCnt = mUpdateCnt;
@@ -789,6 +828,7 @@ bool WidgetManager::KeyDown(KeyCode key)
 	return true;
 }
 
+// FUNCTION: POPCAPGAME1 0x0053e890
 bool WidgetManager::KeyUp(KeyCode key)
 {
 	mLastInputUpdateCnt = mUpdateCnt;

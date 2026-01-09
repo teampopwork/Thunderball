@@ -9,6 +9,7 @@ static unsigned long crc_table[256];
 using namespace Sexy;
 using namespace std;
 
+// STRING: POPCAPGAME1 0x0060ed80
 static char* gWebEncodeMap = ".-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
 static int gWebDecodeMap[256] = 
