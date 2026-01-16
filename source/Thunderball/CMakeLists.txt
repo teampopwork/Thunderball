@@ -11,6 +11,8 @@ add_executable(popcapgame1 WIN32
     Res.cpp
     Main.cpp
     DataSync.cpp
+    PlayerInfo.cpp
+    GameStats.cpp
 )
 
 target_include_directories(popcapgame1 PRIVATE

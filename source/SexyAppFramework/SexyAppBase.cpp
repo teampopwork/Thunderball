@@ -2014,7 +2014,7 @@ bool SexyAppBase::WriteBufferToFile(const std::string& theFileName, const Buffer
 	return WriteBytesToFile(theFileName,theBuffer->GetDataPtr(),theBuffer->GetDataLen());
 }
 
-
+// FUNCTION: POPCAPGAME1 0x0052fa70
 bool SexyAppBase::ReadBufferFromFile(const std::string& theFileName, Buffer* theBuffer, bool dontWriteToDemo)
 {
 	if ((mPlayingDemoBuffer) && (!dontWriteToDemo))

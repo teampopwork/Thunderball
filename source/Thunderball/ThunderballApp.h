@@ -6,7 +6,7 @@
 namespace Sexy
 {
 class WidgetMover;
-class ProfileInfo;
+class PlayerInfo;
 class ButtonWidget;
 class LoadingScreen;
 
@@ -40,8 +40,7 @@ public:
 	ButtonWidget* mWinCloseButton;    // +0x86C
 	ButtonWidget* mWinMinimizeButton; // +0x870
 	ButtonWidget* mWinUnmaxButton;    // +0x874
-	// ProfileInfo*   mCurProfile;        // +0x878
-	int mCurProfile;                // +0x878
+	PlayerInfo*   mCurProfile;        // +0x878
 
 	ThunderballApp();
 	virtual ~ThunderballApp();
