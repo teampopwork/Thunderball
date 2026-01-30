@@ -130,6 +130,7 @@ DataWriter::DataWriter() : mFileHandle(NULL), mMemoryHandle(NULL), mMemoryLength
 {
 }
 
+// FUNCTION: POPCAPGAME1 0x004bbd20
 DataWriter::~DataWriter()
 {
 	Close();
@@ -226,7 +227,7 @@ void DataWriter::WriteString(const std::string& theString)
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-
+// FUNCTION: POPCAPGAME1 0x004bb810
 DataSync::DataSync(DataReader& reader)
 {
 	mReader = NULL;
@@ -235,6 +236,7 @@ DataSync::DataSync(DataReader& reader)
 	mReader = &reader;
 }
 
+// FUNCTION: POPCAPGAME1 0x004bb940
 DataSync::DataSync(DataWriter& writer)
 {
 	mReader = NULL;

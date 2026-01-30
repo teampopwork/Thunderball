@@ -245,7 +245,7 @@ void LoadingScreen::ButtonDepress(int theId)
 			mApp->mUnk0x760 = 3; 
 		}
 
-		if (mApp->mAdd8BitMaxTable[0x18]) 
+		if (mApp->mAdd8BitMaxTable[0x18] == '\0') 
 		{
 			mApp->mUnk0x760 = 2;
 			QuickPlay();

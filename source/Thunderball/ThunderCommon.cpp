@@ -1235,13 +1235,17 @@ float Sexy::InterpValF(int currentTime, int phase1Duration, int phase2Duration,
         return (1.0f - t) * startVal + (t * midVal);
     }
 
-    // Phase 2: Transition from Mid to End
     int totalTimePhase1And2 = phase2Duration + phase1Duration;
     if (currentTime < totalTimePhase1And2) {
         float t = (float)(currentTime - phase1Duration) / (float)phase2Duration;
         return (1.0f - t) * midVal + (t * endVal);
     }
 
-    // Final state
     return endVal;
+}
+
+// STUB: POPCAPGAME1 0x00404b70
+int Sexy::GetStyleShotScore(Sexy::StyleShot, bool, int) 
+{
+	return 0;
 }

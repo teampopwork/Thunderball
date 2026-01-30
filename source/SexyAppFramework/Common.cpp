@@ -794,6 +794,7 @@ bool Sexy::FileExists(const std::string& theFileName)
 	return true;
 }
 
+// FUNCTION: POPCAPGAME1 0x00508e10
 void Sexy::MkDir(const std::string& theDir)
 {
 	std::string aPath = theDir;
