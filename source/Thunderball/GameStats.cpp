@@ -13,25 +13,25 @@ GameStats::GameStats()
 // FUNCTION: POPCAPGAME1 0x00402ed0
 void GameStats::Add(GameStats* theStats)
 {
-    m_unk0x0 += theStats->m_unk0x0;
+    mUnk0x0 += theStats->mUnk0x0;
 
-    if (theStats->m_unk0x4 > m_unk0x4)
+    if (theStats->mUnk0x4 > mUnk0x4)
     {
-        m_unk0x4 = theStats->m_unk0x4;
+        mUnk0x4 = theStats->mUnk0x4;
     }
 
-    if (theStats->m_unk0x8 > m_unk0x8)
+    if (theStats->mUnk0x8 > mUnk0x8)
     {
-        m_unk0x8 = theStats->m_unk0x8;
+        mUnk0x8 = theStats->mUnk0x8;
     }
     
-    m_unk0xc += theStats->m_unk0xc;
-    m_unk0x10 += theStats->m_unk0x10;
-    m_unk0x14 += theStats->m_unk0x14;
-    m_unk0x18 += theStats->m_unk0x18;
+    mUnk0xc += theStats->mUnk0xc;
+    mUnk0x10 += theStats->mUnk0x10;
+    mUnk0x14 += theStats->mUnk0x14;
+    mUnk0x18 += theStats->mUnk0x18;
 
-    int* src = &theStats->m_unk0x24;
-    int* dest = &m_unk0x1c;
+    int* src = &theStats->mUnk0x24;
+    int* dest = &mUnk0x1c;
     
     int i = 4;
     do {
@@ -50,8 +50,8 @@ void GameStats::Add(GameStats* theStats)
 // FUNCTION: POPCAPGAME1 0x00402eb0
 void GameStats::CheckBestShot(int theScore)
 {
-    if (theScore > m_unk0x4) {
-        m_unk0x4 = theScore;
+    if (theScore > mUnk0x4) {
+        mUnk0x4 = theScore;
     }
 }
 
@@ -76,33 +76,33 @@ int GameStats::GetTotalStyleShots()
 // FUNCTION: POPCAPGAME1 0x00402da0
 void GameStats::Reset()
 {
-    m_unk0x0 = 0;
-    m_unk0x4 = 0;
-    m_unk0x8 = 0;
-    m_unk0xc = 0;
-    m_unk0x10 = 0;
-    m_unk0x14 = 0;
-    m_unk0x18 = 0;
-    m_unk0x1c = 0;
-    m_unk0x20 = 0;
-    m_unk0x24 = 0;
-    m_unk0x28 = 0;
-    m_unk0x2c = 0;
-    m_unk0x30 = 0;
-    m_unk0x34 = 0;
-    m_unk0x38 = 0;
-    m_unk0x3c = 0;
-    m_unk0x40 = 0;
-    m_unk0x44 = 0;
-    m_unk0x48 = 0;
-    m_unk0x4c = 0;
-    m_unk0x50 = 0;
-    m_unk0x54 = 0;
-    m_unk0x58 = 0;
-    m_unk0x5c = 0;
-    m_unk0x60 = 0;
-    m_unk0x64 = 0;
-    m_unk0x68 = 0;
+    mUnk0x0 = 0;
+    mUnk0x4 = 0;
+    mUnk0x8 = 0;
+    mUnk0xc = 0;
+    mUnk0x10 = 0;
+    mUnk0x14 = 0;
+    mUnk0x18 = 0;
+    mUnk0x1c = 0;
+    mUnk0x20 = 0;
+    mUnk0x24 = 0;
+    mUnk0x28 = 0;
+    mUnk0x2c = 0;
+    mUnk0x30 = 0;
+    mUnk0x34 = 0;
+    mUnk0x38 = 0;
+    mUnk0x3c = 0;
+    mUnk0x40 = 0;
+    mUnk0x44 = 0;
+    mUnk0x48 = 0;
+    mUnk0x4c = 0;
+    mUnk0x50 = 0;
+    mUnk0x54 = 0;
+    mUnk0x58 = 0;
+    mUnk0x5c = 0;
+    mUnk0x60 = 0;
+    mUnk0x64 = 0;
+    mUnk0x68 = 0;
 }
 
 
@@ -116,9 +116,9 @@ void GameStats::SyncState(DataSync* theSync)
 
     int byte = 1;
     theSync->SyncByte(byte);
-    theSync->SyncLong(m_unk0x0);
-    theSync->SyncLong(m_unk0x4);
-    theSync->SyncLong(m_unk0x8);
-    theSync->SyncLong(m_unk0xc);
+    theSync->SyncLong(mUnk0x0);
+    theSync->SyncLong(mUnk0x4);
+    theSync->SyncLong(mUnk0x8);
+    theSync->SyncLong(mUnk0xc);
 
 }

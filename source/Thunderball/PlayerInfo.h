@@ -18,24 +18,24 @@ enum SaveType {
 class PlayerInfo
 {
 public:
-	std::string m_unk0x4;
-	int m_unk0x20;
-	int m_unk0x24;
-	int m_unk0x28;
-	int m_unk0x30;
-	int m_unk0x34;
-	int m_unk0x40;
-	int m_unk0x44;
-	int m_unk0x48;
-	bool m_unk0x4c;
-	int m_unk0x50;
-	bool m_unk0x60;
-	bool m_unk0x61;
-	bool m_unk0xec;
+	std::string mUnk0x4;
+	int mUnk0x20;
+	int mUnk0x24;
+	int mUnk0x28;
+	int mUnk0x30;
+	int mUnk0x34;
+	int mUnk0x40;
+	int mUnk0x44;
+	int mUnk0x48;
+	bool mUnk0x4c;
+	int mUnk0x50;
+	bool mUnk0x60;
+	bool mUnk0x61;
+	bool mUnk0xec;
 	std::multiset<int> mAdventureScores; // +0xf0
-	int m_unk0x204;
-	int m_unk0x208;
-	int m_unk0x20c;
+	int mUnk0x204;
+	int mUnk0x208;
+	int mUnk0x20c;
 
 	PlayerInfo();
 	PlayerInfo(PlayerInfo& param_1);
