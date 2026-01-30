@@ -15,6 +15,7 @@
 #include <SexyAppFramework/SoundManager.h>
 #include <SexyAppFramework/WidgetManager.h>
 #include <SexyAppFramework/Rect.h>
+#include <SexyAppFramework/Debug.h>
 #include <cstddef>
 #include <cstdlib>
 #include <math.h>
@@ -28,9 +29,9 @@ ASSERT_OFFSET(LoadingScreen, mApp, 0x8C);
 ASSERT_OFFSET(LoadingScreen, mPlayNowButton, 0x90);
 ASSERT_OFFSET(LoadingScreen, mLoadProgress, 0x94);
 ASSERT_OFFSET(LoadingScreen, mSunRotationAngle, 0x98);
-ASSERT_OFFSET(LoadingScreen, m_unk0x9C, 0x9C);
+ASSERT_OFFSET(LoadingScreen, mUnk0x9C, 0x9C);
 ASSERT_OFFSET(LoadingScreen, mPlayNowPulseCount, 0xA0);
-ASSERT_OFFSET(LoadingScreen, m_unk0xA4, 0xA4);
+ASSERT_OFFSET(LoadingScreen, mUnk0xA4, 0xA4);
 ASSERT_OFFSET(LoadingScreen, mAdventureStartDelay, 0xA8);
 ASSERT_OFFSET(LoadingScreen, mBallAnimState, 0xAC);
 ASSERT_OFFSET(LoadingScreen, mLogoBounceFrame, 0xB0);
@@ -40,13 +41,13 @@ ASSERT_OFFSET(LoadingScreen, mBallVelX, 0xBC);
 ASSERT_OFFSET(LoadingScreen, mBallVelY, 0xC0);
 ASSERT_OFFSET(LoadingScreen, mBallBounceInit, 0xC4);
 ASSERT_OFFSET(LoadingScreen, mParticles, 0xC8);
-//ASSERT_OFFSET(LoadingScreen, m_unk0xCC, 0xCC);
-//ASSERT_OFFSET(LoadingScreen, m_unk0xD0, 0xD0);
-//ASSERT_OFFSET(LoadingScreen, m_unk0xD4, 0xD4);
-ASSERT_OFFSET(LoadingScreen, m_unk0xD8, 0xD8);
+//ASSERT_OFFSET(LoadingScreen, mUnk0xCC, 0xCC);
+//ASSERT_OFFSET(LoadingScreen, mUnk0xD0, 0xD0);
+//ASSERT_OFFSET(LoadingScreen, mUnk0xD4, 0xD4);
+ASSERT_OFFSET(LoadingScreen, mUnk0xD8, 0xD8);
 ASSERT_OFFSET(LoadingScreen, mLevelLoadMusicThread, 0xDC);
-ASSERT_OFFSET(LoadingScreen, m_unk0xE0, 0xE0);
-ASSERT_OFFSET(LoadingScreen, m_unk0xE4, 0xE4);
+ASSERT_OFFSET(LoadingScreen, mUnk0xE0, 0xE0);
+ASSERT_OFFSET(LoadingScreen, mUnk0xE4, 0xE4);
 ASSERT_OFFSET(LoadingScreen, mDisplayPartnerLogo, 0xE8);
 ASSERT_OFFSET(LoadingScreen, mLightBeamCount, 0xEC);
 
@@ -63,16 +64,16 @@ LoadingScreen::LoadingScreen(ThunderballApp* theApp)
 	mApp = theApp;
 	mLoadProgress = 0.0f;
 	mSunRotationAngle = 0.0f;
-	m_unk0xA4 = 0.0f;
+	mUnk0xA4 = 0.0f;
 	
-	m_unk0x9C = 0;
+	mUnk0x9C = 0;
 	mPlayNowPulseCount = 0;
 	mAdventureStartDelay = 0;
 	mBallAnimState = 0;
 	mLogoBounceFrame = 0;
 	mBallBounceInit = false;
-	m_unk0xE4 = 0;
-	m_unk0xD8 = false;
+	mUnk0xE4 = 0;
+	mUnk0xD8 = false;
 
 	mPlayNowButton = new ThunderButton(IMAGE_LOAD_PLAYNOW, 0, (ButtonListener*)this);
 	Image* aPlayNowImage = IMAGE_LOAD_PLAYNOW;
@@ -117,7 +118,7 @@ LoadingScreen::~LoadingScreen()
 	}
 
 	if (mLevelLoadMusicThread != 0) {
-		PostThreadMessageA((DWORD) m_unk0xE0, WM_QUIT, 0, 0);
+		PostThreadMessageA((DWORD) mUnk0xE0, WM_QUIT, 0, 0);
 		WaitForSingleObject((HANDLE) mLevelLoadMusicThread, INFINITE);
 	}
 }
@@ -241,12 +242,12 @@ void LoadingScreen::ButtonDepress(int theId)
 
 		if (mWidgetManager->mKeyDown[0x44]) 
 		{
-			mApp->m_unk0x760 = 3; 
+			mApp->mUnk0x760 = 3; 
 		}
 
 		if (mApp->mAdd8BitMaxTable[0x18]) 
 		{
-			mApp->m_unk0x760 = 2;
+			mApp->mUnk0x760 = 2;
 			QuickPlay();
 			mApp->ShowBoard(true, true);
 			return;
@@ -281,269 +282,255 @@ void LoadingScreen::ButtonPress(int theId, int theClickCount)
 	mApp->PlaySample(SOUND_BUTTON1);
 }
 
-
 // FUNCTION: POPCAPGAME1 0x004a7250
 void LoadingScreen::Draw(Graphics* g)
 {
-	Widget::Draw(g);
-	Color bgColor(0);
-	g->SetColor(bgColor);
-	g->FillRect(0, 0, mWidth, mHeight);
-	g->DrawImage(IMAGE_LOAD_BACK, 0, 0);
+    Widget::Draw(g);
+    Color aBackgroundColor = Color(0);
+    g->SetColor(aBackgroundColor);
+    g->FillRect(0, 0, mWidth, mHeight);
+    g->DrawImage(IMAGE_LOAD_BACK, 0, 0);
 
-	// STRING: POPCAPGAME1 0x006078f8
-	float sunTravel = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp435,549", 500);
+    // STRING: POPCAPGAME1 0x006078f8
+    int sunY = (1.0f - mUnk0xA4) * (float)ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp435,549", 500) - 214.0;
 
-	int sunY = (int)(1.0f - m_unk0xA4 * sunTravel - 214.0f);
-	int sunX;
-	Image* sunImage = NULL;
+    if (g->mIs3D && mSunRotationAngle != 0.0f) {
+        double angleRad = mSunRotationAngle * SEXY_PI / 180.0;
 
-	if (g->mIs3D && mSunRotationAngle != 0.0f) {
-		double angleRad = mSunRotationAngle * (SEXY_PI / 180.0);
+        g->DrawImageRotated(IMAGE_SUNGLOW, -0x24, sunY, angleRad, 
+			// STRING: POPCAPGAME1 0x00607860
+			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp436,553", 394), 
+			// STRING: POPCAPGAME1 0x006078a8
+			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp437,553", 383), NULL);
 
-		// STRING: POPCAPGAME1 0x006078a8
-		int rotY = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp437,553", 383);
+        g->DrawImage(IMAGE_LOAD_SUNHEAD, 
+        	// STRING: POPCAPGAME1 0x006077d0
+			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp438,554", 283),
+        	// STRING: POPCAPGAME1 0x00607818
+			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp439,554", 307) + sunY);
 
-		// STRING: POPCAPGAME1 0x00607860
-		int rotX = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp436,553", 394);
+    } else {
+        g->DrawImage(IMAGE_SUNGLOW, -0x24, sunY);
+    }
 
-		g->DrawImageRotated(IMAGE_SUNGLOW, -0x24, sunY, angleRad, rotX, rotY, NULL);
+    
 
-		// STRING: POPCAPGAME1 0x00607818
-		sunY += ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp439,554", 307);
+    // STRING: POPCAPGAME1 0x00607788
+    int hillImageX = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp440,572", 0xaa);
 
-		// STRING: POPCAPGAME1 0x006077d0
-		sunX = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp438,554", 283);
+    // STRING: POPCAPGAME1 0x00607740
+    int curveEndY = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp441,573", 0x8c);
 
-		sunImage = IMAGE_LOAD_SUNHEAD;
-	} else {
-		sunImage = IMAGE_SUNGLOW;
-		sunX = -0x24;
-	}
+    // STRING: POPCAPGAME1 0x006076f8
+    int curveStartY = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp442,574", 200);
 
-	g->DrawImage(sunImage, sunX, sunY);
+    // STRING: POPCAPGAME1 0x006076b0
+    int logoBounceThreshold = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp443,575", -0x3c);
 
-	// STRING: POPCAPGAME1 0x00607788
-	int hillImageX = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp440,572", 0xaa);
+    // STRING: POPCAPGAME1 0x00607668
+    int logoYOffset = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp444,577", 0x32);
 
-	// STRING: POPCAPGAME1 0x00607740
-	int curveEndY = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp441,573", 0x8c);
+    // STRING: POPCAPGAME1 0x00607620
+    int logoRadius = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp445,578", 0x46);
 
-	// STRING: POPCAPGAME1 0x006076f8
-	float curveStartY = (float)ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp442,574", 200);
+    // GLOBAL: POPCAPGAME1 0x0064a35d
+    static bool needCalc = true;
+    // GLOBAL: POPCAPGAME1 0x00650a7c:
+    static float a;
+    // GLOBAL: POPCAPGAME1 0x00650a80
+    static float b;
+    // GLOBAL: POPCAPGAME1 0x00650a84
+    static float y;
 
-	// STRING: POPCAPGAME1 0x006076b0
-	int logoBounceThreshold = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp443,575", -0x3c);
+    if (needCalc)
+    {
+        y = curveStartY - curveEndY;
+        needCalc = false;
+        curveStartY = logoBounceThreshold + curveEndY - y;
+        
 
-	// STRING: POPCAPGAME1 0x00607668
-	double logoYOffset = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp444,577", 0x32);
+        SolveLinearSystem(
+            logoYOffset * logoYOffset,
+            logoYOffset,
+            curveStartY,
+            logoRadius * logoRadius,
+            logoRadius,
+            curveEndY - y,
+            &a,
+            &b
+        );
+    }
 
-	// STRING: POPCAPGAME1 0x00607620
-	int logoRadius = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp445,578", 0x46);
 
-	// GLOBAL: POPCAPGAME1 0x0064a35d
-	static bool needCalc;
-	// GLOBAL: POPCAPGAME1 0x00650a7c
-	static float a;
-	// GLOBAL: POPCAPGAME1 0x00650a80
-	static float b;
-	// GLOBAL: POPCAPGAME1 0x00650a84
-	static float y;
 
-	if (!needCalc)
-	{
-		int sumY = (int)curveStartY + curveEndY;
+    int unk0xE4 = mUnk0xE4;
+    curveStartY = (b * unk0xE4 * unk0xE4) + (a * unk0xE4) + y;
 
-		int sq70 = logoYOffset * logoYOffset;
+    if (mUnk0xE4 < logoYOffset) {
+        g->DrawImage(IMAGE_LOAD_LOGO, hillImageX, curveStartY);
+    }
 
-		y = (float)sumY;
+    // STRING: POPCAPGAME1 0x006075d8
+    int logoY = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp446,604", 10);
+    int bounceFrame = mLogoBounceFrame;
 
-		float valA = (float)curveEndY - y;
+    if (bounceFrame > 0 && bounceFrame < unk0xE4)
+    {
+        // STRING: POPCAPGAME1 0x00607548i
+     
+        bounceFrame = (mLogoBounceFrame * -ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp448,605", 1.5f) +
+            // STRING: POPCAPGAME1 0x00607590
+            ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp447,605", 8));
+    }
+    else
+    {
+        bounceFrame = 0;
+    }
 
-		curveStartY = (float)sq70;
-		logoYOffset = logoBounceThreshold + curveEndY;
 
-		SolveLinearSystem(
-			valA,
-			0.0f,
-			(float)logoYOffset,
-			(float)curveStartY,
-			(float)(logoRadius * 70),
-			y,
-			&a,
-			&b
-		);
+    if (logoBounceThreshold > 0 && logoBounceThreshold < unk0xE4)
+    {
+        curveEndY += unk0xE4;
+    }
 
-		needCalc = true;
-	}
+    g->DrawImage(IMAGE_LOAD_HILL, 0, 0x11d);
 
-	int checkVal = m_unk0xE4;
-	float fCheck = (float)checkVal;
+    g->SetColorizeImages(true);
 
-	curveStartY = (fCheck * b * fCheck) + (a * fCheck) + y;
+    g->SetColor(Color(
+        // STRING: POPCAPGAME1 0x006074b8
+        ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp449,612", 0x101010), 
+        // STRING: POPCAPGAME1 0x00607500
+        ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp450,612", 120) * mUnk0xA4 * mUnk0xA4
+    ));
 
-	if (m_unk0xE4 < curveStartY)
-	{
-		g->DrawImage(IMAGE_LOAD_LOGO, hillImageX, (int)curveStartY);
-	}
+    g->DrawImage(
+        IMAGE_LOAD_SHADOW, 
+        // STRING: POPCAPGAME1 0x00607428
+        ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp451,614", 162), 
+        // STRING: POPCAPGAME1 0x00607470
+        logoYOffset + ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp452,615", 290)
+    );
 
-	// STRING: POPCAPGAME1 0x006075d8
-	int logoY = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp446,604", 10);
-	int bounceFrame = mLogoBounceFrame;
-	int tempCheck = checkVal;
+    g->SetColorizeImages(false);
 
-	if (bounceFrame > 0 && bounceFrame < tempCheck)
-	{
-		// STRING: POPCAPGAME1 0x00607590
-		int bounceModVal = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp447,605", 8);
+    g->DrawImage(IMAGE_LOAD_OVERLAY,
+        // STRING: POPCAPGAME1 0x00607398
+        ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp453,620", 201),
+        // STRING: POPCAPGAME1 0x006073e0
+        ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp454,621", 420));
 
-		bounceFrame = (int)(mLogoBounceFrame * -ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp448,605", 1.5) + bounceModVal);
-	}
-	else
-	{
-		bounceFrame = 0;
-	}
+    unk0xE4 = mUnk0xE4;
+    if (unk0xE4 >= 0 && unk0xE4 < logoRadius)
+    {
+        g->DrawImage(IMAGE_LOAD_LOGO, hillImageX, curveStartY);
+    }
+    else
+    {
+        if (unk0xE4 >= logoRadius)
+        {
+            g->DrawImage(IMAGE_LOAD_LOGO, hillImageX, curveEndY);
+            if (mLogoBounceFrame != 0)
+            {
+                g->SetColorizeImages(true);
+                g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
 
-	if (logoBounceThreshold > 0 && logoBounceThreshold < tempCheck)
-	{
-		curveEndY += checkVal;
-	}
+                // STRING: POPCAPGAME1 0x006072c0
+                int alpha = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp457,634", 128) * InterpValF(
+                    mLogoBounceFrame, 
+                    // STRING: POPCAPGAME1 0x00607308
+                    ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp455,633", 5), 
+                    // STRING: POPCAPGAME1 0x00607350
+                    ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp456,633", 25),
+                    0.0f, 
+                    1.0f, 
+                    0.0f
+                );
 
-	g->DrawImage(IMAGE_LOAD_HILL, 0, 0x11d);
+                g->SetColor(Color(0xffffff, alpha));
+                g->DrawImage(IMAGE_LOAD_LOGO, hillImageX, curveEndY);
+                g->SetColorizeImages(false);
+                g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+            }
+        }
+    }
 
-	g->SetColorizeImages(true);
+    for (int i = 0; i < mLightBeamCount; i++)
+    {
+        DrawLight(g, i);
+    }
 
-	// STRING: POPCAPGAME1 0x00607500
-	int shadowBase = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp450,612", 120);
+    // STRING: POPCAPGAME1 0x00607278
+    int loadingTextBaseY = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp458,645", 200);
+    // STRING: POPCAPGAME1 0x00607230
+    int loadingTextBaseX = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp459,646", 460);
 
-	float shadowFloat = (float)shadowBase * m_unk0xA4 * m_unk0xA4;
-	int shadowIntensity = (int)shadowFloat;
+    std::string loadingText;
 
-	// STRING: POPCAPGAME1 0x006074b8
-	int shadowColorVal = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp449,612", 0x101010);
-	g->SetColor(Color(shadowColorVal, shadowIntensity));
+    if (mApp->IsScreenSaver())
+    {
+        // STRING: POPCAPGAME1 0x00607214
+        loadingText = "Starting Screensaver";
+    }
+    else if (mApp->mUnk0x7b0 != 0)
+    {
+        // STRING: POPCAPGAME1 0x00607200
+        loadingText = "Loading Replay...";
+    }
+    else if (mLoadProgress < 1.0f)
+    {
+        // STRING: POPCAPGAME1 0x006071f4
+        loadingText = "Loading...";
+    }
 
-	// STRING: POPCAPGAME1 0x00607470
-	int shadowY = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp452,615", 290);
-	// STRING: POPCAPGAME1 0x00607428
-	int shadowX = checkVal + ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp451,614", 162);
+    if (loadingText.length() != 0)
+    {
+        g->SetFont(FONT_OVERLOAD16OUTLINE);
 
-	g->DrawImage(IMAGE_LOAD_SHADOW, shadowX, shadowY);
+        // STRING: POPCAPGAME1 0x006071b0
+        int fontColor = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp460,658", 0xffec91);
+        Color textColor(fontColor);
+        g->SetColor(textColor);
 
-	g->SetColorizeImages(false);
+        int loadingTextXCentered = (g->GetFont()->StringWidth(loadingText) - mWidth) / 2;
 
-	g->DrawImage(IMAGE_LOAD_OVERLAY,
-		// STRING: POPCAPGAME1 0x00607398
-		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp453,620", 201),
-		// STRING: POPCAPGAME1 0x006073e0
-		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp454,621", 420));
+        g->DrawString(loadingText,
+            // STRING: POPCAPGAME1 0x00607120
+            loadingTextXCentered + ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp461,659", 0),
+            // STRING: POPCAPGAME1 0x00607168
+            ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp462,659", 0x22b));
+    }
 
-	if (m_unk0xE4 >= 0 && m_unk0xE4 < 70)
-	{
-		g->DrawImage(IMAGE_LOAD_LOGO, hillImageX, curveStartY);
-	}
-	else
-	{
-		g->DrawImage(IMAGE_LOAD_LOGO, hillImageX, curveEndY);
-		if (mLogoBounceFrame != 0)
-		{
-			g->SetColorizeImages(true);
-			g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+    DrawParticles(g);
 
-			// STRING: POPCAPGAME1 0x00607350
-			int alphaMax = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp456,633", 25);
+    Transform t;
+    if (mBallAnimState > 0)
+    {
+        g->DrawImageTransform(IMAGE_LOAD_BALL, t, mBallX, mBallY);
+    }
 
-			// STRING: POPCAPGAME1 0x00607308
-			int lerpDur = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp455,633", 5);
+    if (mUnk0xD8 != 0)
+    {
+        g->DrawImage(IMAGE_LOAD_DELUXE,
+            // STRING: POPCAPGAME1 0x00607090
+            ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp463,679", 300),
+            // STRING: POPCAPGAME1 0x006070d8
+            ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp464,679", 334)
+        );
 
-			float lerpVal = Lerp(mLogoBounceFrame, lerpDur, 0, 0.0f, 0.0f, (float)alphaMax);
+        g->SetColorizeImages(true);
+        g->SetColor(Color(0));
 
-			int alpha = (int)(lerpVal * (float)ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp457,634", 128));
+        g->DrawImage(IMAGE_LOAD_TM,
+            // STRING: POPCAPGAME1 0x00607000
+            ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp465,682", 574),
+            // STRING: POPCAPGAME1 0x00607048
+            ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp466,682", 310));
 
-			g->SetColor(Color(0xffffff, alpha));
-			g->DrawImage(IMAGE_LOAD_LOGO, hillImageX, curveEndY);
+        g->SetColorizeImages(false);
+    }
 
-			g->SetColorizeImages(false);
-			g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
-		}
-	}
-
-	for (int i = 0; i < mLightBeamCount; i++)
-	{
-		DrawLight(g, i);
-	}
-
-	// STRING: POPCAPGAME1 0x00607278
-	int loadingTextBaseY = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp458,645", 200);
-	// STRING: POPCAPGAME1 0x00607230
-	int loadingTextBaseX = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp459,646", 460);
-
-	std::string loadingText;
-
-	if (mApp->IsScreenSaver())
-	{
-		// STRING: POPCAPGAME1 0x00607214
-		loadingText = "Starting Screensaver";
-	}
-	else if (mApp->m_unk0x7b0 != 0)
-	{
-		// STRING: POPCAPGAME1 0x00607200
-		loadingText = "Loading Replay...";
-	}
-	else if (mLoadProgress < 1.0f)
-	{
-		// STRING: POPCAPGAME1 0x006071f4
-		loadingText = "Loading...";
-	}
-
-	if (loadingText.length() != 0)
-	{
-		g->SetFont(FONT_OVERLOAD16OUTLINE);
-
-		// STRING: POPCAPGAME1 0x006071b0
-		int fontColor = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp460,658", 0xffec91);
-		Color textColor(fontColor);
-		g->SetColor(textColor);
-
-		int loadingTextXCentered = (g->GetFont()->StringWidth(loadingText) - mWidth) / 2;
-
-		g->DrawString(loadingText,
-			// STRING: POPCAPGAME1 0x00607120
-			loadingTextXCentered + ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp461,659", 0),
-			// STRING: POPCAPGAME1 0x00607168
-			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp462,659", 0x22b));
-	}
-
-	DrawParticles(g);
-
-	Transform t;
-	if (mBallAnimState > 0)
-	{
-		g->DrawImageTransform(IMAGE_LOAD_BALL, t, mBallX, mBallY);
-	}
-
-	if (m_unk0xD8 != 0)
-	{
-		g->DrawImage(IMAGE_LOAD_DELUXE,
-			// STRING: POPCAPGAME1 0x00607090
-			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp463,679", 300),
-			// STRING: POPCAPGAME1 0x006070d8
-			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp464,679", 334)
-		);
-
-		g->SetColorizeImages(true);
-		g->SetColor(Color(0));
-
-		g->DrawImage(IMAGE_LOAD_TM,
-			// STRING: POPCAPGAME1 0x00607000
-			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp465,682", 574),
-			// STRING: POPCAPGAME1 0x00607048
-			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp466,682", 310));
-
-		g->SetColorizeImages(false);
-	}
-
-	DeferOverlay(0);
+    DeferOverlay(0);
 }
 
 // FUNCTION: POPCAPGAME1 0x00494890
@@ -557,185 +544,162 @@ void LoadingScreen::KeyChar(SexyChar theChar)
 // FUNCTION: POPCAPGAME1 0x004b4270
 void LoadingScreen::Update()
 {
-	Widget::Update();
+    Widget::Update();
 
-	float loadTime = GetLoadTime(mApp->mCompletedLoadingThreadTasks);
-	if (mPlayNowPulseCount != 0) {
-		mPlayNowPulseCount++;
-	}
+    float loadTime = GetLoadTime(mApp->mCompletedLoadingThreadTasks);
+    if (mPlayNowPulseCount != 0) {
+        mPlayNowPulseCount++;
+    }
 
-	int updateCnt = mUpdateCnt;
-	if (updateCnt == 1 && mBallBounceInit == false) {
-		mApp->mYieldMainThread = false;
-		mApp->ClearUpdateBacklog(false);
-		if (SOUND_MORNING >= NULL) {
-			SoundInstance* aInstance = mApp->mSoundManager->GetSoundInstance(SOUND_MORNING);
-			if (aInstance != NULL) {
-				aInstance->Play(false, true);
-			}
-		} 
-	}
-	else if (updateCnt == 80 && mApp->mLoadingThreadCompleted == false && mBallAnimState == 0) {
-		mApp->mYieldMainThread = true;
-	}
-	
+    int updateCnt = mUpdateCnt;
 
-	UpdateBall();
-	UpdateParticles();
+    if (updateCnt == 1 && !mBallBounceInit) {
+        mApp->mYieldMainThread = false;
+        mApp->ClearUpdateBacklog(false);
+        
+        if ((int)SOUND_MORNING >= 0) {
+            SoundInstance* aInstance = mApp->mSoundManager->GetSoundInstance(SOUND_MORNING);
+            if (aInstance != NULL) {
+                aInstance->Play(false, true);
+            }
+        } 
+    } else if (updateCnt == 80 && !mApp->mLoadingThreadCompleted && mBallAnimState == 0) {
+        mApp->mYieldMainThread = true;
+    }
 
-	if (mLogoBounceFrame > 0) {
-		mLogoBounceFrame++;
-		// STRING: POPCAPGAME1 0x0060d250
-		int val = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp394,191", 30);
-		if (mLogoBounceFrame > val) {
-			mLogoBounceFrame = 0;
-		}
-		MarkDirty();
-	}
+    UpdateBall();
+    UpdateParticles();
 
-	updateCnt = mUpdateCnt;
-	// STRING: POPCAPGAME1 0x0060d208
-	int displayCutoff = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp395,198", 550);
-	if (updateCnt <= displayCutoff) {
-		if (!mDisplayPartnerLogo) {
-			// STRING: POPCAPGAME1 0x0060d1c0
-			displayCutoff = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp396,198", 250);
+    if (mLogoBounceFrame > 0) {
+        mLogoBounceFrame++;
+        // STRING: POPCAPGAME1 0x0060d250
+        int val = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp394,191", 30);
+        if (mLogoBounceFrame > val) {
+            mLogoBounceFrame = 0;
+        }
+        MarkDirty();
+    }
+
+    updateCnt = mUpdateCnt;
+    // STRING: POPCAPGAME1 0x0060d208
+    int displayCutoff = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp395,198", 550);
+    
+    if ((updateCnt > displayCutoff) || !mDisplayPartnerLogo) {
+            updateCnt = mUpdateCnt;
+            // STRING: POPCAPGAME1 0x0060d1c0
+            displayCutoff = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp396,198", 250);
+    }
+        
+    if (updateCnt <= displayCutoff) {
+        if (updateCnt > 1) {
+            if (mApp->mUnk0x779) {
+                DoLevelLoadMusic();
+            }
+        } else if (loadTime > 0.0f) {
+            mUnk0xE4++;
+        }
+    }
+
+    if (!mApp->mLoaded && loadTime >= 1.0f) {
+        loadTime = 0.9999f;
+    }
+
+    updateCnt = mUpdateCnt;
+    // STRING: POPCAPGAME1 0x0060d178
+    float displayProgress = (updateCnt - ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp398,218", 250)) * 
+    // STRING: POPCAPGAME1 0x0060d130
+    ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp397,218", 0.001f);
+
+    if (mDisplayPartnerLogo) {
+        
+        updateCnt = mUpdateCnt;
+
+        // STRING: POPCAPGAME1 0x0060d0e8
+        displayProgress = (float)(updateCnt - ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp400,220", 550)) * 
+        // STRING: POPCAPGAME1 0x0060d0a0
+        ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp399,220", 0.00143f);
+    }
+
+    if (mLevelLoadMusicThread != NULL && displayProgress > 0.99f) {
+        displayProgress = 0.99f;
+    }
+
+    if (loadTime > displayProgress) {
+        loadTime = displayProgress;
+    }
+
+    if (loadTime < 0.0f) {
+        loadTime = 0.0f;
+    }
+
+    if (mLoadProgress < loadTime) {
+        mLoadProgress += 0.01f;
+        if (mLoadProgress > loadTime) {
+            mLoadProgress = loadTime;
+        }
+
+        mLightBeamCount = (int)(mLoadProgress * 25.0f);
+        MarkDirty();        
+
+        if (mLoadProgress == 1.0f) {
+            mPlayNowPulseCount = 1;
             
-		}
+            if (!mApp->IsScreenSaver() && !mApp->mUnk0x7b0) {
+                mPlayNowButton->SetVisible(true);
+                mUnk0xD8 = true;
+                if (mApp->mUnk0x7b0) {
+                    mApp->ShowReplay(false);
+                    return;
+                } 
+            } else {
+                mApp->mUnk0x760 = 6;
+                mApp->ShowBoard(true, true);
+                return;
+            }
+        }
+    }
 
-		if (updateCnt <= displayCutoff) {
-			if (updateCnt > 1 && mApp->m_unk0x779) {
-				DoLevelLoadMusic();
-			} else {
-				if (loadTime > 0.0f) {
-					m_unk0xE4++;
-				}
-			}
-		}
+    if (mUnk0xA4 < mLoadProgress) {    
+        mUnk0xA4 = mLoadProgress;
+        MarkDirty();
+    }
 
-		updateCnt = mUpdateCnt;
-		float maxLoadThreshold = 1.0f;
-		if (!mApp->mLoaded) {
-			if (loadTime >= maxLoadThreshold) {
-				maxLoadThreshold = 0.9999;
-			}
-		} else {
-			loadTime = 1.0f;
-		}
+    if (mUnk0xA4 >= 1.0f) {
+        if (mUpdateCnt > 550) {
+            if (mBallAnimState == 0) {
+                mUnk0xA4 = 1.0f;
+                DoBallBounce();
+            } 
+        }   
+    }
 
-		
-	}
+    if (mUnk0xA4 >= 1.0f) {   
+        // STRING: POPCAPGAME1 0x0060d058
+        mSunRotationAngle += ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp401,281", 0.2f);
 
-	// STRING: POPCAPGAME1 0x0060d178
-	int progressStart = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp398,218", 250);
-	updateCnt = mUpdateCnt;
-	// STRING: POPCAPGAME1 0x0060d130
-	float displayProgress = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp397,218", 0.001f);
-	displayProgress *= (float)(updateCnt - progressStart);
+        mUnk0x9C++;
+        if (mApp->Is3DAccelerated()) {
+            MarkDirty();
+        }
+    }
 
-	if (mDisplayPartnerLogo) {
-		// STRING: POPCAPGAME1 0x0060d0e8
-		int progressPartnerStart = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp400,220", 550);
-		updateCnt = mUpdateCnt;
-		// STRING: POPCAPGAME1 0x0060d0a0
-		displayProgress = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp399,220", 0.00143f);
-		displayProgress = displayProgress * (float)(updateCnt - progressPartnerStart);
-	}
+    if (mAdventureStartDelay > 0) {
+        mAdventureStartDelay--;
+        if (mAdventureStartDelay == 0) {
+            mApp->StartAdventureGame();
+        }
+    }
 
-	if (mLevelLoadMusicThread != 0 && (0.99 < displayProgress)) {
-		displayProgress = 0.99f;
-	}
+    // STRING: POPCAPGAME1 0x0060d010
+    int aPulseThreshold = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp402,295", 550);
 
-	if (displayProgress > loadTime) {
-		loadTime = displayProgress;
-	}
-
-	if (loadTime < 0.0f) {
-		loadTime = 0.0f;
-	}
-
-	if (mLoadProgress < loadTime) {
-		mLoadProgress += 0.01f;
-		if (loadTime < mLoadProgress) {
-			mLoadProgress = loadTime;
-		}
-
-		mLightBeamCount = (int)(mLoadProgress * 25.0f);
-		MarkDirty();
-		
-
-		if (mLoadProgress < 1.0f) 
-    	{
-			mPlayNowPulseCount = 1;
-			if (mApp->IsScreenSaver() || mApp->m_unk0x7b0 != 0) 
-			{
-				if (mApp->m_unk0x7b0 != 0) 
-				{
-					mApp->ShowReplay(false);
-					return;
-				}
-			}
-			mApp->ShowBoard(true, true);
-			return;
-		}
-
-		if (m_unk0xA4 < mLoadProgress) {
-			m_unk0xA4 = mLoadProgress;
-			MarkDirty();
-		}
-
-		if (m_unk0xA4 >= 1.0f) 
-		{
-			if (updateCnt > 550) 
-			{
-				m_unk0xA4 = 1.0f;
-
-				if (mBallAnimState == 0) 
-				{
-					DoBallBounce();
-				}
-			}
-		}
-
-		if (m_unk0xA4 < 1.0f) 
-		{	
-			// STRING: POPCAPGAME1 0x0060d058
-			float aRotationSpeed = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp401,281", 0.2f);
-			
-			mPlayNowPulseCount++;
-			mSunRotationAngle += aRotationSpeed;
-
-			if (mApp->Is3DAccelerated()) 
-			{
-				MarkDirty();
-			}
-    	}
-
-		if (mAdventureStartDelay > 0) {
-			mAdventureStartDelay--;
-			if (mAdventureStartDelay == 0) {
-				mApp->StartAdventureGame();
-			}
-		}
-
-		// STRING: POPCAPGAME1 0x0060d010
-		int aPulseThreshold = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp402,295", 550);
-
-		if (mUpdateCnt > aPulseThreshold)
-		{
-			int remainingCapacity = mParticles.capacity() - mParticles.size();
-			
-			if (remainingCapacity != 0)
-			{
-				MarkDirty();
-			}
-			
-		}
-		else
-		{
-			MarkDirty();
-		}
-	}
+    if (mUpdateCnt > aPulseThreshold) {
+        if (mParticles.size() > 0) {
+            MarkDirty();
+        }
+    } else {
+        MarkDirty();
+    }
 }
 
 // FUNCTION: POPCAPGAME1 0x00494370
@@ -763,11 +727,11 @@ void LoadingScreen::DoLevelLoadMusic()
 	LoadingScreen* self = this;
 	HANDLE aThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)LevelLoadMusicThreadProc, self, 0, (LPDWORD)&self);
 	mLevelLoadMusicThread = aThread;
-	m_unk0xE0              = (int)self;
-	bool isLoading = mApp->m_unk0x779;
+	mUnk0xE0              = (int)self;
+	bool isLoading = mApp->mUnk0x779;
 	while (isLoading) {
 		Sleep(10);
-		isLoading = mApp->m_unk0x779;
+		isLoading = mApp->mUnk0x779;
 	}
 }
 
@@ -867,7 +831,7 @@ void LoadingScreen::UpdateBall()
 {
 	if ((mBallAnimState > 0) && (mBallAnimState <= 2)) {
 		// STRING: POPCAPGAME1 0x0060cfc8
-		mBallVelY += ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp388,116", 0.75f);
+		mBallVelY += ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp388,116", 0.2f);
 		mBallX += mBallVelX;
 		mBallY += mBallVelY;
 
@@ -914,10 +878,43 @@ void LoadingScreen::UpdateBall()
 	}
 }
 
-// STUB: POPCAPGAME1 0x0049f2d0
+// FUNCTION: POPCAPGAME1 0x0049f2d0
 void LoadingScreen::UpdateParticles()
 {
-	
+    for (size_t i = 0; i < mParticles.size(); i++)
+    {
+        // STRING: POPCAPGAME1 0x00601ff0
+        mParticles[i].mAlpha -= ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp414,332", 6);
+
+        if (mParticles[i].mAlpha <= 0)
+        {
+            if (i < mParticles.size() - 1)
+            {
+                mParticles[i] = mParticles.back();
+            }
+
+            mParticles.pop_back();
+        }
+        else
+        {
+            float speedFactor = 0.25 - (mParticles[i].mVelX * mParticles[i].mVelY) + (mParticles[i].mVelX * mParticles[i].mVelY);
+            // STRING: POPCAPGAME1 0x00601fa8
+            mParticles[i].mY += + mParticles[i].mVelY + (speedFactor * ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp415,345", 3.0f) * sin(mParticles[i].mAngle));
+            // STRING: POPCAPGAME1 0x00601f60
+            mParticles[i].mX += mParticles[i].mVelX + (speedFactor * ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp416,346", 3.0f) * cos(mParticles[i].mAngle));
+
+            float angleDelta;
+            if (mParticles[i].mFlip)
+            {
+                angleDelta = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp417,350", 0.015f);
+            }
+            else
+            {
+                angleDelta = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp418,350", -0.015f);
+            }
+            mParticles[i].mAngle += angleDelta;
+        }
+    }
 }
 
 // TEMPLATE: POPCAPGAME1 0x004b2420
@@ -982,6 +979,9 @@ void Sexy::LoadingScreen::SpawnParticles()
     }
 }
 
+// TEMPLATE: POPCAPGAME1 0x0040f290
+// std::operator+<char,std::char_traits<char>,std::allocator<char> >(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const &, char const *)
+
 // FUNCTION: POPCAPGAME1 0x004a6f90
 void LoadingScreen::LevelLoadMusicThreadProc(LPVOID lpParameter)
 {
@@ -998,11 +998,7 @@ void LoadingScreen::LevelLoadMusicThreadProc(LPVOID lpParameter)
 		
 		do {
 			MSG msg;
-			if (PeekMessageA(&msg, NULL, WM_NULL, WM_NULL, PM_REMOVE)) {
-				break;
-			}
-
-			if (!(findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
+			if (!PeekMessageA(&msg, NULL, WM_NULL, WM_NULL, PM_REMOVE) || msg.message == 0x12 || !(findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
 				// STRING: POPCAPGAME1 0x0000606fe4
 				if (_stricmp(findData.cFileName, "odetojoy.ogg") != 0 &&
 				// STRING: POPCAPGAME1 0x0000606fd8
@@ -1022,15 +1018,14 @@ void LoadingScreen::LevelLoadMusicThreadProc(LPVOID lpParameter)
 						// STRING: POPCAPGAME1 0x00606fc4
 						|| _stricmp(ext, "mo3") == 0) {
 							// STRING: POPCAPGAME1 0x00606fbc
-							std::string path = "music\\";
-							path += findData.cFileName;
+                            std::string path = "music\\";
+							app->LoadMusic(app->mUnk0x780, path + findData.cFileName);
 
-							app->LoadMusic(app->m_unk0x7b8, path);
-
-							app->m_unk0x7b8++;
+							
 						}
 					}
 				}
+                app->mUnk0x780++;
 			}
 		} while (FindNextFileA(hFind, &findData) != 0);
 

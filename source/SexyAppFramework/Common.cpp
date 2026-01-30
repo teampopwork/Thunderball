@@ -10,6 +10,7 @@
 
 #include "PerfTimer.h"
 
+// GLOBAL: POPCAPGAME1 0x00686348
 HINSTANCE Sexy::gHInstance;
 bool Sexy::gDebug = false;
 // GLOBAL: POPCAPGAME1 0x00686840
@@ -226,6 +227,7 @@ std::string Sexy::WStringToString(const std::wstring &theString)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x00503430
 SexyString Sexy::StringToSexyString(const std::string& theString)
 {
 #ifdef _USE_WIDE_STRING

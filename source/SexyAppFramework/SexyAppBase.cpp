@@ -66,6 +66,7 @@ static bool gScreenSaverActive = false;
 
 //HotSpot: 11 4
 //Size: 32 32
+// GLOBAL: POPCAPGAME1 0x0064b920
 unsigned char gFingerCursorData[] = {
 	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 
 	0xff, 0xff, 0xe7, 0xff, 0xff, 0xff, 0xc3, 0xff, 0xff, 0xff, 0xc3, 0xff, 0xff, 0xff, 0xc3, 
@@ -89,6 +90,7 @@ unsigned char gFingerCursorData[] = {
 
 //HotSpot: 15 10
 //Size: 32 32
+// GLOBAL: POPCAPGAME1 0x0064ba20
 unsigned char gDraggingCursorData[] = {
 	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 
 	0xff, 0xff, 0xfe, 0x7f, 0xff, 0xff, 0xfc, 0x0f, 0xff, 0xff, 0xf0, 0x07, 0xff, 0xff, 0xe0, 
@@ -5728,22 +5730,29 @@ void SexyAppBase::Start()
 	WaitForLoadingThread();
 
 	char aString[256];
+	// STRING: POPCAPGAME1 0x00612888
 	sprintf(aString, "Seconds       = %g\r\n", (timeGetTime() - aStartTime) / 1000.0);
 	OutputDebugStringA(aString);
 	//sprintf(aString, "Count         = %d\r\n", aCount);
 	//OutputDebugString(aString);
+	// STRING: POPCAPGAME1 0x00612870
 	sprintf(aString, "Sleep Count   = %d\r\n", mSleepCount);
 	OutputDebugStringA(aString);
+	// STRING: POPCAPGAME1 0x00612858
 	sprintf(aString, "Update Count  = %d\r\n", mUpdateCount);
 	OutputDebugStringA(aString);
+	// STRING: POPCAPGAME1 0x00612840
 	sprintf(aString, "Draw Count    = %d\r\n", mDrawCount);
 	OutputDebugStringA(aString);
+	// STRING: POPCAPGAME1 0x00612828
 	sprintf(aString, "Draw Time     = %d\r\n", mDrawTime);
 	OutputDebugStringA(aString);
+	// STRING: POPCAPGAME1 0x00612810
 	sprintf(aString, "Screen Blt    = %d\r\n", mScreenBltTime);
 	OutputDebugStringA(aString);
 	if (mDrawTime+mScreenBltTime > 0)
 	{
+		// STRING: POPCAPGAME1 0x006127f8
 		sprintf(aString, "Avg FPS       = %d\r\n", (mDrawCount*1000)/(mDrawTime+mScreenBltTime));
 		OutputDebugStringA(aString);
 	}
@@ -6151,6 +6160,24 @@ void SexyAppBase::InitHook()
 {
 }
 
+// TEMPLATE: POPCAPGAME1 0x0052db40
+// std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const,double>::~pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const,double>
+
+// TEMPLATE: POPCAPGAME1 0x0040f1e0
+//  std::operator+<char,std::char_traits<char>,std::allocator<char> >(char const *, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const &)
+
+// TEMPLATE: POPCAPGAME1 0x0040d9b0
+// std::basic_string<char,std::char_traits<char>,std::allocator<char> >::basic_string<char,std::char_traits<char>,std::allocator<char> >(char const *)
+
+// TEMPLATE: POPCAPGAME1 0x0040d9f0
+// std::basic_string<char,std::char_traits<char>,std::allocator<char> >::operator=(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const &)
+
+// TEMPLATE: POPCAPGAME1 0x0040f340
+// std::operator+<char,std::char_traits<char>,std::allocator<char> >(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const &, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const &)
+
+// TEMPLATE: POPCAPGAME1 0x0049c270
+// std::basic_string<char,std::char_traits<char>,std::allocator<char> >::operator[]
+
 // FUNCTION: POPCAPGAME1 0x00537f60
 void SexyAppBase::Init()
 {
@@ -6162,8 +6189,14 @@ void SexyAppBase::Init()
 	if (gDDrawDLL==NULL || gDSoundDLL==NULL)
 	{
 		MessageBox(NULL, 
-						GetString("APP_REQUIRES_DIRECTX", _S("This application requires DirectX to run.  You can get DirectX at http://www.microsoft.com/directx")).c_str(),
-						GetString("YOU_NEED_DIRECTX", _S("You need DirectX")).c_str(), 
+			// STRING: POPCAPGAME1 0x00612d18
+						GetString("APP_REQUIRES_DIRECTX", 
+			// STRING: POPCAPGAME1 0x00612d30
+						_S("This application requires DirectX to run.  You can get DirectX at http://www.microsoft.com/directx")).c_str(),
+			// STRING: POPCAPGAME1 0x00612d94
+						GetString("YOU_NEED_DIRECTX", 
+			// STRING: POPCAPGAME1 0x00612da8
+						_S("You need DirectX")).c_str(), 
 						MB_OK | MB_ICONERROR);
 		DoExit(0);
 	}	
@@ -6174,8 +6207,10 @@ void SexyAppBase::Init()
 	if (CheckForVista())
 	{
 		HMODULE aMod;
+		// STRING: POPCAPGAME1 0x00612e10
 		SHGetFolderPathFunc aFunc = (SHGetFolderPathFunc)GetSHGetFolderPath("shell32.dll", &aMod);
 		if (aFunc == NULL || aMod == NULL)
+		// STRING: POPCAPGAME1 0x00612e00
 			SHGetFolderPathFunc aFunc = (SHGetFolderPathFunc)GetSHGetFolderPath("shfolder.dll", &aMod);
 
 		if (aMod != NULL)
@@ -6184,6 +6219,7 @@ void SexyAppBase::Init()
 			aFunc(NULL, CSIDL_COMMON_APPDATA, NULL, SHGFP_TYPE_CURRENT, aPath);
 
 			std::string aDataPath = RemoveTrailingSlash(aPath) + "\\" + mFullCompanyName + "\\" + mProdName;
+			// STRING: POPCAPGAME1 0x00609d54
 			SetAppDataFolder(aDataPath + "\\");
 			//MkDir(aDataPath);
 			//AllowAllAccess(aDataPath);
@@ -6210,12 +6246,15 @@ void SexyAppBase::Init()
 	if (!ChangeDirHook(mChangeDirTo.c_str()))
 		chdir(mChangeDirTo.c_str());
 
+	// STRING: POPCAPGAME1 0x00612df4
 	gPakInterface->AddPakFile("main.pak");
 
 	// Create a message we can use to talk to ourselves inter-process
+	// STRING: POPCAPGAME1 0x00612dec
 	mNotifyGameMessage = RegisterWindowMessage((_S("Notify") + StringToSexyString(mProdName)).c_str());
 
 	// Create a globally unique mutex
+	// STRING: POPCAPGAME1 0x00612de4
 	mMutex = CreateMutex(NULL, TRUE, (StringToSexyString(mProdName) + _S("Mutex")).c_str());
 	if (::GetLastError() == ERROR_ALREADY_EXISTS)
 		HandleGameAlreadyRunning();
@@ -6248,9 +6287,11 @@ void SexyAppBase::Init()
 		wc.cbWndExtra = 0;
 		wc.hbrBackground = NULL;
 		wc.hCursor = NULL;
+		// STRING: POPCAPGAME1 0x00612dd4
 		wc.hIcon = ::LoadIconA(gHInstance, "IDI_MAIN_ICON");
 		wc.hInstance = gHInstance;
 		wc.lpfnWndProc = WindowProc;
+		// STRING: POPCAPGAME1 0x00612dc8
 		wc.lpszClassName = "MainWindow";
 		wc.lpszMenuName = NULL;	
 		bool success = RegisterClassA(&wc) != 0;
@@ -6264,6 +6305,7 @@ void SexyAppBase::Init()
 		wc.hIcon = NULL;
 		wc.hInstance = gHInstance;
 		wc.lpfnWndProc = WindowProc;
+		// STRING: POPCAPGAME1 0x00612dbc
 		wc.lpszClassName = "InvisWindow";
 		wc.lpszMenuName = NULL;	
 		success = RegisterClassA(&wc) != 0;

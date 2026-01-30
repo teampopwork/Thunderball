@@ -268,6 +268,7 @@ static void ReadIntVector(const SexyString &theVal, std::vector<int> &theVector)
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+// FUNCTION: POPCAPGAME1 0x0051a730
 bool ResourceManager::ParseImageResource(XMLElement &theElement)
 {
 	ImageRes *aRes = new ImageRes;

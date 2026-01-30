@@ -2222,3 +2222,111 @@
 
 // LIBRARY: POPCAPGAME1 0x005bb7ac
 // _wsopen_helper
+
+// GLOBAL: POPCAPGAME1 0x00688068
+// mtx
+
+// LIBRARY: POPCAPGAME1 0x0058d14a
+// _Mtxunlock
+
+// LIBRARY: POPCAPGAME1 0x005a2194
+// __setjmp3
+
+// GLOBAL: POPCAPGAME1 0x0064fa50
+// __mb_cur_max
+
+// GLOBAL: POPCAPGAME1 0x0064ebb0
+// _pctype
+
+// GLOBAL: POPCAPGAME1 0x0064e794
+// __lconv
+
+// GLOBAL: POPCAPGAME1 0x0064eca0
+// __lc_time_curr
+
+// GLOBAL: POPCAPGAME1 0x0064f49c
+// __lc_clike
+
+// GLOBAL: POPCAPGAME1 0x006887d4
+// __lc_collate_cp
+
+// GLOBAL: POPCAPGAME1 0x006887d0
+// __lc_codepage
+
+// GLOBAL: POPCAPGAME1 0x00688e88
+// __enable_percent_n
+
+// LIBRARY: POPCAPGAME1 0x005b768a
+// _set_errno_from_matherr
+
+// LIBRARY: POPCAPGAME1 0x0058d629
+// __init_collate
+
+// GLOBAL: POPCAPGAME1 0x0062d558
+// __rglangidNotDefault
+
+// LIBRARY: POPCAPGAME1 0x0059be1f
+// __cos_default
+
+// GLOBAL: POPCAPGAME1 0x006261d0
+// ONE
+
+// GLOBAL: POPCAPGAME1 0x00626140
+// SC_1
+
+// GLOBAL: POPCAPGAME1 0x00626160
+// SC_3
+
+// GLOBAL: POPCAPGAME1 0x00626150
+// SC_2
+
+// GLOBAL: POPCAPGAME1 0x006261a8
+// P_3
+
+// GLOBAL: POPCAPGAME1 0x00625940
+// Ctable
+
+// GLOBAL: POPCAPGAME1 0x00626170
+// SC_4
+
+// GLOBAL: POPCAPGAME1 0x00626190
+// P_2
+
+// GLOBAL: POPCAPGAME1 0x006261a0
+// P_1
+
+// GLOBAL: POPCAPGAME1 0x00626188
+// SHIFTER
+
+// GLOBAL: POPCAPGAME1 0x00626180
+// PI32INV
+
+// GLOBAL: POPCAPGAME1 0x006880cc
+// _Fac_head
+
+// LIBRARY: POPCAPGAME1 0x0058d155
+// _Atexit
+
+// LIBRARY: POPCAPGAME1 0x0059bd0b
+// _cfltcvt_init
+
+// GLOBAL: POPCAPGAME1 0x006883ac
+// _adjust_fdiv
+
+// STRING: POPCAPGAME1 0x00624478
+// "string too long"
+
+// LIBRARY: POPCAPGAME1 0x006339dc
+//  __TI3?AVlength_error@std@@
+
+// TEMPLATE: POPCAPGAME1 0x40d630
+// std::logic_error::logic_error(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const &)
+
+// GLOBAL: POPCAPGAME1 0x0064dbc4
+// atcount_cdecl
+
+// GLOBAL: POPCAPGAME1 0x00688268
+// atfuns_cdecl
+
+// TEMPLATE: POPCAPGAME1 0x
+// std::exception::exception(char const *const &)

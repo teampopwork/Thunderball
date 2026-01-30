@@ -28,7 +28,7 @@ public:
 class WidgetMover {
 public:
 	std::list<MovingWidget> mWidgets; // +0x4
-	int m_unk0xc;                     // +0x0C
+	int mUnk0xc;                     // +0x0C
 
 	WidgetMover();
 	virtual ~WidgetMover();

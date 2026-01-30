@@ -13,22 +13,21 @@ class LoadingScreen;
 // VTABLE: POPCAPGAME1 0x005d7cb8
 class ThunderballApp : public SexyApp {
 public:
-	int m_unk0x750;                   // +0x750 // part of SexyApp
-	int m_unk0x760;                   // +0x760 // part of SexyApp
+	int mUnk0x750;                   // +0x750 // part of SexyApp
+	int mUnk0x760;                   // +0x760 // part of SexyApp
 	int mMaxStage;                    // +0x770
 	int mMaxLevel;                    // +0x774
-	bool m_unk0x779;                  // +0x779
-	int m_unk0x77c;                   // +0x77C
-	int m_unk0x780;                   // +0x780
-	int m_unk0x784;                   // +0x784
+	bool mUnk0x779;                  // +0x779
+	int mUnk0x77c;                   // +0x77C
+	int mUnk0x780;                   // +0x780
+	int mUnk0x784;                   // +0x784
 	double mFeverVolume;              // +0x790
 	bool mShouldShowUpsellButton;     // +0x798
-	bool m_unk0x7b0;                  // +0x7B0
-	bool m_unk0x7b1;                  // +0x7B1
-	int m_unk0x7b8;                   // +0x7B4
+	int mUnk0x7b0;  	              // +0x7B0
+	int mUnk0x7b8;                   // +0x7B4
 	LoadingScreen* mLoadingScreen;    // +0x7C8
 	bool mColorblind;                 // +0x7CC
-	bool m_unk0x839;                  // +0x839
+	bool mUnk0x839;                  // +0x839
 									  // CharacterMgr* mCharacterMgr; // +0x844
 									  // HighScoreMgr* mHighScoreMgr; // +0x848
 									  // ProfileMgr*   mProfileMgr;   // +0x850
