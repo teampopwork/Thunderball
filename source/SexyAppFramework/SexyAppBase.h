@@ -264,6 +264,9 @@ public:
 	bool					mLastShutdownWasGraceful;
 	bool					mIsWideWindow;
 
+	bool					mUnk0x504;
+	bool					mUnk0x505;
+
 	int						mNumLoadingThreadTasks;
 	int						mCompletedLoadingThreadTasks;
 

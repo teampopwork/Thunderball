@@ -9,6 +9,7 @@ using namespace Sexy;
 
 static int gInitialListWidgetColors[][3] = {{255, 255, 255}, {255, 255, 255}, {0, 0, 0}, {0, 192, 0}, {0, 0, 128}, {255, 255, 255}};
 
+// FUNCTION: POPCAPGAME1 0x00548980
 ListWidget::ListWidget(int theId, Font *theFont, ListListener *theListListener) 
 {
 	mJustify = JUSTIFY_LEFT;
@@ -36,11 +37,13 @@ ListWidget::ListWidget(int theId, Font *theFont, ListListener *theListListener)
 	mDrawSelectWhenHilited = false;
 	mDoFingerWhenHilited = true;
 }
-	
+
+// FUNCTION: POPCAPGAME1 0x00548aa0
 ListWidget::~ListWidget() 
 {
 }
 
+// FUNCTION: POPCAPGAME1 0x00542470
 void ListWidget::RemovedFromManager(WidgetManager *theManager)
 {
 	Widget::RemovedFromManager(theManager);
@@ -124,6 +127,7 @@ void ListWidget::Sort(bool ascending)
 	delete aKeys;
 }
 	
+// FUNCTION: POPCAPGAME1 0x00543620
 SexyString ListWidget::GetStringAt(int theIdx) 
 {
 	return
@@ -217,11 +221,13 @@ void ListWidget::SetLine(int theIdx, const SexyString& theString)
 	MarkDirty();
 }
 	
+// FUNCTION: POPCAPGAME1 0x00541710
 int ListWidget::GetLineCount() 
 {
 	return mLines.size();	
 }
 	
+// FUNCTION: POPCAPGAME1 0x00541cf0
 int ListWidget::GetLineIdx(const SexyString& theLine) 
 {	
 	for (ulong i = 0; i < mLines.size(); i++)	
@@ -261,6 +267,7 @@ void ListWidget::SetLineColor(int theIdx, const Color& theColor)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x00548b30
 void ListWidget::RemoveLine(int theIdx) 
 {
 	if (theIdx != -1) 
@@ -283,7 +290,8 @@ void ListWidget::RemoveLine(int theIdx)
 	if (mScrollbar != NULL) 
 		mScrollbar->SetMaxValue(mLines.size());
 }
-	
+
+// FUNCTION: POPCAPGAME1 0x00548ce0
 void ListWidget::RemoveAll() 
 {
 	ListWidget *aListWidget = this;
@@ -305,7 +313,8 @@ void ListWidget::RemoveAll()
 	if (mScrollbar != NULL) 
 		mScrollbar->SetMaxValue(mLines.size());
 }
-	
+
+// FUNCTION: POPCAPGAME1 0x005418f0
 int ListWidget::GetOptimalWidth() 
 {
 	int aMaxWidth = 0;
@@ -315,7 +324,8 @@ int ListWidget::GetOptimalWidth()
 
 	return aMaxWidth + 16;
 }
-	
+
+// FUNCTION: POPCAPGAME1 0x00541800
 int ListWidget::GetOptimalHeight() 
 {
 	int anItemHeight = (mItemHeight != -1) ? mItemHeight : mFont->GetHeight();
@@ -420,7 +430,7 @@ void ListWidget::SetHilite(int theHiliteIdx, bool notifyListener)
 		mListListener->ListHiliteChanged(mId,anOldIdx,mHiliteIdx);
 }
 
-	
+// FUNCTION: POPCAPGAME1 0x00541950
 void ListWidget::MouseMove(int x, int y) 
 {
 	int anItemHeight = (mItemHeight != -1) ? mItemHeight : mFont->GetHeight();
@@ -450,12 +460,14 @@ void ListWidget::MouseMove(int x, int y)
 	}
 }
 	
+// FUNCTION: POPCAPGAME1 0x005401f0
 void ListWidget::MouseDown(int x, int y, int theBtnNum, int theClickCount) 
 {
 	if ((mHiliteIdx != -1) && (mListListener != NULL))
 		mListListener->ListClicked(mId, mHiliteIdx, theClickCount);
 }
-	
+
+// FUNCTION: POPCAPGAME1 0x00540230
 void ListWidget::MouseLeave() 
 {
 	ListWidget *aListWidget = this;
@@ -488,7 +500,7 @@ void ListWidget::SetSelect(int theSelectIdx)
 	}
 }
 
-
+// FUNCTION: POPCAPGAME1 0x005402c0
 void ListWidget::MouseWheel(int theDelta)
 {
 	if (mScrollbar != NULL)

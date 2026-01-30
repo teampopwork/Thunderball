@@ -18,10 +18,15 @@ using namespace Sexy;
 // STUB: POPCAPGAME1 0x00426f10
 ThunderballApp::ThunderballApp()
 {
+	mTitle = "Peggle Deluxe " + mProductVersion;
+    mRegKey = "PopCap\\Peggle";
+
 	mWidgetMover = new WidgetMover();
 
 	mWidth = 800;
 	mHeight = 600;
+	mAutoEnable3D = true;
+
 }
 
 // STUB: POPCAPGAME1 0x00431340
@@ -85,7 +90,7 @@ void ThunderballApp::Init()
 	// STRING: POPCAPGAME1 0x005d87c8
 	LoadMusic(2, "music\\opening.ogg");
 
-	m_unk0x7b1 = true;
+	mUnk0x779 = true;
 
 	SetCursorImage(0, IMAGE_CURSOR_POINTER);
 	SetCursorImage(1, IMAGE_CURSOR_HAND);
@@ -455,9 +460,9 @@ bool ThunderballApp::IsTrialOver()
 // FUNCTION: POPCAPGAME1 0x00405740
 void ThunderballApp::LoadLevelMusic()
 {
-	m_unk0x779 = false;
-	m_unk0x780 = 1;
-	m_unk0x784 = 9;
+	mUnk0x779 = false;
+	mUnk0x780 = 1;
+	mUnk0x784 = 9;
 }
 
 // STUB: POPCAPGAME1 0x004233b0
@@ -526,7 +531,7 @@ void ThunderballApp::SetExpired()
 void ThunderballApp::SetFeverVolume(double param_1)
 {
 	mFeverVolume = param_1;
-	if (m_unk0x77c == 0) {
+	if (mUnk0x77c == 0) {
 		SyncOdeVolume();
 	}
 }
@@ -536,7 +541,7 @@ void ThunderballApp::SetMusicIntensityIncreasePending(int param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x
+// STUB: POPCAPGAME1 0x0040d2c0
 void ThunderballApp::SetMusicSpeed(float param_1)
 {
 }
@@ -544,7 +549,7 @@ void ThunderballApp::SetMusicSpeed(float param_1)
 // FUNCTION: POPCAPGAME1 0x00405900
 void ThunderballApp::SetMusicVolume(double theVolume)
 {
-	if (m_unk0x77c != 0) {
+	if (mUnk0x77c != 0) {
 		SexyApp::SetMusicVolume(theVolume);
 	}
 }
@@ -563,6 +568,7 @@ void ThunderballApp::ShowAdventureScreen()
 // STUB: POPCAPGAME1 0x0042f860
 void ThunderballApp::ShowBoard(bool param_1, bool param_2)
 {
+	printf("ThunderballApp::ShowBoard called with %d, %d\n", param_1, param_2);
 }
 
 // STUB: POPCAPGAME1 0x00423540
@@ -596,6 +602,7 @@ void ThunderballApp::ShowMainMenu()
 // STUB: POPCAPGAME1 0x0042fb00
 void ThunderballApp::ShowReplay(bool param_1)
 {
+	printf("ThunderballApp::ShowReplay called with %d\n", param_1);
 }
 
 // STUB: POPCAPGAME1 0x0042d670
@@ -783,8 +790,8 @@ void ThunderballApp::UpdateFrames()
 {
 	SexyApp::UpdateFrames();
 
-	if ((mUpdateCount % 100 == 0) && (m_unk0x839 != false)) {
-		TryExpire(m_unk0x839 == false);
+	if ((mUpdateCount % 100 == 0) && (mUnk0x839 != false)) {
+		TryExpire(mUnk0x839 == false);
 	}
 
 	mWidgetMover->Update();

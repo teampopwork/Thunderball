@@ -11,6 +11,7 @@ enum
 	FILEFLAGS_END = 0x80
 };
 
+// GLOBAL: POPCAPGAME1 0x0064bf60
 PakInterface* gPakInterface = new PakInterface();
 
 static std::string StringToUpper(const std::string& theString)
@@ -33,6 +34,7 @@ PakInterface::~PakInterface()
 {
 }
 
+// FUNCTION: POPCAPGAME1 0x0055a560
 bool PakInterface::AddPakFile(const std::string& theFileName)
 {
 	HANDLE aFileHandle = CreateFile(theFileName.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);

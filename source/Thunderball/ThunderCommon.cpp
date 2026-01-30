@@ -1227,7 +1227,7 @@ bool Sexy::SolveLinearSystem(float a, float b, float e, float c, float d, float 
 }
 
 // FUNCTION: POPCAPGAME1 0x004bc4b0
-float Sexy::Lerp(int currentTime, int phase1Duration, int phase2Duration, 
+float Sexy::InterpValF(int currentTime, int phase1Duration, int phase2Duration, 
                       float startVal, float midVal, float endVal) 
 {
     if (currentTime < phase1Duration) {

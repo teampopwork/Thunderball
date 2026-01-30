@@ -18,18 +18,18 @@ ThunderButton::ThunderButton(Image* theComponentImage, int theId, ButtonListener
 	mOverAlphaSpeed = (double) 0x3fb47ae147ae147b;
 	mOverAlphaFadeInSpeed = (double) 0x3fc999999999999a;
 
-	m_unk0x144 = 0xfffffc18;
-	m_unk0x138 = 0xffffffff;
-	m_unk0x13c = 0xffffffff;
-	m_unk0x148 = 1;
-	m_unk0x15c = 0x11;
-	m_unk0x150 = 0;
-	m_unk0x14c = 0;
-	m_unk0x151 = 0;
+	mUnk0x144 = 0xfffffc18;
+	mUnk0x138 = 0xffffffff;
+	mUnk0x13c = 0xffffffff;
+	mUnk0x148 = 1;
+	mUnk0x15c = 0x11;
+	mUnk0x150 = 0;
+	mUnk0x14c = 0;
+	mUnk0x151 = 0;
 	// STRING: POPCAPGAME1 0x006004f8
-	m_unk0x154 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderButton.cpp815,28", 60);
-	m_unk0x158 = 0;
-	m_unk0x159 = 0;
+	mUnk0x154 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderButton.cpp815,28", 60);
+	mUnk0x158 = 0;
+	mUnk0x159 = 0;
 
 	mTranslateY = 0;
 	mTranslateX = 0;
@@ -39,11 +39,11 @@ ThunderButton::ThunderButton(Image* theComponentImage, int theId, ButtonListener
 void ThunderButton::Draw(Graphics* g)
 {
 
-	if (m_unk0x148 == 0) {
+	if (mUnk0x148 == 0) {
 		return;
 	}
 
-	int dVar8 = m_unk0x15c;
+	int dVar8 = mUnk0x15c;
 	if (dVar8 != 0x11) {
 		if (mIsDown && mIsOver) {
 			dVar8 += 2;
@@ -53,10 +53,10 @@ void ThunderButton::Draw(Graphics* g)
 		}
 		SetButtonFontColor(dVar8);
 	}
-	if (m_unk0x14c == 0) {
+	if (mUnk0x14c == 0) {
 	LABEL_3:
 		DialogButton::Draw(g);
-		if ((m_unk0x159) && (mIsDown) && (mIsOver)) {
+		if ((mUnk0x159) && (mIsDown) && (mIsOver)) {
 			g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
 			g->SetColorizeImages(true);
 
@@ -71,8 +71,8 @@ void ThunderButton::Draw(Graphics* g)
 		return;
 	}
 
-	if (!m_unk0x151) {
-		int iVar5 = (m_unk0x14c / (m_unk0x154 / 2)) % 2;
+	if (!mUnk0x151) {
+		int iVar5 = (mUnk0x14c / (mUnk0x154 / 2)) % 2;
 		if (iVar5 == 0) {
 			goto LABEL_3;
 		}
@@ -87,15 +87,15 @@ void ThunderButton::Draw(Graphics* g)
 	double local_14 = mOverAlpha;
 
 	// Hard Blink "Off" Logic
-	if (!m_unk0x151) {
+	if (!mUnk0x151) {
 		goto LABEL_BLINK_OFF;
 	}
 
 	// STRING: POPCAPGAME1 0x006012c0
 	int iVar6 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderButton.cpp817,146", 0x1e);
-	int iVar7 = iVar6 + m_unk0x154;
-	int local_8 = m_unk0x154 / 2;
-	int local_c = m_unk0x14c % iVar7;
+	int iVar7 = iVar6 + mUnk0x154;
+	int local_8 = mUnk0x154 / 2;
+	int local_c = mUnk0x14c % iVar7;
 
 	double dVar3;
 
@@ -136,8 +136,8 @@ LABEL_BLINK_OFF:
 // FUNCTION: POPCAPGAME1 0x00496d30
 void ThunderButton::MouseDown(int x, int y, int theClickCount)
 {
-	if (-1 < m_unk0x13c) {
-		GetThunderballApp()->PlaySample(m_unk0x13c);
+	if (-1 < mUnk0x13c) {
+		GetThunderballApp()->PlaySample(mUnk0x13c);
 	}
 	DialogButton::MouseDown(x, y, theClickCount);
 }
@@ -147,24 +147,24 @@ void ThunderButton::MouseEnter()
 {
 	DialogButton::MouseEnter();
 
-	if (m_unk0x158 != 0) {
-		m_unk0x14c = 0;
+	if (mUnk0x158 != 0) {
+		mUnk0x14c = 0;
 	}
 
-	if ((GetThunderballApp() != NULL) && (-1 < m_unk0x13c)) {
+	if ((GetThunderballApp() != NULL) && (-1 < mUnk0x13c)) {
 		// STRING: POPCAPGAME1 0x005fc230
 		int iVar3 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderButton.cpp816,79", 30);
-		if (iVar3 < GetThunderballApp()->mUpdateCount - m_unk0x144) {
+		if (iVar3 < GetThunderballApp()->mUpdateCount - mUnk0x144) {
 			if (!GetThunderballApp()->mWidgetMover->IsMoving()) {
-				SoundInstance* hoverSound = GetThunderballApp()->mSoundManager->GetSoundInstance(m_unk0x13c);
+				SoundInstance* hoverSound = GetThunderballApp()->mSoundManager->GetSoundInstance(mUnk0x13c);
 				if (hoverSound == NULL) {
-					GetThunderballApp()->PlaySample(m_unk0x13c);
+					GetThunderballApp()->PlaySample(mUnk0x13c);
 				}
 				else {
-					hoverSound->AdjustPitch(m_unk0x140);
+					hoverSound->AdjustPitch(mUnk0x140);
 					hoverSound->Play(0, 1);
 				}
-				m_unk0x144 = GetThunderballApp()->mUpdateCount;
+				mUnk0x144 = GetThunderballApp()->mUpdateCount;
 			}
 		}
 	}
@@ -173,7 +173,7 @@ void ThunderButton::MouseEnter()
 // FUNCTION: POPCAPGAME1 0x00496d70
 void ThunderButton::MouseUp(int x, int y, int theClickCount)
 {
-	m_unk0x150 = theClickCount < 0;
+	mUnk0x150 = theClickCount < 0;
 	DialogButton::MouseUp(x, y, theClickCount);
 }
 
@@ -181,8 +181,8 @@ void ThunderButton::MouseUp(int x, int y, int theClickCount)
 void ThunderButton::Update()
 {
 	DialogButton::Update();
-	if (m_unk0x14c != 0 && GetThunderballApp()->mHasFocus) {
-		m_unk0x14c--;
+	if (mUnk0x14c != 0 && GetThunderballApp()->mHasFocus) {
+		mUnk0x14c--;
 		MarkDirty();
 	}
 }
@@ -190,16 +190,16 @@ void ThunderButton::Update()
 // FUNCTION: POPCAPGAME1 0x00496c40
 void ThunderButton::StopBlink()
 {
-	m_unk0x14c = 0;
+	mUnk0x14c = 0;
 }
 
 // FUNCTION: POPCAPGAME1 0x00496c00
 void ThunderButton::Blink(int param_1, bool param_2)
 {
-	int dVar1 = m_unk0x154 * param_1 - 1;
-	m_unk0x14c = dVar1;
+	int dVar1 = mUnk0x154 * param_1 - 1;
+	mUnk0x14c = dVar1;
 	if (param_2 == 0) {
-		m_unk0x14c = m_unk0x154 / 2 + dVar1;
+		mUnk0x14c = mUnk0x154 / 2 + dVar1;
 	}
 }
 
