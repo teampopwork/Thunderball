@@ -11,18 +11,18 @@ class Graphics;
 // VTABLE: POPCAPGAME1 0x006003d4
 class ThunderButton : public DialogButton {
 public:
-	int m_unk0x138;
-	int m_unk0x13c;
-	int m_unk0x140;
-	int m_unk0x144;
-	bool m_unk0x148;
-	int m_unk0x14c;
-	bool m_unk0x150;
-	bool m_unk0x151;
-	int m_unk0x154;
-	bool m_unk0x158;
-	bool m_unk0x159;
-	int m_unk0x15c;
+	int mUnk0x138;
+	int mUnk0x13c;
+	int mUnk0x140;
+	int mUnk0x144;
+	bool mUnk0x148;
+	int mUnk0x14c;
+	bool mUnk0x150;
+	bool mUnk0x151;
+	int mUnk0x154;
+	bool mUnk0x158;
+	bool mUnk0x159;
+	int mUnk0x15c;
 
 	ThunderButton(Image* theComponentImage, int theId, ButtonListener* theListener);
 

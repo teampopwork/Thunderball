@@ -78,7 +78,7 @@ WidgetMover::~WidgetMover()
 void WidgetMover::Clear()
 {
 	mWidgets.clear();
-	m_unk0xc = 0;
+	mUnk0xc = 0;
 }
 
 // FUNCTION: POPCAPGAME1 0x00421d90
@@ -104,7 +104,7 @@ MovingWidget* WidgetMover::GetWidgetData(Widget* param_1, bool param_2)
 // FUNCTION: POPCAPGAME1 0x00408550
 bool WidgetMover::IsMoving()
 {
-	return m_unk0xc != 0;
+	return mUnk0xc != 0;
 }
 
 // FUNCTION: POPCAPGAME1 0x0040c7a0
