@@ -6,6 +6,7 @@
 
 using namespace Sexy;
 
+// FUNCTION: POPCAPGAME1 0x00548eb0
 HyperlinkWidget::HyperlinkWidget(int theId, ButtonListener* theButtonListener) :
 	ButtonWidget(theId, theButtonListener),
 	mColor(255, 255, 255),
@@ -16,6 +17,7 @@ HyperlinkWidget::HyperlinkWidget(int theId, ButtonListener* theButtonListener) :
 	mUnderlineSize = 1;
 }
 
+// FUNCTION: POPCAPGAME1 0x00544050
 void HyperlinkWidget::Draw(Graphics* g)
 {
 	if (mFont == NULL)
@@ -36,6 +38,7 @@ void HyperlinkWidget::Draw(Graphics* g)
 		g->FillRect(aFontX, aFontY+mUnderlineOffset+i, mFont->StringWidth(mLabel), 1);
 }
 
+// FUNCTION: POPCAPGAME1 0x00541dd0
 void HyperlinkWidget::MouseEnter()
 {
 	ButtonWidget::MouseEnter();
@@ -43,6 +46,7 @@ void HyperlinkWidget::MouseEnter()
 	MarkDirtyFull();
 }
 
+// FUNCTION: POPCAPGAME1 0x00541df0
 void HyperlinkWidget::MouseLeave()
 {
 	ButtonWidget::MouseLeave();

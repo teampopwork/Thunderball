@@ -41,9 +41,6 @@ ASSERT_OFFSET(LoadingScreen, mBallVelX, 0xBC);
 ASSERT_OFFSET(LoadingScreen, mBallVelY, 0xC0);
 ASSERT_OFFSET(LoadingScreen, mBallBounceInit, 0xC4);
 ASSERT_OFFSET(LoadingScreen, mParticles, 0xC8);
-//ASSERT_OFFSET(LoadingScreen, mUnk0xCC, 0xCC);
-//ASSERT_OFFSET(LoadingScreen, mUnk0xD0, 0xD0);
-//ASSERT_OFFSET(LoadingScreen, mUnk0xD4, 0xD4);
 ASSERT_OFFSET(LoadingScreen, mUnk0xD8, 0xD8);
 ASSERT_OFFSET(LoadingScreen, mLevelLoadMusicThread, 0xDC);
 ASSERT_OFFSET(LoadingScreen, mUnk0xE0, 0xE0);
@@ -282,6 +279,7 @@ void LoadingScreen::ButtonPress(int theId, int theClickCount)
 	mApp->PlaySample(SOUND_BUTTON1);
 }
 
+
 // FUNCTION: POPCAPGAME1 0x004a7250
 void LoadingScreen::Draw(Graphics* g)
 {
@@ -335,16 +333,16 @@ void LoadingScreen::Draw(Graphics* g)
 
     // GLOBAL: POPCAPGAME1 0x0064a35d
     static bool needCalc = true;
-    // GLOBAL: POPCAPGAME1 0x00650a7c:
-    static float a;
+    // GLOBAL: POPCAPGAME1 0x00650a7c
+    static float a = 0.0f;
     // GLOBAL: POPCAPGAME1 0x00650a80
-    static float b;
+    static float b = 0.0f;
     // GLOBAL: POPCAPGAME1 0x00650a84
-    static float y;
+    static float y = 0.0f;
 
     if (needCalc)
     {
-        y = curveStartY - curveEndY;
+        y = curveStartY + curveEndY;
         needCalc = false;
         curveStartY = logoBounceThreshold + curveEndY - y;
         
@@ -356,41 +354,35 @@ void LoadingScreen::Draw(Graphics* g)
             logoRadius * logoRadius,
             logoRadius,
             curveEndY - y,
-            &a,
-            &b
+            &b,
+            &a
         );
     }
 
-
-
-    int unk0xE4 = mUnk0xE4;
-    curveStartY = (b * unk0xE4 * unk0xE4) + (a * unk0xE4) + y;
+    OutputDebug("LoadingScreen::Draw: a=%x, b=%x, y=%x\n", *(int*)&a, *(int*)&b, *(int*)&y);
+    int logoY = (b * mUnk0xE4 * mUnk0xE4) + (a * mUnk0xE4) + y;
 
     if (mUnk0xE4 < logoYOffset) {
-        g->DrawImage(IMAGE_LOAD_LOGO, hillImageX, curveStartY);
+        g->DrawImage(IMAGE_LOAD_LOGO, hillImageX, logoY);
     }
 
     // STRING: POPCAPGAME1 0x006075d8
-    int logoY = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp446,604", 10);
-    int bounceFrame = mLogoBounceFrame;
-
-    if (bounceFrame > 0 && bounceFrame < unk0xE4)
+    if (mLogoBounceFrame > 0 && mLogoBounceFrame < ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp446,604", 10))
     {
-        // STRING: POPCAPGAME1 0x00607548i
-     
-        bounceFrame = (mLogoBounceFrame * -ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp448,605", 1.5f) +
+        // STRING: POPCAPGAME1 0x00607548
+        mLogoBounceFrame = (mLogoBounceFrame * -ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp448,605", 1.5f) +
             // STRING: POPCAPGAME1 0x00607590
             ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp447,605", 8));
     }
     else
     {
-        bounceFrame = 0;
+        mLogoBounceFrame = 0;
     }
 
 
-    if (logoBounceThreshold > 0 && logoBounceThreshold < unk0xE4)
+    if (logoBounceThreshold > 0 && logoBounceThreshold < mUnk0xE4)
     {
-        curveEndY += unk0xE4;
+        logoY += mUnk0xE4;
     }
 
     g->DrawImage(IMAGE_LOAD_HILL, 0, 0x11d);
@@ -420,14 +412,13 @@ void LoadingScreen::Draw(Graphics* g)
         // STRING: POPCAPGAME1 0x006073e0
         ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp454,621", 420));
 
-    unk0xE4 = mUnk0xE4;
-    if (unk0xE4 >= 0 && unk0xE4 < logoRadius)
+    if (mUnk0xE4 >= logoYOffset && mUnk0xE4 < logoRadius)
     {
-        g->DrawImage(IMAGE_LOAD_LOGO, hillImageX, curveStartY);
+        g->DrawImage(IMAGE_LOAD_LOGO, hillImageX, logoY);
     }
     else
     {
-        if (unk0xE4 >= logoRadius)
+        if (mUnk0xE4 >= logoRadius)
         {
             g->DrawImage(IMAGE_LOAD_LOGO, hillImageX, curveEndY);
             if (mLogoBounceFrame != 0)
@@ -492,7 +483,7 @@ void LoadingScreen::Draw(Graphics* g)
         Color textColor(fontColor);
         g->SetColor(textColor);
 
-        int loadingTextXCentered = (g->GetFont()->StringWidth(loadingText) - mWidth) / 2;
+        int loadingTextXCentered = (mWidth - g->GetFont()->StringWidth(loadingText)) / 2;
 
         g->DrawString(loadingText,
             // STRING: POPCAPGAME1 0x00607120
@@ -594,10 +585,10 @@ void LoadingScreen::Update()
         if (updateCnt > 1) {
             if (mApp->mUnk0x779) {
                 DoLevelLoadMusic();
-            }
-        } else if (loadTime > 0.0f) {
-            mUnk0xE4++;
-        }
+            } 
+        } 
+    } else if (loadTime > 0.0f) {
+        mUnk0xE4++;
     }
 
     if (!mApp->mLoaded && loadTime >= 1.0f) {

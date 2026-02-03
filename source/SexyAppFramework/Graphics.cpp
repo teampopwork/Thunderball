@@ -15,6 +15,7 @@ const Point* Graphics::mPFPoints;
 
 //////////////////////////////////////////////////////////////////////////
 
+// FUNCTION: POPCAPGAME1 0x004cc930
 void GraphicsState::CopyStateFrom(const GraphicsState* theState)
 {
 	mDestImage = theState->mDestImage;
@@ -43,6 +44,7 @@ Graphics::Graphics(const Graphics& theGraphics)
 	CopyStateFrom(&theGraphics);
 }
 
+// FUNCTION: POPCAPGAME1 0x004dd230
 Graphics::Graphics(Image* theDestImage)	
 {
 	mTransX = 0;
@@ -72,6 +74,9 @@ Graphics::Graphics(Image* theDestImage)
 	mClipRect = Rect(0, 0, mDestImage->GetWidth(), mDestImage->GetHeight());
 }
 
+// SYNTHETIC: POPCAPGAME1 0x004de5a0
+// Sexy::Graphics::`scalar deleting destructor'
+
 // FUNCTION: POPCAPGAME1 0x004dd310
 Graphics::~Graphics()
 {
@@ -95,6 +100,7 @@ void Graphics::PopState()
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004dd380
 Graphics* Graphics::Create()
 {	
 	return new Graphics(*this);
@@ -145,6 +151,7 @@ bool Graphics::GetColorizeImages()
 	return mColorizeImages;
 }
 
+// FUNCTION: POPCAPGAME1 0x004cca60
 void Graphics::SetFastStretch(bool fastStretch)
 {
 	mFastStretch = fastStretch;
@@ -155,6 +162,7 @@ bool Graphics::GetFastStretch()
 	return mFastStretch;
 }
 
+// FUNCTION: POPCAPGAME1 0x004cca70
 void Graphics::SetLinearBlend(bool linear)
 {
 	mLinearBlend = linear;
@@ -186,11 +194,13 @@ void Graphics::FillRect(int theX, int theY, int theWidth, int theHeight)
 	mDestImage->FillRect(aDestRect, mColor, mDrawMode);
 }
 
+// FUNCTION: POPCAPGAME1 0x004d74e0
 void Graphics::FillRect(const Rect& theRect)
 {
 	FillRect(theRect.mX, theRect.mY, theRect.mWidth, theRect.mHeight);
 }
 
+// FUNCTION: POPCAPGAME1 0x004d7500
 void Graphics::DrawRect(int theX, int theY, int theWidth, int theHeight)
 {
 	if (mColor.mAlpha == 0)
@@ -222,21 +232,25 @@ void Graphics::DrawRect(int theX, int theY, int theWidth, int theHeight)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004d7600
 void Graphics::DrawRect(const Rect& theRect)
 {
 	DrawRect(theRect.mX, theRect.mY, theRect.mWidth, theRect.mHeight);
 }
 
+// FUNCTION: POPCAPGAME1 0x004cca80
 int Graphics::PFCompareInd(const void* u, const void* v) 
 {
 	return mPFPoints[*((int*) u)].mY <= mPFPoints[*((int*) v)].mY ? -1 : 1;
 }
 
+// FUNCTION: POPCAPGAME1 0x004ccab0
 int Graphics::PFCompareActive(const void* u, const void* v)
 {
 	return ((Edge*) u)->mX <= ((Edge*) v)->mX ? -1 : 1;
 }
 
+// FUNCTION: POPCAPGAME1 0x004ccad0
 void Graphics::PFDelete(int i) // remove edge i from active list
 {
     int j;
@@ -248,6 +262,7 @@ void Graphics::PFDelete(int i) // remove edge i from active list
     memcpy(&mPFActiveEdgeList[j], &mPFActiveEdgeList[j+1], (mPFNumActiveEdges-j)*sizeof mPFActiveEdgeList[0]);
 }
 
+// FUNCTION: POPCAPGAME1 0x004ccb30
 void Graphics::PFInsert(int i, int y) // append edge i to end of active list
 {
     int j;
@@ -272,6 +287,7 @@ void Graphics::PFInsert(int i, int y) // append edge i to end of active list
 	mPFActiveEdgeList[mPFNumActiveEdges].b = p->mY - 1.0/dx * p->mX;
     mPFNumActiveEdges++;
 }
+
 
 void Graphics::PolyFill(const Point *theVertexList, int theNumVertices, bool convex)
 {
@@ -552,7 +568,7 @@ void Graphics::PolyFillAA(const Point *theVertexList, int theNumVertices, bool c
 	delete[] mPFActiveEdgeList;
 }
 
-
+// FUNCTION: POPCAPGAME1 0x004d7620
 bool Graphics::DrawLineClipHelper(double* theStartX, double* theStartY, double* theEndX, double* theEndY)
 {
 	double aStartX = *theStartX;
@@ -624,6 +640,7 @@ bool Graphics::DrawLineClipHelper(double* theStartX, double* theStartY, double* 
 	return true;
 }
 
+// FUNCTION: POPCAPGAME1 0x004d7790
 void Graphics::DrawLine(int theStartX, int theStartY, int theEndX, int theEndY)
 {
 	double aStartX = theStartX + mTransX;
@@ -703,11 +720,13 @@ void Graphics::DrawImage(Image* theImage, int theX, int theY, const Rect& theSrc
 		mDestImage->Blt(theImage, aDestRect.mX, aDestRect.mY, aSrcRect, mColorizeImages ? mColor : Color::White, mDrawMode);
 }
 
+// FUNCTION: POPCAPGAME1 0x004dbec0
 void Graphics::DrawImageMirror(Image* theImage, int theX, int theY, bool mirror)
 {
 	DrawImageMirror(theImage,theX,theY,Rect(0,0,theImage->mWidth,theImage->mHeight),mirror);
 }
 
+// FUNCTION: POPCAPGAME1 0x004dbf00
 void Graphics::DrawImageMirror(Image* theImage, int theX, int theY, const Rect& theSrcRect, bool mirror)
 {
 	if (!mirror)
@@ -738,6 +757,7 @@ void Graphics::DrawImageMirror(Image* theImage, int theX, int theY, const Rect& 
 		mDestImage->BltMirror(theImage, aDestRect.mX, aDestRect.mY, aSrcRect, mColorizeImages ? mColor : Color::White, mDrawMode);
 }
 
+
 void Graphics::DrawImageMirror(Image* theImage, const Rect& theDestRect, const Rect& theSrcRect, bool mirror)
 {
 	if (!mirror)
@@ -751,7 +771,7 @@ void Graphics::DrawImageMirror(Image* theImage, const Rect& theDestRect, const R
 	mDestImage->StretchBltMirror(theImage, aDestRect, theSrcRect, mClipRect, mColorizeImages ? mColor : Color::White, mDrawMode, mFastStretch);
 }
 
-
+// FUNCTION: POPCAPGAME1 0x004d7b00
 void Graphics::DrawImage(Image* theImage, int theX, int theY, int theStretchedWidth, int theStretchedHeight)
 {
 	Rect aDestRect = Rect(theX + mTransX, theY + mTransY, theStretchedWidth, theStretchedHeight);
@@ -760,6 +780,7 @@ void Graphics::DrawImage(Image* theImage, int theX, int theY, int theStretchedWi
 	mDestImage->StretchBlt(theImage, aDestRect, aSrcRect, mClipRect, mColorizeImages ? mColor : Color::White, mDrawMode, mFastStretch);
 }
 
+// FUNCTION: POPCAPGAME1 0x004d7b90
 void Graphics::DrawImage(Image* theImage, const Rect& theDestRect, const Rect& theSrcRect)
 {	
 	Rect aDestRect = Rect(theDestRect.mX + mTransX, theDestRect.mY + mTransY, theDestRect.mWidth, theDestRect.mHeight);
@@ -767,6 +788,7 @@ void Graphics::DrawImage(Image* theImage, const Rect& theDestRect, const Rect& t
 	mDestImage->StretchBlt(theImage, aDestRect, theSrcRect, mClipRect, mColorizeImages ? mColor : Color::White, mDrawMode, mFastStretch);
 }
 
+// FUNCTION: POPCAPGAME1 0x004d7c00
 void Graphics::DrawImageF(Image* theImage, float theX, float theY)
 {
 	theX += mTransX;
@@ -776,6 +798,7 @@ void Graphics::DrawImageF(Image* theImage, float theX, float theY)
 	mDestImage->BltF(theImage, theX, theY, aSrcRect, mClipRect, mColorizeImages ? mColor : Color::White, mDrawMode);
 }
 
+// FUNCTION: POPCAPGAME1 0x004cd000
 void Graphics::DrawImageF(Image* theImage, float theX, float theY, const Rect& theSrcRect)
 {
 	DBG_ASSERTE(theSrcRect.mX + theSrcRect.mWidth <= theImage->GetWidth());	
@@ -829,6 +852,7 @@ void Graphics::DrawImageRotated(Image* theImage, int theX, int theY, double theR
 	DrawImageRotatedF(theImage,theX,theY,theRot,theRotCenterX,theRotCenterY,theSrcRect);
 }
 
+// FUNCTION: POPCAPGAME1 0x004d7c80
 void Graphics::DrawImageRotatedF(Image* theImage, float theX, float theY, double theRot, float theRotCenterX, float theRotCenterY, const Rect *theSrcRect)
 {
 	theX += mTransX;
@@ -843,17 +867,20 @@ void Graphics::DrawImageRotatedF(Image* theImage, float theX, float theY, double
 		mDestImage->BltRotated(theImage, theX, theY, *theSrcRect, mClipRect, mColorizeImages ? mColor : Color::White, mDrawMode, theRot, theRotCenterX, theRotCenterY);
 }
 
+
 void Graphics::DrawImageMatrix(Image* theImage, const SexyMatrix3 &theMatrix, float x, float y)
 {	
 	Rect aSrcRect(0,0,theImage->mWidth,theImage->mHeight);
 	mDestImage->BltMatrix(theImage,x+mTransX,y+mTransY,theMatrix,mClipRect,mColorizeImages?mColor:Color::White,mDrawMode,aSrcRect,mLinearBlend);
 }
 
+// FUNCTION: POPCAPGAME1 0x004cd060
 void Graphics::DrawImageMatrix(Image* theImage, const SexyMatrix3 &theMatrix, const Rect &theSrcRect, float x, float y)
 {
 	mDestImage->BltMatrix(theImage,x+mTransX,y+mTransY,theMatrix,mClipRect,mColorizeImages?mColor:Color::White,mDrawMode,theSrcRect,mLinearBlend);
 }
 
+// FUNCTION: POPCAPGAME1 0x004dc130
 void Graphics::DrawImageTransformHelper(Image* theImage, const Transform &theTransform, const Rect &theSrcRect, float x, float y, bool useFloat)
 {
 	if (theTransform.mComplex || (DDImage::Check3D(mDestImage) && useFloat))
@@ -921,21 +948,25 @@ void Graphics::DrawImageTransform(Image* theImage, const Transform &theTransform
 	DrawImageTransformHelper(theImage,theTransform,Rect(0,0,theImage->mWidth,theImage->mHeight),x,y,false);
 }
 
+// FUNCTION: POPCAPGAME1 0x004dc4b0
 void Graphics::DrawImageTransformF(Image* theImage, const Transform &theTransform, float x, float y)
 {
 	DrawImageTransformHelper(theImage,theTransform,Rect(0,0,theImage->mWidth,theImage->mHeight),x,y,true);
 }
 
+// FUNCTION: POPCAPGAME1 0x004dc480
 void Graphics::DrawImageTransform(Image* theImage, const Transform &theTransform, const Rect &theSrcRect, float x, float y)
 {
 	DrawImageTransformHelper(theImage,theTransform,theSrcRect,x,y,false);
 }
 
+// FUNCTION: POPCAPGAME1 0x004dc430
 void Graphics::DrawImageTransformF(Image* theImage, const Transform &theTransform, const Rect &theSrcRect, float x, float y)
 {
 	DrawImageTransformHelper(theImage,theTransform,theSrcRect,x,y,true);
 }
 
+// FUNCTION: POPCAPGAME1 0x004cd0d0
 void Graphics::DrawTriangleTex(Image *theTexture, const TriVertex &v1, const TriVertex &v2, const TriVertex &v3)
 {
 	TriVertex v[1][3] = {{v1,v2,v3}};
@@ -964,11 +995,13 @@ void Graphics::SetClipRect(const Rect& theRect)
 	SetClipRect(theRect.mX, theRect.mY, theRect.mWidth, theRect.mHeight);
 }
 
+// FUNCTION: POPCAPGAME1 0x004d7d70
 void Graphics::ClipRect(int theX, int theY, int theWidth, int theHeight)
 {
 	mClipRect = mClipRect.Intersection(Rect(theX + mTransX, theY + mTransY, theWidth, theHeight));
 }
 
+// FUNCTION: POPCAPGAME1 0x004d7dd0
 void Graphics::ClipRect(const Rect& theRect)
 {
 	ClipRect(theRect.mX, theRect.mY, theRect.mWidth, theRect.mHeight);
@@ -1000,11 +1033,13 @@ int Graphics::StringWidth(const SexyString& theString)
 	return mFont->StringWidth(theString);
 }
 
+// FUNCTION: POPCAPGAME1 0x004de5d0
 void Graphics::DrawImageBox(const Rect& theDest, Image* theComponentImage)
 {
 	DrawImageBox(Rect(0,0,theComponentImage->mWidth,theComponentImage->mHeight),theDest,theComponentImage);
 }
 
+// FUNCTION: POPCAPGAME1 0x004dd3f0
 void Graphics::DrawImageBox(const Rect& theSrc, const Rect &theDest, Image* theComponentImage)
 {	
 	if (theSrc.mWidth<=0 || theSrc.mHeight<=0)
@@ -1050,16 +1085,19 @@ void Graphics::DrawImageBox(const Rect& theSrc, const Rect &theDest, Image* theC
 			aMidClip.DrawImage(theComponentImage, theDest.mX + cw + aCol*cmw, theDest.mY + ch + aRow*cmh, Rect(cx + cw, cy + ch, cmw, cmh));
 }
 
+// FUNCTION: POPCAPGAME1 0x004dc4e0
 void Graphics::DrawImageCel(Image* theImageStrip, int theX, int theY, int theCel)
 {
 	DrawImageCel(theImageStrip, theX, theY, theCel % theImageStrip->mNumCols, theCel / theImageStrip->mNumCols); 
 }
 
+// FUNCTION: POPCAPGAME1 0x004dc510
 void Graphics::DrawImageCel(Image* theImageStrip, const Rect& theDestRect, int theCel)
 {
 	DrawImageCel(theImageStrip, theDestRect, theCel % theImageStrip->mNumCols, theCel / theImageStrip->mNumCols); 
 }
 
+// FUNCTION: POPCAPGAME1 0x004d7df0
 void Graphics::DrawImageCel(Image* theImageStrip, int theX, int theY, int theCelCol, int theCelRow)
 {
 	if (theCelRow<0 || theCelCol<0 || theCelRow >= theImageStrip->mNumRows || theCelCol >= theImageStrip->mNumCols)
@@ -1077,6 +1115,7 @@ void Graphics::DrawImageAnim(Image* theImageAnim, int theX, int theY, int theTim
 	DrawImageCel(theImageAnim, theX, theY, theImageAnim->GetAnimCel(theTime));
 }
 
+// FUNCTION: POPCAPGAME1 0x004d7e60
 void Graphics::DrawImageCel(Image* theImageStrip, const Rect& theDestRect, int theCelCol, int theCelRow)
 {
 	if (theCelRow<0 || theCelCol<0 || theCelRow >= theImageStrip->mNumRows || theCelCol >= theImageStrip->mNumCols)
@@ -1349,6 +1388,7 @@ int	Graphics::WriteWordWrapped(const Rect& theRect, const SexyString& theLine, i
 	return aYOffset + aFont->GetDescent() - theLineSpacing;
 }
 
+// FUNCTION: POPCAPGAME1 0x004e2e90
 int	Graphics::DrawStringColor(const SexyString& theLine, int theX, int theY, int theOldColor)
 {
 	return WriteString(theLine, theX, theY, -1, -1,true,0,-1,theOldColor);
@@ -1362,6 +1402,7 @@ int	Graphics::DrawStringWordWrapped(const SexyString& theLine, int theX, int the
 	return WriteWordWrapped(aRect, theLine, theLineSpacing, theJustification, theMaxWidth);
 }
 
+// FUNCTION: POPCAPGAME1 0x004e2ec0
 int	Graphics::GetWordWrappedHeight(int theWidth, const SexyString& theLine, int theLineSpacing, int *theMaxWidth)
 {
 	Graphics aTestG;

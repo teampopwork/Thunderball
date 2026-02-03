@@ -21,6 +21,7 @@ extern HMODULE gDDrawDLL;
 static DirectDrawCreateFunc gDirectDrawCreateFunc = NULL;
 static DirectDrawCreateExFunc gDirectDrawCreateExFunc = NULL;
 
+// FUNCTION: POPCAPGAME1 0x004eadb0
 DDInterface::DDInterface(SexyAppBase* theApp)
 {
 	mApp = theApp;
@@ -68,6 +69,10 @@ DDInterface::DDInterface(SexyAppBase* theApp)
 	gDirectDrawCreateExFunc = (DirectDrawCreateExFunc)GetProcAddress(gDDrawDLL,"DirectDrawCreateEx");
 }
 
+// SYNTHETIC: POPCAPGAME1 0x004eafa0
+// Sexy::DDInterface::`scalar deleting destructor'
+
+// FUNCTION: POPCAPGAME1 0x004e9330
 DDInterface::~DDInterface()
 {
 	delete [] mRedAddTable;
@@ -80,6 +85,7 @@ DDInterface::~DDInterface()
 	delete mD3DTester;
 }
 
+// FUNCTION: POPCAPGAME1 0x004de930
 std::string DDInterface::ResultToString(int theResult)
 {
 	switch (theResult)
@@ -103,6 +109,7 @@ std::string DDInterface::ResultToString(int theResult)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004dea30
 bool DDInterface::GotDXError(HRESULT theResult, const char *theContext)
 { 
 	if (!SUCCEEDED(theResult))
@@ -116,12 +123,13 @@ bool DDInterface::GotDXError(HRESULT theResult, const char *theContext)
 		return false;
 }
 
-
+// FUNCTION: POPCAPGAME1 0x004c1d80
 DDImage* DDInterface::GetScreenImage()
 {
 	return mScreenImage;
 }
 
+// FUNCTION: POPCAPGAME1 0x004c1d90
 HRESULT	DDInterface::CreateSurface(DDSURFACEDESC2 *theDesc, LPDIRECTDRAWSURFACE *theSurface, void*)
 {
 	AutoCrit aCrit(mCritSect);
@@ -183,6 +191,7 @@ HRESULT	DDInterface::CreateSurface(DDSURFACEDESC2 *theDesc, LPDIRECTDRAWSURFACE 
 	return aResult;
 }
 
+// FUNCTION: POPCAPGAME1 0x004c1f70
 void DDInterface::ClearSurface(LPDIRECTDRAWSURFACE theSurface)
 {
 	if (theSurface)
@@ -205,6 +214,7 @@ void DDInterface::ClearSurface(LPDIRECTDRAWSURFACE theSurface)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004e78b0
 bool DDInterface::Do3DTest(HWND theHWND)
 {
 	if (mD3DTester == NULL)
@@ -231,6 +241,7 @@ bool DDInterface::Do3DTest(HWND theHWND)
 	return false;
 }
 
+// FUNCTION: POPCAPGAME1 0x004eafd0
 int DDInterface::Init(HWND theWindow, bool IsWindowed)
 {
 	AutoCrit anAutoCrit(mCritSect);
@@ -666,6 +677,7 @@ int DDInterface::Init(HWND theWindow, bool IsWindowed)
 	return RESULT_OK;
 }
 
+// FUNCTION: POPCAPGAME1 0x004e9440
 void DDInterface::SetVideoOnlyDraw(bool videoOnlyDraw)
 {
 	AutoCrit anAutoCrit(mCritSect);
@@ -698,6 +710,7 @@ void DDInterface::SetVideoOnlyDraw(bool videoOnlyDraw)
 	mScreenImage->SetImageMode(false, false);
 }
 
+
 void DDInterface::RemapMouse(int& theX, int& theY)
 {
 	if (mInitialized)
@@ -728,6 +741,7 @@ ulong DDInterface::GetColorRef(ulong theRGB)
 	return aColor;
 }
 
+// FUNCTION: POPCAPGAME1 0x004e4c50
 void DDInterface::AddDDImage(DDImage* theDDImage)
 {
 	AutoCrit anAutoCrit(mCritSect);
@@ -735,6 +749,7 @@ void DDInterface::AddDDImage(DDImage* theDDImage)
 	mDDImageSet.insert(theDDImage);
 }
 
+// FUNCTION: POPCAPGAME1 0x004dec70
 void DDInterface::RemoveDDImage(DDImage* theDDImage)
 {
 	AutoCrit anAutoCrit(mCritSect);
@@ -749,6 +764,7 @@ void DDInterface::Remove3DData(MemoryImage* theImage) // for 3d texture cleanup
 	mD3DInterface->RemoveMemoryImage(theImage);
 }
 
+// FUNCTION: POPCAPGAME1 0x004e7990
 void DDInterface::Cleanup()
 {
 	AutoCrit anAutoCrit(mCritSect);
@@ -881,6 +897,7 @@ bool DDInterface::CopyBitmap(LPDIRECTDRAWSURFACE theSurface, HBITMAP theBitmap, 
 
 extern std::fstream gStreamThing;
 
+// FUNCTION: POPCAPGAME1 0x004ded10
 bool DDInterface::Redraw(Rect* theClipRect)
 {
 	AutoCrit anAutoCrit(mCritSect);
@@ -1110,6 +1127,7 @@ bool DDInterface::Redraw(Rect* theClipRect)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004d3740
 void DDInterface::RestoreOldCursorAreaFrom(LPDIRECTDRAWSURFACE theSurface, bool adjust)
 {
 	if ((mHasOldCursorArea) && (mPrimarySurface != NULL))
@@ -1149,6 +1167,7 @@ void DDInterface::RestoreOldCursorAreaFrom(LPDIRECTDRAWSURFACE theSurface, bool 
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004dda40
 void DDInterface::DrawCursorTo(LPDIRECTDRAWSURFACE theSurface, bool adjust)
 {
 	if ((mCursorImage != NULL) && (mPrimarySurface != NULL))
@@ -1238,6 +1257,7 @@ void DDInterface::DrawCursorTo(LPDIRECTDRAWSURFACE theSurface, bool adjust)
 		mHasOldCursorArea = false;
 }
 
+// FUNCTION: POPCAPGAME1 0x004dde80
 void DDInterface::MoveCursorTo(LPDIRECTDRAWSURFACE theSurface, bool adjust, int theNewCursorX, int theNewCursorY)
 {
 	DBG_ASSERT(mHasOldCursorArea);	
@@ -1395,6 +1415,7 @@ void DDInterface::MoveCursorTo(LPDIRECTDRAWSURFACE theSurface, bool adjust, int 
 		mHasOldCursorArea = false;
 }
 
+// FUNCTION: POPCAPGAME1 0x004c2000
 bool DDInterface::SetCursorImage(Image* theImage)
 {
 	AutoCrit anAutoCrit(mCritSect);
@@ -1409,6 +1430,7 @@ bool DDInterface::SetCursorImage(Image* theImage)
 		return false;
 }
 
+// FUNCTION: POPCAPGAME1 0x004de460
 void DDInterface::SetCursorPos(int theCursorX, int theCursorY)
 {
 	mNextCursorX = theCursorX;

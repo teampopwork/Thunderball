@@ -22,6 +22,7 @@ bool gOptimizeSoftwareDrawing = false;
 // Disable macro redefinition warning
 #pragma warning(disable:4005)
 
+// FUNCTION: POPCAPGAME1 0x004e3b20
 MemoryImage::MemoryImage()
 {	
 	mApp = gSexyAppBase;
@@ -29,12 +30,14 @@ MemoryImage::MemoryImage()
 	Init();
 }
 
+// FUNCTION: POPCAPGAME1 0x004e3b80
 MemoryImage::MemoryImage(SexyAppBase* theApp) 
 {
 	mApp = theApp;
 	Init();
 }
 
+// FUNCTION: POPCAPGAME1 0x004eab00
 MemoryImage::MemoryImage(const MemoryImage& theMemoryImage) :
 	Image(theMemoryImage),
 	mApp(theMemoryImage.mApp),
@@ -138,6 +141,7 @@ MemoryImage::~MemoryImage()
 	delete [] mColorTable;
 }
 
+// FUNCTION: POPCAPGAME1 0x004cd3a0
 void MemoryImage::Init()
 {
 	mBits = NULL;
@@ -184,6 +188,7 @@ void MemoryImage::BitsChanged()
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004cd430
 void MemoryImage::NormalDrawLine(double theStartX, double theStartY, double theEndX, double theEndY, const Color& theColor)
 {
 	double aMinX = min(theStartX, theEndX);
@@ -474,6 +479,7 @@ void MemoryImage::NormalDrawLine(double theStartX, double theStartY, double theE
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004cdc70
 void MemoryImage::AdditiveDrawLine(double theStartX, double theStartY, double theEndX, double theEndY, const Color& theColor)
 {
 	double aMinX = min(theStartX, theEndX);
@@ -659,7 +665,7 @@ void MemoryImage::AdditiveDrawLine(double theStartX, double theStartY, double th
 	}
 }
 
-
+// FUNCTION: POPCAPGAME1 0x004d8340
 void MemoryImage::DrawLine(double theStartX, double theStartY, double theEndX, double theEndY, const Color& theColor, int theDrawMode)
 {	
 	if (theStartY == theEndY)
@@ -692,6 +698,7 @@ void MemoryImage::DrawLine(double theStartX, double theStartY, double theEndX, d
 	BitsChanged();
 }
 
+// FUNCTION: POPCAPGAME1 0x004ce140
 void MemoryImage::NormalDrawLineAA(double theStartX, double theStartY, double theEndX, double theEndY, const Color& theColor)
 {
 	ulong* aBits = GetBits();
@@ -776,6 +783,7 @@ void MemoryImage::AdditiveDrawLineAA(double theStartX, double theStartY, double 
 {
 }
 
+// FUNCTION: POPCAPGAME1 0x004d84c0
 void MemoryImage::DrawLineAA(double theStartX, double theStartY, double theEndX, double theEndY, const Color& theColor, int theDrawMode)
 {
 	if (theStartY == theEndY)
@@ -878,6 +886,7 @@ void MemoryImage::SetVolatile(bool isVolatile)
 	mIsVolatile = isVolatile;
 }
 
+// FUNCTION: POPCAPGAME1 0x004cf060
 void* MemoryImage::GetNativeAlphaData(NativeDisplay *theDisplay)
 {
 	if (mNativeAlphaData != NULL)
@@ -954,7 +963,7 @@ void* MemoryImage::GetNativeAlphaData(NativeDisplay *theDisplay)
 	return mNativeAlphaData;
 }
 
-
+// FUNCTION: POPCAPGAME1 0x004cf270
 uchar* MemoryImage::GetRLAlphaData()
 {
 	CommitBits();
@@ -993,6 +1002,7 @@ uchar* MemoryImage::GetRLAlphaData()
 	return mRLAlphaData;
 }
 
+// FUNCTION: POPCAPGAME1 0x004cf4c0
 uchar* MemoryImage::GetRLAdditiveData(NativeDisplay *theNative)
 {
 	if (mRLAdditiveData == NULL)
@@ -1164,12 +1174,14 @@ void MemoryImage::Delete3DBuffers()
 	mApp->Remove3DData(this);
 }
 
+// FUNCTION: POPCAPGAME1 0x004cf7d0
 void MemoryImage::DeleteExtraBuffers()
 {
 	DeleteSWBuffers();
 	Delete3DBuffers();
 }
 
+// FUNCTION: POPCAPGAME1 0x004cf7f0
 void MemoryImage::ReInit()
 {
 	// Fix any un-palletizing
@@ -1294,6 +1306,7 @@ ulong* MemoryImage::GetBits()
 	return mBits;
 }
 
+// FUNCTION: POPCAPGAME1 0x004cf960
 void MemoryImage::FillRect(const Rect& theRect, const Color& theColor, int theDrawMode)
 {
 	ulong src = theColor.ToInt();
@@ -1346,6 +1359,7 @@ void MemoryImage::FillRect(const Rect& theRect, const Color& theColor, int theDr
 	BitsChanged();
 }
 
+// FUNCTION: POPCAPGAME1 0x004cfb30
 void MemoryImage::ClearRect(const Rect& theRect)
 {
 	ulong* aBits = GetBits();
@@ -1361,6 +1375,7 @@ void MemoryImage::ClearRect(const Rect& theRect)
 	BitsChanged();
 }
 
+// FUNCTION: POPCAPGAME1 0x004cfbb0
 void MemoryImage::Clear()
 {
 	ulong* ptr = GetBits();
@@ -1373,6 +1388,7 @@ void MemoryImage::Clear()
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004cfc00
 void MemoryImage::AdditiveBlt(Image* theImage, int theX, int theY, const Rect& theSrcRect, const Color& theColor)
 {
 	theImage->mDrawn = true;
@@ -1413,6 +1429,7 @@ void MemoryImage::AdditiveBlt(Image* theImage, int theX, int theY, const Rect& t
 	}	
 }
 
+// FUNCTION: POPCAPGAME1 0x004d0640
 void MemoryImage::NormalBlt(Image* theImage, int theX, int theY, const Rect& theSrcRect, const Color& theColor)
 {
 	theImage->mDrawn = true;
@@ -1455,6 +1472,7 @@ void MemoryImage::NormalBlt(Image* theImage, int theX, int theY, const Rect& the
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004d13f0
 void MemoryImage::Blt(Image* theImage, int theX, int theY, const Rect& theSrcRect, const Color& theColor, int theDrawMode)
 {
 	theImage->mDrawn = true;
@@ -1477,6 +1495,7 @@ void MemoryImage::Blt(Image* theImage, int theX, int theY, const Rect& theSrcRec
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+// FUNCTION: POPCAPGAME1 0x004d1440
 void MemoryImage::BltF(Image* theImage, float theX, float theY, const Rect& theSrcRect, const Rect &theClipRect, const Color& theColor, int theDrawMode)
 {
 	theImage->mDrawn = true;
@@ -1532,6 +1551,7 @@ bool MemoryImage::BltRotatedClipHelper(float &theX, float &theY, const Rect &the
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+// FUNCTION: POPCAPGAME1 0x004d8930
 bool MemoryImage::StretchBltClipHelper(const Rect &theSrcRect, const Rect &theClipRect, const Rect &theDestRect, FRect &theSrcRectOut, Rect &theDestRectOut)
 {
 	theDestRectOut = Rect(theDestRect.mX , theDestRect.mY, theDestRect.mWidth, theDestRect.mHeight).Intersection(theClipRect);	
@@ -1549,6 +1569,7 @@ bool MemoryImage::StretchBltClipHelper(const Rect &theSrcRect, const Rect &theCl
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+// FUNCTION: POPCAPGAME1 0x004d8a20
 bool MemoryImage::StretchBltMirrorClipHelper(const Rect &theSrcRect, const Rect &theClipRect, const Rect &theDestRect, FRect &theSrcRectOut, Rect &theDestRectOut)
 {
 	theDestRectOut = Rect(theDestRect.mX, theDestRect.mY, theDestRect.mWidth, theDestRect.mHeight).Intersection(theClipRect);	
@@ -1737,6 +1758,7 @@ void MemoryImage::FastStretchBlt(Image* theImage, const Rect& theDestRect, const
 	BitsChanged();
 }
 
+// FUNCTION: POPCAPGAME1 0x004db1f0
 void MemoryImage::StretchBlt(Image* theImage, const Rect& theDestRect, const Rect& theSrcRect, const Rect& theClipRect, const Color& theColor, int theDrawMode, bool fastStretch)
 {
 	theImage->mDrawn = true;
@@ -1786,6 +1808,7 @@ void MemoryImage::BltMatrixHelper(Image* theImage, float x, float y, const SexyM
 	SWHelper::SWDrawShape(aVerts, 4, anImage, theColor, theDrawMode, theClipRect, theSurface, theBytePitch, thePixelFormat, blend,false);
 }
 
+// FUNCTION: POPCAPGAME1 0x004d2b50
 void MemoryImage::BltMatrix(Image* theImage, float x, float y, const SexyMatrix3 &theMatrix, const Rect& theClipRect, const Color& theColor, int theDrawMode, const Rect &theSrcRect, bool blend)
 {
 	theImage->mDrawn = true;
@@ -1865,6 +1888,7 @@ void MemoryImage::FillScanLinesWithCoverage(Span* theSpans, int theSpanCount, co
 	BitsChanged();
 }
 
+// FUNCTION: POPCAPGAME1 0x004d2e60
 void MemoryImage::BltTrianglesTex(Image *theTexture, const TriVertex theVertices[][3], int theNumTriangles, const Rect& theClipRect, const Color &theColor, int theDrawMode, float tx, float ty, bool blend)
 {
 	theTexture->mDrawn = true;
