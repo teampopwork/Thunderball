@@ -31,9 +31,9 @@ public:
 	ThunderButton* mPlayNowButton;     // +0x90
 	float mLoadProgress;               // +0x94
 	float mSunRotationAngle;           // +0x98
-	int mUnk0x9C;                     // +0x9C
+	int mDoneLoadingCnt;                     // +0x9C
 	int mPlayNowPulseCount;            // +0xA0
-	float mUnk0xA4;                     // +0xA4
+	float mVisualLoadProgress;                     // +0xA4
 	int mAdventureStartDelay;          // +0xA8
 	int mBallAnimState;                // +0xAC
 	int mLogoBounceFrame;              // +0xB0
@@ -41,12 +41,12 @@ public:
 	float mBallY;                      // +0xB8
 	float mBallVelX;                   // +0xBC
 	float mBallVelY;                   // +0xC0
-	bool mBallBounceInit;              // +0xC4
+	bool mBallBounced;              // +0xC4
 	std::vector<Particle> mParticles; // +0xC8
-	bool mUnk0xD8;                    // +0xD8
+	bool mShowDeluxe;                    // +0xD8
 	HANDLE mLevelLoadMusicThread;      // +0xDC
-	int mUnk0xE0;                     // +0xE0
-	int mUnk0xE4;                     // +0xE4
+	DWORD mMusicThreadId;             // +0xE0
+	int mLogoAnimFrames;                     // +0xE4
 	bool mDisplayPartnerLogo;          // +0xE8
 	int mLightBeamCount;               // +0xEC
 

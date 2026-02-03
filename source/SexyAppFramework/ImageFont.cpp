@@ -11,15 +11,21 @@ using namespace Sexy;
 
 ////
 
+// FUNCTION: POPCAPGAME1 0x004fc170
 DataElement::DataElement() :
 	mIsList(false)
 {	
 }
 
+// SYNTHETIC: POPCAPGAME1 0x004fd120
+// Sexy::DataElement::`scalar deleting destructor'
+
+// FUNCTION: POPCAPGAME1 0x004fc180
 DataElement::~DataElement()
 {
 }
 
+// FUNCTION: POPCAPGAME1 0x005013b0
 SingleDataElement::SingleDataElement()
 {	
 	mIsList = false;
@@ -31,27 +37,38 @@ SingleDataElement::SingleDataElement(const std::string theString) :
 	mIsList = false;
 }
 
+// SYNTHETIC: POPCAPGAME1 0x00502010
+// Sexy::SingleDataElement::`scalar deleting destructor'
+
+// FUNCTION: POPCAPGAME1 0x005013e0
 SingleDataElement::~SingleDataElement()
 {	
 }
 
+// FUNCTION: POPCAPGAME1 0x0050a9f0
 DataElement* SingleDataElement::Duplicate()
 {
 	SingleDataElement* aSingleDataElement = new SingleDataElement(*this);
 	return aSingleDataElement;
 }
 
+// FUNCTION: POPCAPGAME1 0x0050f2b0
 ListDataElement::ListDataElement()	
 {	
 	mIsList = true;
 }
 
+// SYNTHETIC: POPCAPGAME1 0x00503fc0
+// Sexy::ListDataElement::`scalar deleting destructor'
+
+// FUNCTION: POPCAPGAME1 0x00502040
 ListDataElement::~ListDataElement()
 {
 	for (ulong i = 0; i < mElementVector.size(); i++)
 		delete mElementVector[i];
 }
 
+// FUNCTION: POPCAPGAME1 0x00512210
 ListDataElement::ListDataElement(const ListDataElement& theListDataElement)
 {
 	mIsList = true;
@@ -59,6 +76,7 @@ ListDataElement::ListDataElement(const ListDataElement& theListDataElement)
 		mElementVector.push_back(theListDataElement.mElementVector[i]->Duplicate());
 }
 
+// FUNCTION: POPCAPGAME1 0x00512330
 ListDataElement& ListDataElement::operator=(const ListDataElement& theListDataElement)
 {
 	ulong i;
@@ -73,6 +91,7 @@ ListDataElement& ListDataElement::operator=(const ListDataElement& theListDataEl
 	return *this;
 }
 
+// FUNCTION: POPCAPGAME1 0x00512480
 DataElement* ListDataElement::Duplicate()
 {
 	ListDataElement* aListDataElement = new ListDataElement(*this);
@@ -80,7 +99,7 @@ DataElement* ListDataElement::Duplicate()
 }
 
 ///
-
+// FUNCTION: POPCAPGAME1 0x004d8200
 CharData::CharData()
 {
 	mWidth = 0;
@@ -134,6 +153,7 @@ FontLayer::FontLayer(const FontLayer& theFontLayer) :
 		mCharData[i] = theFontLayer.mCharData[i];	
 }
 
+// FUNCTION: POPCAPGAME1 0x004f98c0
 FontData::FontData()
 {
 	mInitialized = false;
@@ -146,6 +166,10 @@ FontData::FontData()
 		mCharMap[i] = (uchar) i;
 }
 
+// TEMPLATE: POPCAPGAME1 0x004fa400
+// Sexy::FontData::`scalar deleting destructor'
+
+// FUNCTION: POPCAPGAME1 0x004f99a0
 FontData::~FontData()
 {
 	DataElementMap::iterator anItr = mDefineMap.begin();
@@ -159,6 +183,7 @@ FontData::~FontData()
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004cd290
 void FontData::Ref()
 {
 	mRefCount++;
@@ -172,6 +197,7 @@ void FontData::DeRef()
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004e2fe0
 bool FontData::Error(const std::string& theError)
 {
 	if (mApp != NULL)
@@ -189,6 +215,7 @@ bool FontData::Error(const std::string& theError)
 	return false;
 }
 
+// FUNCTION: POPCAPGAME1 0x004e3120
 bool FontData::DataToLayer(DataElement* theSource, FontLayer** theFontLayer)
 {
 	*theFontLayer = NULL;
@@ -235,7 +262,7 @@ bool FontData::GetColorFromDataElement(DataElement *theElement, Color &theColor)
 	return true;
 }
 
-
+// FUNCTION: POPCAPGAME1 0x004f6e40
 bool FontData::HandleCommand(const ListDataElement& theParams)	
 {
 	std::string aCmd = ((SingleDataElement*) theParams.mElementVector[0])->mString;
@@ -1006,6 +1033,7 @@ bool FontData::HandleCommand(const ListDataElement& theParams)
 	return true;
 }
 
+// FUNCTION: POPCAPGAME1 0x004e3260
 bool FontData::Load(SexyAppBase* theSexyApp, const std::string& theFontDescFileName)
 {
 	if (mInitialized)
@@ -1025,6 +1053,7 @@ bool FontData::Load(SexyAppBase* theSexyApp, const std::string& theFontDescFileN
 	return !hasErrors;
 }
 
+// FUNCTION: POPCAPGAME1 0x004f9570
 bool FontData::LoadLegacy(Image* theFontImage, const std::string& theFontDescFileName)
 {
 	if (mInitialized)
@@ -1088,13 +1117,14 @@ bool FontData::LoadLegacy(Image* theFontImage, const std::string& theFontDescFil
 }
 
 ////
-
+// FUNCTION: POPCAPGAME1 0x004d8240
 ActiveFontLayer::ActiveFontLayer()
 {
 	mScaledImage = NULL;
 	mOwnsImage = false;
 }
 
+// FUNCTION: POPCAPGAME1 0x004d82a0
 ActiveFontLayer::ActiveFontLayer(const ActiveFontLayer& theActiveFontLayer) : 
 	mBaseFontLayer(theActiveFontLayer.mBaseFontLayer),
 	mScaledImage(theActiveFontLayer.mScaledImage),
@@ -1107,6 +1137,10 @@ ActiveFontLayer::ActiveFontLayer(const ActiveFontLayer& theActiveFontLayer) :
 		mScaledCharImageRects[aCharNum] = theActiveFontLayer.mScaledCharImageRects[aCharNum];
 }
 
+// SYNTHETIC: POPCAPGAME1 0x004d8270
+// Sexy::ActiveFontLayer::`scalar deleting destructor'
+
+// FUNCTION: POPCAPGAME1 0x004cd2b0
 ActiveFontLayer::~ActiveFontLayer()
 {
 	if (mOwnsImage)
@@ -1114,7 +1148,7 @@ ActiveFontLayer::~ActiveFontLayer()
 }
 
 ////
-
+// FUNCTION: POPCAPGAME1 0x004f9c20
 ImageFont::ImageFont(SexyAppBase* theSexyApp, const std::string& theFontDescFileName)
 {	
 	mScale = 1.0;
@@ -1127,6 +1161,7 @@ ImageFont::ImageFont(SexyAppBase* theSexyApp, const std::string& theFontDescFile
 	mForceScaledImagesWhite = false;
 }
 
+// FUNCTION: POPCAPGAME1 0x004f6b20
 ImageFont::ImageFont(Image *theFontImage)
 {
 	mScale = 1.0;
@@ -1146,6 +1181,7 @@ ImageFont::ImageFont(Image *theFontImage)
 	aFontLayer->mAscent = aFontLayer->mImage->GetHeight();	
 }
 
+// FUNCTION: POPCAPGAME1 0x004f9b70
 ImageFont::ImageFont(const ImageFont& theImageFont) :
 	Font(theImageFont),
 	mScale(theImageFont.mScale),
@@ -1161,6 +1197,7 @@ ImageFont::ImageFont(const ImageFont& theImageFont) :
 		mActiveLayerList = theImageFont.mActiveLayerList;	
 }
 
+// FUNCTION: POPCAPGAME1 0x004f9d00
 ImageFont::ImageFont(Image* theFontImage, const std::string& theFontDescFileName)
 {
 	
@@ -1189,6 +1226,7 @@ ImageFont::~ImageFont()
 	}
 }*/
 
+// FUNCTION: POPCAPGAME1 0x004e8460
 void ImageFont::GenerateActiveFontLayers()
 {
 	if (!mFontData->mInitialized)
@@ -1341,6 +1379,7 @@ void ImageFont::GenerateActiveFontLayers()
 	}	
 }
 
+// FUNCTION: POPCAPGAME1 0x004dc540
 int ImageFont::StringWidth(const SexyString& theString)
 {
 	int aWidth = 0;
@@ -1355,6 +1394,7 @@ int ImageFont::StringWidth(const SexyString& theString)
 	return aWidth;
 }
 
+// FUNCTION: POPCAPGAME1 0x004dcf10
 int ImageFont::CharWidthKern(char theChar, char thePrevChar)
 {
 	Prepare();
@@ -1413,6 +1453,7 @@ int ImageFont::CharWidthKern(char theChar, char thePrevChar)
 
 	return aMaxXPos;
 }
+
 
 int ImageFont::CharWidth(char theChar)
 {

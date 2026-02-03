@@ -802,6 +802,7 @@ my_error_exit (j_common_ptr cinfo)
 
 }
 
+// FUNCTION: POPCAPGAME1 0x00551480
 bool ImageLib::WriteJPEGImage(const std::string& theFileName, Image* theImage)
 {
 	FILE *fp;

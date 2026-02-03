@@ -1,0 +1,2 @@
+// LIBRARY: POPCAPGAME1 0x00572af0
+// _deflateInit2_

@@ -7,6 +7,7 @@ using namespace Sexy;
 
 static int gCurTransferId = 1;
 
+// FUNCTION: POPCAPGAME1 0x005007b0
 HTTPTransfer::HTTPTransfer()
 {
 	mTransferId = gCurTransferId++;
@@ -16,6 +17,7 @@ HTTPTransfer::HTTPTransfer()
 	mThreadRunning = false;	
 }
 
+// FUNCTION: POPCAPGAME1 0x00500860
 HTTPTransfer::~HTTPTransfer()
 {
 	Abort();
@@ -67,6 +69,7 @@ void HTTPTransfer::Fail(int theResult)
 	mExiting = true;
 }
 
+// FUNCTION: POPCAPGAME1 0x004fb7c0
 bool HTTPTransfer::SocketWait(bool checkRead, bool checkWrite)
 {
 	while (!mExiting)
@@ -119,6 +122,7 @@ bool HTTPTransfer::SocketWait(bool checkRead, bool checkWrite)
 	return true;
 }
 
+// FUNCTION: POPCAPGAME1 0x00510bf0
 void HTTPTransfer::GetThreadProc()
 {
 	WSADATA aDat;
@@ -336,6 +340,7 @@ void HTTPTransfer::GetThreadProcStub(void *theArg)
 	((HTTPTransfer*) theArg)->GetThreadProc();
 }
 
+// FUNCTION: POPCAPGAME1 0x00518ff0
 void HTTPTransfer::PrepareTransfer(const std::string& theURL)
 {
 	Reset();	
@@ -379,6 +384,7 @@ void HTTPTransfer::PrepareTransfer(const std::string& theURL)
 	}	
 }
 
+// FUNCTION: POPCAPGAME1 0x00511440
 void HTTPTransfer::StartTransfer()
 {	
 	mTransferPending = true;
@@ -391,6 +397,7 @@ void HTTPTransfer::StartTransfer()
 	_beginthread(GetThreadProcStub, 0, this);
 }
 
+// FUNCTION: POPCAPGAME1 0x00519260
 void HTTPTransfer::GetHelper(const std::string& theURL)
 {
 	PrepareTransfer(theURL);
@@ -421,6 +428,7 @@ void HTTPTransfer::PostHelper(const std::string& theURL, const std::string& theP
 	StartTransfer();
 }
 
+// FUNCTION: POPCAPGAME1 0x005193c0
 void HTTPTransfer::Get(const std::string& theURL)
 {
 	mSpecifiedBaseURL = "";
@@ -435,6 +443,7 @@ void HTTPTransfer::Post(const std::string& theURL, const std::string& theParams)
 	PostHelper(theURL, theParams);
 }
 
+// FUNCTION: POPCAPGAME1 0x00519400
 void HTTPTransfer::Get(const std::string& theBaseURL, const std::string& theRelURL)
 {
 	mSpecifiedBaseURL = theBaseURL;
@@ -451,6 +460,7 @@ void HTTPTransfer::Post(const std::string& theBaseURL, const std::string& theRel
 	PostHelper(GetAbsURL(theBaseURL, theRelURL), theParams);
 }
 
+// FUNCTION: POPCAPGAME1 0x00519490
 void HTTPTransfer::SendRequestString(const std::string& theHost, const std::string& theSendString)
 {
 	mSpecifiedBaseURL.erase();
@@ -460,12 +470,14 @@ void HTTPTransfer::SendRequestString(const std::string& theHost, const std::stri
 	StartTransfer();
 }
 
+// FUNCTION: POPCAPGAME1 0x004fb8d0
 void HTTPTransfer::Abort()
 {	
 	mAborted = true;
 	mExiting = true;	
 }
 
+// FUNCTION: POPCAPGAME1 0x00517dd0
 void HTTPTransfer::Reset()
 {	
 	if (mThreadRunning)
@@ -487,6 +499,7 @@ void HTTPTransfer::Reset()
 
 static int aLastThreadId = 0;
 
+// FUNCTION: POPCAPGAME1 0x00516700
 void HTTPTransfer::UpdateStatus()
 {	
 	// This will save the result data in demo recording mode and load it in (if available)
@@ -549,6 +562,7 @@ void HTTPTransfer::UpdateStatus()
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x00516900
 void HTTPTransfer::WaitFor()
 {
 	while (mTransferPending)
@@ -558,12 +572,14 @@ void HTTPTransfer::WaitFor()
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x00516930
 int HTTPTransfer::GetResultCode()
 {
 	UpdateStatus();
 	return mResult;
 }
 
+// FUNCTION: POPCAPGAME1 0x00516940
 std::string HTTPTransfer::GetContent()
 {
 	if (mResult == RESULT_NOT_COMPLETED)

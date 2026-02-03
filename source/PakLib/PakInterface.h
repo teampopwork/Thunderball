@@ -140,6 +140,7 @@ static PFILE* p_fopen(const wchar_t* theFileName, const wchar_t* theAccess)
 	return aPFile;
 }
 
+// FUNCTION: POPCAPGAME1 0x00528f00
 static int p_fclose(PFILE* theFile)
 {
 	if (GetPakPtr() != NULL)

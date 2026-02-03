@@ -3,6 +3,7 @@
 
 using namespace Sexy;
 
+// FUNCTION: POPCAPGAME1 0x004dcee0
 Image::Image()
 {
 	mWidth = 0;
@@ -15,6 +16,7 @@ Image::Image()
 	mDrawn = false;
 }
 
+// FUNCTION: POPCAPGAME1 0x004ea210
 Image::Image(const Image& theImage) :
 	mWidth(theImage.mWidth),
 	mHeight(theImage.mHeight),
@@ -28,26 +30,34 @@ Image::Image(const Image& theImage) :
 		mAnimInfo = NULL;
 }
 
+// SYNTHETIC: POPCAPGAME1 0x004e72c0
+// Sexy::Image::`scalar deleting destructor'
+
+// FUNCTION: POPCAPGAME1 0x004e2f60
 Image::~Image()
 {
 	delete mAnimInfo;
 }
 
+// FUNCTION: POPCAPGAME1 0x004cd1f0
 int Image::GetWidth()
 {
 	return mWidth;
 }
 
+// FUNCTION: POPCAPGAME1 0x004cd200
 int	Image::GetHeight()
 {
 	return mHeight;
 }
 
+// FUNCTION: POPCAPGAME1 0x004cd210
 int Image::GetCelHeight()
 {
 	return mHeight / mNumRows;
 }
 
+// FUNCTION: POPCAPGAME1 0x004cd220
 int Image::GetCelWidth()
 {
 	return mWidth / mNumCols;
@@ -64,6 +74,7 @@ Rect Image::GetCelRect(int theCel)
 	return Rect(x, y, w, h);
 }
 
+// FUNCTION: POPCAPGAME1 0x004d7f40
 Rect Image::GetCelRect(int theCol, int theRow)
 {
 	int h = GetCelHeight();
@@ -74,6 +85,7 @@ Rect Image::GetCelRect(int theCol, int theRow)
 	return Rect(x, y, w, h);
 }
 
+// FUNCTION: POPCAPGAME1 0x004e8160
 AnimInfo::AnimInfo()
 {
 	mAnimType = AnimType_None;
@@ -81,6 +93,7 @@ AnimInfo::AnimInfo()
 	mNumCels = 1;
 }
 
+// FUNCTION: POPCAPGAME1 0x004ea2c0
 void AnimInfo::SetPerFrameDelay(int theFrame, int theTime)
 {
 	if ((int)mPerFrameDelay.size()<=theFrame)
@@ -89,6 +102,7 @@ void AnimInfo::SetPerFrameDelay(int theFrame, int theTime)
 	mPerFrameDelay[theFrame] = theTime;
 }
 
+// FUNCTION: POPCAPGAME1 0x004ea330
 void AnimInfo::Compute(int theNumCels, int theBeginFrameTime, int theEndFrameTime)
 {
 	int i;
@@ -138,7 +152,8 @@ void AnimInfo::Compute(int theNumCels, int theBeginFrameTime, int theEndFrameTim
 	if (!mFrameMap.empty())
 		mFrameMap.resize(mNumCels);
 }
-	
+
+// FUNCTION: POPCAPGAME1 0x004d7f80
 int AnimInfo::GetPerFrameCel(int theTime)
 {
 	for (int i=0; i<mNumCels; i++)
@@ -151,8 +166,7 @@ int AnimInfo::GetPerFrameCel(int theTime)
 	return mNumCels-1;
 }
 
-
-
+// FUNCTION: POPCAPGAME1 0x004d7fd0
 int AnimInfo::GetCel(int theTime)
 {
 	if (mAnimType==AnimType_Once && theTime>=mTotalAnimTime)
@@ -177,6 +191,7 @@ int AnimInfo::GetCel(int theTime)
 		return mFrameMap[aFrame];	
 }
 
+// FUNCTION: POPCAPGAME1 0x004d80a0
 int	Image::GetAnimCel(int theTime)
 {
 	if (mAnimInfo==NULL)
@@ -222,6 +237,7 @@ void Image::ClearRect(const Rect& theRect)
 {
 }
 
+// FUNCTION: POPCAPGAME1 0x004d80c0
 void Image::DrawRect(const Rect& theRect, const Color& theColor, int theDrawMode)
 {
 	FillRect(Rect(theRect.mX, theRect.mY, theRect.mWidth + 1, 1), theColor, theDrawMode);
@@ -238,6 +254,7 @@ void Image::DrawLineAA(double theStartX, double theStartY, double theEndX, doubl
 {
 }
 
+// FUNCTION: POPCAPGAME1 0x004d81a0
 void Image::FillScanLines(Span* theSpans, int theSpanCount, const Color& theColor, int theDrawMode)
 {
 	for (int i = 0; i < theSpanCount; i++)
