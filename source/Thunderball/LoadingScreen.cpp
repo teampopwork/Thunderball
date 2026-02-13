@@ -632,8 +632,8 @@ void LoadingScreen::Update()
 	}
 
 	if (mLoadProgress < loadTime) {
-		mLoadProgress += 0.01f;
-		if (mLoadProgress > loadTime) {
+		
+		if (mLoadProgress + 0.01f > loadTime) {
 			mLoadProgress = loadTime;
 		}
 
@@ -643,7 +643,7 @@ void LoadingScreen::Update()
 		if (mLoadProgress == 1.0f) {
 			mPlayNowPulseCount = 1;
 
-			if (!mApp->IsScreenSaver() && !mApp->mUnk0x7b0) {
+			if (!mApp->IsScreenSaver() && mApp->mUnk0x7b0 != 0) {
 				mPlayNowButton->SetVisible(true);
 				mShowDeluxe = true;
 				if (mApp->mUnk0x7b0) {

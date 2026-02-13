@@ -4,6 +4,7 @@ add_executable(popcapgame1 WIN32
     ThunderCommon.cpp
     ThunderballApp.cpp
     ThunderButton.cpp
+    SimpleButton.cpp
     ThunderCheckbox.cpp
     ThunderDialog.cpp
     WidgetMover.cpp
@@ -13,6 +14,8 @@ add_executable(popcapgame1 WIN32
     DataSync.cpp
     PlayerInfo.cpp
     GameStats.cpp
+    MainMenu.cpp
+    NewUserDialog.cpp
 )
 
 target_include_directories(popcapgame1 PRIVATE

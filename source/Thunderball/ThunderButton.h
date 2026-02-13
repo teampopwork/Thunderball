@@ -11,7 +11,7 @@ class Graphics;
 // VTABLE: POPCAPGAME1 0x006003d4
 class ThunderButton : public DialogButton {
 public:
-	int mUnk0x138;
+	int mClickSound;
 	int mUnk0x13c;
 	int mUnk0x140;
 	int mUnk0x144;
