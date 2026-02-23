@@ -15,7 +15,7 @@ Requirements:
 Run `cmake -B build/ -G "NMake Makefiles"` then `cmake --build build` to build.
 
 ## Accuracy
-For accuracy checking, we are using a tool derived from the Lego Island decompilation, [reccmp](github.com/isledecomp/reccmp). To install reccmp, install it through pip: `pip install git+https://github.com/isledecomp/reccmp`
+For accuracy checking, we are using a tool derived from the Lego Island decompilation, [reccmp](https://github.com/isledecomp/reccmp). To install reccmp, install it through pip: `pip install git+https://github.com/isledecomp/reccmp`
 
 ## Acknowledgements
 - Alula for their [Zuma Deluxe Decompilation](https://github.com/alula/CircleShootApp/) that this project is initially based on
@@ -23,6 +23,7 @@ For accuracy checking, we are using a tool derived from the Lego Island decompil
 
 ## Legal
 - This repository does not contain any game assets; you will need to get them from your own copy of the game. If you don't already own it, the Steam version is easily available to purchase: https://store.steampowered.com/app/3480/Peggle_Deluxe/
+
 
 
 
