@@ -23,10 +23,3 @@ For accuracy checking, we are using a tool derived from the Lego Island decompil
 
 ## Legal
 - This repository does not contain any game assets; you will need to get them from your own copy of the game. If you don't already own it, the Steam version is easily available to purchase: https://store.steampowered.com/app/3480/Peggle_Deluxe/
-
-
-
-
-
-
-
