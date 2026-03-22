@@ -14,16 +14,19 @@ LogicMgr::~LogicMgr()
 	// TODO
 }
 
+// STUB: POPCAPGAME1 0x004730d0
 void LogicMgr::Update()
 {
 	// TODO
 }
 
+// STUB: POPCAPGAME1 0x00448a30
 void LogicMgr::Draw(Graphics* param_1)
 {
 	// TODO
 }
 
+// STUB: POPCAPGAME1 0x00448820
 void LogicMgr::DrawBack(Graphics* param_1)
 {
 	// TODO
@@ -61,6 +64,7 @@ void LogicMgr::MouseUp(int param_1, int param_2, int param_3, bool param_4)
 	// TODO
 }
 
+// STUB: POPCAPGAME1 0x0043d6a0
 void LogicMgr::MouseWheel(int param_1)
 {
 	// TODO

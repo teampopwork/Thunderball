@@ -45,8 +45,8 @@ ThunderDialog::ThunderDialog(
 	SetLinesFont(GetFontById(ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp837,42",0x31)));
 
 	mButtonHeight = IMAGE_DLG_BUTTON3->mHeight / 3;
-	mYesButton = static_cast<DialogButton*>(MakeButtonCopy(mYesButton));
-	mNoButton = static_cast<DialogButton*>(MakeButtonCopy(mNoButton));
+	mYesButton = MakeButtonCopy(mYesButton);
+	mNoButton = MakeButtonCopy(mNoButton);
 	SetupButton(mYesButton, false);
 	SetupButton(mNoButton, false);
 
@@ -99,7 +99,7 @@ void ThunderDialog::DoScroll(int param_1)
 	}
 	mUnk0x150 = iVar1;
 
-	if (mUnk0x15C > 1) {
+	if (mUnk0x15C < 1) {
 		mY = -(mHeight);
 	} else {
 		mY = 600;

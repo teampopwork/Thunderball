@@ -55,12 +55,12 @@ bool TrophyMgr::ReadTrophyConfig(ConfigParser* theParser, TrophyInfo* theInfo)
 TrophyInfo* TrophyMgr::GetTrophyInfoById(int theId)
 {
 	// TODO
-	return nullptr;
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x0043d970
 TrophyPage* TrophyMgr::GetTrophyPage(int theId)
 {
 	// TODO
-	return nullptr;
+	return NULL;
 }

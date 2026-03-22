@@ -1,9 +1,9 @@
 #include "PlayerInfo.h"
+
 #include "DataSync.h"
 
-#include <SexyAppFramework/SexyApp.h>
 #include <SexyAppFramework/Buffer.h>
-
+#include <SexyAppFramework/SexyApp.h>
 #include <set>
 
 using namespace Sexy;
@@ -14,7 +14,7 @@ PlayerInfo::PlayerInfo()
 }
 
 // STUB: POPCAPGAME1 0x00462490
-PlayerInfo::PlayerInfo(PlayerInfo& param_1)
+PlayerInfo::PlayerInfo(const PlayerInfo& param_1)
 {
 }
 
@@ -27,39 +27,38 @@ PlayerInfo::~PlayerInfo()
 }
 
 // STUB: POPCAPGAME1 0x00403840
-void PlayerInfo::AddTotalStats(GameStats *theStats)
+void PlayerInfo::AddTotalStats(GameStats* theStats)
 {
 }
 
 // STUB: POPCAPGAME1 0x004fc300
-void PlayerInfo::AwardTrophy() 
+void PlayerInfo::AwardTrophy()
 {
 }
 
 // STUB: POPCAPGAME1 0x0049d670
-bool PlayerInfo::CheckTrophyTopScore(int trophyId, int theScore) 
+bool PlayerInfo::CheckTrophyTopScore(int trophyId, int theScore)
 {
-    return false;
+	return false;
 }
 
 // FUNCTION: POPCAPGAME1 0x00412940
-void PlayerInfo::DeleteSavedGame(SaveType theSaveType) 
+void PlayerInfo::DeleteSavedGame(GameMode theGameMode)
 {
-    std::string aGameName = GetSavedGameName(theSaveType);
+	std::string aGameName = GetSavedGameName(theGameMode);
 
-    if (!aGameName.empty())
-    {
-        gSexyApp->EraseFile(aGameName);
-    }
+	if (!aGameName.empty()) {
+		gSexyApp->EraseFile(aGameName);
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x004129c0
 void PlayerInfo::DeleteSavedGames()
 {
-    DeleteSavedGame(SaveType::ARCADE);
-    DeleteSavedGame(SaveType::STAGE);  
-    DeleteSavedGame(SaveType::TROPHY);
-    DeleteSavedGame(SaveType::DUEL);
+	DeleteSavedGame(GameMode::ARCADE);
+	DeleteSavedGame(GameMode::STAGE);
+	DeleteSavedGame(GameMode::TROPHY);
+	DeleteSavedGame(GameMode::DUEL);
 }
 
 // STUB: POPCAPGAME1 0x0041f860
@@ -68,27 +67,27 @@ void PlayerInfo::DeleteUserFiles()
 }
 
 // STUB: POPCAPGAME1 0x004037f0
-int PlayerInfo::GetAdventureEfficiencyBonus() 
+int PlayerInfo::GetAdventureEfficiencyBonus()
 {
-    return 0;
+	return 0;
 }
 
 // STUB: POPCAPGAME1 0x004037e0
-int PlayerInfo::GetMaxLevel() 
+int PlayerInfo::GetMaxLevel()
 {
-    return 0;
+	return 0;
 }
 
 // STUB: POPCAPGAME1 0x00412680
-std::string PlayerInfo::GetSavedGameName(SaveType theSaveType)
+std::string PlayerInfo::GetSavedGameName(GameMode theGameMode)
 {
-    return "";
+	return "";
 }
 
 // STUB: POPCAPGAME1 0x0040d110
-int PlayerInfo::GetTrophyTopScore(int trophyId) 
+int PlayerInfo::GetTrophyTopScore(int trophyId)
 {
-    return 0;
+	return 0;
 }
 
 // STUB: POPCAPGAME1 0x004037b0
@@ -102,174 +101,179 @@ void PlayerInfo::IsLevelUnlocked(int param_1, int param_2)
 }
 
 // STUB: POPCAPGAME1 0x004038f0
-bool PlayerInfo::IsTipSet(int tipId) 
+bool PlayerInfo::IsTipSet(int tipId)
 {
-    return false;
+	return false;
 }
 
 // FUNCTION: POPCAPGAME1 0x00403870
 bool PlayerInfo::JustBeatAdventure()
 {
-    if ((0 < mUnk0x48) && (mUnk0x30 == 11) && (mUnk0x34 == 0) && (mUnk0x208 == 0)) {
-        return true;
-    }
-    return false;
+	if ((0 < mUnk0x48) && (mUnk0x30 == 11) && (mUnk0x34 == 0) && (mUnk0x208 == 0)) {
+		return true;
+	}
+	return false;
 }
 
 // FUNCTION: POPCAPGAME1 0x004038a0
 bool PlayerInfo::JustStartingAdventure()
 {
-    if ((mUnk0x30 <= 0) && (mUnk0x34 == 0) && (mUnk0x208 == 0)) {
-        return true;
-    }
-    return false;
+	if ((mUnk0x30 <= 0) && (mUnk0x34 == 0) && (mUnk0x208 == 0)) {
+		return true;
+	}
+	return false;
 }
 
 // FUNCTION: POPCAPGAME1 0x00426bd0
 void PlayerInfo::LoadDetails()
 {
-    Buffer aBuffer;
-    try {
-        // STRING: POPCAPGAME1 0x005d72b0
-        if (gSexyApp->ReadBufferFromFile(GetAppDataFolder() + StrFormat("userdata/user%d.dat", mUnk0x24), &aBuffer)) 
-        {
-            DataReader aReader;
-            aReader.OpenMemory(aBuffer.GetDataPtr(), aBuffer.GetDataLen(), false);
-            DataSync aSync(aReader);
-            SyncDetails(&aSync);
-        }
-    } catch (...) {
-        Reset(false);
-    }
+	Buffer aBuffer;
+	try {
+		// STRING: POPCAPGAME1 0x005d72b0
+		if (gSexyApp->ReadBufferFromFile(GetAppDataFolder() + StrFormat("userdata/user%d.dat", mId), &aBuffer)) {
+			DataReader aReader;
+			aReader.OpenMemory(aBuffer.GetDataPtr(), aBuffer.GetDataLen(), false);
+			DataSync aSync(aReader);
+			SyncDetails(aSync);
+		}
+	}
+	catch (...) {
+		Reset(false);
+	}
 }
 
 // STUB: POPCAPGAME1 0x00421850
-void PlayerInfo::Reset(bool param_1) 
+void PlayerInfo::Reset(bool param_1)
 {
 }
 
 // FUNCTION: POPCAPGAME1 0x0041f820
 void PlayerInfo::RestartAdventure()
 {
-    mUnk0x204 = 0;
-    mUnk0x208 = 0;
-    mUnk0x20c = 0;
-    mUnk0x30 = 0;
-    mUnk0x34 = 0;
-    mUnk0x61 = true;
-    DeleteSavedGame(SaveType::ARCADE);
-    mUnk0xec = true;
+	mUnk0x204 = 0;
+	mUnk0x208 = 0;
+	mUnk0x20c = 0;
+	mUnk0x30 = 0;
+	mUnk0x34 = 0;
+	mUnk0x61 = true;
+	DeleteSavedGame(GameMode::ARCADE);
+	mUnk0xec = true;
 }
 
 // TEMPLATE: POPCAPGAME1 0x0040f340
-// std::operator+<char,std::char_traits<char>,std::allocator<char> >(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const &, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const &)
+// std::operator+<char,std::char_traits<char>,std::allocator<char> >(class std::basic_string<char, struct
+// std::char_traits<char>, class std::allocator<char>> const &, class std::basic_string<char, struct
+// std::char_traits<char>, class std::allocator<char>> const &)
 
 // FUNCTION: POPCAPGAME1 0x00426d60
 void PlayerInfo::SaveDetails()
 {
-    mUnk0xec = false;
-    DataWriter aWriter;
-    aWriter.OpenMemory(32);
-    DataSync aSync(aWriter);
-    SyncDetails(&aSync);
+	mUnk0xec = false;
+	DataWriter aWriter;
+	aWriter.OpenMemory(32);
+	DataSync aSync(aWriter);
+	SyncDetails(aSync);
 
-    // STRING: POPCAPGAME1 0x005d7c78
-    std::string aUserData = GetAppDataFolder() + "userdata";
-    MkDir(aUserData);
+	// STRING: POPCAPGAME1 0x005d7c78
+	std::string aUserData = GetAppDataFolder() + "userdata";
+	MkDir(aUserData);
 
-    gSexyApp->WriteBytesToFile(GetAppDataFolder() + StrFormat("userdata/user%d.dat", mUnk0x24), aWriter.mMemoryHandle, aWriter.mMemoryLength);
+	gSexyApp->WriteBytesToFile(
+		GetAppDataFolder() + StrFormat("userdata/user%d.dat", mId),
+		aWriter.mMemoryHandle,
+		aWriter.mMemoryLength
+	);
 }
 
 // FUNCTION: POPCAPGAME1 0x00426f00
 void PlayerInfo::SaveIfDirty()
 {
-    if (mUnk0xec) {
-        SaveDetails();
-    }
+	if (mUnk0xec) {
+		SaveDetails();
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x004036e0
 void PlayerInfo::SetColorblind(bool isColorblind)
 {
-    if (isColorblind != mUnk0x60) {
-        mUnk0x60 = isColorblind;
-        mUnk0xec = true;
-    }
+	if (isColorblind != mUnk0x60) {
+		mUnk0x60 = isColorblind;
+		mUnk0xec = true;
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x00403750
 void PlayerInfo::SetComputerPlayer(bool isComputer)
 {
-    if (mUnk0x4c != isComputer) {
-        mUnk0x4c = isComputer;
-        mUnk0xec = true;
-    }
+	if (mUnk0x4c != isComputer) {
+		mUnk0x4c = isComputer;
+		mUnk0xec = true;
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x00403770
-void PlayerInfo::SetComputerSkill(int theSkill) 
+void PlayerInfo::SetComputerSkill(int theSkill)
 {
-    if (mUnk0x50 != theSkill) {
-        mUnk0x50 = theSkill;
-        mUnk0xec = true;
-    }
+	if (mUnk0x50 != theSkill) {
+		mUnk0x50 = theSkill;
+		mUnk0xec = true;
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x00403700
 void PlayerInfo::SetSelCharacter(int theId)
 {
-    if (mUnk0x40 != theId) {
-        mUnk0x40 = theId;
-        mUnk0xec = true;
-    }
+	if (mUnk0x40 != theId) {
+		mUnk0x40 = theId;
+		mUnk0xec = true;
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x00403720
 void PlayerInfo::SetSelCharacters(int param_1, int param_2)
 {
-    if (mUnk0x40 != param_1) {
-        mUnk0x40 = param_1;
-        mUnk0xec = true;
-    }
-    if (mUnk0x44 != param_2) {
-        mUnk0x44 = param_2;
-        mUnk0xec = true;
-    }
+	if (mUnk0x40 != param_1) {
+		mUnk0x40 = param_1;
+		mUnk0xec = true;
+	}
+	if (mUnk0x44 != param_2) {
+		mUnk0x44 = param_2;
+		mUnk0xec = true;
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x00421a00
 void PlayerInfo::SubmitAdventureHighScore(int theScore)
 {
-    mAdventureScores.insert(theScore);
+	mAdventureScores.insert(theScore);
 
-    if (mAdventureScores.size() > 10) {
-        std::multiset<int>::iterator anIt;
-    
-        anIt = mAdventureScores.begin();
-        if (*anIt != theScore) 
-        {
-            mUnk0xec = true;
-        }
-        mAdventureScores.erase(anIt);
-        return;
-    }
-    mUnk0xec = true;
+	if (mAdventureScores.size() > 10) {
+		std::multiset<int>::iterator anIt;
+
+		anIt = mAdventureScores.begin();
+		if (*anIt != theScore) {
+			mUnk0xec = true;
+		}
+		mAdventureScores.erase(anIt);
+		return;
+	}
+	mUnk0xec = true;
 }
 
 // STUB: POPCAPGAME1 0x00426980
-int PlayerInfo::SyncDetails(DataSync* theSync) 
+int PlayerInfo::SyncDetails(DataSync& theSync)
 {
-    if (theSync->mReader != NULL) {
-        Reset(false);
-    }
+	if (theSync.mReader != NULL) {
+		Reset(false);
+	}
 
-    return 0;
+	return 0;
 }
 
 // FUNCTION: POPCAPGAME1 0x00403670
-void PlayerInfo::SyncSummary(DataSync* theSync)
+void PlayerInfo::SyncSummary(DataSync& theSync)
 {
-    theSync->SyncString(mUnk0x4);
-    theSync->SyncLong(mUnk0x20);
-    theSync->SyncLong(mUnk0x24);
+	theSync.SyncString(mName);
+	theSync.SyncLong(mUseSeq);
+	theSync.SyncLong(mId);
 }

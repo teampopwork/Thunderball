@@ -76,7 +76,7 @@ NewUserDialog::~NewUserDialog()
 // FUNCTION: POPCAPGAME1 0x00499d70
 void NewUserDialog::Draw(Graphics* g)
 {
-    if (mUnk0x188 == 0) {
+    if (!mUnk0x188) {
         ThunderDialog::Draw(g);
         DrawEditBox(g, mUnk0x180);
     } else {
@@ -107,10 +107,6 @@ void NewUserDialog::Draw(Graphics* g)
             DeferOverlay(0);
         }
     }
-
-    
-
-
 }
 
 // FUNCTION: POPCAPGAME1 0x00495530

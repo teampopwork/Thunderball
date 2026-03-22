@@ -11,6 +11,10 @@
 #include <SexyAppFramework/Rect.h>
 #include <SexyAppFramework/EditWidget.h>
 #include <SexyAppFramework/EditListener.h>
+#include <SexyAppFramework/Font.h>
+#include <SexyAppFramework/Insets.h>
+#include <SexyAppFramework/Dialog.h>
+#include <SexyAppFramework/WidgetManager.h>
 
 using namespace Sexy;
 
@@ -56,9 +60,45 @@ void Sexy::DrawScreenFrame(Graphics* g)
 	g->DrawImage(IMAGE_SCREENFRAMERIGHT, IMAGE_SCREENFRAMELEFT->mWidth + IMAGE_SCREENFRAMETOP->mWidth, 0);
 }
 
-// STUB: POPCAPGAME1 0x000040bc20
-void Sexy::PositionDialog(Dialog* param_1, int param_2, bool param_3, int param_4)
+// FUNCTION: POPCAPGAME1 0x0040bc20
+void Sexy::PositionDialog(Dialog* theDialog, int theWidth, bool param_3, int param_4)
 {
+	int theY = theDialog->mHeaderFont->StringWidth(theDialog->mDialogHeader) + theDialog->mContentInsets.mLeft + theDialog->mContentInsets.mRight + theDialog->mBackgroundInsets.mLeft + theDialog->mBackgroundInsets.mRight + 0x14;
+	if (theWidth < theY) {
+		theWidth = theY;
+	}
+
+	
+	WidgetManager* aWidgetManager = NULL;
+	if (gSexyApp->mDialogMap.size() != 0) {
+		aWidgetManager = gSexyApp->mDialogMap.begin()->second->mWidgetManager;
+	}
+
+	int aPreferredHeight = theDialog->GetPreferredHeight(theWidth);
+
+	int theX = 0;
+	if (aWidgetManager == NULL) {
+		if ((GetThunderballApp()->mDialogMap.size() != 0) || !param_3) {
+			theX = 400 - theWidth / 2;
+		} else if (theY < ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp142,731",300)) {
+			theX = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp145,737",0x122) - theWidth / 2;
+		} else {
+			// STRING: POPCAPGAME1 0x005d5ac0
+			theX = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp143,733",0x226) - theWidth;
+			// STRING: POPCAPGAME1 0x005d5a78
+			theY = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp144,734",0x32);
+		}
+	} else {
+		if ((aWidgetManager->mKeyDown[0x48] == 10) && (aWidgetManager->mKeyDown[0x94])) {
+	  		theY = aWidgetManager->mY + ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp140,723",0x8c);
+		} else {
+			theY = aWidgetManager->mY + ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp141,725",0);
+    	}
+
+		theX = aWidgetManager->mX / 2 - aWidgetManager->mWidth / 2;
+    }
+	
+	theDialog->Resize(theX, theY, theWidth, aPreferredHeight);
 }
 
 // FUNCTION: POPCAPGAME1 0x004936b0
@@ -1334,10 +1374,14 @@ void Sexy::SetupButton(DialogButton* theButton, bool param_2) {
 // FUNCTION: POPCAPGAME1 0x0041bc70
 ThunderButton* Sexy::MakeButton(int theId, ButtonListener* theListener, std::string const& theString, Image* theImage) 
 {
+	if (theImage == NULL) {
+    	theImage = IMAGE_DLG_BUTTON3;
+	}
+
 	ThunderButton* aBtn = new ThunderButton(theImage, theId, theListener);
 	aBtn->mLabel = theString;
 	aBtn->mWidth = aBtn->mComponentImage->mWidth;
-	aBtn->mHeight = aBtn->mComponentImage->mHeight;
+	aBtn->mHeight = aBtn->mComponentImage->mHeight / 3;
 
 	if (theImage == IMAGE_DLG_BROWNBUTTON1 || theImage == IMAGE_DLG_BROWNBUTTON2) {
 		aBtn->mUnk0x15c = 0;
@@ -1346,7 +1390,7 @@ ThunderButton* Sexy::MakeButton(int theId, ButtonListener* theListener, std::str
 	}
 
 	aBtn->mClickSound = SOUND_BUTTON1;
-	SetupButton(aBtn, false);
+	SetupButton(static_cast<DialogButton*>(aBtn), false);
 	return aBtn;
 }
 

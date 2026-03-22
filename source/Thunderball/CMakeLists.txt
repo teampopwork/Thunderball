@@ -1,21 +1,38 @@
 project(Thunderball LANGUAGES CXX)
 
 add_executable(popcapgame1 WIN32
-    ThunderCommon.cpp
-    ThunderballApp.cpp
-    ThunderButton.cpp
-    SimpleButton.cpp
-    ThunderCheckbox.cpp
-    ThunderDialog.cpp
-    WidgetMover.cpp
-    LoadingScreen.cpp
-    Res.cpp
-    Main.cpp
+    AdventureScreen.cpp
+    Board.cpp
+    CharacterMgr.cpp
+    ConfigParser.cpp
     DataSync.cpp
-    PlayerInfo.cpp
     GameStats.cpp
+    HelpScreen.cpp
+    LevelEditor.cpp
+    LoadTimer.cpp
+    LoadingScreen.cpp
+    Main.cpp
     MainMenu.cpp
     NewUserDialog.cpp
+    OptionsDialog.cpp
+    PlayerInfo.cpp
+    PhysObj.cpp
+    ProfileMgr.cpp
+    Res.cpp
+    SimpleButton.cpp
+    StageMgr.cpp
+    StatsMgr.cpp
+    StoryScreen.cpp
+    ThunderCommon.cpp
+    ThunderButton.cpp
+    ThunderCheckbox.cpp
+    ThunderDialog.cpp
+    ThunderballApp.cpp
+    TrophyMgr.cpp
+    TrophyScreen.cpp
+    UpsellScreen.cpp
+    UserDialog.cpp
+    WidgetMover.cpp
 )
 
 target_include_directories(popcapgame1 PRIVATE

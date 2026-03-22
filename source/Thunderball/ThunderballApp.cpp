@@ -7,6 +7,9 @@
 #include "NewUserDialog.h"
 #include "WidgetMover.h"
 #include "MainMenu.h"
+#include "LoadTimer.h"
+#include "PlayerInfo.h"
+#include "ProfileMgr.h"
 
 #include <SexyAppFramework/BassMusicInterface.h>
 #include <SexyAppFramework/ButtonWidget.h>
@@ -50,7 +53,9 @@ void ThunderballApp::Init()
 		WIN32_FIND_DATAA findData;
 		memset(&findData, 0, sizeof(findData));
 
+
 		std::string searchPath = GetAppDataFolder() + "userdata/*.*";
+		OutputDebugStringA(("Searching for: " + searchPath + "\n").c_str());
 
 		HANDLE hFind = FindFirstFileA(searchPath.c_str(), &findData);
 
@@ -105,13 +110,13 @@ void ThunderballApp::Init()
 
 	// mCharacterMgr->Load();
 	// mHighScoreMgr->Load();
-	// mProfileMgr->Load();
+	mProfileMgr->Load();
 	// mStageMgr->Load();
 	// mStatsMgr->Load();
 	// mEditStatsMgr->Load();
 	// mTrophyMgr->Load();
 
-	/*std::string aCurUserName;
+	std::string aCurUserName;
 	bool        registryReadSuccess = false;
 
 	if (mCurProfile == NULL) {
@@ -124,9 +129,9 @@ void ThunderballApp::Init()
 
 	if (mCurProfile == NULL) {
 		mCurProfile = mProfileMgr->GetAnyProfile();
-	}*/
+	}
 
-	if (!IsScreenSaver() /*|| mCurProfile != NULL*/) {
+	if (!IsScreenSaver() || mCurProfile != NULL) {
 		/*if (mStatsMgr->mWelcomeLabel.empty() && mCurProfile != NULL) {
 			mStatsMgr->mWelcomeLabel = mCurProfile->mName;
 		}*/
@@ -296,6 +301,7 @@ void ThunderballApp::DoConfirmRestartLevelDialog(int param_1)
 // FUNCTION: POPCAPGAME1 0x0040c3b0
 void ThunderballApp::DoCreateUserDialog()
 {
+	KillDialog(10);
 	NewUserDialog* aDialog = new NewUserDialog(this, false, true, mCurProfile != NULL);
 	int aPreferredHeight = aDialog->GetPreferredHeight(aDialog->mWidth);
 	if (mPrimaryThreadId == 0) {
@@ -809,7 +815,7 @@ void ThunderballApp::LoadingThreadCompleted()
 // FUNCTION: POPCAPGAME1 0x00421a70
 void ThunderballApp::LoadingThreadProc()
 {
-	// Group names found in the decompilation
+	OutputDebugStringA("LoadingThreadProc started\n");
 	const char* aGroups[] = {
 		"LoadingThread",
 		"Game",
@@ -823,20 +829,22 @@ void ThunderballApp::LoadingThreadProc()
 		"LuckySpin",
 		"Upsell"
 	};
-	int aNumGroups = sizeof(aGroups) / sizeof(aGroups[0]);
 
-	// 1. Calculate Total Tasks
-	// This allows the progress bar to know what "100%" is.
 	mNumLoadingThreadTasks = 0;
-	for (int i = 0; i < aNumGroups; i++) {
+	for (int i = 0; i < 11; i++) {
 		mNumLoadingThreadTasks += mResourceManager->GetNumResources(aGroups[i]);
 	}
 
-	// 2. Load Resources
-	for (int i = 0; i < aNumGroups; i++) {
+	LoadTimer aLoadTimer;
+	if (mLoadingScreen->mBallBounced) {
+		aLoadTimer.Begin();
+	}
+
+
+
+	for (int i = 0; i < 11; i++) {
 		mResourceManager->StartLoadResources(aGroups[i]);
 
-		// Load each resource in the group one by one
 		while (mResourceManager->LoadNextResource()) {
 			mCompletedLoadingThreadTasks++;
 			if (mShutdown) {
@@ -844,14 +852,12 @@ void ThunderballApp::LoadingThreadProc()
 			}
 		}
 
-		// Check for errors (missing files, etc)
 		if (mResourceManager->HadError()) {
 			ShowResourceError(false);
 			mLoadingFailed = true;
 			return;
 		}
 
-		// Bind the loaded resources to the global pointers in Res.cpp
 		if (!ExtractResourcesByName(mResourceManager, aGroups[i])) {
 			ShowResourceError(false);
 			mLoadingFailed = true;
@@ -859,14 +865,8 @@ void ThunderballApp::LoadingThreadProc()
 		}
 	}
 
-	// 3. Post-Load Generation
-	// These functions generate dynamic textures from the loaded assets.
 	CopyBrickTextures();
 	CopyPegTextures();
-
-	// Note: Decompilation calls MakeFeverStars(this) here,
-	// but it is not defined in your ThunderballApp.h.
-	// If you experience missing fever stars, you will need to add that function.
 	// MakeFeverStars();
 }
 
