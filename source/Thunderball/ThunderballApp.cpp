@@ -4,7 +4,12 @@
 #include "Res.h"
 #include "ThunderCommon.h"
 #include "ThunderDialog.h"
+#include "NewUserDialog.h"
 #include "WidgetMover.h"
+#include "MainMenu.h"
+#include "LoadTimer.h"
+#include "PlayerInfo.h"
+#include "ProfileMgr.h"
 
 #include <SexyAppFramework/BassMusicInterface.h>
 #include <SexyAppFramework/ButtonWidget.h>
@@ -12,6 +17,10 @@
 #include <SexyAppFramework/ResourceManager.h>
 #include <SexyAppFramework/SWTri.h>
 #include <SexyAppFramework/WidgetManager.h>
+#include <SexyAppFramework/SoundManager.h>
+
+// GLOBAL: POPCAPGAME1 0x00650a55
+static bool mColorblind;
 
 using namespace Sexy;
 
@@ -44,7 +53,9 @@ void ThunderballApp::Init()
 		WIN32_FIND_DATAA findData;
 		memset(&findData, 0, sizeof(findData));
 
+
 		std::string searchPath = GetAppDataFolder() + "userdata/*.*";
+		OutputDebugStringA(("Searching for: " + searchPath + "\n").c_str());
 
 		HANDLE hFind = FindFirstFileA(searchPath.c_str(), &findData);
 
@@ -99,13 +110,13 @@ void ThunderballApp::Init()
 
 	// mCharacterMgr->Load();
 	// mHighScoreMgr->Load();
-	// mProfileMgr->Load();
+	mProfileMgr->Load();
 	// mStageMgr->Load();
 	// mStatsMgr->Load();
 	// mEditStatsMgr->Load();
 	// mTrophyMgr->Load();
 
-	/*std::string aCurUserName;
+	std::string aCurUserName;
 	bool        registryReadSuccess = false;
 
 	if (mCurProfile == NULL) {
@@ -118,9 +129,9 @@ void ThunderballApp::Init()
 
 	if (mCurProfile == NULL) {
 		mCurProfile = mProfileMgr->GetAnyProfile();
-	}*/
+	}
 
-	if (!IsScreenSaver() /*|| mCurProfile != NULL*/) {
+	if (!IsScreenSaver() || mCurProfile != NULL) {
 		/*if (mStatsMgr->mWelcomeLabel.empty() && mCurProfile != NULL) {
 			mStatsMgr->mWelcomeLabel = mCurProfile->mName;
 		}*/
@@ -171,24 +182,75 @@ void ThunderballApp::CheckPlayMusic(bool param_1)
 }
 
 // STUB: POPCAPGAME1 0x004306e0
-int ThunderballApp::CheckSaveGame(bool param_1)
+bool ThunderballApp::CheckSaveGame(bool param_1)
 {
 	return 0;
 }
 
-// STUB: POPCAPGAME1 0x00423480
+// FUNCTION: POPCAPGAME1 0x00423480
 void ThunderballApp::CheckScrollOff(Widget* param_1, int param_2, bool param_3)
 {
+	if (param_1 != NULL) {
+		mWidgetMover->ScrollOff(param_1, param_2, param_3);
+		if (param_3) {
+			mUnk0x750 = param_2;
+		}
+	}
 }
 
-// STUB: POPCAPGAME1 0x004234f0
+// FUNCTION: POPCAPGAME1 0x004234f0
 void ThunderballApp::CleanupScreen(Widget* param_1)
 {
+	if (param_1 != NULL) {
+		if (mWidgetMover->WillRemove(param_1)) {
+			mWidgetMover->RemoveWidget(param_1);
+			mWidgetManager->RemoveWidget(param_1);
+			SafeDeleteWidget(param_1);
+		}
+	}
 }
 
-// STUB: POPCAPGAME1 0x00429390
+// FUNCTION: POPCAPGAME1 0x00429390
 void ThunderballApp::CleanupScreens(bool param_1)
 {
+	/*if (param_1) {
+		if (mBoard != NULL) {
+			if (mBoard->NeedSaveGame()) {
+				mBoard->SaveGame();
+			}
+			mBoard->NotifyRemoving();
+		}
+
+		CleanupScreen(mBoard);
+		mBoard = NULL;
+
+		CleanupScreen(mUpsellScreen);
+		mUpsellScreen = NULL;
+	}
+
+	CleanupScreen(mHelpScreen);
+	mHelpScreen = NULL;
+
+	CleanupScreen(mLevelScreen);
+	mLevelScreen = NULL;*/
+
+	CleanupScreen(mLoadingScreen);
+	mLoadingScreen = NULL;
+
+	CleanupScreen(mMainMenu);
+	mMainMenu = NULL;
+
+	/*CleanupScreen(mTrophyScreen);
+	mTrophyScreen = NULL;
+
+	CleanupScreen(mStoryScreen);
+	mStoryScreen = NULL;
+
+	CleanupScreen(mAdventureScreen);
+	mAdventureScreen = NULL;*/
+
+	KillDialog(1);
+	KillDialog(35);
 }
 
 // STUB: POPCAPGAME1 0x004081d0
@@ -236,13 +298,36 @@ void ThunderballApp::DoConfirmRestartLevelDialog(int param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x0040c3b0
+// FUNCTION: POPCAPGAME1 0x0040c3b0
 void ThunderballApp::DoCreateUserDialog()
 {
+	KillDialog(10);
+	NewUserDialog* aDialog = new NewUserDialog(this, false, true, mCurProfile != NULL);
+	int aPreferredHeight = aDialog->GetPreferredHeight(aDialog->mWidth);
+	if (mPrimaryThreadId == 0) {
+		aDialog->Resize((mWidth - aDialog->mWidth) / 2, (mHeight - aPreferredHeight) / 2, aDialog->mWidth, aPreferredHeight);
+		
+	}
+	else {
+		PositionDialog(aDialog, aDialog->mWidth, false, -1);
+	}
+
+	if (mMainMenu != NULL) {
+		aDialog->mX = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp202,3030",0x1e);
+		aDialog->mY = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp203,3031",0x1e);
+	}
+
+	aDialog->DoScroll(true);
+	AddDialog(10, aDialog);
 }
 
-// STUB: POPCAPGAME1 0x00405f20
-// ThunderDialog* ThunderballApp::DoDialogScroll(int, bool, const std::string&, const std::string&, const std::string&, int) { return NULL; }
+// FUNCTION: POPCAPGAME1 0x00405f20
+ThunderDialog* ThunderballApp::DoDialogScroll(int theId, bool isModal, const SexyString& theDialogHeader, const SexyString& theDialogLines, const SexyString& theDialogFooter, int theButtonMode)
+{
+	ThunderDialog* aDialog = new ThunderDialog(theId, isModal, theDialogHeader, theDialogLines, theDialogFooter, theButtonMode);
+	aDialog->DoScroll(true);
+	return aDialog;
+}
 
 // STUB: POPCAPGAME1 0x0040c210
 void ThunderballApp::DoOptionsDialog()
@@ -505,9 +590,6 @@ void ThunderballApp::ScrollOn(Widget* theWidget)
 	}
 }
 
-// GLOBAL: POPCAPGAME1 0x00650a55
-static bool mColorblind;
-
 // FUNCTION: POPCAPGAME1 0x0041c810
 bool ThunderballApp::SetColorblind(bool param_1)
 {
@@ -531,7 +613,7 @@ void ThunderballApp::SetExpired()
 void ThunderballApp::SetFeverVolume(double param_1)
 {
 	mFeverVolume = param_1;
-	if (mUnk0x77c == 0) {
+	if (mMainMenu == 0) {
 		SyncOdeVolume();
 	}
 }
@@ -549,7 +631,7 @@ void ThunderballApp::SetMusicSpeed(float param_1)
 // FUNCTION: POPCAPGAME1 0x00405900
 void ThunderballApp::SetMusicVolume(double theVolume)
 {
-	if (mUnk0x77c != 0) {
+	if (mMainMenu != 0) {
 		SexyApp::SetMusicVolume(theVolume);
 	}
 }
@@ -597,6 +679,49 @@ void ThunderballApp::ShowLoadingScreen()
 // STUB: POPCAPGAME1 0x0042d480
 void ThunderballApp::ShowMainMenu()
 {
+	mSoundManager->StopAllSounds();
+	CheckPlayMusic(false);
+	ResetTwoPlayerStats();
+
+	if (mMainMenu != 0) {
+		mMainMenu = 0;
+		CleanupScreens(true);
+		mWidgetManager->SetFocus(mMainMenu);
+		return;
+	}
+
+	mUnk0x750 = 3;
+	CheckScrollOff(this->mLoadingScreen,1,1);
+	/*CheckScrollOff(this,this->mLevelScreen,2,1);
+	CheckScrollOff(this,this->mTrophyScreen,2,1);
+	CheckScrollOff(this,this->mStoryScreen,2,1);
+	CheckScrollOff(this,this->mAdventureScreen,2,1);
+	CheckScrollOff(this,this->mBoard,2,1);*/
+
+	ThunderDialog* aDialog = static_cast<ThunderDialog*>(GetDialog(0x13));
+	if (aDialog != NULL) {
+		aDialog->mUnk0x158 = 0x28;
+	}
+
+
+	CleanupScreens(true);
+	FinishOptionsDialog(true, true);
+	if (TryExpire(false)) {
+		mMainMenu = new MainMenu(this);
+		mMainMenu->Resize(0, 0, mWidth, mHeight);
+		mWidgetManager->AddWidget(mMainMenu);
+		mWidgetManager->SetFocus(mMainMenu);
+		ScrollOn(mMainMenu);
+		BringDialogsToFront();
+		if (mCurProfile != NULL) {
+			DoCreateUserDialog();
+		}
+	}
+
+	
+
+
+
 }
 
 // STUB: POPCAPGAME1 0x0042fb00
@@ -690,7 +815,7 @@ void ThunderballApp::LoadingThreadCompleted()
 // FUNCTION: POPCAPGAME1 0x00421a70
 void ThunderballApp::LoadingThreadProc()
 {
-	// Group names found in the decompilation
+	OutputDebugStringA("LoadingThreadProc started\n");
 	const char* aGroups[] = {
 		"LoadingThread",
 		"Game",
@@ -704,20 +829,22 @@ void ThunderballApp::LoadingThreadProc()
 		"LuckySpin",
 		"Upsell"
 	};
-	int aNumGroups = sizeof(aGroups) / sizeof(aGroups[0]);
 
-	// 1. Calculate Total Tasks
-	// This allows the progress bar to know what "100%" is.
 	mNumLoadingThreadTasks = 0;
-	for (int i = 0; i < aNumGroups; i++) {
+	for (int i = 0; i < 11; i++) {
 		mNumLoadingThreadTasks += mResourceManager->GetNumResources(aGroups[i]);
 	}
 
-	// 2. Load Resources
-	for (int i = 0; i < aNumGroups; i++) {
+	LoadTimer aLoadTimer;
+	if (mLoadingScreen->mBallBounced) {
+		aLoadTimer.Begin();
+	}
+
+
+
+	for (int i = 0; i < 11; i++) {
 		mResourceManager->StartLoadResources(aGroups[i]);
 
-		// Load each resource in the group one by one
 		while (mResourceManager->LoadNextResource()) {
 			mCompletedLoadingThreadTasks++;
 			if (mShutdown) {
@@ -725,14 +852,12 @@ void ThunderballApp::LoadingThreadProc()
 			}
 		}
 
-		// Check for errors (missing files, etc)
 		if (mResourceManager->HadError()) {
 			ShowResourceError(false);
 			mLoadingFailed = true;
 			return;
 		}
 
-		// Bind the loaded resources to the global pointers in Res.cpp
 		if (!ExtractResourcesByName(mResourceManager, aGroups[i])) {
 			ShowResourceError(false);
 			mLoadingFailed = true;
@@ -740,14 +865,8 @@ void ThunderballApp::LoadingThreadProc()
 		}
 	}
 
-	// 3. Post-Load Generation
-	// These functions generate dynamic textures from the loaded assets.
 	CopyBrickTextures();
 	CopyPegTextures();
-
-	// Note: Decompilation calls MakeFeverStars(this) here,
-	// but it is not defined in your ThunderballApp.h.
-	// If you experience missing fever stars, you will need to add that function.
 	// MakeFeverStars();
 }
 
@@ -853,4 +972,11 @@ void ThunderballApp::ShutdownHook()
 void ThunderballApp::SwitchScreenMode(bool wantWindowed, bool is3d, bool force)
 {
 	SexyApp::SwitchScreenMode(wantWindowed, is3d, force);
+}
+
+
+// STUB: POPCAPGAME1 0x00405840
+bool ThunderballApp::meth_0x405840()
+{
+	return false;
 }

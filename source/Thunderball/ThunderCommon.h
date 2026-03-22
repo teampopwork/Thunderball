@@ -8,9 +8,15 @@
 namespace Sexy
 {
 class ButtonWidget;
+class EditWidget;
+class ButtonListener;
+class EditListener;
 class Image;
 class Graphics;
 class Dialog;
+class ThunderButton;
+class SimpleButton;
+class DialogButton;
 enum StyleShot;
 
 void SetButtonFontColor(int color);
@@ -23,6 +29,16 @@ bool SolveLinearSystem(float a, float b, float e, float c, float d, float f, flo
 float InterpValF(int currentTime, int phase1Duration, int phase2Duration, 
                       float startVal, float midVal, float endVal);
 int GetStyleShotScore(Sexy::StyleShot, bool, int);
+ThunderButton* MakeEmbeddedButton(int theId, ButtonListener *theListener, Image *theImage, bool param_4);
+ThunderButton* MakeButton(int theId, ButtonListener* theListener, std::string const& theString, Image* theImage);
+ThunderButton* MakePurpleButton(int theId, ButtonListener* theListener, std::string const& theString);
+SimpleButton* MakeSimpleButton(int theId, ButtonListener* theListener, Image* theImage, int param_4, int param_5);
+EditWidget* CreateEditWidget(int theId, EditListener* theListener);
+void SetupButton(DialogButton* theButton, bool param_2);
+void SetupEditWidget(EditWidget* theEditWidget);
+void DoNameWidthEnforce(EditWidget* theEditWidget);
+void DrawEditBox(Graphics* g, EditWidget* theEditWidget);
+ThunderButton* MakeButtonCopy(DialogButton* theButton);
 // 04896b0 DoDrawStat
 } // namespace Sexy
 

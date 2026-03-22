@@ -99,11 +99,11 @@ void TrophyScreen::DrawTrophyInfo(Graphics* g, int theId)
 DDImage* TrophyScreen::GetLevelImage(const std::string& theLevel)
 {
 	// TODO
-	return nullptr;
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x004979f0
-void TrophyScreen::meth_004979f0()
+void TrophyScreen::DrawImageAndRect(Graphics *g,Image *param_2,int param_3,int param_4,int param_5,int param_6)
 {
 	// TODO
 }

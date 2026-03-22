@@ -33,6 +33,8 @@ public:
 
 	void DrawBadge(Graphics* g, int theId);
 	void DrawTrophyInfo(Graphics* g, int theId);
+	void DrawImageAndRect(Graphics *g,Image *param_2,int param_3,int param_4,int param_5,int param_6);
+
 
 	DDImage* GetLevelImage(const std::string& theLevel);
 };

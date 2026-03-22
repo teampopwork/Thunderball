@@ -22,9 +22,9 @@ public:
 	virtual void ButtonDepress(int theId);
 
 	void StartGame();
-	void DrawHighScores(Graphics* g, int x, int y);
-	void DrawPersonalHighScores(Graphics* g, int x, int y);
-	void DrawStats(Graphics* g, int x, int y, bool param_1);
+	void DrawHighScores(Graphics* g, int theX, int theY);
+	void DrawPersonalHighScores(Graphics* g, int theX, int theY);
+	void DrawStats(Graphics* g, int theX, int theY, bool param_1);
 };
 } // namespace Sexy
 

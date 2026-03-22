@@ -19,7 +19,7 @@ ThunderButton::ThunderButton(Image* theComponentImage, int theId, ButtonListener
 	mOverAlphaFadeInSpeed = (double) 0x3fc999999999999a;
 
 	mUnk0x144 = 0xfffffc18;
-	mUnk0x138 = 0xffffffff;
+	mClickSound = 0xffffffff;
 	mUnk0x13c = 0xffffffff;
 	mUnk0x148 = 1;
 	mUnk0x15c = 0x11;

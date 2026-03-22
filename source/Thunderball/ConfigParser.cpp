@@ -29,7 +29,7 @@ void ConfigParser::SetThrowExceptions(bool on)
 void* ConfigParser::GetValParser()
 {
 	// TODO
-	return nullptr;
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x004be930

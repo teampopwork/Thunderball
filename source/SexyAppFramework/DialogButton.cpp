@@ -12,7 +12,7 @@ static int gDialogButtonColors[][3] = {
 	{132, 132, 132},
 	{212, 212, 212}};
 
-// SYNTHETIC: POPCAPGAME1 0x00548f60
+// FUNCTION: POPCAPGAME1 0x00548f60
 DialogButton::DialogButton(Image* theComponentImage, int theId, ButtonListener* theListener) :
 	ButtonWidget(theId, theListener)
 {

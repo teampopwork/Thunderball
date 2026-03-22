@@ -1,26 +1,26 @@
 #ifndef __PLAYERINFO_H__
 #define __PLAYERINFO_H__
 
-#include <string>
 #include <set>
+#include <string>
 
 namespace Sexy
 {
-struct DataSync;
-struct GameStats;
-enum SaveType {
+class DataSync;
+class GameStats;
+
+enum GameMode {
 	ARCADE = 1,
 	STAGE = 2,
 	DUEL = 3,
 	TROPHY = 4,
 };
 
-class PlayerInfo
-{
+class PlayerInfo {
 public:
-	std::string mUnk0x4;
-	int mUnk0x20;
-	int mUnk0x24;
+	std::string mName;    // +0x04
+	unsigned int mUseSeq; // +0x20
+	unsigned int mId;     // +0x24
 	int mUnk0x28;
 	int mUnk0x30;
 	int mUnk0x34;
@@ -38,18 +38,18 @@ public:
 	int mUnk0x20c;
 
 	PlayerInfo();
-	PlayerInfo(PlayerInfo& param_1);
+	PlayerInfo(const PlayerInfo& param_1);
 	virtual ~PlayerInfo();
 
-	void SyncSummary(DataSync* theSync);
-	int SyncDetails(DataSync* theSync);
+	void SyncSummary(DataSync& theSync);
+	int SyncDetails(DataSync& theSync);
 	void SaveDetails();
 	void SaveIfDirty();
 	void LoadDetails();
 	void DeleteUserFiles();
 
-	std::string GetSavedGameName(SaveType theSaveType);
-	void DeleteSavedGame(SaveType theSaveType);
+	std::string GetSavedGameName(GameMode theGameMode);
+	void DeleteSavedGame(GameMode theGameMode);
 	void DeleteSavedGames();
 
 	void RestartAdventure();
@@ -78,7 +78,6 @@ public:
 	void IsLevelUnlocked(int param_1, int param_2);
 
 	void Reset(bool param_1);
-
 };
 
 } // namespace Sexy

@@ -41,16 +41,16 @@ void AdventureScreen::StartGame()
 }
 
 // STUB: POPCAPGAME1 0x00488ec0
-void AdventureScreen::DrawHighScores(Graphics* g)
+void AdventureScreen::DrawHighScores(Graphics* g, int theX, int theY)
 {
 }
 
 // STUB: POPCAPGAME1 0x00489290
-void AdventureScreen::DrawPersonalHighScores(Graphics* g, int x, int y)
+void AdventureScreen::DrawPersonalHighScores(Graphics* g, int theX, int theY)
 {
 }
 
 // STUB: POPCAPGAME1 0x004897c0
-void AdventureScreen::DrawStats(Graphics* g, int x, int y, bool param_1)
+void AdventureScreen::DrawStats(Graphics* g, int theX, int theY, bool param_1)
 {
 }

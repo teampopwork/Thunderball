@@ -4,10 +4,30 @@
 #include <SexyAppFramework/CheckboxListener.h>
 #include <SexyAppFramework/Dialog.h>
 
+
 namespace Sexy
 {
-class ThunderDialog : public Dialog, public CheckboxListener {
+class Graphics;
+
+typedef void (*DrawFunc)(Graphics*);
+
+class ThunderDialog : public Dialog {
 public:
+	int mUnk0x150;
+	int mUnk0x154;
+	int mUnk0x158;
+	int mUnk0x15C;
+	bool mUnk0x160;
+	bool mUnk0x161;
+	bool mUnk0x162;
+	bool mUnk0x163;
+	int mUnk0x164;
+	int mUnk0x168;
+	int mUnk0x16C;
+	bool mUnk0x170;
+	DrawFunc mUnk0x174;
+
+
 	ThunderDialog(
 		int theId,
 		bool isModal,
@@ -20,8 +40,8 @@ public:
 	virtual ~ThunderDialog();
 
 	void CancelScroll();
-	void DoScroll(bool param_1);
-	void DoScrollOff(bool param_1);
+	void DoScroll(int param_1);
+	void DoScrollOff(int param_1);
 	void FinishScroll();
 	int GetLeft();
 	int GetRight();
@@ -33,7 +53,6 @@ public:
 	virtual void KeyDown(KeyCode theKey);
 	virtual void MouseDown(int x, int y, int theClickCount);
 	virtual void Update();
-	virtual void CheckboxChecked(int theId, bool checked);
 };
 } // namespace Sexy
 
