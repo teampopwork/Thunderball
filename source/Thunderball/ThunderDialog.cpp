@@ -8,6 +8,7 @@
 #include <SexyAppFramework/Graphics.h>
 #include <SexyAppFramework/SexyApp.h>
 #include <SexyAppFramework/Font.h>
+#include <SexyAppFramework/WidgetManager.h>
 
 using namespace Sexy;
 
@@ -182,32 +183,29 @@ void ThunderDialog::Draw(Graphics* g)
 	Dialog::Draw(g);
 
 	if (mUnk0x174 != NULL) {
-		mUnk0x174(g);
+		mUnk0x174(this, g);
 	}
 
 	if (mUnk0x163) {
-		int iVar3 = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp862,297",6) - (IMAGE_DLG_CONNECTOR->mHeight);
-		int iVar4 = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp863,300",0x1e);
-		int iVar5 = mY + IMAGE_DLG_SEGMENT->mHeight + iVar4;
+		Image* connector = IMAGE_DLG_CONNECTOR;
+		// STRING: POPCAPGAME1 0x005fcd20
+		int connect_y = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp862,297",6) - connector->mHeight;
 
-		while (-1 < iVar5) {
-			iVar5 = iVar4;
-
-			g->DrawImage(IMAGE_DLG_SEGMENT, 
-				ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp864,303",0) + (mWidth - IMAGE_DLG_SEGMENT->mWidth) / 2,
-				iVar5
+		Image* segment = IMAGE_DLG_SEGMENT;
+		// STRING: POPCAPGAME1 0x005fccd8
+		for (int y = connect_y - ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp863,300",0x1e); mY + segment->mHeight + y >= 0; y -= mUnk0x168) {
+			g->DrawImage(segment, 
+				// STRING: POPCAPGAME1 0x005fcc90
+				ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp864,303",0) + (mWidth - segment->mWidth) / 2,
+				y
 			);
-
-			iVar4 -= mUnk0x168;
-			iVar5 = mY + IMAGE_DLG_SEGMENT->mHeight + iVar4;
 		}
 
-		g->DrawImage(IMAGE_DLG_CONNECTOR, 
-				ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp864,303",0) + (mWidth - IMAGE_DLG_CONNECTOR->mWidth) / 2,
-				iVar3
+		g->DrawImage(connector, 
+			// STRING: POPCAPGAME1 0x005fcc48
+			ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp864,307",0) + (mWidth - connector->mWidth) / 2,
+			connect_y
 			);
-
-
 	}
 }
 
@@ -225,8 +223,149 @@ void ThunderDialog::MouseDown(int x, int y, int theClickCount)
 	}
 }
 
-// STUB: POPCAPGAME1 0x0049bf20
+// FUNCTION: POPCAPGAME1 0x0049bf20
 void ThunderDialog::Update()
 {
-	
+	Dialog::Update();
+
+	// STRING: POPCAPGAME1 0x00600a98
+	if (mUnk0x163 && ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp851,195", 0))
+	{
+		if (mUnk0x154 != 0xfffe7960)
+		{
+		}
+		else if (mUnk0x150 != 0xfffe7960)
+		{
+			if (mUnk0x168 < 0x23)
+			{
+				mUnk0x168 += 3;
+				if (mUnk0x168 > 0x23)
+					mUnk0x168 = 0x23;
+			}
+			else if (mUnk0x168 > 0x23)
+			{
+				mUnk0x168 -= 3;
+				if (mUnk0x168 < 0x23)
+					mUnk0x168 = 0x23;
+			}
+		}
+		else
+		{
+			// STRING: POPCAPGAME1 0x00600a50
+			int target = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp852,209", 0x23);
+			if (mY != mUnk0x16C)
+			{
+				int diff = mUnk0x150 - mUnk0x16C;
+				mUnk0x168 += Clamp(
+					// STRING: POPCAPGAME1 0x00600978
+					diff / ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp853,212", 5),
+					// STRING: POPCAPGAME1 0x006009c0
+					ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp854,212", -3),
+					// STRING: POPCAPGAME1 0x00600a08
+					ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp855,212", 3)
+				);
+				mUnk0x16C = mY;
+			}
+			else
+			{
+				if (mUnk0x168 != target)
+				{
+					if (mUnk0x168 < target)
+						mUnk0x168++;
+					else
+						mUnk0x168--;
+				}
+			}
+		}
+
+		// STRING: POPCAPGAME1 0x00600930
+		int max168 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp857,223", 0x28);
+		// STRING: POPCAPGAME1 0x006008e8
+		int min168 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp856,223", 0x14);
+		
+		int val = mUnk0x168;
+		if (val < min168)
+			mUnk0x168 = min168;
+		if (val > max168)
+			mUnk0x168 = max168;
+	}
+
+	if (mUnk0x150 != 0xfffe7960)
+	{
+		int targetY = mUnk0x150;
+		if (mUnk0x15C > 0)
+			targetY += mUnk0x164;
+
+		int diff = abs(mY - targetY);
+
+		int maxStep;
+		int minStep;
+		// STRING: POPCAPGAME1 0x006008a0
+		maxStep = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp860,234", 0x28);
+		// STRING: POPCAPGAME1 0x00600858
+		minStep = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp859,234", 10);
+		// STRING: POPCAPGAME1 0x00600810
+		int stepDiv = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp858,234", 5);
+
+		int step = diff / stepDiv;
+
+		if (step < minStep)
+			step = minStep;
+		else if (step > maxStep)
+			step = maxStep;
+
+		if (mUnk0x160 && mUnk0x162)
+			// STRING: POPCAPGAME1 0x006007c8
+			step = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp861,236", 0x28);
+
+		int newY = mY;
+		if (mUnk0x15C > 0)
+		{
+			newY -= step;
+			if (newY <= targetY)
+			{
+				newY = targetY;
+				mUnk0x150 = 0xfffe7960;
+			}
+		}
+		else
+		{
+			newY += step;
+			if (newY >= targetY)
+			{
+				newY = targetY;
+				if (mUnk0x164 > 0)
+				{
+					mUnk0x15C = -1;
+					mUnk0x164 = 0;
+				}
+				else
+				{
+					mUnk0x150 = 0xfffe7960;
+				}
+			}
+		}
+
+		mX += mUnk0x158;
+		Resize(mX, newY, mWidth, mHeight);
+
+		if (mUnk0x150 == 0xfffe7960)
+		{
+			mUnk0x16C = mY;
+			if (mUnk0x154 != 0xfffe7960)
+			{
+				mUnk0x150 = mUnk0x154;
+				mUnk0x154 = 0xfffe7960;
+			}
+			else if (mUnk0x160)
+			{
+				mWidgetManager->RemoveWidget(this);
+				if (mUnk0x161)
+					gSexyApp->SafeDeleteWidget(this);
+			}
+		}
+	}
+
+	if (mUnk0x170)
+		MarkDirty();
 }

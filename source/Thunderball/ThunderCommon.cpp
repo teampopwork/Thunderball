@@ -1453,3 +1453,13 @@ ThunderButton* Sexy::MakeButtonCopy(DialogButton* theButton) {
 		return aBtn;
 	}
 }
+
+// FUNCTION: POPCAPGAME1 0x004066f0
+int Sexy::Clamp(int val, int minVal, int maxVal)
+{
+	if (val < minVal)
+		return minVal;
+	if (val > maxVal)
+		return maxVal;
+	return val;
+}

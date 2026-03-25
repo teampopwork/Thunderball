@@ -39,6 +39,7 @@ void SetupEditWidget(EditWidget* theEditWidget);
 void DoNameWidthEnforce(EditWidget* theEditWidget);
 void DrawEditBox(Graphics* g, EditWidget* theEditWidget);
 ThunderButton* MakeButtonCopy(DialogButton* theButton);
+int Clamp(int val, int minVal, int maxVal);
 // 04896b0 DoDrawStat
 } // namespace Sexy
 

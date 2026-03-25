@@ -9,7 +9,8 @@ namespace Sexy
 {
 class Graphics;
 
-typedef void (*DrawFunc)(Graphics*);
+class ThunderDialog;
+typedef void (*DrawFunc)(ThunderDialog*, Graphics*);
 
 class ThunderDialog : public Dialog {
 public:
