@@ -8,14 +8,85 @@
 
 using namespace Sexy;
 
-// STUB: POPCAPGAME1 0x00429200
+// FUNCTION: POPCAPGAME1 0x00429200
 PlayerInfo::PlayerInfo()
 {
+	Reset(false);
 }
 
 // STUB: POPCAPGAME1 0x00462490
 PlayerInfo::PlayerInfo(const PlayerInfo& param_1)
 {
+}
+
+// FUNCTION: POPCAPGAME1 0x461680
+PlayerInfo& PlayerInfo::operator=(const PlayerInfo& other)
+{
+	mName.assign(other.mName, 0, (size_t)-1);
+	mUseSeq = other.mUseSeq;
+	mId = other.mId;
+	mUnk0x28 = other.mUnk0x28;
+	mUnk0x2c = other.mUnk0x2c;
+	mUnk0x30 = other.mUnk0x30;
+	mUnk0x34 = other.mUnk0x34;
+	mUnk0x38 = other.mUnk0x38;
+	mUnk0x3c = other.mUnk0x3c;
+	mUnk0x40 = other.mUnk0x40;
+	mUnk0x44 = other.mUnk0x44;
+	mUnk0x48 = other.mUnk0x48;
+	mUnk0x4c = other.mUnk0x4c;
+	mUnk0x50 = other.mUnk0x50;
+	mUnk0x54 = other.mUnk0x54;
+	mUnk0x58 = other.mUnk0x58;
+	mUnk0x5c = other.mUnk0x5c;
+	mUnk0x60 = other.mUnk0x60;
+	mUnk0x61 = other.mUnk0x61;
+	mUnk0x64 = other.mUnk0x64;
+	mUnk0x68 = other.mUnk0x68;
+	mUnk0x6c = other.mUnk0x6c;
+	mUnk0x70 = other.mUnk0x70;
+	mUnk0x74 = other.mUnk0x74;
+	mUnk0x78 = other.mUnk0x78;
+	mUnk0x7c = other.mUnk0x7c;
+	mUnk0x80 = other.mUnk0x80;
+	mUnk0x84 = other.mUnk0x84;
+	mUnk0x88 = other.mUnk0x88;
+	mUnk0x8c = other.mUnk0x8c;
+	mUnk0x90 = other.mUnk0x90;
+	mUnk0x94 = other.mUnk0x94;
+	mUnk0x98 = other.mUnk0x98;
+	mUnk0xb4 = other.mUnk0xb4;
+	mUnk0xd0 = other.mUnk0xd0;
+	mUnk0xec = other.mUnk0xec;
+	mUnk0xed = other.mUnk0xed;
+	mUnk0xee = other.mUnk0xee;
+	mUnk0xef = other.mUnk0xef;
+
+	if (&mAdventureScores != &other.mAdventureScores)
+		mAdventureScores = other.mAdventureScores;
+
+	if (&mUnk0xfc != &other.mUnk0xfc)
+		mUnk0xfc = other.mUnk0xfc;
+
+	if (&mUnk0x108 != &other.mUnk0x108)
+		mUnk0x108 = other.mUnk0x108;
+
+	mUnk0x114 = other.mUnk0x114;
+
+	if (&mUnk0x118 != &other.mUnk0x118)
+		mUnk0x118 = other.mUnk0x118;
+
+	mUnk0x124 = other.mUnk0x124;
+	mUnk0x128 = other.mUnk0x128;
+
+	mUnk0x12c = other.mUnk0x12c;
+	mUnk0x198 = other.mUnk0x198;
+
+	mUnk0x204 = other.mUnk0x204;
+	mUnk0x208 = other.mUnk0x208;
+	mUnk0x20c = other.mUnk0x20c;
+
+	return *this;
 }
 
 // SYNTHETIC: POPCAPGAME1 0x00429360
@@ -142,9 +213,59 @@ void PlayerInfo::LoadDetails()
 	}
 }
 
-// STUB: POPCAPGAME1 0x00421850
+// FUNCTION: POPCAPGAME1 0x00421850
 void PlayerInfo::Reset(bool param_1)
 {
+	mUnk0xec = true;
+	mUnk0xed = true;
+	mUnk0xee = true;
+	mUnk0x4c = true;
+	mUnk0x54 = 0;
+	mUnk0x60 = false;
+	mUnk0x61 = true;
+	mUnk0xef = false;
+	mUnk0x64 = 0;
+	mUnk0x68 = 0;
+	mUnk0x6c = 0;
+	mUnk0x50 = -1;
+	mUnk0x70 = 0;
+	mUnk0x74 = 0;
+	mUnk0x78 = 0;
+	mUnk0x7c = 0;
+	mUnk0x80 = 0;
+	mUnk0x84 = 0;
+	mUnk0x88 = 0;
+	mUnk0x8c = 0;
+	mUnk0x90 = 0;
+	mUnk0x94 = 0;
+	mUnk0x30 = -1;
+	mUnk0x28 = 0;
+	mUnk0x2c = 0;
+	mUnk0x34 = 0;
+	mUnk0x40 = 0;
+	mUnk0x44 = 1;
+	mUnk0x98 = "";
+	mUnk0xb4 = "";
+	mUnk0x38 = 0;
+	mUnk0x124 = 0;
+	mUnk0x128 = 0;
+	mUnk0x48 = 0;
+	mUnk0x58 = 0;
+	mUnk0x3c = 0;
+	mUnk0x20c = 0;
+	mUnk0x12c.Reset();
+	mUnk0x204 = 0;
+	mUnk0x208 = 0;
+
+	if (!param_1) {
+		mUnk0xfc.clear();
+		mUnk0x108.clear();
+		mUnk0x118.clear();
+		mAdventureScores.clear();
+		mUnk0x198.Reset();
+	}
+
+	mUnk0x114 = 0;
 }
 
 // FUNCTION: POPCAPGAME1 0x0041f820

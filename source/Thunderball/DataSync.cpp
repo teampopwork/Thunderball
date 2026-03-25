@@ -198,6 +198,7 @@ void DataWriter::WriteLong(ulong theValue)
 	WriteBytes(&theValue, sizeof(theValue));
 }
 
+// FUNCTION: POPCAPGAME1 0x004bbbb0
 void DataWriter::WriteShort(ushort theValue)
 {
 	WriteBytes(&theValue, sizeof(theValue));
