@@ -683,8 +683,9 @@ void ThunderballApp::ShowMainMenu()
 	CheckPlayMusic(false);
 	ResetTwoPlayerStats();
 
-	if (mMainMenu != 0) {
-		mMainMenu = 0;
+	MainMenu* aMainMenu = mMainMenu;
+	if (aMainMenu != 0) {
+		mMainMenu = NULL;
 		CleanupScreens(true);
 		mWidgetManager->SetFocus(mMainMenu);
 		return;
@@ -706,22 +707,17 @@ void ThunderballApp::ShowMainMenu()
 
 	CleanupScreens(true);
 	FinishOptionsDialog(true, true);
-	if (TryExpire(false)) {
+	if (!TryExpire(false)) {
 		mMainMenu = new MainMenu(this);
 		mMainMenu->Resize(0, 0, mWidth, mHeight);
 		mWidgetManager->AddWidget(mMainMenu);
 		mWidgetManager->SetFocus(mMainMenu);
 		ScrollOn(mMainMenu);
 		BringDialogsToFront();
-		if (mCurProfile != NULL) {
+		if (mCurProfile == NULL) {
 			DoCreateUserDialog();
 		}
 	}
-
-	
-
-
-
 }
 
 // STUB: POPCAPGAME1 0x0042fb00

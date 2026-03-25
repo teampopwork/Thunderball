@@ -19,7 +19,7 @@ public:
 	
 
 	int mUnk0x750;                    // +0x750 // part of SexyApp?
-	int mUnk0x760;                    // +0x760 // part of SexyApp?
+	int mUnk0x760;                    // +0x760 (GameMode)
 	int mUnk0x764;                    // +0x764
 	int mUnk0x768;                    // +0x768
 	int mMaxStage;                    // +0x770

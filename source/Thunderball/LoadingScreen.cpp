@@ -640,21 +640,21 @@ void LoadingScreen::Update()
 		mLightBeamCount = (int) (mLoadProgress * 25.0f);
 		MarkDirty();
 
-		if (mLoadProgress == 1.0f) {
+		if (mLoadProgress >= 1.0f) {
 			mPlayNowPulseCount = 1;
 
-			if (!mApp->IsScreenSaver() && !mApp->mUnk0x7b0) {
-				mPlayNowButton->SetVisible(true);
-				mShowDeluxe = true;
+			if (mApp->IsScreenSaver() || mApp->mUnk0x7b0 == 0) {
 				if (mApp->mUnk0x7b0) {
 					mApp->ShowReplay(false);
 					return;
 				}
-			}
-			else {
 				mApp->mUnk0x760 = 6;
 				mApp->ShowBoard(true, true);
 				return;
+			}
+			else {
+				mPlayNowButton->SetVisible(true);
+				mShowDeluxe = true;
 			}
 		}
 	}

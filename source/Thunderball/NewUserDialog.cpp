@@ -168,7 +168,7 @@ int NewUserDialog::GetPreferredHeight(int theWidth)
 void NewUserDialog::AddedToManager(WidgetManager* theWidgetManager)
 {
     ThunderDialog::AddedToManager(theWidgetManager);
-    AddWidget(mUnk0x180);
+    theWidgetManager->AddWidget(mUnk0x180);
     theWidgetManager->SetFocus(mUnk0x180);
 }
 
@@ -176,7 +176,7 @@ void NewUserDialog::AddedToManager(WidgetManager* theWidgetManager)
 void NewUserDialog::RemovedFromManager(WidgetManager* theWidgetManager)
 {
     ThunderDialog::RemovedFromManager(theWidgetManager);
-    RemoveWidget(mUnk0x180);
+    theWidgetManager->RemoveWidget(mUnk0x180);
 }
 
 // FUNCTION: POPCAPGAME1 0x004953a0
@@ -191,7 +191,7 @@ void NewUserDialog::Resize(int theX, int theY, int theWidth, int theHeight)
         );
 
         mUnk0x180->Resize(
-            ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp663,102",0x91),
+            ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp663,102",0x91) + mX,
             mY + ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp664,102",300),
             ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp665,102",0xb4),
             ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp666,102",0x20)
@@ -201,7 +201,7 @@ void NewUserDialog::Resize(int theX, int theY, int theWidth, int theHeight)
 
         mNoButton->Resize(
             ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp668,105",0x136) + mX,
-            ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp669,105",0x16d),
+            ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp669,105",0x16d) + mY,
             iVar5,
             mNoButton->mHeight
         );
