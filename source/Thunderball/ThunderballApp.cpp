@@ -1,6 +1,11 @@
 #include "ThunderballApp.h"
 
+#include "LoadTimer.h"
 #include "LoadingScreen.h"
+#include "MainMenu.h"
+#include "NewUserDialog.h"
+#include "PlayerInfo.h"
+#include "ProfileMgr.h"
 #include "Res.h"
 #include "ThunderCommon.h"
 #include "ThunderDialog.h"
@@ -18,6 +23,7 @@
 #include <SexyAppFramework/SWTri.h>
 #include <SexyAppFramework/WidgetManager.h>
 #include <SexyAppFramework/SoundManager.h>
+#include <SexyAppFramework/WidgetManager.h>
 
 // GLOBAL: POPCAPGAME1 0x00650a55
 static bool mColorblind;
@@ -31,6 +37,10 @@ ThunderballApp::ThunderballApp()
     mRegKey = "PopCap\\Peggle";
 
 	mWidgetMover = new WidgetMover();
+	mProfileMgr = new ProfileMgr();
+	mCurProfile = NULL;
+	mLoadingScreen = NULL;
+	mMainMenu = NULL;
 
 	mWidth = 800;
 	mHeight = 600;
@@ -42,6 +52,7 @@ ThunderballApp::ThunderballApp()
 ThunderballApp::~ThunderballApp()
 {
 	delete mWidgetMover;
+	delete mProfileMgr;
 }
 
 // STUB: POPCAPGAME1 0x0042ca30

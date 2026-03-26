@@ -37,7 +37,10 @@ public:
     virtual void Resize(int theX, int theY, int theWidth, int theHeight);
     virtual void EditWidgetText(int theId, const SexyString& theString);
     virtual bool AllowChar(int theId, SexyChar theChar);
-
+    
+    std::string GetName();
+    void SetName(const std::string& theName);
+    void DoApproved();
 };
 
 }

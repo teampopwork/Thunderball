@@ -5,6 +5,7 @@
 
 #include <SexyAppFramework/Common.h>
 #include <SexyAppFramework/SexyAppBase.h>
+#include <SexyAppFramework/SexyApp.h>
 
 using namespace Sexy;
 
@@ -37,13 +38,14 @@ void ProfileMgr::Load()
 {
 	Buffer aBuf;
 
-	if (gSexyAppBase->ReadBufferFromFile("userdata/users.dat", &aBuf)) {
-		DataReader aReader;
-		aReader.OpenMemory((void*) aBuf.GetDataPtr(), aBuf.GetDataLen(), false);
+	if (!gSexyApp->ReadBufferFromFile(GetAppDataFolder() + "userdata/users.dat", &aBuf))
+		return;
 
-		DataSync aSync(aReader);
-		SyncState(aSync);
-	}
+	DataReader aReader;
+	aReader.OpenMemory((void*) aBuf.GetDataPtr(), aBuf.GetDataLen(), false);
+
+	DataSync aSync(aReader);
+	SyncState(aSync);
 }
 
 // FUNCTION: POPCAPGAME1 0x004735f0
