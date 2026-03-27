@@ -1,6 +1,7 @@
 #include "PlayerInfo.h"
 
 #include "DataSync.h"
+#include "ConstEnums.h"
 
 #include <SexyAppFramework/Buffer.h>
 #include <SexyAppFramework/SexyApp.h>
@@ -126,9 +127,9 @@ void PlayerInfo::DeleteSavedGame(GameMode theGameMode)
 // FUNCTION: POPCAPGAME1 0x004129c0
 void PlayerInfo::DeleteSavedGames()
 {
-	DeleteSavedGame(GameMode::ARCADE);
-	DeleteSavedGame(GameMode::STAGE);
-	DeleteSavedGame(GameMode::TROPHY);
+	DeleteSavedGame(GameMode::ADVENTURE);
+	DeleteSavedGame(GameMode::QUICK_PLAY);
+	DeleteSavedGame(GameMode::CHALLENGE);
 	DeleteSavedGame(GameMode::DUEL);
 }
 
@@ -277,7 +278,7 @@ void PlayerInfo::RestartAdventure()
 	mUnk0x30 = 0;
 	mUnk0x34 = 0;
 	mUnk0x61 = true;
-	DeleteSavedGame(GameMode::ARCADE);
+	DeleteSavedGame(GameMode::ADVENTURE);
 	mUnk0xec = true;
 }
 
