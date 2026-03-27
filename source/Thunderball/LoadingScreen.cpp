@@ -244,11 +244,11 @@ void LoadingScreen::ButtonDepress(int theId)
 		}
 
 		if (mWidgetManager->mKeyDown[0x44]) {
-			mApp->mUnk0x760 = 3;
+			mApp->mGameMode = GameMode::DUEL;
 		}
 
 		if (mApp->mAdd8BitMaxTable[0x18] == '\0') {
-			mApp->mUnk0x760 = 2;
+			mApp->mGameMode = GameMode::QUICK_PLAY;
 			QuickPlay();
 			mApp->ShowBoard(true, true);
 			return;
@@ -648,7 +648,7 @@ void LoadingScreen::Update()
 					mApp->ShowReplay(false);
 					return;
 				}
-				mApp->mUnk0x760 = 6;
+				mApp->mGameMode = GameMode::DEMO;
 				mApp->ShowBoard(true, true);
 				return;
 			}

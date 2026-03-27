@@ -3,9 +3,11 @@
 #include "Res.h"
 #include "SimpleButton.h"
 #include "ThunderButton.h"
+#include "ThunderCheckbox.h"
 #include "ThunderballApp.h"
 
 #include <SexyAppFramework/ButtonListener.h>
+#include <SexyAppFramework/CheckboxListener.h>
 #include <SexyAppFramework/ButtonWidget.h>
 #include <SexyAppFramework/Dialog.h>
 #include <SexyAppFramework/EditListener.h>

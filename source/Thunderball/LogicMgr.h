@@ -11,9 +11,6 @@ class PhysObj;
 class Hole;
 class DataSync;
 class KeyCode;
-enum PowerupType : int;
-enum StyleShot : int;
-enum LogicState : int;
 
 class LogicMgr {
 public:

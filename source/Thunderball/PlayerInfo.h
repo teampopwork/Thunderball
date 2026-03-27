@@ -7,18 +7,12 @@
 #include <utility>
 #include <SexyAppFramework/SexyAppBase.h>
 #include "GameStats.h"
+#include "ConstEnums.h"
 
 namespace Sexy
 {
 class DataSync;
 class GameStats;
-
-enum GameMode {
-	ARCADE = 1,
-	STAGE = 2,
-	DUEL = 3,
-	TROPHY = 4,
-};
 
 class PlayerInfo {
 public:

@@ -11,12 +11,14 @@ class ButtonWidget;
 class EditWidget;
 class ButtonListener;
 class EditListener;
+class CheckboxListener;
 class Image;
 class Graphics;
 class Dialog;
 class ThunderButton;
 class SimpleButton;
 class DialogButton;
+class ThunderCheckbox;
 enum StyleShot;
 
 void SetButtonFontColor(int color);
@@ -40,6 +42,8 @@ void DoNameWidthEnforce(EditWidget* theEditWidget);
 void DrawEditBox(Graphics* g, EditWidget* theEditWidget);
 ThunderButton* MakeButtonCopy(DialogButton* theButton);
 int Clamp(int val, int minVal, int maxVal);
+ThunderCheckbox* MakeCheckbox(int theId, CheckboxListener* theListener, int param_3);
+ThunderCheckbox* MakeCheckbox2(int theId, CheckboxListener* theListener, const std::string& theString, int param_4);
 // 04896b0 DoDrawStat
 } // namespace Sexy
 

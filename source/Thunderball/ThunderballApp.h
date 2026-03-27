@@ -1,6 +1,7 @@
 #ifndef __THUNDERBALLAPP_H__
 #define __THUNDERBALLAPP_H__
 
+#include "ConstEnums.h"
 #include <SexyAppFramework/SexyApp.h>
 
 namespace Sexy
@@ -20,7 +21,7 @@ public:
 	
 
 	int mUnk0x750;                    // +0x750 // part of SexyApp?
-	int mUnk0x760;                    // +0x760 (GameMode)
+	GameMode mGameMode;               // +0x760
 	int mUnk0x764;                    // +0x764
 	int mUnk0x768;                    // +0x768
 	int mMaxStage;                    // +0x770

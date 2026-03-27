@@ -239,7 +239,7 @@ void MainMenu::ButtonDepress(int theId)
 			return;
 		}
 
-		mApp->mUnk0x760 = 1;
+		mApp->mGameMode = GameMode::ADVENTURE;
 		mApp->mUnk0x764 = mX;
 		mApp->mUnk0x768 = mY;
 
@@ -249,21 +249,21 @@ void MainMenu::ButtonDepress(int theId)
 		}
 		break;
 	case 1:
-		mApp->mUnk0x760 = 2;
+		mApp->mGameMode = GameMode::QUICK_PLAY;
 		if (mApp->CheckSaveGame(true)) {
 			StartGame();
 			return;
 		}
 		break;
 	case 2:
-		mApp->mUnk0x760 = 3;
+		mApp->mGameMode = GameMode::DUEL;
 		if (mApp->CheckSaveGame(true)) {
 			StartGame();
 			return;
 		}
 		break;
 	case 3:
-		mApp->mUnk0x760 = 4;
+		mApp->mGameMode = GameMode::CHALLENGE;
 		if (mApp->CheckSaveGame(true)) {
 			StartGame();
 			return;
@@ -292,7 +292,7 @@ void MainMenu::ButtonDepress(int theId)
 			return;
 		}
 
-		mApp->mUnk0x760 = 6;
+		mApp->mGameMode = GameMode::DEMO;
 		mApp->ShowBoard(true, true);
 		break;
 	case 7:
@@ -501,8 +501,8 @@ void MainMenu::SetCurBubble(int param_1, int param_2)
 // FUNCTION: POPCAPGAME1 0x004a9190
 void MainMenu::StartGame()
 {
-	switch (mApp->mUnk0x760) {
-	case 1:
+	switch (mApp->mGameMode) {
+	case GameMode::ADVENTURE:
 		if (mApp->mCurProfile != NULL && (0 < mApp->mCurProfile->mUnk0x48)) {
 			if (mApp->mCurProfile->JustBeatAdventure()) {
 				mApp->mCurProfile->RestartAdventure();
@@ -514,9 +514,9 @@ void MainMenu::StartGame()
 
 		mApp->StartAdventureGame();
 		return;
-	case 2:
-	case 3:
-		if (mApp->mUnk0x760 == 3 && mApp->mCurProfile != NULL && (mApp->mCurProfile->mUnk0x28 < 1)) {
+	case GameMode::QUICK_PLAY:
+	case GameMode::DUEL:
+		if (mApp->mGameMode == GameMode::DUEL && mApp->mCurProfile != NULL && (mApp->mCurProfile->mUnk0x28 < 1)) {
 			DoNotYet(
 				std::string(
 					"^FFFF00^DUEL MODE LOCKED!^oldclr^\nThis mode lets you compete against a friend or the "
@@ -534,7 +534,7 @@ void MainMenu::StartGame()
 
 		mApp->ShowLevelScreen(false);
 		return;
-	case 4:
+	case GameMode::CHALLENGE:
 		if ((mApp->mCurProfile != NULL && (mApp->mCurProfile->mUnk0x48 <= 0)) ||
 			(mApp->IsLevelLockedTrial() && !mApp->IsRegistered())) {
 			DoNotYet(
@@ -756,7 +756,7 @@ void MainMenu::Update()
 	if (ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\MainMenu.cpp605,621", false) ||
 		mApp->mUnk0x83C && mApp->IsRegistered()) {
 		mApp->mUnk0x83C = false;
-		mApp->mUnk0x760 = 1;
+		mApp->mGameMode = GameMode::ADVENTURE;
 		mApp->mUnk0x764 = mApp->mCurProfile->mUnk0x30;
 		mApp->mUnk0x768 = mApp->mCurProfile->mUnk0x34;
 		StartGame();
