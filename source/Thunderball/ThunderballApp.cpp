@@ -7,21 +7,16 @@
 #include "PlayerInfo.h"
 #include "ProfileMgr.h"
 #include "Res.h"
+#include "StatsMgr.h"
 #include "ThunderCommon.h"
 #include "ThunderDialog.h"
-#include "NewUserDialog.h"
 #include "WidgetMover.h"
-#include "MainMenu.h"
-#include "LoadTimer.h"
-#include "PlayerInfo.h"
-#include "ProfileMgr.h"
 
 #include <SexyAppFramework/BassMusicInterface.h>
 #include <SexyAppFramework/ButtonWidget.h>
 #include <SexyAppFramework/Debug.h>
 #include <SexyAppFramework/ResourceManager.h>
 #include <SexyAppFramework/SWTri.h>
-#include <SexyAppFramework/WidgetManager.h>
 #include <SexyAppFramework/SoundManager.h>
 #include <SexyAppFramework/WidgetManager.h>
 
@@ -34,7 +29,7 @@ using namespace Sexy;
 ThunderballApp::ThunderballApp()
 {
 	mTitle = "Peggle Deluxe " + mProductVersion;
-    mRegKey = "PopCap\\Peggle";
+	mRegKey = "PopCap\\Peggle";
 
 	mWidgetMover = new WidgetMover();
 	mProfileMgr = new ProfileMgr();
@@ -45,7 +40,6 @@ ThunderballApp::ThunderballApp()
 	mWidth = 800;
 	mHeight = 600;
 	mAutoEnable3D = true;
-
 }
 
 // STUB: POPCAPGAME1 0x00431340
@@ -64,9 +58,7 @@ void ThunderballApp::Init()
 		WIN32_FIND_DATAA findData;
 		memset(&findData, 0, sizeof(findData));
 
-
 		std::string searchPath = GetAppDataFolder() + "userdata/*.*";
-		OutputDebugStringA(("Searching for: " + searchPath + "\n").c_str());
 
 		HANDLE hFind = FindFirstFileA(searchPath.c_str(), &findData);
 
@@ -128,7 +120,7 @@ void ThunderballApp::Init()
 	// mTrophyMgr->Load();
 
 	std::string aCurUserName;
-	bool        registryReadSuccess = false;
+	bool registryReadSuccess = false;
 
 	if (mCurProfile == NULL) {
 		registryReadSuccess = RegistryReadString("CurUser", &aCurUserName);
@@ -274,9 +266,73 @@ void ThunderballApp::CopyPegTextures()
 {
 }
 
-// STUB: POPCAPGAME1 0x004302a0
-void ThunderballApp::DialogButtonDepress(int param_1, int param_2)
+// FUNCTION: POPCAPGAME1 0x004302a0
+void ThunderballApp::DialogButtonDepress(int theDialogId, int theButtonId)
 {
+	bool bVar1 = theButtonId == 1000;
+	switch (theDialogId) {
+		default:
+			DoScrollOff(theDialogId);
+			break;
+		case 2:
+			FinishConfirmDeleteUserDialog(bVar1);
+			break;
+		case 4:
+			FinishConfirmMainMenuDialog(bVar1);
+			break;
+		case 5:
+			FinishConfirmQuitDialog(bVar1);
+			break;
+		case 6:
+			FinishConfirmRestartAdventureDialog(bVar1);
+			break;
+		case 7:
+			FinishConfirmNewChallengeDialog(bVar1);
+			break;
+		case 8:
+			FinishConfirmRestartLevelDialog(bVar1);
+			break;
+		case 10:
+			FinishCreateUserDialog(bVar1);
+			break;
+		case 0xb:
+			FinishNameErrorDialog(0xb);
+			break;
+		case 0x15:
+			FinishNameErrorDialog(0x15);
+		case 0xd:
+			DoScrollOff(0xd);
+			/*if (mBoard != NULL) {
+				mBoard->mUnk0xea = 0;
+			}*/
+			break;
+		case 0xe:
+			FinishTipDialog(bVar1);
+			break;
+		case 0x10:
+			FinishHighScoreEntryDialog(bVar1);
+			break;
+		case 0x13:
+			FinishOptionsDialog(bVar1, true);
+			break;
+		case 0x14:
+			FinishRenameUserDialog(bVar1);
+			break;
+		case 0x18:
+			FinishUserDialog(bVar1);
+			break;
+		case 0x1b:
+		case 0x22:
+			KillDialog(theDialogId);
+			/*if (mBoard != NULL) {
+				mBoard->Pause(false);
+				mWidgetManager->SetFocus(mBoard);
+				if (mBoard->mUnk0xc5 != 0) {
+					mBoard->DoReplayFileDialog();2
+				}
+			}*/
+			break;
+	}
 }
 
 // STUB: POPCAPGAME1 0x0041d260
@@ -316,16 +372,20 @@ void ThunderballApp::DoCreateUserDialog()
 	NewUserDialog* aDialog = new NewUserDialog(this, false, true, mCurProfile != NULL);
 	int aPreferredHeight = aDialog->GetPreferredHeight(aDialog->mWidth);
 	if (mPrimaryThreadId == 0) {
-		aDialog->Resize((mWidth - aDialog->mWidth) / 2, (mHeight - aPreferredHeight) / 2, aDialog->mWidth, aPreferredHeight);
-		
+		aDialog->Resize(
+			(mWidth - aDialog->mWidth) / 2,
+			(mHeight - aPreferredHeight) / 2,
+			aDialog->mWidth,
+			aPreferredHeight
+		);
 	}
 	else {
 		PositionDialog(aDialog, aDialog->mWidth, false, -1);
 	}
 
 	if (mMainMenu != NULL) {
-		aDialog->mX = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp202,3030",0x1e);
-		aDialog->mY = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp203,3031",0x1e);
+		aDialog->mX = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp202,3030", 0x1e);
+		aDialog->mY = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp203,3031", 0x1e);
 	}
 
 	aDialog->DoScroll(true);
@@ -333,9 +393,17 @@ void ThunderballApp::DoCreateUserDialog()
 }
 
 // FUNCTION: POPCAPGAME1 0x00405f20
-ThunderDialog* ThunderballApp::DoDialogScroll(int theId, bool isModal, const SexyString& theDialogHeader, const SexyString& theDialogLines, const SexyString& theDialogFooter, int theButtonMode)
+ThunderDialog* ThunderballApp::DoDialogScroll(
+	int theId,
+	bool isModal,
+	const SexyString& theDialogHeader,
+	const SexyString& theDialogLines,
+	const SexyString& theDialogFooter,
+	int theButtonMode
+)
 {
-	ThunderDialog* aDialog = new ThunderDialog(theId, isModal, theDialogHeader, theDialogLines, theDialogFooter, theButtonMode);
+	ThunderDialog* aDialog =
+		new ThunderDialog(theId, isModal, theDialogHeader, theDialogLines, theDialogFooter, theButtonMode);
 	aDialog->DoScroll(true);
 	return aDialog;
 }
@@ -421,9 +489,80 @@ void ThunderballApp::FinishContinueDialog(bool param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x00427830
+// FUNCTION: POPCAPGAME1 0x00427830
 void ThunderballApp::FinishCreateUserDialog(bool param_1)
 {
+	NewUserDialog* aDialog = (NewUserDialog*) GetDialog(10);
+	if (aDialog == NULL) {
+		return;
+	}
+
+	std::string aName = aDialog->GetName();
+	if (!param_1 || !aName.empty()) {
+		if (mCurProfile == NULL && (!param_1 || aName.empty())) {
+			DoDialogScroll(
+				11,
+				true,
+				"Enter Your Name",
+				"Please enter your name to create a new user profile for storing high score data and game progress.",
+				"OK",
+				3
+			);
+			return;
+		}
+		else if (!param_1) {
+			DoScrollOff(10);
+			return;
+		}
+
+		PlayerInfo* pProfile = mProfileMgr->AddProfile(aName);
+		if (pProfile == NULL) {
+			DoDialogScroll(
+				11,
+				true,
+				"Name Conflict",
+				"The name you entered is already being used.  Please enter a unique player name.",
+				"OK",
+				3
+			);
+		}
+		else {
+			mProfileMgr->Save();
+			if (mCurProfile != NULL) {
+				mCurProfile->SaveIfDirty();
+			}
+
+			mCurProfile = pProfile;
+
+			if (mStatsMgr->mWelcomeLabel.empty()) {
+				mStatsMgr->mWelcomeLabel = pProfile->mName;
+			}
+
+			mWidgetManager->MarkAllDirty();
+			if (!aDialog->mUnk0x188) {
+				DoScrollOff(24);
+				DoScrollOff(10);
+			}
+			else {
+				aDialog->DoApproved();
+			}
+
+			if (mMainMenu != NULL) {
+				mMainMenu->SyncPlayerInfo();
+				mWidgetManager->SetFocus(mMainMenu);
+			}
+		}
+	}
+	else {
+		DoDialogScroll(
+			11,
+			true,
+			"Enter Your Name",
+			"Please enter your name to create a new user profile for storing high score data and game progress.",
+			"OK",
+			3
+		);
+	}
 }
 
 // STUB: POPCAPGAME1 0x0040c590
@@ -703,7 +842,7 @@ void ThunderballApp::ShowMainMenu()
 	}
 
 	mUnk0x750 = 3;
-	CheckScrollOff(this->mLoadingScreen,1,1);
+	CheckScrollOff(this->mLoadingScreen, 1, 1);
 	/*CheckScrollOff(this,this->mLevelScreen,2,1);
 	CheckScrollOff(this,this->mTrophyScreen,2,1);
 	CheckScrollOff(this,this->mStoryScreen,2,1);
@@ -714,7 +853,6 @@ void ThunderballApp::ShowMainMenu()
 	if (aDialog != NULL) {
 		aDialog->mUnk0x158 = 0x28;
 	}
-
 
 	CleanupScreens(true);
 	FinishOptionsDialog(true, true);
@@ -847,8 +985,6 @@ void ThunderballApp::LoadingThreadProc()
 		aLoadTimer.Begin();
 	}
 
-
-
 	for (int i = 0; i < 11; i++) {
 		mResourceManager->StartLoadResources(aGroups[i]);
 
@@ -980,7 +1116,6 @@ void ThunderballApp::SwitchScreenMode(bool wantWindowed, bool is3d, bool force)
 {
 	SexyApp::SwitchScreenMode(wantWindowed, is3d, force);
 }
-
 
 // STUB: POPCAPGAME1 0x00405840
 bool ThunderballApp::meth_0x405840()

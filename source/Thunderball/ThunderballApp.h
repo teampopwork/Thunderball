@@ -12,6 +12,7 @@ class LoadingScreen;
 class MainMenu;
 class ThunderDialog;
 class ProfileMgr;
+class StatsMgr;
 
 // VTABLE: POPCAPGAME1 0x005d7cb8
 class ThunderballApp : public SexyApp {
@@ -40,7 +41,7 @@ public:
 									  // HighScoreMgr* mHighScoreMgr; // +0x848
 	ProfileMgr*   mProfileMgr;   // +0x850
 									  // StageMgr*     mStageMgr;     // +0x858
-									  // StatsMgr*	 mStatsMgr;     // +0x85C
+	StatsMgr*	 mStatsMgr;     // +0x85C
 									  // StatsMgr*	 mEditStatsMgr;    // +0x860
 									  // TrophyMgr*    mTrophyMgr;    // +0x864
 	WidgetMover* mWidgetMover;        // +0x868

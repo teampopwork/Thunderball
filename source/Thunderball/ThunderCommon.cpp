@@ -1,19 +1,19 @@
 #include "ThunderCommon.h"
 
 #include "Res.h"
-#include "ThunderballApp.h"
-#include "ThunderButton.h"
 #include "SimpleButton.h"
+#include "ThunderButton.h"
+#include "ThunderballApp.h"
 
-#include <SexyAppFramework/ButtonWidget.h>
 #include <SexyAppFramework/ButtonListener.h>
-#include <SexyAppFramework/Graphics.h>
-#include <SexyAppFramework/Rect.h>
-#include <SexyAppFramework/EditWidget.h>
-#include <SexyAppFramework/EditListener.h>
-#include <SexyAppFramework/Font.h>
-#include <SexyAppFramework/Insets.h>
+#include <SexyAppFramework/ButtonWidget.h>
 #include <SexyAppFramework/Dialog.h>
+#include <SexyAppFramework/EditListener.h>
+#include <SexyAppFramework/EditWidget.h>
+#include <SexyAppFramework/Font.h>
+#include <SexyAppFramework/Graphics.h>
+#include <SexyAppFramework/Insets.h>
+#include <SexyAppFramework/Rect.h>
 #include <SexyAppFramework/WidgetManager.h>
 
 using namespace Sexy;
@@ -63,12 +63,13 @@ void Sexy::DrawScreenFrame(Graphics* g)
 // FUNCTION: POPCAPGAME1 0x0040bc20
 void Sexy::PositionDialog(Dialog* theDialog, int theWidth, bool param_3, int param_4)
 {
-	int theY = theDialog->mHeaderFont->StringWidth(theDialog->mDialogHeader) + theDialog->mContentInsets.mLeft + theDialog->mContentInsets.mRight + theDialog->mBackgroundInsets.mLeft + theDialog->mBackgroundInsets.mRight + 0x14;
+	int theY = theDialog->mHeaderFont->StringWidth(theDialog->mDialogHeader) + theDialog->mContentInsets.mLeft +
+			   theDialog->mContentInsets.mRight + theDialog->mBackgroundInsets.mLeft +
+			   theDialog->mBackgroundInsets.mRight + 0x14;
 	if (theWidth < theY) {
 		theWidth = theY;
 	}
 
-	
 	WidgetManager* aWidgetManager = NULL;
 	if (gSexyApp->mDialogMap.size() != 0) {
 		aWidgetManager = gSexyApp->mDialogMap.begin()->second->mWidgetManager;
@@ -80,24 +81,32 @@ void Sexy::PositionDialog(Dialog* theDialog, int theWidth, bool param_3, int par
 	if (aWidgetManager == NULL) {
 		if ((GetThunderballApp()->mDialogMap.size() != 0) || !param_3) {
 			theX = 400 - theWidth / 2;
-		} else if (theY < ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp142,731",300)) {
-			theX = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp145,737",0x122) - theWidth / 2;
-		} else {
-			// STRING: POPCAPGAME1 0x005d5ac0
-			theX = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp143,733",0x226) - theWidth;
-			// STRING: POPCAPGAME1 0x005d5a78
-			theY = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp144,734",0x32);
 		}
-	} else {
+		else if (theY < ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp142,731", 300)) {
+			theX = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp145,737", 0x122) -
+				   theWidth / 2;
+		}
+		else {
+			// STRING: POPCAPGAME1 0x005d5ac0
+			theX =
+				ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp143,733", 0x226) - theWidth;
+			// STRING: POPCAPGAME1 0x005d5a78
+			theY = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp144,734", 0x32);
+		}
+	}
+	else {
 		if ((aWidgetManager->mKeyDown[0x48] == 10) && (aWidgetManager->mKeyDown[0x94])) {
-	  		theY = aWidgetManager->mY + ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp140,723",0x8c);
-		} else {
-			theY = aWidgetManager->mY + ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp141,725",0);
-    	}
+			theY = aWidgetManager->mY +
+				   ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp140,723", 0x8c);
+		}
+		else {
+			theY = aWidgetManager->mY +
+				   ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp141,725", 0);
+		}
 
 		theX = aWidgetManager->mX / 2 - aWidgetManager->mWidth / 2;
-    }
-	
+	}
+
 	theDialog->Resize(theX, theY, theWidth, aPreferredHeight);
 }
 
@@ -1255,97 +1264,102 @@ long double Sexy::GetLoadTime(int param_1)
 }
 
 // FUNCTION: POPCAPGAME1 0x004942f0
-bool Sexy::SolveLinearSystem(float a, float b, float e, float c, float d, float f, float* outX, float* outY) {
-    float det = (a * d) - (b * c);
-	
-    if (det == 0.0f) {
-        return false; 
-    }
+bool Sexy::SolveLinearSystem(float a, float b, float e, float c, float d, float f, float* outX, float* outY)
+{
+	float det = (a * d) - (b * c);
 
-    float numX = (e * d) - (f * b);
-    *outX = numX / det;
+	if (det == 0.0f) {
+		return false;
+	}
 
-    float numY = (a * f) - (e * c);
-    *outY = numY / det;
+	float numX = (e * d) - (f * b);
+	*outX = numX / det;
 
-    return true; 
+	float numY = (a * f) - (e * c);
+	*outY = numY / det;
+
+	return true;
 }
 
 // FUNCTION: POPCAPGAME1 0x004bc4b0
-float Sexy::InterpValF(int currentTime, int phase1Duration, int phase2Duration, 
-                      float startVal, float midVal, float endVal) 
+float Sexy::InterpValF(
+	int currentTime,
+	int phase1Duration,
+	int phase2Duration,
+	float startVal,
+	float midVal,
+	float endVal
+)
 {
-    if (currentTime < phase1Duration) {
-        float t = (float)currentTime / (float)phase1Duration;
-        return (1.0f - t) * startVal + (t * midVal);
-    }
+	if (currentTime < phase1Duration) {
+		float t = (float) currentTime / (float) phase1Duration;
+		return (1.0f - t) * startVal + (t * midVal);
+	}
 
-    int totalTimePhase1And2 = phase2Duration + phase1Duration;
-    if (currentTime < totalTimePhase1And2) {
-        float t = (float)(currentTime - phase1Duration) / (float)phase2Duration;
-        return (1.0f - t) * midVal + (t * endVal);
-    }
+	int totalTimePhase1And2 = phase2Duration + phase1Duration;
+	if (currentTime < totalTimePhase1And2) {
+		float t = (float) (currentTime - phase1Duration) / (float) phase2Duration;
+		return (1.0f - t) * midVal + (t * endVal);
+	}
 
-    return endVal;
+	return endVal;
 }
 
 // STUB: POPCAPGAME1 0x00404b70
-int Sexy::GetStyleShotScore(Sexy::StyleShot, bool, int) 
+int Sexy::GetStyleShotScore(Sexy::StyleShot, bool, int)
 {
 	return 0;
 }
 
 // FUNCTION: POPCAPGAME1 0x00407d90
-ThunderButton* Sexy::MakeEmbeddedButton(int theId, ButtonListener *theListener, Image *theImage, bool param_4) {
-	int aImageWidth = theImage->mWidth;
-    int aBtnHeight = theImage->mHeight;
+ThunderButton* Sexy::MakeEmbeddedButton(int theId, ButtonListener* theListener, Image* theImage, bool param_4)
+{
+	int aBtnWidth = theImage->mWidth;
+	int aBtnHeight = theImage->mHeight;
 
-	int aBtnWidth = 0;
-    if (theImage->mNumCols > 1) {
-        aBtnHeight = theImage->mHeight / 2;
-        aBtnWidth = theImage->mWidth;
-    }
-    else {
-        aBtnWidth = theImage->mWidth / 2;
-    }
+	if (theImage->mNumCols > 1) {
+		aBtnWidth /= 2;
+	}
+	else {
+		aBtnHeight /= 2;
+	}
 
-    if (param_4 && theImage->mNumRows == 1 && theImage->mNumCols == 1) {
-        aBtnHeight = theImage->mHeight;
-        aBtnWidth = theImage->mWidth;
-    }
+	if (param_4 && theImage->mNumRows == 1 && theImage->mNumCols == 1) {
+		aBtnHeight = theImage->mHeight;
+		aBtnWidth = theImage->mWidth;
+	}
 
-    ThunderButton* aBtn = new ThunderButton(theImage, theId, theListener);
+	ThunderButton* aBtn = new ThunderButton(theImage, theId, theListener);
 
-    aBtn->mWidth = aBtnWidth;
-    aBtn->mHeight = aBtnHeight;
+	aBtn->mWidth = aBtnWidth;
+	aBtn->mHeight = aBtnHeight;
 
-    aBtn->mUnk0x15c = 0x11;
-    aBtn->mClickSound = SOUND_BUTTON1;
+	aBtn->mUnk0x15c = 0x11;
+	aBtn->mClickSound = SOUND_BUTTON1;
 
-    aBtn->mNormalRect.mWidth = 1;
-    aBtn->mNormalRect.mHeight = 0;
+	aBtn->mNormalRect.mWidth = 1;
+	aBtn->mNormalRect.mHeight = 0;
 
-    
-    if (aBtnHeight != theImage->mHeight) {
-        aBtn->mOverRect = Rect(0, 0, aBtnWidth, aBtnHeight);
-        aBtn->mDownRect = Rect(0, aBtnHeight, aBtnWidth, aBtnHeight); // Shift Y
-    }
-    else {
+	if (aBtnHeight != theImage->mHeight) {
 		aBtn->mOverRect = Rect(0, 0, aBtnWidth, aBtnHeight);
-        aBtn->mDownRect = Rect(aBtnWidth, 0, aBtnWidth, aBtnHeight); // Shift X
-        
-    }
+		aBtn->mDownRect = Rect(0, aBtnHeight, aBtnWidth, aBtnHeight);
+	}
+	else {
+		aBtn->mOverRect = Rect(0, 0, aBtnWidth, aBtnHeight);
+		aBtn->mDownRect = Rect(aBtnWidth, 0, aBtnWidth, aBtnHeight);
+	}
 
-    if (param_4) {
-        aBtn->mUnk0x159 = true;
-        aBtn->mDownRect = aBtn->mOverRect;
-    }
+	if (param_4) {
+		aBtn->mUnk0x159 = true;
+		aBtn->mDownRect = aBtn->mOverRect;
+	}
 
-    return aBtn;
+	return aBtn;
 }
 
 // FUNCTION: POPCAPGAME1 0x00407c40
-void Sexy::SetupButton(DialogButton* theButton, bool param_2) {
+void Sexy::SetupButton(DialogButton* theButton, bool param_2)
+{
 	if (theButton != NULL) {
 		int aImageWidth = theButton->mComponentImage->mWidth;
 		int aImageHeight = theButton->mComponentImage->mHeight;
@@ -1354,16 +1368,18 @@ void Sexy::SetupButton(DialogButton* theButton, bool param_2) {
 			aImageWidth /= 3;
 			theButton->mNormalRect = Rect(0, 0, aImageWidth, aImageHeight);
 			theButton->mOverRect = Rect(aImageWidth, 0, aImageWidth, aImageHeight);
-			theButton->mDownRect = Rect(aImageWidth*2, 0, aImageWidth, aImageHeight);
-		} else {
+			theButton->mDownRect = Rect(aImageWidth * 2, 0, aImageWidth, aImageHeight);
+		}
+		else {
 			aImageHeight /= 3;
 			theButton->mNormalRect = Rect(0, 0, aImageWidth, aImageHeight);
 			theButton->mOverRect = Rect(0, aImageHeight, aImageWidth, aImageHeight);
-			theButton->mDownRect = Rect(0, aImageHeight*2, aImageWidth, aImageHeight);
+			theButton->mDownRect = Rect(0, aImageHeight * 2, aImageWidth, aImageHeight);
 		}
 
 		theButton->SetFont(FONT_BUTTON);
-		theButton->mTextOffsetY = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp131,504",5);
+		theButton->mTextOffsetY =
+			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp131,504", 5);
 		Color aColor0 = Color(0xffffff);
 		theButton->SetColor(0, aColor0);
 		Color aColor1 = Color(0xffffff);
@@ -1372,10 +1388,10 @@ void Sexy::SetupButton(DialogButton* theButton, bool param_2) {
 }
 
 // FUNCTION: POPCAPGAME1 0x0041bc70
-ThunderButton* Sexy::MakeButton(int theId, ButtonListener* theListener, std::string const& theString, Image* theImage) 
+ThunderButton* Sexy::MakeButton(int theId, ButtonListener* theListener, const std::string& theString, Image* theImage)
 {
 	if (theImage == NULL) {
-    	theImage = IMAGE_DLG_BUTTON3;
+		theImage = IMAGE_DLG_BUTTON3;
 	}
 
 	ThunderButton* aBtn = new ThunderButton(theImage, theId, theListener);
@@ -1385,7 +1401,8 @@ ThunderButton* Sexy::MakeButton(int theId, ButtonListener* theListener, std::str
 
 	if (theImage == IMAGE_DLG_BROWNBUTTON1 || theImage == IMAGE_DLG_BROWNBUTTON2) {
 		aBtn->mUnk0x15c = 0;
-	} else {
+	}
+	else {
 		aBtn->mUnk0x15c = 3;
 	}
 
@@ -1395,17 +1412,17 @@ ThunderButton* Sexy::MakeButton(int theId, ButtonListener* theListener, std::str
 }
 
 // FUNCTION: POPCAPGAME1 0x0041bd60
-ThunderButton* Sexy::MakePurpleButton(int theId, ButtonListener* theListener, std::string const& theString)
+ThunderButton* Sexy::MakePurpleButton(int theId, ButtonListener* theListener, const std::string& theString)
 {
 	ThunderButton* aBtn = MakeButton(theId, theListener, theString, IMAGE_DLG_PURPLEBUTTON);
 	aBtn->mUnk0x15c = 10;
-	aBtn->mTextOffsetX = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp132,539",0);
-	aBtn->mTextOffsetY = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp133,540",5);
+	aBtn->mTextOffsetX = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp132,539", 0);
+	aBtn->mTextOffsetY = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp133,540", 5);
 	return aBtn;
 }
 
 // FUNCTION: POPCAPGAME1 0x00405270
-SimpleButton* Sexy::MakeSimpleButton(int theId, ButtonListener* theListener, Image* theImage, int param_4, int param_5) 
+SimpleButton* Sexy::MakeSimpleButton(int theId, ButtonListener* theListener, Image* theImage, int param_4, int param_5)
 {
 	SimpleButton* aBtn = new SimpleButton(theImage, theId, theListener);
 	aBtn->mWidth = theImage->mWidth + param_4;
@@ -1414,39 +1431,55 @@ SimpleButton* Sexy::MakeSimpleButton(int theId, ButtonListener* theListener, Ima
 }
 
 // FUNCTION: POPCAPGAME1 0x00405330
-void Sexy::SetupEditWidget(EditWidget* theEditWidget) 
+void Sexy::SetupEditWidget(EditWidget* theEditWidget)
 {
 	theEditWidget->SetFont(FONT_PLAIN);
 	theEditWidget->SetColor(0, Color(0, 0));
 	theEditWidget->SetColor(1, Color(0, 0));
-	theEditWidget->SetColor(2, Color(ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp150,792",0)));
-	theEditWidget->SetColor(3, Color(ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp151,793", 128)));
-	theEditWidget->SetColor(4, Color(ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp152,794",0xffffff)));
+	theEditWidget->SetColor(
+		2,
+		Color(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp150,792", 0))
+	);
+	theEditWidget->SetColor(
+		3,
+		Color(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp151,793", 128))
+	);
+	theEditWidget->SetColor(
+		4,
+		Color(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp152,794", 0xffffff))
+	);
 	theEditWidget->mHeight = 0x18;
 }
 
 // FUNCTION: POPCAPGAME1 0x00405420
-EditWidget* Sexy::CreateEditWidget(int theId, EditListener* theListener) 
+EditWidget* Sexy::CreateEditWidget(int theId, EditListener* theListener)
 {
 	EditWidget* aEditWidget = new EditWidget(theId, theListener);
 	SetupEditWidget(aEditWidget);
 	return aEditWidget;
 }
 
-void Sexy::DoNameWidthEnforce(EditWidget* theEditWidget) {
+void Sexy::DoNameWidthEnforce(EditWidget* theEditWidget)
+{
 	theEditWidget->mMaxChars = 12;
-	theEditWidget->AddWidthCheckFont(FONT_OVERLOAD24, ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp149,781",0xbe));
+	theEditWidget->AddWidthCheckFont(
+		FONT_OVERLOAD24,
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp149,781", 0xbe)
+	);
 }
 
-void Sexy::DrawEditBox(Graphics* g, EditWidget* theEditWidget) {
+void Sexy::DrawEditBox(Graphics* g, EditWidget* theEditWidget)
+{
 	theEditWidget->Draw(g);
 }
 
 // FUNCTION: POPCAPGAME1 0x00497220
-ThunderButton* Sexy::MakeButtonCopy(DialogButton* theButton) {
+ThunderButton* Sexy::MakeButtonCopy(DialogButton* theButton)
+{
 	if (theButton == NULL) {
 		return NULL;
-	} else {
+	}
+	else {
 		ThunderButton* aBtn = MakeButton(theButton->mId, theButton->mButtonListener, theButton->mLabel, NULL);
 		aBtn->Resize(theButton->mX, theButton->mY, theButton->mWidth, theButton->mHeight);
 		delete theButton;
@@ -1457,9 +1490,11 @@ ThunderButton* Sexy::MakeButtonCopy(DialogButton* theButton) {
 // FUNCTION: POPCAPGAME1 0x004066f0
 int Sexy::Clamp(int val, int minVal, int maxVal)
 {
-	if (val < minVal)
+	if (val < minVal) {
 		return minVal;
-	if (val > maxVal)
+	}
+	if (val > maxVal) {
 		return maxVal;
+	}
 	return val;
 }

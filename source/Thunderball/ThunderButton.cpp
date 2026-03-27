@@ -38,99 +38,86 @@ ThunderButton::ThunderButton(Image* theComponentImage, int theId, ButtonListener
 // FUNCTION: POPCAPGAME1 0x0049d440
 void ThunderButton::Draw(Graphics* g)
 {
-
-	if (mUnk0x148 == 0) {
+	if (!mUnk0x148) {
 		return;
 	}
 
-	int dVar8 = mUnk0x15c;
-	if (dVar8 != 0x11) {
+	int colorIndex = mUnk0x15c;
+	if (colorIndex != 0x11) {
 		if (mIsDown && mIsOver) {
-			dVar8 += 2;
+			colorIndex += 2;
 		}
 		else if (mIsOver || mIsDown) {
-			dVar8 += 1;
+			colorIndex += 1;
 		}
-		SetButtonFontColor(dVar8);
+
+		SetButtonFontColor(colorIndex);
 	}
-	if (mUnk0x14c == 0) {
-	LABEL_3:
+
+	if (mUnk0x14c != 0) {
+		bool doPulse = true;
+		if (!mUnk0x151) {
+			if ((mUnk0x14c / (mUnk0x154 / 2)) % 2 == 0) {
+				doPulse = false;
+			}
+		}
+
+		if (doPulse && !mIsDown && !mIsOver) {
+			double oldAlpha = mOverAlpha;
+
+			if (mUnk0x151) {
+				int pulseTime =
+					ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderButton.cpp817,146", 0x1e);
+				int totalCycle = pulseTime + mUnk0x154;
+				int halfCycle = mUnk0x154 / 2;
+				int timeInCycle = mUnk0x14c % totalCycle;
+
+				if (timeInCycle < halfCycle) {
+					mOverAlpha = (double) timeInCycle / (double) halfCycle;
+				}
+				else if (timeInCycle < halfCycle + pulseTime) {
+					mOverAlpha = 1.0;
+				}
+				else {
+					mOverAlpha = (double) (totalCycle - timeInCycle) / (double) halfCycle;
+				}
+
+				mOverAlpha = mOverAlpha * mOverAlpha;
+				mOverAlpha *= ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderButton.cpp818,159", 0.7f);
+
+				mIsOver = false;
+				SwapRect(mDownRect, mOverRect);
+				DialogButton::Draw(g);
+				SwapRect(mDownRect, mOverRect);
+
+				mOverAlpha = oldAlpha;
+				mIsOver = false;
+				return;
+			}
+			else {
+				mOverAlpha = 0.0;
+				mIsOver = true;
+				DialogButton::Draw(g);
+				mOverAlpha = oldAlpha;
+				mIsOver = false;
+				return;
+			}
+		}
+	}
+
+	DialogButton::Draw(g);
+
+	if (mUnk0x159 && mIsDown && mIsOver) {
+		g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+		g->SetColorizeImages(true);
+
+		Color aColor(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderButton.cpp819,182", 0x404040));
+		g->SetColor(aColor);
+
 		DialogButton::Draw(g);
-		if ((mUnk0x159) && (mIsDown) && (mIsOver)) {
-			g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
-			g->SetColorizeImages(true);
-
-			// STRING: POPCAPGAME1 0x00601230
-			Color aColor(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderButton.cpp819,182", 0x404040));
-			g->SetColor(aColor);
-
-			DialogButton::Draw(g);
-			g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
-			g->SetColorizeImages(false);
-		}
-		return;
+		g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+		g->SetColorizeImages(false);
 	}
-
-	if (!mUnk0x151) {
-		int iVar5 = (mUnk0x14c / (mUnk0x154 / 2)) % 2;
-		if (iVar5 == 0) {
-			goto LABEL_3;
-		}
-	}
-
-	if (mIsDown || mIsOver) {
-		goto LABEL_3;
-	}
-
-	// --- Smooth Pulse Logic ---
-	// Defined HERE so it can reuse the memory slot of 'Color aColor' above.
-	double local_14 = mOverAlpha;
-
-	// Hard Blink "Off" Logic
-	if (!mUnk0x151) {
-		goto LABEL_BLINK_OFF;
-	}
-
-	// STRING: POPCAPGAME1 0x006012c0
-	int iVar6 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderButton.cpp817,146", 0x1e);
-	int iVar7 = iVar6 + mUnk0x154;
-	int local_8 = mUnk0x154 / 2;
-	int local_c = mUnk0x14c % iVar7;
-
-	double dVar3;
-
-	if (local_c > local_8) {
-		if (local_c < (local_8 + iVar6)) {
-			dVar3 = 1.0;
-			goto LABEL_4;
-		}
-		else {
-			local_8 = iVar7 - local_c;
-		}
-	}
-	dVar3 = (double) local_c / (double) local_8;
-
-LABEL_4:
-	mOverAlpha = dVar3;
-	mOverAlpha *= dVar3;
-
-	// STRING: POPCAPGAME1 0x00601278
-	mOverAlpha *= ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderButton.cpp818,159", 0.7f);
-	mIsOver = false;
-	SwapRect(mDownRect, mOverRect);
-	DialogButton::Draw(g);
-	SwapRect(mDownRect, mOverRect);
-
-	mOverAlpha = local_14;
-	mIsOver = false;
-	return;
-
-LABEL_BLINK_OFF:
-	mOverAlpha = 0.0;
-	mIsOver = true;
-	DialogButton::Draw(g);
-	mOverAlpha = local_14;
-	mIsOver = false;
 }
 
 // FUNCTION: POPCAPGAME1 0x00496d30
