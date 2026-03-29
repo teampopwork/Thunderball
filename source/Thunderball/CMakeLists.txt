@@ -27,6 +27,7 @@ add_executable(popcapgame1 WIN32
     ThunderButton.cpp
     ThunderCheckbox.cpp
     ThunderDialog.cpp
+    ThunderSlider.cpp
     ThunderballApp.cpp
     TrophyMgr.cpp
     TrophyScreen.cpp
