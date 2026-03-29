@@ -4,7 +4,9 @@
 #include "ThunderCommon.h"
 #include "ThunderballApp.h"
 
+#include <SexyAppFramework/Font.h>
 #include <SexyAppFramework/Graphics.h>
+#include <SexyAppFramework/Rect.h>
 
 using namespace Sexy;
 
@@ -17,17 +19,8 @@ ThunderCheckbox::ThunderCheckbox(
 )
 	: Checkbox(theUncheckedImage, theCheckedImage, theId, theCheckboxListener)
 {
-	mUnk0x104 = 0;
-	mUnk0x108 = 15;
-	mUnk0xf4 = 0;
-	mUnk0x120 = 0;
-	mUnk0x124 = 0;
-	mUnk0x128 = 0;
-	mUnk0x12c = 0;
-	mUnk0x130 = 0;
-	mUnk0x134 = 0;
-	mUnk0x138 = 0;
-	mUnk0x13c = 0;
+	mUncheckedHilightRect = Rect(0, 0, 0, 0);
+	mCheckedHilightRect = Rect(0, 0, 0, 0);
 	mUnk0x110 = 0;
 	mUnk0x10c = 0xffffffff;
 	Font* dVar1 = FONT_BUTTON;
@@ -48,6 +41,106 @@ ThunderCheckbox::~ThunderCheckbox()
 // FUNCTION: POPCAPGAME1 0x0049bb10
 void ThunderCheckbox::Draw(Graphics* g)
 {
+	Rect aDestRect(0, 0, mWidth, mHeight);
+
+	int aFontColorIndex;
+	if (mUnk0x11c == 1) {
+		if (mChecked) {
+			aFontColorIndex = 0x10;
+		}
+		else {
+			if (mIsDown) {
+				if (mIsOver) {
+					aFontColorIndex = 0x10;
+				}
+				else {
+					aFontColorIndex = 0xf;
+				}
+			}
+			else {
+				if (mIsOver) {
+					aFontColorIndex = 0xf;
+				}
+				else {
+					aFontColorIndex = 0xd;
+				}
+			}
+		}
+	}
+	else {
+		if (mIsOver) {
+			aFontColorIndex = 0xe;
+		}
+		else {
+			aFontColorIndex = 0xd;
+		}
+	}
+
+	SetButtonFontColor(aFontColorIndex);
+
+	Rect pSrcRect;
+	Rect pHilightRect;
+	if (!mChecked) {
+		pSrcRect = mUncheckedRect;
+		pHilightRect = mUncheckedHilightRect;
+	}
+	else {
+		pSrcRect = mCheckedRect;
+		pHilightRect = mCheckedHilightRect;
+	}
+
+	if (mUnk0x140 <= 0.0 || pHilightRect.mWidth < 1) {
+		Rect aFinalSrcRect = pSrcRect;
+		if (mIsOver && pHilightRect.mWidth >= 1) {
+			aFinalSrcRect = pHilightRect;
+		}
+
+		g->DrawImageBox(aFinalSrcRect, aDestRect, mUncheckedImage);
+	}
+	else {
+		if (mUnk0x140 < 1.0) {
+			g->DrawImageBox(pSrcRect, aDestRect, mUncheckedImage);
+		}
+
+		g->SetColorizeImages(true);
+		int anAlpha = (int) (mUnk0x140 * 255.0);
+		g->SetColor(Color(255, 255, 255, anAlpha));
+		g->DrawImageBox(pHilightRect, aDestRect, mUncheckedImage);
+		g->SetColorizeImages(false);
+	}
+
+	g->SetFont(mUnk0xec);
+	int aLabelWidth = mUnk0xec->StringWidth(mLabel);
+	int aLabelX;
+	if (mUnk0x11c == 1) {
+		aLabelX = (mWidth - aLabelWidth) / 2 + mUnk0x114;
+	}
+	else {
+		aLabelX = mUnk0x114;
+	}
+
+	int aFontHeight = mUnk0xec->GetHeight();
+	int aAscent = mUnk0xec->GetAscent();
+	int aLabelY = aAscent + mUnk0x118 + (mHeight - aFontHeight) / 2;
+
+	Color aLabelColor;
+	if (!mIsDown) {
+		if (!mIsOver) {
+			aLabelColor =
+				Color(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderButton.cpp825,362", 0xffffff));
+		}
+		else {
+			aLabelColor =
+				Color(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderButton.cpp824,360", 0xffffff));
+		}
+	}
+	else {
+		aLabelColor =
+			Color(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderButton.cpp823,355", 0xffffff));
+	}
+
+	g->SetColor(aLabelColor);
+	g->DrawString(mLabel, aLabelX, aLabelY);
 }
 
 // FUNCTION: POPCAPGAME1 0x004970b0

@@ -7,8 +7,8 @@
 #include "ThunderballApp.h"
 
 #include <SexyAppFramework/ButtonListener.h>
-#include <SexyAppFramework/CheckboxListener.h>
 #include <SexyAppFramework/ButtonWidget.h>
+#include <SexyAppFramework/CheckboxListener.h>
 #include <SexyAppFramework/Dialog.h>
 #include <SexyAppFramework/EditListener.h>
 #include <SexyAppFramework/EditWidget.h>
@@ -1499,4 +1499,105 @@ int Sexy::Clamp(int val, int minVal, int maxVal)
 		return maxVal;
 	}
 	return val;
+}
+
+// FUNCTION: POPCAPGAME1 0x00407ef0
+ThunderCheckbox* Sexy::MakeCheckbox(int theId, CheckboxListener* theListener, int param_3)
+{
+	int aWidth;
+	int aHeight;
+	ThunderCheckbox* aCheckbox;
+
+	if (param_3 == 0) {
+		aWidth = IMAGE_DLG_BUTTON1->mWidth;
+		aHeight = IMAGE_DLG_BUTTON1->mHeight / 4;
+		aCheckbox = new ThunderCheckbox(IMAGE_DLG_BUTTON1, IMAGE_DLG_BUTTON1, theId, theListener);
+
+		aCheckbox->mCheckedRect.mX = 0;
+		aCheckbox->mCheckedRect.mY = 0;
+		aCheckbox->mUncheckedRect.mX = 0;
+		aCheckbox->mUncheckedHilightRect.mX = 0;
+		aCheckbox->mCheckedHilightRect.mX = 0;
+		aCheckbox->mUncheckedRect.mY = aHeight * 2;
+		aCheckbox->mUncheckedHilightRect.mY = aHeight;
+		aCheckbox->mCheckedHilightRect.mY = aHeight * 3;
+		aCheckbox->mCheckedRect.mWidth = aWidth;
+		aCheckbox->mUncheckedHilightRect.mWidth = aWidth;
+		aCheckbox->mUncheckedRect.mWidth = aWidth;
+		aCheckbox->mCheckedHilightRect.mWidth = aWidth;
+		aCheckbox->mCheckedRect.mHeight = aHeight;
+		aCheckbox->mUncheckedHilightRect.mHeight = aHeight;
+		aCheckbox->mUncheckedRect.mHeight = aHeight;
+		aCheckbox->mCheckedHilightRect.mHeight = aHeight;
+
+		aCheckbox->mUnk0x114 =
+			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp134,637", 0x28);
+		aCheckbox->mUnk0x118 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp135,638", 2);
+
+		aCheckbox->mUnk0x11c = param_3;
+		aCheckbox->mUnk0x10c = SOUND_BUTTON2;
+	}
+	else if (param_3 == 1) {
+		aWidth = IMAGE_DLG_BUTTON2->mWidth;
+		aHeight = IMAGE_DLG_BUTTON2->mHeight / 3;
+		aCheckbox = new ThunderCheckbox(IMAGE_DLG_BUTTON2, IMAGE_DLG_BUTTON2, theId, theListener);
+
+		aCheckbox->mCheckedRect.mX = 0;
+		aCheckbox->mCheckedRect.mY = 0;
+		aCheckbox->mUncheckedRect.mX = 0;
+		aCheckbox->mUncheckedHilightRect.mX = 0;
+		aCheckbox->mCheckedHilightRect.mX = 0;
+		aCheckbox->mUncheckedRect.mY = aHeight * 2;
+		aCheckbox->mUncheckedHilightRect.mY = aHeight;
+		aCheckbox->mCheckedHilightRect.mY = 0;
+		aCheckbox->mCheckedRect.mWidth = aWidth;
+		aCheckbox->mUncheckedHilightRect.mWidth = aWidth;
+		aCheckbox->mUncheckedRect.mWidth = aWidth;
+		aCheckbox->mCheckedHilightRect.mWidth = aWidth;
+		aCheckbox->mCheckedRect.mHeight = aHeight;
+		aCheckbox->mUncheckedHilightRect.mHeight = aHeight;
+		aCheckbox->mUncheckedRect.mHeight = aHeight;
+		aCheckbox->mCheckedHilightRect.mHeight = 0;
+
+		aCheckbox->mUnk0x114 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp136,652", 0);
+		aCheckbox->mUnk0x118 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp137,653", 2);
+
+		aCheckbox->mUnk0x11c = param_3;
+		aCheckbox->mUnk0x10c = SOUND_BUTTON2;
+	}
+	else {
+		return NULL;
+	}
+
+	aCheckbox->mUnk0x110 = true;
+	aCheckbox->Resize(0, 0, aWidth, aHeight);
+	aCheckbox->mChecked = true;
+
+	return aCheckbox;
+}
+
+// FUNCTION: POPCAPGAME1 0x0041be70
+ThunderCheckbox* Sexy::MakeCheckbox2(
+	int theId,
+	CheckboxListener* theListener,
+	const std::string& theString,
+	int param_4
+)
+{
+	ThunderCheckbox* aCheckbox = MakeCheckbox(theId, theListener, param_4);
+
+	aCheckbox->mLabel.assign(theString, 0, 0xffffffff);
+
+	aCheckbox->mWidth = aCheckbox->mUnk0xec->StringWidth(theString);
+
+	if (param_4 == 0) {
+		// STRING: POPCAPGAME1 0x005d6848
+		aCheckbox->mWidth += ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp138,673", 0x3c);
+	}
+	else {
+		// STRING: POPCAPGAME1 0x005d6800
+		aCheckbox->mWidth += ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp139,675", 0x1e);
+	}
+
+	return aCheckbox;
 }
