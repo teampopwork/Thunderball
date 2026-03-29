@@ -35,6 +35,7 @@ bool Slider::HasTransparencies()
 	return true;
 }
 
+// FUNCTION: POPCAPGAME1 0x005413d0
 void Slider::Draw(Graphics* g)
 {	
 	if (mTrackImage != NULL)

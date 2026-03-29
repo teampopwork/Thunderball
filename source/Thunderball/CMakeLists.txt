@@ -22,6 +22,7 @@ add_executable(popcapgame1 WIN32
     SimpleButton.cpp
     StageMgr.cpp
     StatsMgr.cpp
+    LogicMgr.cpp
     StoryScreen.cpp
     ThunderCommon.cpp
     ThunderButton.cpp

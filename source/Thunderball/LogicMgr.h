@@ -1,6 +1,8 @@
 #ifndef __LOGIC_MGR_H__
 #define __LOGIC_MGR_H__
 
+#include <string>
+
 namespace Sexy
 {
 
@@ -10,10 +12,15 @@ class Ball;
 class PhysObj;
 class Hole;
 class DataSync;
-class KeyCode;
+enum KeyCode;
+enum LogicState;
+enum StyleShot;
+enum PowerupType;
 
 class LogicMgr {
 public:
+	int mUnk0x4;
+
 	LogicMgr(Board* param_1);
 	virtual ~LogicMgr();
 
@@ -49,7 +56,7 @@ public:
 	void UpdateGun();
 	void UpdateFreeBallRadius();
 	void UpdateShotExtender();
-	void UpdateInitLevel();]
+	void UpdateInitLevel();
     void UpdateCharacterDialog();
 	void IncScore(int param_1, bool param_2);
 	void IncNumBalls(int param_1, int param_2, bool param_3);
@@ -92,7 +99,6 @@ public:
 	void AddFeverScoreText();
 	void UpdateFeverScoreText();
 	void AddExtremeFeverEffect(int param_1);
-	void DoFeverSlow();
 	void SetGunAngle(float param_1);
 	void CalcGunAngle(bool param_1);
 	void FlipperClick(bool param_1);
@@ -104,8 +110,6 @@ public:
 	void UpdateWrapAroundBall();
 	void AddStandardText(const std::string& param_1, float param_2, float param_3, int param_4);
 	void AddStyleScoreText(int param_1, int param_2);
-	void AddFeverScoreText();
-	void FinishSlotMachine(Ball* param_1, PhysObj* param_2);
 	int GetGoalPegsLeft();
 	int GetRemainingGoalPeg();
 	bool GetTotalMissIsFreeBall();
@@ -115,10 +119,9 @@ public:
 	void SpeedTransition();
 	void SetCharacters(int param_1, int param_2);
 	void SetWearHat(bool param_1);
-	void SyncClickTimes(DataSync* param_1);
 	void RecordStats();
 	void DoLevelDone();
-	void BeatLevel();
+	bool BeatLevel();
 	void ClearedLevel();
 	void NotifySpookyCollision(PhysObj* param_1, PhysObj* param_2);
 	void FinishInitLevelText();

@@ -25,8 +25,8 @@ ThunderDialog::ThunderDialog(
 	int theButtonMode
 )
 	: Dialog(
-		  IMAGE_DLG_BUTTON3,
 		  IMAGE_DLG_DIALOGBOX,
+		  IMAGE_DLG_BUTTON3,
 		  theId,
 		  isModal,
 		  theDialogHeader,
@@ -35,6 +35,7 @@ ThunderDialog::ThunderDialog(
 		  theButtonMode
 	  )
 {
+	mClip = false;
 	mContentInsets = Insets(
 		ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp832,39",0x23),
 		ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp833,39",0x14),
@@ -189,22 +190,22 @@ void ThunderDialog::Draw(Graphics* g)
 	if (mUnk0x163) {
 		Image* connector = IMAGE_DLG_CONNECTOR;
 		// STRING: POPCAPGAME1 0x005fcd20
-		int connect_y = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp862,297",6) - connector->mHeight;
+		int connectY = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp862,297",6) - connector->mHeight;
 
 		Image* segment = IMAGE_DLG_SEGMENT;
 		// STRING: POPCAPGAME1 0x005fccd8
-		for (int y = connect_y - ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp863,300",0x1e); mY + segment->mHeight + y >= 0; y -= mUnk0x168) {
+		for (int theY = connectY - ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp863,300",0x1e); mY + segment->mHeight + theY >= 0; theY -= mUnk0x168) {
 			g->DrawImage(segment, 
 				// STRING: POPCAPGAME1 0x005fcc90
 				ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp864,303",0) + (mWidth - segment->mWidth) / 2,
-				y
+				theY
 			);
 		}
 
 		g->DrawImage(connector, 
 			// STRING: POPCAPGAME1 0x005fcc48
 			ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp864,307",0) + (mWidth - connector->mWidth) / 2,
-			connect_y
+			connectY
 			);
 	}
 }
@@ -284,10 +285,7 @@ void ThunderDialog::Update()
 		int min168 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp856,223", 0x14);
 		
 		int val = mUnk0x168;
-		if (val < min168)
-			mUnk0x168 = min168;
-		if (val > max168)
-			mUnk0x168 = max168;
+		mUnk0x168 = Clamp(val, min168, max168);
 	}
 
 	if (mUnk0x150 != 0xfffe7960)

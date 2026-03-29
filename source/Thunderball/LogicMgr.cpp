@@ -360,6 +360,7 @@ void LogicMgr::DoSlotMachineResult(int param_1, Ball* param_2)
 	// TODO
 }
 
+// STUB: POPCAPGAME1 0x0046ae60
 void LogicMgr::FinishSlotMachine(Ball* param_1, PhysObj* param_2)
 {
 	// TODO
@@ -401,11 +402,6 @@ void LogicMgr::UpdateFeverScoreText()
 }
 
 void LogicMgr::AddExtremeFeverEffect(int param_1)
-{
-	// TODO
-}
-
-void LogicMgr::DoFeverSlow()
 {
 	// TODO
 }
@@ -474,17 +470,6 @@ void LogicMgr::AddStyleScoreText(int param_1, int param_2)
 	// TODO
 }
 
-void LogicMgr::AddFeverScoreText()
-{
-	// TODO
-}
-
-// STUB: POPCAPGAME1 0x0046ae60
-void LogicMgr::FinishSlotMachine(Ball* param_1, PhysObj* param_2)
-{
-	// TODO
-}
-
 int LogicMgr::GetGoalPegsLeft()
 {
 	// TODO
@@ -535,11 +520,6 @@ void LogicMgr::SetWearHat(bool param_1)
 	// TODO
 }
 
-void LogicMgr::SyncClickTimes(DataSync* param_1)
-{
-	// TODO
-}
-
 void LogicMgr::RecordStats()
 {
 	// TODO
@@ -551,9 +531,9 @@ void LogicMgr::DoLevelDone()
 	// TODO
 }
 
-void LogicMgr::BeatLevel()
+bool LogicMgr::BeatLevel()
 {
-	// TODO
+	return false;
 }
 
 // STUB: POPCAPGAME1 0x0043d580

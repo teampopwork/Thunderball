@@ -14,6 +14,7 @@ class MainMenu;
 class ThunderDialog;
 class ProfileMgr;
 class StatsMgr;
+class Board;
 
 // VTABLE: POPCAPGAME1 0x005d7cb8
 class ThunderballApp : public SexyApp {
@@ -50,6 +51,8 @@ public:
 	ButtonWidget* mWinMinimizeButton; // +0x870
 	ButtonWidget* mWinUnmaxButton;    // +0x874
 	PlayerInfo* mCurProfile;          // +0x878
+
+	Board* mBoard;                    // +0x880 (temporary)
 
 	ThunderballApp();
 	virtual ~ThunderballApp();

@@ -4,6 +4,7 @@ using namespace Sexy;
 
 Board::Board(ThunderballApp* app)
 {
+	mLogicMgr = NULL;
 }
 Board::~Board()
 {

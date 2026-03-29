@@ -11,6 +11,7 @@
 #include "ThunderCommon.h"
 #include "ThunderDialog.h"
 #include "WidgetMover.h"
+#include "OptionsDialog.h"
 
 #include <SexyAppFramework/BassMusicInterface.h>
 #include <SexyAppFramework/ButtonWidget.h>
@@ -36,6 +37,7 @@ ThunderballApp::ThunderballApp()
 	mCurProfile = NULL;
 	mLoadingScreen = NULL;
 	mMainMenu = NULL;
+	mBoard = NULL;
 
 	mWidth = 800;
 	mHeight = 600;
@@ -408,9 +410,21 @@ ThunderDialog* ThunderballApp::DoDialogScroll(
 	return aDialog;
 }
 
-// STUB: POPCAPGAME1 0x0040c210
+// FUNCTION: POPCAPGAME1 0x0040c210
 void ThunderballApp::DoOptionsDialog()
 {
+	PauseBoard(true);
+	OptionsDialog* aDialog = new OptionsDialog(mBoard != NULL);
+	int theWidth;
+	if (mBoard == NULL) {
+		theWidth = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp190,2442", 0x1b8);
+	} else {
+		theWidth = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp189,2442", 0x1b8);
+	}
+
+	PositionDialog(aDialog, theWidth, false, -1);
+	aDialog->DoScroll(true);
+	AddDialog(0x13, aDialog);
 }
 
 // STUB: POPCAPGAME1 0x0040c4d0

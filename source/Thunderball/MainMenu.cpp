@@ -221,7 +221,7 @@ MainMenu::~MainMenu()
 // FUNCTION: POPCAPGAME1 0x00437350
 bool MainMenu::HandleControlClick(int param_1)
 {
-	return false;
+	return true;
 }
 
 // FUNCTION: POPCAPGAME1 0x004afd20

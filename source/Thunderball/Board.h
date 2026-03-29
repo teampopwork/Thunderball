@@ -21,10 +21,13 @@ class DataSync;
 class DataWriter;
 class Buffer;
 class HighScoreEntry;
+class LogicMgr;
 
 class Board : public Widget, public ButtonListener
 {
   public:
+	LogicMgr* mLogicMgr;
+
 	Board(ThunderballApp* app);
 	virtual ~Board();
 

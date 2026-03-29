@@ -10,11 +10,33 @@
 
 namespace Sexy
 {
+class ThunderSlider;
 class ThunderCheckbox;
+class ThunderButton;
 class Graphics;
 class WidgetManager;
 
 class OptionsDialog : public ThunderDialog, public SliderListener, public CheckboxListener {
+public:
+	ThunderSlider* mMusicVolumeSlider;
+	ThunderSlider* mSfxVolumeSlider;
+	ThunderSlider* mFeverVolumeSlider;
+
+	ThunderCheckbox* mFullscreenCheckbox;
+	ThunderCheckbox* mCustomCursorsCheckbox;
+	ThunderCheckbox* m3DAccelerationCheckbox;
+	ThunderCheckbox* mColorblindModeCheckbox;
+
+	ThunderButton* mHelpButton;
+	ThunderButton* mUnk0x1A0;
+	ThunderButton* mUnk0x1A4;
+	ThunderButton* mMainMenuButton;
+	ThunderButton* mNewLevelButton;
+	ThunderButton* mNewChallengeButton;
+
+	bool mFromGame;
+	int mUnk0x1B8;
+
 	OptionsDialog(bool theFromGame);
 	virtual ~OptionsDialog();
 
