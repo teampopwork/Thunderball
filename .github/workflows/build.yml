@@ -14,12 +14,12 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@main
       with:
         submodules: 'recursive'
         fetch-depth: 0
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@main
       with:
         repository: bananapizzuh/msvc80-sp1
         path: msvc80
@@ -50,7 +50,7 @@ jobs:
     runs-on: windows-latest
     steps:
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@main
       with:
         submodules: 'recursive'
         fetch-depth: 0
@@ -62,13 +62,13 @@ jobs:
 
     - name: Restore cached original binary
       id: restore-original-binary
-      uses: actions/cache/restore@v4
+      uses: actions/cache/restore@main
       with:
         enableCrossOsArchive: true
         path: peggle
         key: pegglebin
 
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@main
       with:
         python-version: '3.12'
 
@@ -115,7 +115,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@main
 
     - name: Download Win32 artifact
       uses: actions/download-artifact@main

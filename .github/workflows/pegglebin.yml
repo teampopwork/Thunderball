@@ -13,7 +13,7 @@ jobs:
 
     - name: Restore cached original binary
       id: cache-original-binary
-      uses: actions/cache/restore@v4
+      uses: actions/cache/restore@main
       with:
         enableCrossOsArchive: true
         path: peggle
@@ -25,11 +25,11 @@ jobs:
         BIN_URL: ${{ secrets.BIN_URL }}
       run: |
         mkdir -p peggle
-        wget "$BIN_URL" --directory-prefix=peggle
+        wget -q "$BIN_URL" --directory-prefix=peggle
 
     - name: Cache original binary
       if: ${{ !steps.cache-original-binary.outputs.cache-hit }}
-      uses: actions/cache/save@v4
+      uses: actions/cache/save@main
       with:
         enableCrossOsArchive: true
         path: peggle
