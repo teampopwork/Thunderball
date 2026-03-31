@@ -85,7 +85,7 @@ jobs:
     - name: Summarize Accuracy
       shell: bash
       run: |
-        reccmp-reccmp -S progress.svg --svg-icon assets/popcapgame1.png --target POPCAPGAME1 --json progress.json --html progress.html --total 10791
+        reccmp-reccmp -S progress.svg --svg-icon assets/popcapgame1.png --target POPCAPGAME1 --json progress.json --html progress.html --total 6576
 
     - name: Test Exports
       shell: bash
