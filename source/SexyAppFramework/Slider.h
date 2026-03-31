@@ -8,6 +8,7 @@ namespace Sexy
 
 class SliderListener;
 
+// VTABLE: POPCAPGAME1 0x0061407c
 class Slider : public Widget
 {
 public:		

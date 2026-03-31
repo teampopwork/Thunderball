@@ -164,15 +164,85 @@ void OptionsDialog::AddedToManager(WidgetManager* theManager)
 // FUNCTION: POPCAPGAME1 0x0049a5c0
 void OptionsDialog::ButtonDepress(int theId)
 {
-}
+	if (!IsScrolling()) {
+		Dialog::ButtonDepress(theId);
+		ThunderballApp* aApp = GetThunderballApp();
+		if ((aApp->mGameMode == GameMode::CHALLENGE || aApp->mUnk0x834 == 0) && aApp->IsTrialOver() && theId != 7 && theId != mYesButton->mId) {
+			aApp->ShowUpsellScreen();
+			return;
+		}
+		
+		switch (theId) {
+			case 7:
+				aApp->ShowHelpScreen(false, aApp->mBoard == NULL);
+				if (aApp->mBoard == NULL) {
+					aApp->FinishOptionsDialog(true, true);
+				}
+			break;
 
-void OptionsDialog::ButtonPress(int theId)
-{
+			case 8:
+				aApp->DoConfirmMainMenuDialog();
+			break;
+				
+			case 9:
+				if ((aApp->mBoard != NULL && aApp->mBoard->mEndLevelDialog->mWidgetManager == NULL) && (aApp->mBoard->mLogicMgr->mUnk0x4 == 5 || aApp->mBoard->mLogicMgr->BeatLevel())) {
+					aApp->DoConfirmRestartLevelDialog(-1);
+				}
+			break;
+
+			case 10:
+				aApp->DoConfirmNewChallengeDialog();
+				if (aApp->mBoard != NULL && aApp->mBoard->mEndLevelDialog->mWidgetManager != NULL) {
+					aApp->FinishConfirmNewChallengeDialog(true);
+				}
+			break;
+		}
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x004a9700
 void OptionsDialog::CheckboxChecked(int theId, bool checked)
 {
+	if (!IsScrolling()) {
+		if (theId == 3) {
+			if (GetThunderballApp()->mForceFullscreen && !checked) {
+				GetThunderballApp()->DoDialogScroll(
+					3,
+					true,
+					"No Windowed Mode",
+					"Windowed mode is only available if your desktop is running in either 16 bit or 32 bit color mode, which it is not.",
+					"OK",
+					3
+				);
+
+				mFullscreenCheckbox->SetChecked(true);
+			}
+		}
+		else if (theId == 5 && checked) {
+			if (!GetThunderballApp()->Is3DAccelerationSupported()) {
+				GetThunderballApp()->DoDialogScroll(
+					0,
+					true,
+					"Not Supported",
+					"Hardware Acceleration cannot be enabled on this computer.\nYour video card does not meet the minimum requirements for this game.",
+					"OK",
+					3
+				);
+
+				m3DAccelerationCheckbox->SetChecked(false);
+			} 
+			if (!GetThunderballApp()->Is3DAccelerationRecommended()) {
+				GetThunderballApp()->DoDialogScroll(
+					0,
+					true,
+					"Warning",
+					"Your video card may not fully support this feature.\nIf you experience slower performance, please disable Hardware Acceleration.",
+					"OK",
+					3
+				);
+			}
+		} 
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0049a480

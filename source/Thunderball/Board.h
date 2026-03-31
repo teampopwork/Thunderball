@@ -26,7 +26,8 @@ class LogicMgr;
 class Board : public Widget, public ButtonListener
 {
   public:
-	LogicMgr* mLogicMgr;
+	LogicMgr* mLogicMgr; // +0x154
+	Widget* mEndLevelDialog; // +0x160
 
 	Board(ThunderballApp* app);
 	virtual ~Board();

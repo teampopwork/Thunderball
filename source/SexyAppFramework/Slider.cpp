@@ -7,6 +7,7 @@
 
 using namespace Sexy;
 
+// FUNCTION: POPCAPGAME1 0x00547bd0
 Slider::Slider(Image* theTrackImage, Image* theThumbImage, int theId, SliderListener* theListener) : 		
 	mTrackImage(theTrackImage),
 	mThumbImage(theThumbImage),
@@ -19,6 +20,7 @@ Slider::Slider(Image* theTrackImage, Image* theThumbImage, int theId, SliderList
 	mRelX = mRelY = 0;
 }
 
+// FUNCTION: POPCAPGAME1 0x0053efa0
 void Slider::SetValue(double theValue)
 {	
 	mVal = theValue;
@@ -30,6 +32,7 @@ void Slider::SetValue(double theValue)
 	MarkDirtyFull();
 }
 
+// FUNCTION: POPCAPGAME1 0x00540340
 bool Slider::HasTransparencies()
 {
 	return true;
@@ -77,6 +80,7 @@ void Slider::Draw(Graphics* g)
 	//g->FillRect(0, 0, mWidth, mHeight);	
 }
 
+// FUNCTION: POPCAPGAME1 0x0053eff0
 void Slider::MouseDown(int x, int y, int theClickCount)
 {
 	if (mHorizontal)
@@ -115,6 +119,7 @@ void Slider::MouseDown(int x, int y, int theClickCount)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x0053f0e0
 void Slider::MouseMove(int x, int y)
 {
 	if (mHorizontal)
@@ -137,6 +142,7 @@ void Slider::MouseMove(int x, int y)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x00053f190
 void Slider::MouseDrag(int x, int y)
 {
 	if (mDragging)
@@ -161,6 +167,7 @@ void Slider::MouseDrag(int x, int y)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x0053f290
 void Slider::MouseUp(int x, int y)
 {
 	mDragging = false;
@@ -168,6 +175,7 @@ void Slider::MouseUp(int x, int y)
 	mListener->SliderVal(mId, mVal);
 }
 
+// FUNCTION: POPCAPGAME1 0x0053f2d0
 void Slider::MouseLeave()
 {
 	if (!mDragging)

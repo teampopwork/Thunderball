@@ -10,8 +10,10 @@
 #include "StatsMgr.h"
 #include "ThunderCommon.h"
 #include "ThunderDialog.h"
+#include "ThunderCheckbox.h"
 #include "WidgetMover.h"
 #include "OptionsDialog.h"
+#include "Board.h"
 
 #include <SexyAppFramework/BassMusicInterface.h>
 #include <SexyAppFramework/ButtonWidget.h>
@@ -589,9 +591,30 @@ void ThunderballApp::FinishNameErrorDialog(int param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x0041c840
+// FUNCTION: POPCAPGAME1 0x0041c840
 void ThunderballApp::FinishOptionsDialog(bool param_1, bool param_2)
 {
+	OptionsDialog* aDialog = static_cast<OptionsDialog*>(GetDialog(0x13));
+	if (aDialog != NULL) {
+		if (param_1) {
+			SwitchScreenMode(!aDialog->mFullscreenCheckbox->mChecked, true, false);
+			EnableCustomCursors(aDialog->mCustomCursorsCheckbox->mChecked);
+			mCurProfile->SetColorblind(aDialog->mColorblindModeCheckbox->mChecked);
+
+			if (SetColorblind(aDialog->mColorblindModeCheckbox->mChecked) && mBoard != NULL) {
+				mBoard->SyncColorblind();
+			}
+
+			ClearUpdateBacklog(false);
+		}
+
+		if (param_2) {
+			aDialog->DoScrollOff(true);
+		} else {
+			KillDialog(0x13);
+		}
+		PauseBoard(false);
+	}
 }
 
 // STUB: POPCAPGAME1 0x00427b90

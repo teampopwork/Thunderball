@@ -34,8 +34,10 @@ public:
 	bool mShouldShowUpsellButton;     // +0x798
 	int mUnk0x7b0;                    // +0x7B0
 	int mUnk0x7b8;                    // +0x7B4
+	Board* mBoard;                    // +0x7B8
 	LoadingScreen* mLoadingScreen;    // +0x7C8
 	MainMenu* mMainMenu;              // +0x7CC
+	int mUnk0x834;                    // +0x834
 	bool mUnk0x839;                   // +0x839
 	bool mUnk0x83A;                   // +0x83A
 	bool mUnk0x83C;                   // +0x83C
@@ -51,8 +53,6 @@ public:
 	ButtonWidget* mWinMinimizeButton; // +0x870
 	ButtonWidget* mWinUnmaxButton;    // +0x874
 	PlayerInfo* mCurProfile;          // +0x878
-
-	Board* mBoard;                    // +0x880 (temporary)
 
 	ThunderballApp();
 	virtual ~ThunderballApp();

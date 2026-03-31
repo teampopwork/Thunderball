@@ -18,21 +18,21 @@ class WidgetManager;
 
 class OptionsDialog : public ThunderDialog, public SliderListener, public CheckboxListener {
 public:
-	ThunderSlider* mMusicVolumeSlider;
-	ThunderSlider* mSfxVolumeSlider;
-	ThunderSlider* mFeverVolumeSlider;
+	ThunderSlider* mMusicVolumeSlider; // +0x180
+	ThunderSlider* mSfxVolumeSlider;   // +0x184
+	ThunderSlider* mFeverVolumeSlider; // +0x188
 
-	ThunderCheckbox* mFullscreenCheckbox;
-	ThunderCheckbox* mCustomCursorsCheckbox;
-	ThunderCheckbox* m3DAccelerationCheckbox;
-	ThunderCheckbox* mColorblindModeCheckbox;
+	ThunderCheckbox* mFullscreenCheckbox; // +0x18C
+	ThunderCheckbox* mCustomCursorsCheckbox; // +0x190
+	ThunderCheckbox* m3DAccelerationCheckbox; // +0x194
+	ThunderCheckbox* mColorblindModeCheckbox; // +0x198
 
-	ThunderButton* mHelpButton;
+	ThunderButton* mHelpButton; // +0x19C
 	ThunderButton* mUnk0x1A0;
 	ThunderButton* mUnk0x1A4;
-	ThunderButton* mMainMenuButton;
-	ThunderButton* mNewLevelButton;
-	ThunderButton* mNewChallengeButton;
+	ThunderButton* mMainMenuButton; // +0x1A8
+	ThunderButton* mNewLevelButton; // +0x1AC
+	ThunderButton* mNewChallengeButton; // +0x1B0
 
 	bool mFromGame;
 	int mUnk0x1B8;
@@ -42,7 +42,6 @@ public:
 
 	virtual void AddedToManager(WidgetManager* theManager);
 	virtual void ButtonDepress(int theId);
-	virtual void ButtonPress(int theId);
 	virtual void CheckboxChecked(int theId, bool checked);
 	virtual void Draw(Graphics* g);
 	virtual int GetPreferredHeight(int theWidth);

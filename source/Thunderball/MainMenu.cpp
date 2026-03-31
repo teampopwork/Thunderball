@@ -231,7 +231,7 @@ void MainMenu::ButtonDepress(int theId)
 		return;
 	}
 
-	mWidth = 0;
+	mWidth = 0; // ????
 	switch (theId) {
 	case 0:
 		if (mApp->IsTrialOver()) {

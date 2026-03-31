@@ -35,11 +35,13 @@ Image::~Image()
 	delete mBits;
 }
 
+// FUNCTION: POPCAPGAME1 0x004cc8b0
 int	Image::GetWidth()
 {
 	return mWidth;
 }
 
+// FUNCTION: POPCAPGAME1 0x004cc8c0
 int	Image::GetHeight()
 {
 	return mHeight;
@@ -872,6 +874,7 @@ bool ImageLib::WriteJPEGImage(const std::string& theFileName, Image* theImage)
 	return true;
 }
 
+// FUNCTION: POPCAPGAME1 0x00553dc0
 bool ImageLib::WritePNGImage(const std::string& theFileName, Image* theImage)
 {
 	png_structp png_ptr;
@@ -1399,11 +1402,13 @@ Image* GetJPEG2000Image(const std::string& theFileName)
 HMODULE gJ2KCodec = NULL;
 std::string gJ2KCodecKey = "Your registration here";
 
+// FUNCTION: POPCAPGAME1 0x005506a0
 void ImageLib::InitJPEG2000()
 {
 	gJ2KCodec = ::LoadLibrary(_T("j2k-codec.dll"));
 }
 
+// FUNCTION: POPCAPGAME1 0x005506c0
 void ImageLib::CloseJPEG2000()
 {
 	if (gJ2KCodec != NULL)
@@ -1413,25 +1418,30 @@ void ImageLib::CloseJPEG2000()
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x005d1470
 void ImageLib::SetJ2KCodecKey(const std::string& theKey)
 {
 	gJ2KCodecKey = theKey;
 }
 
+// FUNCTION: POPCAPGAME1 0x005506e0
 int __stdcall Pak_seek(void *data_source, int offset)
 {
 	return p_fseek((PFILE*) data_source, offset, SEEK_SET);
 }
 
+// FUNCTION: POPCAPGAME1 0x00550700
 int __stdcall Pak_read(void *ptr, int size, void *data_source)
 {
 	return p_fread(ptr, 1, size, (PFILE*) data_source);
 }
 
+// FUNCTION: POPCAPGAME1 0x00497dc0
 void __stdcall Pak_close(void *data_source)
 {	
 }
 
+// FUNCTION: POPCAPGAME1 0x005541f0
 Image* GetJPEG2000Image(const std::string& theFileName)
 {
 	if (gJ2KCodec != NULL)
@@ -1562,6 +1572,7 @@ int ImageLib::gAlphaComposeColor = 0xFFFFFF;
 bool ImageLib::gAutoLoadAlpha = true;
 bool ImageLib::gIgnoreJPEG2000Alpha = true;
 
+// FUNCTION: POPCAPGAME1 0x00554580
 Image* ImageLib::GetImage(const std::string& theFilename, bool lookForAlphaImage)
 {
 	if (!gAutoLoadAlpha)

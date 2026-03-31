@@ -98,7 +98,10 @@ Dialog::Dialog(Image* theComponentImage, Image* theButtonComponentImage, int the
 	SetColors(gDialogColors, NUM_COLORS);
 }	
 
+// SYNTHETIC: POPCAPGAME1 0x00547110
+// Sexy::Dialog::`scalar deleting destructor'
 
+// FUNCTION: POPCAPGAME1 0x005462d0
 Dialog::~Dialog()
 {
 	delete mYesButton;
@@ -108,6 +111,7 @@ Dialog::~Dialog()
 	delete mLinesFont;
 }
 
+// FUNCTION: POPCAPGAME1 0x00549490
 void Dialog::SetColor(int theIdx, const Color& theColor)
 {
 	Widget::SetColor(theIdx, theColor);
@@ -128,6 +132,7 @@ void Dialog::SetColor(int theIdx, const Color& theColor)
 	}	
 }
 
+// FUNCTION: POPCAPGAME1 0x00540b00
 void Dialog::SetButtonFont(Font* theFont)
 {
 	if (mYesButton != NULL)
@@ -137,18 +142,21 @@ void Dialog::SetButtonFont(Font* theFont)
 		mNoButton->SetFont(theFont);
 }
 
+// FUNCTION: POPCAPGAME1 0x00540b50
 void Dialog::SetHeaderFont(Font* theFont)
 {
 	delete mHeaderFont;
 	mHeaderFont = theFont->Duplicate();
 }
 
+// FUNCTION: POPCAPGAME1 0x00540b80
 void Dialog::SetLinesFont(Font* theFont)
 {
 	delete mLinesFont;
 	mLinesFont = theFont->Duplicate();
 }
 
+// FUNCTION: POPCAPGAME1 0x00546400
 void Dialog::EnsureFonts()
 {
 	if (mHeaderFont == NULL)
@@ -157,6 +165,7 @@ void Dialog::EnsureFonts()
 		mLinesFont = new SysFont(gSexyAppBase, "Arial Unicode MS", 12);
 }
 
+// FUNCTION: POPCAPGAME1 0x00546560
 int	Dialog::GetPreferredHeight(int theWidth)
 {
 	EnsureFonts();
@@ -198,6 +207,7 @@ int	Dialog::GetPreferredHeight(int theWidth)
 	return aHeight;
 }
 
+// FUNCTION: POPCAPGAME1 0x005466e0
 void Dialog::Draw(Graphics* g)
 {
 	EnsureFonts();
@@ -258,6 +268,7 @@ void Dialog::Draw(Graphics* g)
 	}	
 }
 
+// FUNCTION: POPCAPGAME1 0x005424b0
 void Dialog::AddedToManager(WidgetManager* theWidgetManager)
 {
 	Widget::AddedToManager(theWidgetManager);
@@ -268,6 +279,7 @@ void Dialog::AddedToManager(WidgetManager* theWidgetManager)
 		theWidgetManager->AddWidget(mNoButton);
 }
 
+// FUNCTION: POPCAPGAME1 0x005424f0
 void Dialog::RemovedFromManager(WidgetManager* theWidgetManager)
 {
 	Widget::RemovedFromManager(theWidgetManager);
@@ -278,6 +290,7 @@ void Dialog::RemovedFromManager(WidgetManager* theWidgetManager)
 		theWidgetManager->RemoveWidget(mNoButton);
 }
 
+// FUNCTION: POPCAPGAME1 0x00540bb0
 void Dialog::OrderInManagerChanged()
 {
 	Widget::OrderInManagerChanged();
@@ -287,6 +300,7 @@ void Dialog::OrderInManagerChanged()
 		mWidgetManager->PutInfront(mNoButton,this);
 }
 
+// FUNCTION: POPCAPGAME1 0x00543040
 void Dialog::Resize(int theX, int theY, int theWidth, int theHeight)
 {
 	Widget::Resize(theX, theY, theWidth, theHeight);	
@@ -308,6 +322,7 @@ void Dialog::Resize(int theX, int theY, int theWidth, int theHeight)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x00540bf0
 void Dialog::MouseDown(int x, int y, int theBtnNum, int theClickCount)
 {
 	if (theClickCount == 1)
@@ -320,6 +335,7 @@ void Dialog::MouseDown(int x, int y, int theBtnNum, int theClickCount)
 	Widget::MouseDown(x,y,theBtnNum, theClickCount);
 }
 
+// FUNCTION: POPCAPGAME1 0x00540c30
 void Dialog::MouseDrag(int x, int y)
 {
 	if (mDragging)
@@ -354,6 +370,7 @@ void Dialog::MouseDrag(int x, int y)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x00540d30
 void Dialog::MouseUp(int x, int y, int theBtnNum, int theClickCount)
 {
 	if (mDragging)
@@ -371,11 +388,13 @@ void Dialog::Update()
 	//Move(mX, mY+1);
 }
 
+// FUNCTION: POPCAPGAME1 0x00540d70
 bool Dialog::IsModal()
 {
 	return mIsModal;
 }
 
+// FUNCTION: POPCAPGAME1 0x00540d80
 int Dialog::WaitForResult(bool autoKill)
 {	
 	//gSexyAppBase->DoMainLoop(mId);	
@@ -388,12 +407,14 @@ int Dialog::WaitForResult(bool autoKill)
 	return mResult;
 }
 
+// FUNCTION: POPCAPGAME1 0x00540de0
 void Dialog::ButtonPress(int theId)
 {
 	if ((theId == ID_YES) || (theId == ID_NO))
 		mDialogListener->DialogButtonPress(mId, theId);
 }
 
+// FUNCTION: POPCAPGAME1 0x00540e10
 void Dialog::ButtonDepress(int theId)
 {
 	if ((theId == ID_YES) || (theId == ID_NO))
