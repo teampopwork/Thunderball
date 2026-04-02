@@ -8,9 +8,8 @@ namespace Sexy
 {
 class ThunderballApp;
 class Graphics;
-class SexyChar;
 
-// VTABLE: POPCAPGAME1 0x00005f2a24
+// VTABLE: POPCAPGAME1 0x005f2a24
 class AdventureScreen : public Widget, public ButtonListener {
 public:
 	AdventureScreen(ThunderballApp* theApp);

@@ -2,6 +2,7 @@
 #define __THUNDERBALLAPP_H__
 
 #include "ConstEnums.h"
+
 #include <SexyAppFramework/SexyApp.h>
 
 namespace Sexy
@@ -10,49 +11,65 @@ class WidgetMover;
 class PlayerInfo;
 class ButtonWidget;
 class LoadingScreen;
+class TrophyScreen;
+class StoryScreen;
+class AdventureScreen;
+class LevelScreen;
+class HelpScreen;
+class UpsellScreen;
 class MainMenu;
 class ThunderDialog;
 class ProfileMgr;
 class StatsMgr;
+class StageMgr;
+class CharacterMgr;
+class TrophyMgr;
+class HighScoreMgr;
+class ImageMgr;
 class Board;
 
 // VTABLE: POPCAPGAME1 0x005d7cb8
 class ThunderballApp : public SexyApp {
 public:
-	
-
-	int mUnk0x750;                    // +0x750 // part of SexyApp?
-	GameMode mGameMode;               // +0x760
-	int mUnk0x764;                    // +0x764
-	int mUnk0x768;                    // +0x768
-	int mMaxStage;                    // +0x770
-	int mMaxLevel;                    // +0x774
-	bool mUnk0x779;                   // +0x779
-	int mUnk0x780;                    // +0x780
-	int mUnk0x784;                    // +0x784
-	double mFeverVolume;              // +0x790
-	bool mShouldShowUpsellButton;     // +0x798
-	int mUnk0x7b0;                    // +0x7B0
-	int mUnk0x7b8;                    // +0x7B4
-	Board* mBoard;                    // +0x7B8
-	LoadingScreen* mLoadingScreen;    // +0x7C8
-	MainMenu* mMainMenu;              // +0x7CC
-	int mUnk0x834;                    // +0x834
-	bool mUnk0x839;                   // +0x839
-	bool mUnk0x83A;                   // +0x83A
-	bool mUnk0x83C;                   // +0x83C
-									  // CharacterMgr* mCharacterMgr; // +0x844
-									  // HighScoreMgr* mHighScoreMgr; // +0x848
-	ProfileMgr*   mProfileMgr;   // +0x850
-									  // StageMgr*     mStageMgr;     // +0x858
-	StatsMgr*	 mStatsMgr;     // +0x85C
-									  // StatsMgr*	 mEditStatsMgr;    // +0x860
-									  // TrophyMgr*    mTrophyMgr;    // +0x864
-	WidgetMover* mWidgetMover;        // +0x868
-	ButtonWidget* mWinCloseButton;    // +0x86C
-	ButtonWidget* mWinMinimizeButton; // +0x870
-	ButtonWidget* mWinUnmaxButton;    // +0x874
-	PlayerInfo* mCurProfile;          // +0x878
+	int mUnk0x750;                     // +0x750 // part of SexyApp?
+	GameMode mGameMode;                // +0x760
+	int mUnk0x764;                     // +0x764
+	int mUnk0x768;                     // +0x768
+	int mMaxStage;                     // +0x770
+	int mMaxLevel;                     // +0x774
+	bool mUnk0x779;                    // +0x779
+	int mUnk0x780;                     // +0x780
+	int mUnk0x784;                     // +0x784
+	double mFeverVolume;               // +0x790
+	bool mShouldShowUpsellButton;      // +0x798
+	int mUnk0x7b0;                     // +0x7B0
+	int mUnk0x7b8;                     // +0x7B4
+	Board* mBoard;                     // +0x7B8
+	UpsellScreen* mUpsellScreen;       // +0x7BC
+	HelpScreen* mHelpScreen;           // +0x7C0
+	LevelScreen* mLevelScreen;         // +0x7C4
+	LoadingScreen* mLoadingScreen;     // +0x7C8
+	MainMenu* mMainMenu;               // +0x7CC
+	TrophyScreen* mTrophyScreen;       // +0x7D0
+	StoryScreen* mStoryScreen;         // +0x7D4
+	AdventureScreen* mAdventureScreen; // +0x7D8
+	int mUnk0x834;                     // +0x834
+	bool mUnk0x839;                    // +0x839
+	bool mUnk0x83A;                    // +0x83A
+	bool mUnk0x83C;                    // +0x83C
+	CharacterMgr* mCharacterMgr;       // +0x844
+	HighScoreMgr* mHighScoreMgr;       // +0x848
+	ImageMgr* mImageMgr;               // +0x84C
+	ProfileMgr* mProfileMgr;           // +0x850
+	StageMgr* mStageMgr;               // +0x858
+	StatsMgr* mStatsMgr;               // +0x85C
+	StatsMgr* mEditStatsMgr;           // +0x860
+	TrophyMgr* mTrophyMgr;             // +0x864
+	WidgetMover* mWidgetMover;         // +0x868
+	ButtonWidget* mWinCloseButton;     // +0x86C
+	ButtonWidget* mWinMinimizeButton;  // +0x870
+	ButtonWidget* mWinUnmaxButton;     // +0x874
+	PlayerInfo* mCurProfile;           // +0x878
 
 	ThunderballApp();
 	virtual ~ThunderballApp();
@@ -76,7 +93,14 @@ public:
 	void DoConfirmRestartAdventureDialog();
 	void DoConfirmRestartLevelDialog(int);
 	void DoCreateUserDialog();
-	ThunderDialog* DoDialogScroll(int theId, bool isModal, const SexyString& theDialogHeader, const SexyString& theDialogLines, const SexyString& theDialogFooter, int theButtonMode);
+	ThunderDialog* DoDialogScroll(
+		int theId,
+		bool isModal,
+		const SexyString& theDialogHeader,
+		const SexyString& theDialogLines,
+		const SexyString& theDialogFooter,
+		int theButtonMode
+	);
 	void DoOptionsDialog();
 	void DoRenameUserDialog(std::string&);
 	bool DoReplaysExist();
@@ -171,7 +195,6 @@ public:
 	virtual void Shutdown();
 	virtual void ShutdownHook();
 	virtual void SwitchScreenMode(bool wantWindowed, bool is3d, bool force);
-
 
 	bool meth_0x405840();
 };

@@ -36,7 +36,7 @@ void StageMgr::GetRandomLevel(
 {
 }
 
-void StageMgr::GetRandomLevel(int* param_1, int* param_2, bool param_3, int param_4, bool param_5)
+void StageMgr::GetRandomLevel(PlayerInfo* param_1, int* param_2, int* param_3, bool param_4, int param_5, bool param_6)
 {
 }
 

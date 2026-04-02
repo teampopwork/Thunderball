@@ -3,6 +3,7 @@
 #include "PlayerInfo.h"
 #include "Res.h"
 #include "SimpleButton.h"
+#include "StageMgr.h"
 #include "ThunderButton.h"
 #include "ThunderCommon.h"
 #include "ThunderDialog.h"
@@ -11,6 +12,7 @@
 #include <SexyAppFramework/Font.h>
 #include <SexyAppFramework/Graphics.h>
 #include <SexyAppFramework/HyperlinkWidget.h>
+#include <SexyAppFramework/SexyMatrix.h>
 #include <SexyAppFramework/WidgetManager.h>
 #include <string>
 
@@ -314,14 +316,14 @@ static int sNotesList[] = {2, 2, 3, 4, 4, 3, 2, 1, 0, 0, 1, 2, 2, 1, 1};
 // FUNCTION: POPCAPGAME1 0x00494ad0
 void MainMenu::ButtonMouseEnter(int theId)
 {
-	if (theId == sNotesList[mWidgetFlagsMod.mRemoveFlags]) {
-		mWidgetFlagsMod.mRemoveFlags++;
+	if (theId == sNotesList[mUnk0xD0]) {
+		mUnk0xD0++;
 	}
 	else {
-		mWidgetFlagsMod.mRemoveFlags = 0;
+		mUnk0xD0 = 0;
 	}
 
-	if (15U <= mWidgetFlagsMod.mRemoveFlags) {
+	if (15 <= mUnk0xD0) {
 		mApp->ShowStoryScreen(true, true);
 	}
 }
@@ -329,7 +331,17 @@ void MainMenu::ButtonMouseEnter(int theId)
 // FUNCTION: POPCAPGAME1 0x004a90a0
 void MainMenu::DoNotYet(std::string& param_1)
 {
-	ThunderDialog* aDialog = static_cast<ThunderDialog*>(mApp->DoDialog(38, true, "Locked", param_1, "OK", 3));
+	ThunderDialog* aDialog = static_cast<ThunderDialog*>(mApp->DoDialog(
+		38, 
+		true, 
+		// STRING: POPCAPGAME1 0x00609724
+		"Locked", 
+		param_1, 
+		// STRING: POPCAPGAME1 0x005d6fa8
+		"OK", 
+		3
+	));
+
 	aDialog->mUnk0x163 = true;
 	aDialog->DoScroll(true);
 }
@@ -527,7 +539,7 @@ void MainMenu::StartGame()
 		}
 
 		if (mUnk0xC0 && (mApp->mCurProfile != NULL)) {
-			// mApp->mStageMgr->GetRandomLevel(mApp->mCurProfile, mApp->mUnk0x764, mApp->mUnk0x768, false, false, true);
+			mApp->mStageMgr->GetRandomLevel(mApp->mCurProfile, &mApp->mUnk0x764, &mApp->mUnk0x768, false, false, true);
 			mApp->ShowBoard(false, true);
 			return;
 		}

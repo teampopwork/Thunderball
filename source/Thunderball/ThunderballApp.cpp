@@ -1,19 +1,30 @@
 #include "ThunderballApp.h"
 
 #include "LoadTimer.h"
-#include "LoadingScreen.h"
-#include "MainMenu.h"
-#include "NewUserDialog.h"
 #include "PlayerInfo.h"
-#include "ProfileMgr.h"
 #include "Res.h"
-#include "StatsMgr.h"
 #include "ThunderCommon.h"
+
+#include "WidgetMover.h"
+#include "CharacterMgr.h"
+#include "HighScoreMgr.h"
+#include "ImageMgr.h"
+#include "StatsMgr.h"
+#include "ProfileMgr.h"
+#include "StageMgr.h"
+
+#include "LoadingScreen.h"
+#include "TrophyScreen.h"
+#include "StoryScreen.h"
+#include "AdventureScreen.h"
+#include "LevelScreen.h"
+#include "Board.h"
+#include "MainMenu.h"
+
+#include "OptionsDialog.h"
+#include "NewUserDialog.h"
 #include "ThunderDialog.h"
 #include "ThunderCheckbox.h"
-#include "WidgetMover.h"
-#include "OptionsDialog.h"
-#include "Board.h"
 
 #include <SexyAppFramework/BassMusicInterface.h>
 #include <SexyAppFramework/ButtonWidget.h>
@@ -34,16 +45,37 @@ ThunderballApp::ThunderballApp()
 	mTitle = "Peggle Deluxe " + mProductVersion;
 	mRegKey = "PopCap\\Peggle";
 
-	mWidgetMover = new WidgetMover();
-	mProfileMgr = new ProfileMgr();
-	mCurProfile = NULL;
-	mLoadingScreen = NULL;
-	mMainMenu = NULL;
-	mBoard = NULL;
-
 	mWidth = 800;
 	mHeight = 600;
-	mAutoEnable3D = true;
+	mFullscreenBits = 32;
+
+	
+	mBoard = NULL;
+	mLevelScreen = NULL;
+	mLoadingScreen = NULL;
+	mMainMenu = NULL;
+	mTrophyScreen = NULL;
+	mStoryScreen = NULL;
+	mAdventureScreen = NULL;
+
+	mWinCloseButton = NULL;
+	mWinMinimizeButton = NULL;
+	mWinUnmaxButton = NULL;
+
+	mUpsellScreen = NULL;
+
+	mCurProfile = NULL;
+
+	mCharacterMgr = new CharacterMgr();
+	mHighScoreMgr = new HighScoreMgr();
+	mImageMgr = new ImageMgr();
+	mStageMgr = new StageMgr(this);
+	mProfileMgr = new ProfileMgr();
+	mStatsMgr = new StatsMgr();
+	mEditStatsMgr = new StatsMgr();
+	mWidgetMover = new WidgetMover();
+
+	
 }
 
 // STUB: POPCAPGAME1 0x00431340
@@ -880,11 +912,11 @@ void ThunderballApp::ShowMainMenu()
 
 	mUnk0x750 = 3;
 	CheckScrollOff(this->mLoadingScreen, 1, 1);
-	/*CheckScrollOff(this,this->mLevelScreen,2,1);
-	CheckScrollOff(this,this->mTrophyScreen,2,1);
-	CheckScrollOff(this,this->mStoryScreen,2,1);
-	CheckScrollOff(this,this->mAdventureScreen,2,1);
-	CheckScrollOff(this,this->mBoard,2,1);*/
+	CheckScrollOff(this->mLevelScreen, 2, 1);
+	CheckScrollOff(this->mTrophyScreen, 2, 1);
+	CheckScrollOff(this->mStoryScreen, 2, 1);
+	CheckScrollOff(this->mAdventureScreen, 2, 1);
+	CheckScrollOff(this->mBoard, 2, 1);
 
 	ThunderDialog* aDialog = static_cast<ThunderDialog*>(GetDialog(0x13));
 	if (aDialog != NULL) {
