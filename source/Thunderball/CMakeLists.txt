@@ -23,6 +23,8 @@ add_executable(popcapgame1 WIN32
     StageMgr.cpp
     StatsMgr.cpp
     LogicMgr.cpp
+    HighScoreMgr.cpp
+    ImageMgr.cpp
     StoryScreen.cpp
     LevelScreen.cpp
     ThunderCommon.cpp
