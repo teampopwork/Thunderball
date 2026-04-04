@@ -62,6 +62,7 @@ public:
 			return TRect<_T>(x1, y1, x2 - x1, y2 - y1);
 	}
 
+	// FUNCTION: POPCAPGAME1 0x00437870
 	bool					Contains(_T theX, _T theY) const
 	{
 		return ((theX >= mX) && (theX < mX + mWidth) &&

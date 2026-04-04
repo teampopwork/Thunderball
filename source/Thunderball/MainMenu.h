@@ -4,8 +4,8 @@
 #include "ThunderballApp.h"
 
 #include <SexyAppFramework/ButtonListener.h>
-#include <SexyAppFramework/Widget.h>
 #include <SexyAppFramework/HyperlinkWidget.h>
+#include <SexyAppFramework/Widget.h>
 #include <string>
 
 namespace Sexy
@@ -19,34 +19,34 @@ class SimpleButton;
 // VTABLE: POPCAPGAME1 0x005fa4d4 Sexy::MainMenu
 class MainMenu : public Widget, public ButtonListener {
 public:
-	ThunderballApp* mApp; // +0x8C
-	HyperlinkWidget* mRegisterLink; // +0x90
+	ThunderballApp* mApp;            // +0x8C
+	HyperlinkWidget* mRegisterLink;  // +0x90
 	ThunderButton* mAdventureButton; // +0x94
-	ThunderButton* mSoloButton; // +0x98
+	ThunderButton* mSoloButton;      // +0x98
 	ThunderButton* mChallengeButton; // +0x9C
-	ThunderButton* mDuelButton; // +0xA0
-	ThunderButton* mDemoButton; // +0xA4
-	ThunderButton* mReplayButton; // +0xA8
-	ThunderButton* mOptionsButton; // +0xAC
-	ThunderButton* mQuitButton; // +0xB0
-	SimpleButton* mUpsellButton; // +0xB4
-	
-	int mUnk0xB8;         // +0xB8
-	int mUnk0xBC;         // +0xBC
-	bool mUnk0xC0;        // +0xC0
-	bool mUnk0xC1;        // +0xC1
-	int mUnk0xC4;         // +0xC4
-	int mUnk0xC8;         // +0xC8
-	int mUnk0xCC;        // +0xCC
-	uint mUnk0xD0;        // +0xD0
-	int mUnk0xD4;        // +0xD4
-	int mUnk0xD8;        // +0xD8
-	int mUnk0xDC;        // +0xDC
-	int mUnk0xE0;        // +0xE0
-	int mUnk0xE4;        // +0xE4
-	int mUnk0xE8;         // +0xE8
-	int mUnk0xEC;         // +0xEC
-	int mUnk0xF0;         // +0xF0
+	ThunderButton* mDuelButton;      // +0xA0
+	ThunderButton* mDemoButton;      // +0xA4
+	ThunderButton* mReplayButton;    // +0xA8
+	ThunderButton* mOptionsButton;   // +0xAC
+	ThunderButton* mQuitButton;      // +0xB0
+	SimpleButton* mUpsellButton;     // +0xB4
+
+	int mUnk0xB8;  // +0xB8
+	int mUnk0xBC;  // +0xBC
+	bool mUnk0xC0; // +0xC0
+	bool mUnk0xC1; // +0xC1
+	int mUnk0xC4;  // +0xC4
+	int mUnk0xC8;  // +0xC8
+	bool mUnk0xCC; // +0xCC
+	uint mUnk0xD0; // +0xD0
+	int mUnk0xD4;  // +0xD4
+	int mUnk0xD8;  // +0xD8
+	int mUnk0xDC;  // +0xDC
+	int mUnk0xE0;  // +0xE0
+	int mUnk0xE4;  // +0xE4
+	int mUnk0xE8;  // +0xE8
+	int mUnk0xEC;  // +0xEC
+	int mUnk0xF0;  // +0xF0
 
 	MainMenu(ThunderballApp* theApp);
 	virtual ~MainMenu();

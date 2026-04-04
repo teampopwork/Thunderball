@@ -347,7 +347,9 @@ extern Font* FONT_SMALL_DISP;
 extern Font* FONT_STAGE;
 extern int SOUND_AAH;
 extern int SOUND_ADD_BALL;
+// GLOBAL: POPCAPGAME1 0x0065015c
 extern int SOUND_APPLAUSE;
+// GLOBAL: POPCAPGAME1 0x006500b0
 extern int SOUND_AWARD;
 extern int SOUND_BUBBLES;
 extern int SOUND_BUCKETHIT;

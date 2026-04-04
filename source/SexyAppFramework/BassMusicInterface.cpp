@@ -8,7 +8,7 @@ using namespace Sexy;
 
 #define BASS_CONFIG_BUFFER			0
 
-// FUNCTION: POPCAPGAME1 0x0052db40
+// FUNCTION: POPCAPGAME1 0x0054b1f0
 BassMusicInfo::BassMusicInfo()
 {	
 	mVolume = 0.0;

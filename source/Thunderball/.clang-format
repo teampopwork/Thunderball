@@ -35,3 +35,4 @@ RemoveSemicolon: true
 SpaceAfterCStyleCast: true
 TabWidth: 4
 UseTab: ForContinuationAndIndentation
+ColumnLimit: 0
