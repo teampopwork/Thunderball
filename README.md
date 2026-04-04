@@ -1,7 +1,7 @@
 # Peggle Deluxe Decompilation  
 [Discord](https://discord.gg/83D3CSVxsj) | [Contributing](https://github.com/teampopwork/Thunderball/blob/main/CONTRIBUTING.md) | [License](https://github.com/teampopwork/Thunderball/blob/main/LICENSE.md)  
 
-This project aims to decompile the English 1.01 executable of Peggle Deluxe from the steam release. Many variable and function names have been taken from the Mac OS port, as PopCap generously built those executables with debug symbols.
+This project aims to decompile the English 1.01 executable of Peggle Deluxe from the steam release. Many variable or function names come from unstripped ports to other platforms cross-referenced with the target windows binary.
 
 <p align="center">
  <img src="https://github.com/teampopwork/Thunderball/raw/refs/heads/gh-pages/progress.svg" alt="Progress" />

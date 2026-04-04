@@ -13,6 +13,9 @@ struct TrophyPage;
 
 class TrophyMgr {
 public:
+	char padding[0x1c];
+	int mUnk0x20;
+
 	TrophyMgr(ThunderballApp* theApp);
 	virtual ~TrophyMgr();
 
@@ -25,9 +28,6 @@ public:
 
 	TrophyInfo* GetTrophyInfoById(int theId);
 	TrophyPage* GetTrophyPage(int theId);
-
-private:
-	ThunderballApp* mApp;
 };
 
 } // namespace Sexy

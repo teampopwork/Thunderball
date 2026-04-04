@@ -4,6 +4,7 @@
 #include "Res.h"
 #include "SimpleButton.h"
 #include "StageMgr.h"
+#include "TrophyMgr.h"
 #include "ThunderButton.h"
 #include "ThunderCommon.h"
 #include "ThunderDialog.h"
@@ -323,7 +324,7 @@ void MainMenu::ButtonMouseEnter(int theId)
 		mUnk0xD0 = 0;
 	}
 
-	if (15 <= mUnk0xD0) {
+	if (15U <= mUnk0xD0) {
 		mApp->ShowStoryScreen(true, true);
 	}
 }
@@ -579,8 +580,63 @@ void MainMenu::SyncPlayerInfo()
 	mUnk0xB8 = 0;
 	mUnk0xC8 = 0;
 
-	PlayerInfo* playerInfo = mApp->mCurProfile;
-	if (playerInfo != NULL) {
+	PlayerInfo* aPlayerInfo = mApp->mCurProfile;
+	if (aPlayerInfo != NULL) {
+		int unk0x114 = aPlayerInfo->mUnk0x114;
+		mUnk0xB8 = aPlayerInfo->mUnk0x30;
+
+		mUnk0xBC = aPlayerInfo->mUnk0x34;
+
+		if (mUnk0xB8 < 0) {
+			mUnk0xB8 = 0;
+		}
+
+		if (mUnk0xBC < 0) {
+			mUnk0xBC = 0;
+		}
+
+		if (aPlayerInfo->mUnk0x48 > 0) {
+			mUnk0xC8 = 1;
+
+			if ((int)aPlayerInfo->mUnk0xfc.size() >= mApp->mTrophyMgr->mUnk0x20) {
+				mUnk0xC8 = 2;
+
+				if ((int)aPlayerInfo->mUnk0x118.size() >= mApp->mStageMgr->mUnk0x24) {
+					mUnk0xC8 = 3;
+				}
+			}
+		}
+
+		if (unk0x114 < mUnk0xC8) {
+			aPlayerInfo->mUnk0x114 = mUnk0xC8;
+			StartTrophyEffect();
+			aPlayerInfo->SaveDetails();
+		}
+	}
+
+	// STRING: POPCAPGAME1 0x005fe8ac
+	if (ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\MainMenu.cpp516,208", 0)) {
+		bool doBlink;
+
+		if (aPlayerInfo != NULL && aPlayerInfo->GetMaxLevel() == 0) {
+			doBlink = true;
+		}
+		else {
+			doBlink = false;
+		}
+
+		// how to do this naturally?
+		if (doBlink != (bool)(0 < mAdventureButton->mUnk0x14c)) {
+			if (doBlink) {
+				mAdventureButton->mUnk0x151 = true;
+				// STRING: POPCAPGAME1 0x005fe86c
+				mAdventureButton->mUnk0x154 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\MainMenu.cpp517,216", 0x78);
+				mAdventureButton->Blink(1000, true);
+			}
+			else {
+				mAdventureButton->StopBlink();
+			}
+		}
 	}
 }
 
