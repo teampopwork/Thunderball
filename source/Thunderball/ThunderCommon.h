@@ -43,7 +43,9 @@ void DrawEditBox(Graphics* g, EditWidget* theEditWidget);
 ThunderButton* MakeButtonCopy(DialogButton* theButton);
 int Clamp(int val, int minVal, int maxVal);
 ThunderCheckbox* MakeCheckbox(int theId, CheckboxListener* theListener, int param_3);
-ThunderCheckbox* MakeCheckbox2(int theId, CheckboxListener* theListener, const std::string& theString, int param_4);
+ThunderCheckbox* MakeCheckbox2(int theId, CheckboxListener* theListener, std::string const& theString, int param_4);
+ThunderButton* MakeBottomButton(int theId, ButtonListener* theListener, std::string const& theString);
+int GetColorForCharacter(int param_1);
 // 04896b0 DoDrawStat
 } // namespace Sexy
 

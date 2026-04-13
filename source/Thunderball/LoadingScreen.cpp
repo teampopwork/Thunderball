@@ -256,7 +256,7 @@ void LoadingScreen::ButtonDepress(int theId)
 
 		if (mApp->mCurProfile == NULL) {
 			// STRING: POPCAPGAME1 0x005fa490
-			if (ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp467,745", 1) != 0) {
+			if (ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp467,745", true)) {
 				mPlayNowButton->SetDisabled(true);
 				mApp->DoCreateUserDialog();
 				return;

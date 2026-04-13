@@ -1601,3 +1601,49 @@ ThunderCheckbox* Sexy::MakeCheckbox2(
 
 	return aCheckbox;
 }
+
+// FUNCTION: POPCAPGAME1 0x0041bdc0
+ThunderButton* Sexy::MakeBottomButton(int theId, ButtonListener* theListener, const std::string& theString)
+{
+	ThunderButton* aBtn = MakeButton(theId, theListener, theString, NULL);
+	aBtn->mComponentImage = IMAGE_DLG_PLAYBUTTON1;
+	aBtn->mWidth = IMAGE_DLG_PLAYBUTTON1->mWidth;
+	aBtn->mHeight = IMAGE_DLG_PLAYBUTTON1->mHeight / 2;
+	aBtn->mNormalRect.mHeight = 0;
+	aBtn->mNormalRect.mWidth = 1;
+
+	aBtn->mOverRect = Rect(0, 0, aBtn->mWidth, aBtn->mHeight / 2);
+	aBtn->mDownRect = Rect(0, aBtn->mHeight / 2, aBtn->mWidth, aBtn->mHeight / 2);
+
+	return aBtn;
+}
+
+// FUNCTION: POPCAPGAME1 0x00489d90
+
+int Sexy::GetColorForCharacter(int param_1)
+{
+	switch (param_1) {
+	case 0:
+		return ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp189,1026", 0x88ffff);
+	case 1:
+		return ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp190,1027", 0x88ff88);
+	case 2:
+		return ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp191,1028", 0xffff88);
+	case 3:
+		return ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp192,1029", 0xa080ff);
+	case 4:
+		return ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp193,1030", 0x88ccff);
+	case 5:
+		return ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp194,1031", 0xffaa44);
+	case 6:
+		return ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp195,1032", 0xff88ff);
+	case 7:
+		return ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp196,1033", 0xff4444);
+	case 8:
+		return ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp197,1034", 0xff00);
+	case 9:
+		return ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp198,1035", 0xb6bcd6);
+	default:
+		return ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp199,1036", 0xffffff);
+	}
+}

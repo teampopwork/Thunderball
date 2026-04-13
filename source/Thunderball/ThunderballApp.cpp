@@ -1,30 +1,27 @@
 #include "ThunderballApp.h"
 
-#include "LoadTimer.h"
-#include "PlayerInfo.h"
-#include "Res.h"
-#include "ThunderCommon.h"
-
-#include "WidgetMover.h"
+#include "AdventureScreen.h"
+#include "Board.h"
 #include "CharacterMgr.h"
 #include "HighScoreMgr.h"
 #include "ImageMgr.h"
-#include "StatsMgr.h"
-#include "ProfileMgr.h"
-#include "StageMgr.h"
-
-#include "LoadingScreen.h"
-#include "TrophyScreen.h"
-#include "StoryScreen.h"
-#include "AdventureScreen.h"
 #include "LevelScreen.h"
-#include "Board.h"
+#include "LoadTimer.h"
+#include "LoadingScreen.h"
 #include "MainMenu.h"
-
-#include "OptionsDialog.h"
 #include "NewUserDialog.h"
-#include "ThunderDialog.h"
+#include "OptionsDialog.h"
+#include "PlayerInfo.h"
+#include "ProfileMgr.h"
+#include "Res.h"
+#include "StageMgr.h"
+#include "StatsMgr.h"
+#include "StoryScreen.h"
 #include "ThunderCheckbox.h"
+#include "ThunderCommon.h"
+#include "ThunderDialog.h"
+#include "TrophyScreen.h"
+#include "WidgetMover.h"
 
 #include <SexyAppFramework/BassMusicInterface.h>
 #include <SexyAppFramework/ButtonWidget.h>
@@ -49,7 +46,6 @@ ThunderballApp::ThunderballApp()
 	mHeight = 600;
 	mFullscreenBits = 32;
 
-	
 	mBoard = NULL;
 	mLevelScreen = NULL;
 	mLoadingScreen = NULL;
@@ -74,8 +70,6 @@ ThunderballApp::ThunderballApp()
 	mStatsMgr = new StatsMgr();
 	mEditStatsMgr = new StatsMgr();
 	mWidgetMover = new WidgetMover();
-
-	
 }
 
 // STUB: POPCAPGAME1 0x00431340
@@ -307,67 +301,67 @@ void ThunderballApp::DialogButtonDepress(int theDialogId, int theButtonId)
 {
 	bool bVar1 = theButtonId == 1000;
 	switch (theDialogId) {
-		default:
-			DoScrollOff(theDialogId);
-			break;
-		case 2:
-			FinishConfirmDeleteUserDialog(bVar1);
-			break;
-		case 4:
-			FinishConfirmMainMenuDialog(bVar1);
-			break;
-		case 5:
-			FinishConfirmQuitDialog(bVar1);
-			break;
-		case 6:
-			FinishConfirmRestartAdventureDialog(bVar1);
-			break;
-		case 7:
-			FinishConfirmNewChallengeDialog(bVar1);
-			break;
-		case 8:
-			FinishConfirmRestartLevelDialog(bVar1);
-			break;
-		case 10:
-			FinishCreateUserDialog(bVar1);
-			break;
-		case 0xb:
-			FinishNameErrorDialog(0xb);
-			break;
-		case 0x15:
-			FinishNameErrorDialog(0x15);
-		case 0xd:
-			DoScrollOff(0xd);
-			/*if (mBoard != NULL) {
-				mBoard->mUnk0xea = 0;
-			}*/
-			break;
-		case 0xe:
-			FinishTipDialog(bVar1);
-			break;
-		case 0x10:
-			FinishHighScoreEntryDialog(bVar1);
-			break;
-		case 0x13:
-			FinishOptionsDialog(bVar1, true);
-			break;
-		case 0x14:
-			FinishRenameUserDialog(bVar1);
-			break;
-		case 0x18:
-			FinishUserDialog(bVar1);
-			break;
-		case 0x1b:
-		case 0x22:
-			KillDialog(theDialogId);
-			/*if (mBoard != NULL) {
-				mBoard->Pause(false);
-				mWidgetManager->SetFocus(mBoard);
-				if (mBoard->mUnk0xc5 != 0) {
-					mBoard->DoReplayFileDialog();2
-				}
-			}*/
-			break;
+	default:
+		DoScrollOff(theDialogId);
+		break;
+	case 2:
+		FinishConfirmDeleteUserDialog(bVar1);
+		break;
+	case 4:
+		FinishConfirmMainMenuDialog(bVar1);
+		break;
+	case 5:
+		FinishConfirmQuitDialog(bVar1);
+		break;
+	case 6:
+		FinishConfirmRestartAdventureDialog(bVar1);
+		break;
+	case 7:
+		FinishConfirmNewChallengeDialog(bVar1);
+		break;
+	case 8:
+		FinishConfirmRestartLevelDialog(bVar1);
+		break;
+	case 10:
+		FinishCreateUserDialog(bVar1);
+		break;
+	case 0xb:
+		FinishNameErrorDialog(0xb);
+		break;
+	case 0x15:
+		FinishNameErrorDialog(0x15);
+	case 0xd:
+		DoScrollOff(0xd);
+		/*if (mBoard != NULL) {
+			mBoard->mUnk0xea = 0;
+		}*/
+		break;
+	case 0xe:
+		FinishTipDialog(bVar1);
+		break;
+	case 0x10:
+		FinishHighScoreEntryDialog(bVar1);
+		break;
+	case 0x13:
+		FinishOptionsDialog(bVar1, true);
+		break;
+	case 0x14:
+		FinishRenameUserDialog(bVar1);
+		break;
+	case 0x18:
+		FinishUserDialog(bVar1);
+		break;
+	case 0x1b:
+	case 0x22:
+		KillDialog(theDialogId);
+		/*if (mBoard != NULL) {
+			mBoard->Pause(false);
+			mWidgetManager->SetFocus(mBoard);
+			if (mBoard->mUnk0xc5 != 0) {
+				mBoard->DoReplayFileDialog();2
+			}
+		}*/
+		break;
 	}
 }
 
@@ -452,7 +446,8 @@ void ThunderballApp::DoOptionsDialog()
 	int theWidth;
 	if (mBoard == NULL) {
 		theWidth = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp190,2442", 0x1b8);
-	} else {
+	}
+	else {
 		theWidth = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp189,2442", 0x1b8);
 	}
 
@@ -642,7 +637,8 @@ void ThunderballApp::FinishOptionsDialog(bool param_1, bool param_2)
 
 		if (param_2) {
 			aDialog->DoScrollOff(true);
-		} else {
+		}
+		else {
 			KillDialog(0x13);
 		}
 		PauseBoard(false);
@@ -944,9 +940,28 @@ void ThunderballApp::ShowReplay(bool param_1)
 	printf("ThunderballApp::ShowReplay called with %d\n", param_1);
 }
 
-// STUB: POPCAPGAME1 0x0042d670
+// FUNCTION: POPCAPGAME1 0x0042d670
 void ThunderballApp::ShowStoryScreen(bool param_1, bool param_2)
 {
+	if (!TryExpire(false)) {
+		CheckPlayMusic(false);
+		if (mCurProfile != NULL) {
+			mCurProfile->mUnk0x61 = false;
+			mCurProfile->mUnk0xec = true;
+		}
+
+		CheckScrollOff(mBoard, 2, true);
+		CheckScrollOff(mMainMenu, 1, true);
+		CleanupScreens(true);
+
+		mStoryScreen = new StoryScreen(this, param_1, param_2);
+
+		mStoryScreen->Resize(0, 0, mWidth, mHeight);
+    	mWidgetManager->AddWidget(mStoryScreen);
+    	mWidgetManager->SetFocus(mStoryScreen);
+
+		ScrollOn(mStoryScreen);
+	}
 }
 
 // STUB: POPCAPGAME1 0x00429780
