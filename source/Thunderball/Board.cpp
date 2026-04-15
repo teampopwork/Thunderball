@@ -173,7 +173,7 @@ void Board::FinishHighScoreEntryDialog(std::string* param_1)
 {
 }
 
-void Board::DrawShadow(Graphics* param_1, int param_2, int param_3, bool param_4)
+void Board::DrawShadow(Graphics* g, int param_2, int param_3, bool param_4)
 {
 }
 
@@ -189,7 +189,7 @@ void Board::SetShowBackground(bool param_1)
 {
 }
 
-void Board::DoZoom(Graphics* param_1)
+void Board::DoZoom(Graphics* g)
 {
 }
 
@@ -302,7 +302,7 @@ void Board::SyncModeOptions()
 {
 }
 
-void Board::SyncState(DataSync* param_1)
+void Board::SyncState(DataSync* theSync)
 {
 }
 
@@ -369,7 +369,7 @@ void Board::ActivateTypingCheck(int param_1)
 {
 }
 
-void Board::DrawScreenSaver(Graphics* param_1)
+void Board::DrawScreenSaver(Graphics* g)
 {
 }
 

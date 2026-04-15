@@ -1619,7 +1619,6 @@ ThunderButton* Sexy::MakeBottomButton(int theId, ButtonListener* theListener, co
 }
 
 // FUNCTION: POPCAPGAME1 0x00489d90
-
 int Sexy::GetColorForCharacter(int param_1)
 {
 	switch (param_1) {

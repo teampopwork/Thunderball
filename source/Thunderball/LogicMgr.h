@@ -25,8 +25,8 @@ public:
 	virtual ~LogicMgr();
 
 	void Update();
-	void Draw(Graphics* param_1);
-	void DrawBack(Graphics* param_1);
+	void Draw(Graphics* g);
+	void DrawBack(Graphics* g);
 	void MouseEnter();
 	void MouseLeave();
 	void MouseMove(int param_1, int param_2);
@@ -65,9 +65,9 @@ public:
 	int CalcMusicIntensity(int param_1);
 	void CalcCornerDisplay();
 	void SetState(LogicState param_1);
-	void SyncClickTimes(DataSync* param_1);
+	void SyncClickTimes(DataSync* theSync);
 	void WriteClickTimes();
-	void SyncState(DataSync* param_1);
+	void SyncState(DataSync* theSync);
 	void CheckCollisions();
 	void CheckBallStop();
 	void CheckPegHitSkillShot(Ball* param_1, PhysObj* param_2);

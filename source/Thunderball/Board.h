@@ -73,11 +73,11 @@ class Board : public Widget, public ButtonListener
 	void     UpdateSlowMo();
 	bool     IsAltKeyUsed(WPARAM wParam);
 	void     FinishHighScoreEntryDialog(std::string* param_1);
-	void     DrawShadow(Graphics* param_1, int param_2, int param_3, bool param_4);
+	void     DrawShadow(Graphics* g, int param_2, int param_3, bool param_4);
 	void     MakeShadow(Image* param_1, int param_2, int param_3);
 	void     SyncColorblind();
 	void     SetShowBackground(bool param_1);
-	void     DoZoom(Graphics* param_1);
+	void     DoZoom(Graphics* g);
 	void     CheckTrophyAccomplishments();
 	void     CheckForBackground();
 	void     CheckExploderForFever(PhysObj* param_1);
@@ -105,7 +105,7 @@ class Board : public Widget, public ButtonListener
 	void     CheckClearAccomplishment();
 	void     DoLevelDone();
 	void     SyncModeOptions();
-	void     SyncState(DataSync* param_1);
+	void     SyncState(DataSync* theSync);
 	void     SetSyncPoint(DataWriter* param_1, bool param_2);
 	void     EndReplay();
 	bool     NeedSaveGame();
@@ -121,7 +121,7 @@ class Board : public Widget, public ButtonListener
 	void     Reset();
 	void     LoadEasterEggLevel(std::string* param_1, int param_2);
 	void     ActivateTypingCheck(int param_1);
-	void     DrawScreenSaver(Graphics* param_1);
+	void     DrawScreenSaver(Graphics* g);
 };
 } // namespace Sexy
 

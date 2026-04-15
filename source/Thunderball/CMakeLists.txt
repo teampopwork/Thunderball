@@ -17,6 +17,12 @@ add_executable(popcapgame1 WIN32
     OptionsDialog.cpp
     PlayerInfo.cpp
     PhysObj.cpp
+    Poly.cpp
+    Line.cpp
+    Brick.cpp
+    Ball.cpp
+    AIBall.cpp
+    Hole.cpp
     ProfileMgr.cpp
     Res.cpp
     SimpleButton.cpp

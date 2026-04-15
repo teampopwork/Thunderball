@@ -23,11 +23,12 @@ public:
 	std::string ToString();
 };
 
+// VTABLE: POPCAPGAME1 0x005d2a24
 class EditValObj : public RefCount {
 public:
 	EditValObj();
 
-	void EditGetSetValHook(const std::string& param_1, bool param_2);
+	virtual bool EditGetSetValHook(const std::string& param_1, bool param_2);
 
 	void EditValSyncNum(int* theNum);
 	void EditValSyncNum(int* theNum, int param_2, int param_3);
@@ -56,7 +57,7 @@ class GlobalEditVal : public EditValObj {
 public:
 	virtual ~GlobalEditVal();
 	GlobalEditVal();
-	virtual void EditGetSetValHook(const std::string& param_1, bool param_2);
+	virtual bool EditGetSetValHook(const std::string& param_1, bool param_2);
 };
 
 } // namespace Sexy

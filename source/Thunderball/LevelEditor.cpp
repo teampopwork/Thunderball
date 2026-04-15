@@ -67,8 +67,9 @@ EditValObj::EditValObj()
 // Sexy::EditValObj::`scalar deleting destructor'
 
 // FUNCTION: POPCAPGAME1 0x0054b760
-void EditValObj::EditGetSetValHook(const std::string& param_1, bool param_2)
+bool EditValObj::EditGetSetValHook(const std::string& param_1, bool param_2)
 {
+	return false;
 }
 
 // STUB: POPCAPGAME1 0x0041ec80
@@ -160,8 +161,9 @@ GlobalEditVal::~GlobalEditVal()
 }
 
 // STUB: POPCAPGAME1 0x0041ee00
-void GlobalEditVal::EditGetSetValHook(const std::string& param_1, bool param_2)
+bool GlobalEditVal::EditGetSetValHook(const std::string& param_1, bool param_2)
 {
+	return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

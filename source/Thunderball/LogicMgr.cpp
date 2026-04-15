@@ -21,13 +21,13 @@ void LogicMgr::Update()
 }
 
 // STUB: POPCAPGAME1 0x00448a30
-void LogicMgr::Draw(Graphics* param_1)
+void LogicMgr::Draw(Graphics* g)
 {
 	// TODO
 }
 
 // STUB: POPCAPGAME1 0x00448820
-void LogicMgr::DrawBack(Graphics* param_1)
+void LogicMgr::DrawBack(Graphics* g)
 {
 	// TODO
 }
@@ -223,7 +223,7 @@ void LogicMgr::SetState(LogicState param_1)
 	// TODO
 }
 
-void LogicMgr::SyncClickTimes(DataSync* param_1)
+void LogicMgr::SyncClickTimes(DataSync* theSync)
 {
 	// TODO
 }
@@ -233,7 +233,7 @@ void LogicMgr::WriteClickTimes()
 	// TODO
 }
 
-void LogicMgr::SyncState(DataSync* param_1)
+void LogicMgr::SyncState(DataSync* theSync)
 {
 	// TODO
 }
