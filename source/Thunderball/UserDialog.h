@@ -18,8 +18,8 @@ public:
 	UserDialog(ThunderballApp* theApp);
 	virtual ~UserDialog();
 
-	virtual void AddedToManager(WidgetManager* theManager);
-	virtual void RemovedFromManager(WidgetManager* theManager);
+	virtual void AddedToManager(WidgetManager* theWidgetManager);
+	virtual void RemovedFromManager(WidgetManager* theWidgetManager);
 	virtual void ButtonDepress(int theId);
 	virtual void Draw(Graphics* g);
 	virtual int GetPreferredHeight(int theWidth);
@@ -29,7 +29,7 @@ public:
 	void FinishDeleteUser();
 	void FinishRenameUser(std::string* name);
 	std::string* GetSelName();
-	void ListCLicked(int param_1, int param_2, int param_3);
+	void ListClicked(int param_1, int param_2, int param_3);
 };
 } // namespace Sexy
 

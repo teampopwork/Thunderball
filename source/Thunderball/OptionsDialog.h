@@ -40,13 +40,13 @@ public:
 	OptionsDialog(bool theFromGame);
 	virtual ~OptionsDialog();
 
-	virtual void AddedToManager(WidgetManager* theManager);
+	virtual void AddedToManager(WidgetManager* theWidgetManager);
 	virtual void ButtonDepress(int theId);
 	virtual void CheckboxChecked(int theId, bool checked);
 	virtual void Draw(Graphics* g);
 	virtual int GetPreferredHeight(int theWidth);
 	virtual void OrderInManagerChanged();
-	virtual void RemovedFromManager(WidgetManager* theManager);
+	virtual void RemovedFromManager(WidgetManager* theWidgetManager);
 	virtual void Resize(int theX, int theY, int theWidth, int theHeight);
 	virtual void SliderVal(int theId, double theVal);
 };

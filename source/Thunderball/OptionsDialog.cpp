@@ -145,20 +145,20 @@ OptionsDialog::~OptionsDialog()
 }
 
 // FUNCTION: POPCAPGAME1 0x004956e0
-void OptionsDialog::AddedToManager(WidgetManager* theManager)
+void OptionsDialog::AddedToManager(WidgetManager* theWidgetManager)
 {
-	Dialog::AddedToManager(theManager);
-	theManager->AddWidget(mMusicVolumeSlider);
-	theManager->AddWidget(mSfxVolumeSlider);
-	theManager->AddWidget(mFeverVolumeSlider);
-	theManager->AddWidget(mFullscreenCheckbox);
-	theManager->AddWidget(mCustomCursorsCheckbox);
-	theManager->AddWidget(m3DAccelerationCheckbox);
-	theManager->AddWidget(mColorblindModeCheckbox);
-	theManager->AddWidget(mHelpButton);
-	theManager->AddWidget(mMainMenuButton);
-	theManager->AddWidget(mNewLevelButton);
-	theManager->AddWidget(mNewChallengeButton);
+	Dialog::AddedToManager(theWidgetManager);
+	theWidgetManager->AddWidget(mMusicVolumeSlider);
+	theWidgetManager->AddWidget(mSfxVolumeSlider);
+	theWidgetManager->AddWidget(mFeverVolumeSlider);
+	theWidgetManager->AddWidget(mFullscreenCheckbox);
+	theWidgetManager->AddWidget(mCustomCursorsCheckbox);
+	theWidgetManager->AddWidget(m3DAccelerationCheckbox);
+	theWidgetManager->AddWidget(mColorblindModeCheckbox);
+	theWidgetManager->AddWidget(mHelpButton);
+	theWidgetManager->AddWidget(mMainMenuButton);
+	theWidgetManager->AddWidget(mNewLevelButton);
+	theWidgetManager->AddWidget(mNewChallengeButton);
 }
 
 // FUNCTION: POPCAPGAME1 0x0049a5c0
@@ -284,20 +284,20 @@ void OptionsDialog::OrderInManagerChanged()
 }
 
 // FUNCTION: POPCAPGAME1 0x004957b0
-void OptionsDialog::RemovedFromManager(WidgetManager* theManager)
+void OptionsDialog::RemovedFromManager(WidgetManager* theWidgetManager)
 {
-	Dialog::RemovedFromManager(theManager);
-	theManager->RemoveWidget(mMusicVolumeSlider);
-	theManager->RemoveWidget(mSfxVolumeSlider);
-	theManager->RemoveWidget(mFeverVolumeSlider);
-	theManager->RemoveWidget(mFullscreenCheckbox);
-	theManager->RemoveWidget(mCustomCursorsCheckbox);
-	theManager->RemoveWidget(m3DAccelerationCheckbox);
-	theManager->RemoveWidget(mColorblindModeCheckbox);
-	theManager->RemoveWidget(mHelpButton);
-	theManager->RemoveWidget(mMainMenuButton);
-	theManager->RemoveWidget(mNewLevelButton);
-	theManager->RemoveWidget(mNewChallengeButton);
+	Dialog::RemovedFromManager(theWidgetManager);
+	theWidgetManager->RemoveWidget(mMusicVolumeSlider);
+	theWidgetManager->RemoveWidget(mSfxVolumeSlider);
+	theWidgetManager->RemoveWidget(mFeverVolumeSlider);
+	theWidgetManager->RemoveWidget(mFullscreenCheckbox);
+	theWidgetManager->RemoveWidget(mCustomCursorsCheckbox);
+	theWidgetManager->RemoveWidget(m3DAccelerationCheckbox);
+	theWidgetManager->RemoveWidget(mColorblindModeCheckbox);
+	theWidgetManager->RemoveWidget(mHelpButton);
+	theWidgetManager->RemoveWidget(mMainMenuButton);
+	theWidgetManager->RemoveWidget(mNewLevelButton);
+	theWidgetManager->RemoveWidget(mNewChallengeButton);
 }
 
 // FUNCTION: POPCAPGAME1 0x0049a080

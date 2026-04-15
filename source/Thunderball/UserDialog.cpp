@@ -11,11 +11,11 @@ UserDialog::~UserDialog()
 {
 }
 
-void UserDialog::AddedToManager(WidgetManager* theManager)
+void UserDialog::AddedToManager(WidgetManager* theWidgetManager)
 {
 }
 
-void UserDialog::RemovedFromManager(WidgetManager* theManager)
+void UserDialog::RemovedFromManager(WidgetManager* theWidgetManager)
 {
 }
 
@@ -53,6 +53,6 @@ std::string* UserDialog::GetSelName()
 	return NULL;
 }
 
-void UserDialog::ListCLicked(int param_1, int param_2, int param_3)
+void UserDialog::ListClicked(int param_1, int param_2, int param_3)
 {
 }

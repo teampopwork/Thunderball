@@ -23,6 +23,8 @@ class Buffer;
 class HighScoreEntry;
 class LogicMgr;
 
+// VTABLE: POPCAPGAME1 0x005d76d4 Sexy::ButtonListener
+// VTABLE: POPCAPGAME1 0x005d76f4 Sexy::Board
 class Board : public Widget, public ButtonListener
 {
   public:
@@ -32,8 +34,8 @@ class Board : public Widget, public ButtonListener
 	Board(ThunderballApp* app);
 	virtual ~Board();
 
-	virtual void AddedToManager(WidgetManager* theManager);
-	virtual void RemovedFromManager(WidgetManager* theManager);
+	virtual void AddedToManager(WidgetManager* theWidgetManager);
+	virtual void RemovedFromManager(WidgetManager* theWidgetManager);
 	virtual void GotFocus();
 	virtual void LostFocus();
 	virtual void MouseMove(int theX, int theY);
@@ -122,6 +124,7 @@ class Board : public Widget, public ButtonListener
 	void     LoadEasterEggLevel(std::string* param_1, int param_2);
 	void     ActivateTypingCheck(int param_1);
 	void     DrawScreenSaver(Graphics* g);
+	bool     EditingLevel();
 };
 } // namespace Sexy
 
