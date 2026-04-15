@@ -2,6 +2,7 @@
 
 #include <SexyAppFramework/SexyApp.h>
 #include <SexyAppFramework/Widget.h>
+#include <SexyAppFramework/WidgetManager.h>
 #include <list>
 
 using namespace Sexy;
@@ -25,30 +26,15 @@ MovingWidget::MovingWidget()
 bool MovingWidget::Update()
 {
 	mTicks -= 1;
+    float t = (float)mTicks / 20.0;
 
-	if (mWidget != NULL) {
-		if (mTicks > 0) {
-			const float total = 20.0f;
-			float elapsed = total - (float) mTicks;
-			float t = elapsed / total;
-
-			float cx = mStartX + (mTargetX - mStartX) * t;
-			float cy = mStartY + (mTargetY - mStartY) * t;
-			if (mWidget != NULL) {
-				mWidget->Move((int) cx, (int) cy);
-			}
-		}
-		else {
-			if (mWidget != NULL) {
-				mWidget->Move((int) mTargetX, (int) mTargetY);
-			}
-		}
-	}
-
+    mWidget->Move((1.0 - t) * mTargetX + t * mStartX, (1.0 - t) * mTargetY + t * mStartY);
+	
 	if (mTicks == 0) {
 		if (mRemoveWhenDone) {
-			if (gSexyApp != NULL) {
-				gSexyApp->SafeDeleteWidget(mWidget);
+			gSexyApp->mWidgetManager->RemoveWidget(mWidget);
+			if (mWidget != NULL) {
+				delete mWidget;
 			}
 		}
 
