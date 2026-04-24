@@ -2,6 +2,7 @@
 #define __DATASYNC_H__
 
 #include <SexyAppFramework/Common.h>
+#include <SexyAppFramework/SmartPtr.h>
 #include <list>
 #include <map>
 #include <set>
@@ -26,7 +27,10 @@ public:
 	const void* mMemoryHandle;
 	ulong mMemoryLength;
 	ulong mMemoryPosition;
+	int mUnk0x14;
 	bool mDeallocate;
+	char mUnk0x19;
+	int mUnk0x1c;
 
 	explicit DataReader();
 
@@ -43,6 +47,8 @@ public:
 	bool ReadBool();
 	float ReadFloat();
 	void ReadString(std::string& theString);
+	bool ReadBit();
+	void EndBit();
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -55,6 +61,8 @@ public:
 	void* mMemoryHandle;
 	ulong mMemoryPosition;
 	ulong mMemoryLength;
+	char mUnk0x14;
+	int mUnk0x18;
 
 	explicit DataWriter();
 	virtual ~DataWriter();
@@ -70,24 +78,37 @@ public:
 	void WriteBool(bool theValue);
 	void WriteFloat(float theValue);
 	void WriteString(const std::string& theString);
+	void WriteBit(bool theValue);
+	void EndBit();
+
+	void SetLong(ulong theValue, ulong thePosition);
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-// FUNCTION: POPCAPGAME1 0x004bb0b0
-// Sexy::DataSync::~DataSync
 
+// VTABLE: POPCAPGAME1 0x0060db00
 class DataSync {
 public:
 	typedef std::map<void*, int> PointerToIntMap;
 	typedef std::map<int, void*> IntToPointerMap;
+	typedef std::map<RefCount*, int> RefCountToIntMap;
+	typedef std::map<int, RefCount*> IntToRefCountMap;
 
-	DataReader* mReader;
-	DataWriter* mWriter;
-	int mVersion;
+	DataReader* mReader; // +0x4
+	DataWriter* mWriter; // +0x8
+	DataReader mReaderObj; // +0xC ????
+	DataWriter mWriterObj; // +0x2C ????
 
+	int mVersion; // +0x48
+	bool mUnk0x4c; // +0x4c
+
+	DataSync();
 	explicit DataSync(DataReader& reader);
 	explicit DataSync(DataWriter& writer);
+
+	virtual ~DataSync();
 
 	void SyncBytes(void* theValue, ulong theSize);
 	void SyncLong(int& theValue);
@@ -101,18 +122,31 @@ public:
 	void SyncBool(bool& theValue);
 	void SyncFloat(float& theValue);
 	void SyncString(std::string& theValue);
+	void SyncBoolBit(bool& theValue);
+	void EndBit();
 
 	void SyncPointers();
 	void SyncPointer(void** thePtr);
 
+	bool AddRefCount(RefCount* thePtr);
+	RefCount* GetRefCount(int theIndex);
+
 	void RegisterPointer(void* thePtr);
+	void Reset();	
 	void ResetPointerTable();
+
+	DataReader* StartReadMemory(const void* theMemory, ulong theLength, bool deallocate);
+	void SetReader(DataReader* theReader);
+	DataWriter* StartWriteMemory(ulong theLength);
+	void SetWriter(DataWriter* theWriter);
 
 private:
 	PointerToIntMap mPointerToIntMap;
 	IntToPointerMap mIntToPointerMap;
-	std::vector<void**> mPointerSyncList;
-	int mCurPointerIndex;
+	RefCountToIntMap mRefCountToIntMap;
+	IntToRefCountMap mIntToRefCountMap; // +0x
+	std::vector<void**> mPointerSyncList; // +0x80
+	int mCurPointerIndex; // +0x90
 };
 
 template <typename TContainer>
@@ -138,6 +172,85 @@ void DataSync_SyncSTLContainer(DataSync& theSync, TContainer& theValue)
 		}
 	}
 }
+
+template <typename T>
+T* DataSync_SyncRefCount(DataSync& theSync, SmartPtr<T>& thePointer)
+{
+	if (theSync.mReader == NULL) {
+		ulong refCount = theSync.AddRefCount(thePointer);
+		theSync.mWriter->WriteLong(refCount);
+		if (refCount == 1) {
+			thePointer->SyncState(theSync);
+		}
+	}
+	else {
+		ulong refCount = theSync.mReader->ReadLong();
+		if (refCount == 0) {
+			*thePointer = NULL;
+		}
+		else if (refCount == 1) {
+			*thePointer = new T();
+			(*thePointer)->SyncState(theSync);
+			theSync.AddRefCount(thePointer, refCount);
+		}
+		else {
+			return theSync.GetRefCount(thePointer, refCount);
+		}
+	}
+
+	return thePointer;
+}
+
+template <typename T>
+void DataSync_SyncSmartPointer(DataSync& theSync, SmartPtr<T>& thePointer)
+{
+	if (theSync.mReader) {
+		if (theSync.mReader->ReadBool()) {
+			thePointer.reset(new T());
+			thePointer->Sync(theSync);
+		}
+		else {
+			thePointer.reset();
+		}
+	}
+	else if (theSync.mWriter) {
+		theSync.mWriter->WriteBool(thePointer != nullptr);
+		if (thePointer) {
+			thePointer->Sync(theSync);
+		}
+	}
+}
+
+template <typename T>
+T* DataSync_SyncRefCountFactory(DataSync& theSync, T& theFactory)
+{
+	if (theSync.mReader == NULL) {
+		ulong refCount = theSync.AddRefCount(theFactory);
+		theSync.mWriter->WriteLong(refCount);
+		if (refCount == 1) {
+			theSync.mWriter->WriteLong(theFactory->GetClass());
+			theFactory.SyncState(theSync);
+		}
+	}
+	else {
+		ulong refCount = theSync.mReader->ReadLong();
+		if (refCount == 0) {
+			return NULL;
+		}
+		else if (refCount == 1) {
+			T* newObject = theFactory.ClassFactory(theSync.mReader->ReadLong());
+			theSync.AddRefCount(newObject, refCount);
+			newObject->SyncState(theSync);
+			return newObject;
+		}
+		else {
+			return theSync.GetRefCount(theFactory, refCount);
+		}
+	}
+
+	return NULL;
+}
+
 } // namespace Sexy
 
 #endif

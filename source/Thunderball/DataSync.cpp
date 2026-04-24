@@ -1,20 +1,21 @@
 #include "DataSync.h"
 
 #include <SexyAppFramework/Debug.h>
+#include <SexyAppFramework/SmartPtr.h>
 
 using namespace Sexy;
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-// SYNTHETIC: POPCAPGAME1 0x004bbdf0
-// Sexy::DataReader::`scalar deleting destructor'
-
 // FUNCTION: POPCAPGAME1 0x004bbe20
 DataReader::DataReader()
 	: mFileHandle(NULL), mMemoryHandle(NULL), mMemoryLength(0), mMemoryPosition(0), mDeallocate(false)
 {
 }
+
+// SYNTHETIC: POPCAPGAME1 0x004bbdf0
+// Sexy::DataReader::`scalar deleting destructor'
 
 // FUNCTION: POPCAPGAME1 0x004bbec0
 DataReader::~DataReader()
@@ -116,6 +117,7 @@ float DataReader::ReadFloat()
 	return reinterpret_cast<float&>(result);
 }
 
+// FUNCTION: POPCAPGAME1 0x004bc220
 void DataReader::ReadString(std::string& theString)
 {
 	ulong length = ReadShort();
@@ -123,9 +125,31 @@ void DataReader::ReadString(std::string& theString)
 	ReadBytes(&theString[0], length);
 }
 
+// FUNCTION: POPCAPGAME1 0x004bc290
+bool DataReader::ReadBit()
+{
+	if (mUnk0x1c == 0) {
+		mUnk0x1c = ReadByte();
+	}
+
+	int iVar2 = 1 >> (mUnk0x1c & 0x1f);
+	mUnk0x1c++;
+	if (7 < mUnk0x1c) {
+		mUnk0x1c = 0;
+	}
+	return bool(iVar2);
+}
+
+// FUNCTION: POPCAPGAME1 0x004bbeb0
+void DataReader::EndBit()
+{
+	mUnk0x1c = 0;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
+// FUNCTION: POPCAPGAME1 0x004bba70
 DataWriter::DataWriter() : mFileHandle(NULL), mMemoryHandle(NULL), mMemoryLength(0), mMemoryPosition(0)
 {
 }
@@ -136,6 +160,7 @@ DataWriter::~DataWriter()
 	Close();
 }
 
+// FUNCTION: POPCAPGAME1 0x004bbd70
 void DataWriter::OpenMemory(ulong theLength)
 {
 	Close();
@@ -148,6 +173,7 @@ void DataWriter::OpenMemory(ulong theLength)
 	mMemoryHandle = new char[theLength];
 }
 
+// FUNCTION: POPCAPGAME1 0x004bbc40
 void DataWriter::Close()
 {
 	if (mFileHandle) {
@@ -164,6 +190,7 @@ void DataWriter::Close()
 	mMemoryPosition = 0;
 }
 
+// FUNCTION: POPCAPGAME1 0x004bbac0
 void DataWriter::EnsureCapacity(ulong theLength)
 {
 	if (mMemoryLength < theLength) {
@@ -181,6 +208,7 @@ void DataWriter::EnsureCapacity(ulong theLength)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004bbb10
 void DataWriter::WriteBytes(const void* theBuffer, ulong theLength)
 {
 	if (mMemoryHandle) {
@@ -193,6 +221,7 @@ void DataWriter::WriteBytes(const void* theBuffer, ulong theLength)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004bbb90
 void DataWriter::WriteLong(ulong theValue)
 {
 	WriteBytes(&theValue, sizeof(theValue));
@@ -204,46 +233,114 @@ void DataWriter::WriteShort(ushort theValue)
 	WriteBytes(&theValue, sizeof(theValue));
 }
 
+// FUNCTION: POPCAPGAME1 0x004bbbd0
 void DataWriter::WriteByte(uchar theValue)
 {
 	WriteBytes(&theValue, sizeof(theValue));
 }
 
+// FUNCTION: POPCAPGAME1 0x004bbbf0
 void DataWriter::WriteBool(bool theValue)
 {
 	WriteBytes(&theValue, sizeof(theValue));
 }
 
+// FUNCTION: POPCAPGAME1 0x004bbb90
 void DataWriter::WriteFloat(float theValue)
 {
 	ulong result = reinterpret_cast<ulong&>(theValue);
 	WriteBytes(&result, sizeof(result));
 }
 
+// FUNCTION: POPCAPGAME1 0x004bbda0
 void DataWriter::WriteString(const std::string& theString)
 {
 	WriteShort(theString.length());
 	WriteBytes(theString.c_str(), theString.length());
 }
 
+// FUNCTION: POPCAPGAME1 0x004bbc90
+void DataWriter::WriteBit(bool theValue)
+{
+
+	if (mMemoryHandle == NULL) {
+		if (mFileHandle != 0) {
+			if (theValue != '\0') {
+				mUnk0x14 = mUnk0x14 | 1 << ((char) mUnk0x18 & 0x1f);
+			}
+			mUnk0x18++;
+			if (7 < mUnk0x18) {
+				mUnk0x14 = 0;
+				mUnk0x18 = 0;
+				WriteByte(0);
+			}
+		}
+	}
+	else {
+		if (mUnk0x18 == 0) {
+			WriteByte(0);
+		}
+		if (theValue != '\0') {
+			char* pbVar1 = (char*) ((mMemoryPosition - 1) + (int) mMemoryHandle);
+			*pbVar1 = *pbVar1 | 1 << ((char) mUnk0x18 & 0x1f);
+		}
+		mUnk0x18++;
+		if (7 < mUnk0x18) {
+			mUnk0x18 = 0;
+		}
+	}
+}
+
+// FUNCTION: POPCAPGAME1 0x004bba90
+void DataWriter::EndBit()
+{
+	if (mUnk0x18 != 0) {
+		if (mFileHandle != NULL) {
+			fwrite(&mUnk0x14, 1, 1, mFileHandle);
+		}
+		mUnk0x18 = 0;
+	}
+}
+
+// FUNCTION: POPCAPGAME1 0x004bbc10
+void DataWriter::SetLong(ulong param_1, ulong param_2)
+{
+	if (mMemoryHandle != NULL) {
+		if (param_2 + 4U <= mMemoryLength) {
+			*(ulong*) ((int) mMemoryHandle + param_2) = param_1;
+		}
+	}
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// FUNCTION: POPCAPGAME1 0x004bb6f0
+DataSync::DataSync()
+{
+	Reset();
+}
+
 // FUNCTION: POPCAPGAME1 0x004bb810
 DataSync::DataSync(DataReader& reader)
 {
-	mReader = NULL;
-	mWriter = NULL;
-	ResetPointerTable();
+	Reset();
 	mReader = &reader;
 }
 
 // FUNCTION: POPCAPGAME1 0x004bb940
 DataSync::DataSync(DataWriter& writer)
 {
-	mReader = NULL;
-	mWriter = NULL;
-	ResetPointerTable();
+	Reset();
 	mWriter = &writer;
+}
+
+// SYNTHETIC: POPCAPGAME1 0x004bb600
+// Sexy::DataSync::`scalar deleting destructor'
+
+// FUNCTION: POPCAPGAME1 0x004bb0b0
+DataSync::~DataSync()
+{
 }
 
 // FUNCTION: POPCAPGAME1 0x004ba7f0
@@ -278,6 +375,7 @@ void DataSync::SyncLong(unsigned int& theValue)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004ba810
 void DataSync::SyncLong(unsigned long& theValue)
 {
 	if (mReader) {
@@ -298,6 +396,7 @@ void DataSync::SyncShort(int& theValue)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004ba840
 void DataSync::SyncShort(unsigned short& theValue)
 {
 	if (mReader) {
@@ -308,6 +407,7 @@ void DataSync::SyncShort(unsigned short& theValue)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004ba870
 void DataSync::SyncSShort(int& theValue)
 {
 	if (mReader) {
@@ -318,6 +418,7 @@ void DataSync::SyncSShort(int& theValue)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004ba8a0
 void DataSync::SyncByte(int& theValue)
 {
 	if (mReader) {
@@ -328,6 +429,7 @@ void DataSync::SyncByte(int& theValue)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004ba8a0
 void DataSync::SyncByte(unsigned short& theValue)
 {
 	if (mReader) {
@@ -371,6 +473,29 @@ void DataSync::SyncString(std::string& theValue)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004ba950
+void DataSync::SyncBoolBit(bool& theValue)
+{
+	if (mReader) {
+		mReader->ReadBit();
+	}
+	else {
+		mWriter->WriteBit(theValue);
+	}
+}
+
+// FUNCTION: POPCAPGAME1 0x004ba900
+void DataSync::EndBit()
+{
+	if (mReader != NULL) {
+		mReader->EndBit();
+	}
+	else {
+		mWriter->EndBit();
+	}
+}
+
+// FUNCTION: POPCAPGAME1 0x004bb3e0
 void DataSync::SyncPointers()
 {
 	if (mReader) {
@@ -400,6 +525,37 @@ void DataSync::SyncPointer(void** thePointer)
 	mPointerSyncList.push_back(thePointer);
 }
 
+// FUNCTION: POPCAPGAME1 0x004bb330
+bool DataSync::AddRefCount(RefCount* refCount)
+{
+	if (refCount == NULL) {
+		return false;
+	}
+
+	std::pair<std::map<RefCount*, int>::iterator, bool> result =
+		mRefCountToIntMap.insert(std::make_pair(refCount, 0));
+
+	if (!result.second) {
+		return result.first->second;
+	}
+
+	int refId = (int) mRefCountToIntMap.size() + 1;
+	result.first->second = refId;
+	mIntToRefCountMap[refId] = refCount;
+	return true;
+}
+
+// FUNCTION: POPCAPGAME1 0x004baac0
+RefCount* DataSync::GetRefCount(int theIndex)
+{
+	IntToRefCountMap::iterator aFindItr = mIntToRefCountMap.find(theIndex);
+	if (aFindItr != mIntToRefCountMap.end()) {
+		return aFindItr->second;
+	}
+
+	return NULL;
+}
+
 void DataSync::RegisterPointer(void* thePtr)
 {
 	DBG_ASSERT(thePtr != NULL);
@@ -412,18 +568,57 @@ void DataSync::RegisterPointer(void* thePtr)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004bb630
+void DataSync::Reset()
+{
+	mReader = NULL;
+	mWriter = NULL;
+	mReaderObj.OpenMemory(NULL, 0, false);
+	mWriterObj.Close();
+	mUnk0x4c = true;
+
+	ResetPointerTable();
+}
+
+// FUNCTION: POPCAPGAME1 0x004bb1f0
 void DataSync::ResetPointerTable()
 {
 	mIntToPointerMap.clear();
 	mPointerToIntMap.clear();
 	mPointerSyncList.clear();
-	mCurPointerIndex = 1;
+	mRefCountToIntMap.clear();
+	mIntToRefCountMap.clear();
+	mCurPointerIndex = 2;
 	mPointerToIntMap[NULL] = 0;
 	mIntToPointerMap[0] = NULL;
 }
 
-// 004ba950
-// syncboolbit
+// FUNCTION: POPCAPGAME1 0x004bb6a0
+DataReader* DataSync::StartReadMemory(const void* theMemory, ulong theLength, bool deallocate)
+{
+	SetReader(&mReaderObj);
+	mReaderObj.OpenMemory(theMemory, theLength, deallocate);
+	return &mReaderObj;
+}
 
-// 004ba900
-// endbit
+// FUNCTION: POPCAPGAME1 0x004bb660
+void DataSync::SetReader(DataReader* theReader)
+{
+	Reset();
+	mReader = theReader;
+}
+
+// FUNCTION: POPCAPGAME1 0x004bb6d0
+DataWriter* DataSync::StartWriteMemory(ulong theLength)
+{
+	SetWriter(&mWriterObj);
+	mWriterObj.OpenMemory(theLength);
+	return &mWriterObj;
+}
+
+// FUNCTION: POPCAPGAME1 0x004bb680
+void DataSync::SetWriter(DataWriter* theWriter)
+{
+	Reset();
+	mWriter = theWriter;
+}
