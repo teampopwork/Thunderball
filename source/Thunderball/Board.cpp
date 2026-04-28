@@ -4,6 +4,7 @@
 #include "CollisionMgr.h"
 #include "DebugMgr.h"
 #include "EffectMgr.h"
+#include "FloatingTextMgr.h"
 #include "LogicMgr.h"
 
 #include <SexyAppFramework/WidgetManager.h>
@@ -18,6 +19,7 @@ Board::Board(ThunderballApp* theApp)
 	mCollisionMgr = new CollisionMgr();
 	mDebugMgr = new DebugMgr(this);
 	mEffectMgr = new EffectMgr();
+	mFloatingTextMgr = new FloatingTextMgr();
 	mLogicMgr = new LogicMgr(this);
 }
 
