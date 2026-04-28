@@ -2,6 +2,7 @@
 
 #include "AIMgr.h"
 #include "CollisionMgr.h"
+#include "DebugMgr.h"
 #include "LogicMgr.h"
 
 #include <SexyAppFramework/WidgetManager.h>
@@ -14,6 +15,7 @@ Board::Board(ThunderballApp* theApp)
 	mApp = theApp;
 	mAIMgr = new AIMgr(this);
 	mCollisionMgr = new CollisionMgr();
+	mDebugMgr = new DebugMgr(this);
 	mLogicMgr = new LogicMgr(this);
 }
 

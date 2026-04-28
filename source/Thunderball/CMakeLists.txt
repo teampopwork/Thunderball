@@ -28,6 +28,7 @@ add_executable(popcapgame1 WIN32
     PegInfo.cpp
     ProfileMgr.cpp
     CollisionMgr.cpp
+    DebugMgr.cpp
     AIMgr.cpp
     Res.cpp
     SimpleButton.cpp
