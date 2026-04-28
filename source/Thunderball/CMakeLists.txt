@@ -23,6 +23,8 @@ add_executable(popcapgame1 WIN32
     Ball.cpp
     AIBall.cpp
     Hole.cpp
+    Mover.cpp
+    PegInfo.cpp
     ProfileMgr.cpp
     Res.cpp
     SimpleButton.cpp

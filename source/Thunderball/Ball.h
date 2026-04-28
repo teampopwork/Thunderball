@@ -27,7 +27,7 @@ public:
 	virtual void DrawShadow(Graphics* g);
 	virtual void Draw(Graphics* g);
 	virtual void AddedToGame();
-	virtual Rect GetCenter();
+	virtual SexyVector2 GetCenter();
 	virtual float GetXPos();
 	virtual float GetYPos();
 	virtual bool IsCollidableWith(PhysObj* param_1);

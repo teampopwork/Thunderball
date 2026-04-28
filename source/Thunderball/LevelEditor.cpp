@@ -73,38 +73,45 @@ bool EditValObj::EditGetSetValHook(const std::string& param_1, bool param_2)
 }
 
 // STUB: POPCAPGAME1 0x0041ec80
-void EditValObj::EditValSyncNum(int* theNum)
+bool EditValObj::EditValSyncNum(int& theNum)
 {
+	return false;
 }
 
 // STUB: POPCAPGAME1 0x004112a0
-void EditValObj::EditValSyncNum(int* theNum, int param_2, int param_3)
+bool EditValObj::EditValSyncNum(int& theNum, int param_2, int param_3)
 {
+	return false;
 }
 
 // STUB: POPCAPGAME1 0x00411380
-void EditValObj::EditValSyncNum(ulong* theNum)
+bool EditValObj::EditValSyncNum(ulong& theNum)
 {
+	return false;
 }
 
 // STUB: POPCAPGAME1 0x00411470
-void EditValObj::EditValSyncNum(float* theNum)
+bool EditValObj::EditValSyncNum(float& theNum)
 {
+	return false;
 }
 
 // STUB: POPCAPGAME1 0x00411530
-void EditValObj::EditValSyncNum(float* theNum, float param_2, float param_3)
+bool EditValObj::EditValSyncNum(float& theNum, float param_2, float param_3)
 {
+	return false;
 }
 
 // STUB: POPCAPGAME1 0x00411640
-void EditValObj::EditValSyncBool(bool* theBool)
+bool EditValObj::EditValSyncBool(bool& theBool)
 {
+	return false;
 }
 
 // STUB: POPCAPGAME1 0x0041ed40
-void EditValObj::EditValSyncString(std::string* theString)
+bool EditValObj::EditValSyncString(std::string& theString)
 {
+	return false;
 }
 
 // STUB: POPCAPGAME1 0x0040a100
@@ -119,9 +126,9 @@ void EditValObj::SetEditValNum(double theNum)
 }
 
 // STUB: POPCAPGAME1 0x004091f0
-std::string EditValObj::EditKeyPrefix(const std::string& param_1, const std::string& param_2)
+bool EditValObj::EditKeyPrefix(const std::string& param_1, const std::string& param_2)
 {
-	return "";
+	return false;
 }
 
 // STUB: POPCAPGAME1 0x00402d20
@@ -140,8 +147,9 @@ void EditValObj::EditGetVal(const std::string& theKey, EditVal* theVal)
 }
 
 // STUB: POPCAPGAME1 0x00402d60
-void EditValObj::EditGetSetValDelegate(EditValObj* theObj, const std::string& param_2)
+bool EditValObj::EditGetSetValDelegate(EditValObj* theObj, const std::string& param_2)
 {
+	return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

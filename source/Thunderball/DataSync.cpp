@@ -440,6 +440,17 @@ void DataSync::SyncByte(unsigned short& theValue)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004ba8d0
+void DataSync::SyncSByte(int& theValue)
+{
+	if (mReader) {
+		theValue = (int)(char)mReader->ReadByte();
+	}
+	else {
+		mWriter->WriteByte((uchar) theValue);
+	}
+}
+
 // FUNCTION: POPCAPGAME1 0x004ba920
 void DataSync::SyncBool(bool& theValue)
 {
@@ -526,10 +537,10 @@ void DataSync::SyncPointer(void** thePointer)
 }
 
 // FUNCTION: POPCAPGAME1 0x004bb330
-bool DataSync::AddRefCount(RefCount* refCount)
+int DataSync::AddRefCount(RefCount* refCount)
 {
 	if (refCount == NULL) {
-		return false;
+		return 0;
 	}
 
 	std::pair<std::map<RefCount*, int>::iterator, bool> result =
@@ -542,7 +553,7 @@ bool DataSync::AddRefCount(RefCount* refCount)
 	int refId = (int) mRefCountToIntMap.size() + 1;
 	result.first->second = refId;
 	mIntToRefCountMap[refId] = refCount;
-	return true;
+	return 1;
 }
 
 // FUNCTION: POPCAPGAME1 0x004baac0

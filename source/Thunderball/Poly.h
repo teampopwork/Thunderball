@@ -21,11 +21,11 @@ public:
 	virtual int GetClass();
 	virtual void EditDrawOutline(Graphics* g);
 	virtual void EditDrawPoints(Graphics* g);
-	virtual void EditContains(float param_1, float param_2, bool param_3);
+	virtual bool EditContains(float param_1, float param_2, bool param_3);
 	virtual void EditGetDragMode(float param_1, float param_2);
 	virtual void EditDoPointDrag(float param_1, float param_2);
 	virtual void EditFinishDrag();
-	virtual void EditReflect(float param_1, float param_2, bool param_3, bool param_4);
+	virtual void EditReflect(float param_1, float param_2, bool param_3);
 	virtual void SetPos(float param_1, float param_2);
 	virtual void Translate(float param_1, float param_2);
 	virtual void SetVelocity(float param_1, float param_2);
@@ -36,7 +36,7 @@ public:
 	virtual void DrawLight(Graphics* g);
 	virtual void AddedToGame();
 	virtual void NotifyCollision(PhysObj* param_1);
-	virtual Rect GetCenter();
+	virtual SexyVector2 GetCenter();
 	virtual float GetXPos();
 	virtual float GetYPos();
 	virtual void SetActiveWithGrowAnim(bool param_1);

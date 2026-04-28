@@ -1,6 +1,6 @@
 #include "Poly.h"
 
-#include <SexyAppFramework/Rect.h>
+#include <SexyAppFramework/SexyVector.h>
 
 using namespace Sexy;
 
@@ -50,8 +50,9 @@ void Poly::EditDrawPoints(Graphics* g)
 }
 
 // STUB: POPCAPGAME1 0x0047edb0
-void Poly::EditContains(float param_1, float param_2, bool param_3)
+bool Poly::EditContains(float param_1, float param_2, bool param_3)
 {
+	return false;
 }
 
 // STUB: POPCAPGAME1 0x00484ed0
@@ -70,7 +71,7 @@ void Poly::EditFinishDrag()
 }
 
 // STUB: POPCAPGAME1 0x00485540
-void Poly::EditReflect(float param_1, float param_2, bool param_3, bool param_4)
+void Poly::EditReflect(float param_1, float param_2, bool param_3)
 {
 }
 
@@ -125,9 +126,9 @@ void Poly::AddedToGame()
 }
 
 // STUB: POPCAPGAME1 0x00481750
-Rect Poly::GetCenter()
+SexyVector2 Poly::GetCenter()
 {
-	return Rect();
+	return SexyVector2(0.0f, 0.0f);
 }
 
 // STUB: POPCAPGAME1 0x00481730

@@ -1568,6 +1568,7 @@ Image* GetJPEG2000Image(const std::string& theFileName)
 #endif
 
 
+// GLOBAL: POPCAPGAME1 0x0064bef4
 int ImageLib::gAlphaComposeColor = 0xFFFFFF;
 bool ImageLib::gAutoLoadAlpha = true;
 bool ImageLib::gIgnoreJPEG2000Alpha = true;

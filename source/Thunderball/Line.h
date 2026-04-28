@@ -21,10 +21,10 @@ public:
 	virtual int GetClass();
 	virtual void EditDrawOutline(Graphics* g);
 	virtual void EditDrawPoints(Graphics* g);
-	virtual void EditContains(float param_1, float param_2, bool param_3);
+	virtual bool EditContains(float param_1, float param_2, bool param_3);
 	virtual void EditGetDragMode(float param_1, float param_2);
 	virtual void EditDoPointDrag(float param_1, float param_2);
-	virtual void EditReflect(float param_1, float param_2, bool param_3, bool param_4);
+	virtual void EditReflect(float param_1, float param_2, bool param_3);
 	virtual void SetPos(float theX, float theY);
 	virtual void Translate(float theDx, float theDy);
 	virtual void SetVelocity(float theVx, float theVy);

@@ -3,7 +3,7 @@
 
 #include <SexyAppFramework/Rect.h>
 
-#define SEXY_PI 3.1415901f
+#define SEXY_PI 3.1415927f
 
 namespace Sexy
 {
@@ -19,6 +19,7 @@ class ThunderButton;
 class SimpleButton;
 class DialogButton;
 class ThunderCheckbox;
+class ImageMgr;
 enum StyleShot;
 
 void SetButtonFontColor(int color);
@@ -46,6 +47,8 @@ ThunderCheckbox* MakeCheckbox(int theId, CheckboxListener* theListener, int para
 ThunderCheckbox* MakeCheckbox2(int theId, CheckboxListener* theListener, std::string const& theString, int param_4);
 ThunderButton* MakeBottomButton(int theId, ButtonListener* theListener, std::string const& theString);
 int GetColorForCharacter(int param_1);
+int MyMod(int a, int b);
+ImageMgr* GetImageMgr();
 // 04896b0 DoDrawStat
 } // namespace Sexy
 

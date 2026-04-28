@@ -21,7 +21,7 @@ public:
 	virtual void EditGetDragMode(float param_1, float param_2);
 	virtual void EditDoPointDrag(float param_1, float param_2);
 	virtual void EditReloadImage();
-	virtual void EditReflect(float param_1, float param_2, bool param_3, bool param_4);
+	virtual void EditReflect(float param_1, float param_2, bool param_3);
 	virtual void DrawShadow(Graphics* g);
 	virtual void Draw(Graphics* g);
 	virtual void PegChangedHook(bool param_1);

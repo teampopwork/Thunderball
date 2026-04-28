@@ -119,6 +119,7 @@ public:
 	void SyncSShort(int& theValue);
 	void SyncByte(int& theValue);
 	void SyncByte(ushort& theValue);
+	void SyncSByte(int& theValue);
 	void SyncBool(bool& theValue);
 	void SyncFloat(float& theValue);
 	void SyncString(std::string& theValue);
@@ -128,7 +129,7 @@ public:
 	void SyncPointers();
 	void SyncPointer(void** thePtr);
 
-	bool AddRefCount(RefCount* thePtr);
+	int AddRefCount(RefCount* thePtr);
 	RefCount* GetRefCount(int theIndex);
 
 	void RegisterPointer(void* thePtr);
@@ -174,50 +175,45 @@ void DataSync_SyncSTLContainer(DataSync& theSync, TContainer& theValue)
 }
 
 template <typename T>
-T* DataSync_SyncRefCount(DataSync& theSync, SmartPtr<T>& thePointer)
+T* DataSync_SyncRefCount(DataSync& theSync, T* thePointer)
 {
-	if (theSync.mReader == NULL) {
-		ulong refCount = theSync.AddRefCount(thePointer);
-		theSync.mWriter->WriteLong(refCount);
-		if (refCount == 1) {
-			thePointer->SyncState(theSync);
-		}
-	}
-	else {
-		ulong refCount = theSync.mReader->ReadLong();
+	if (theSync.mReader != NULL) {
+		int refCount = theSync.mReader->ReadLong();
 		if (refCount == 0) {
-			*thePointer = NULL;
+			return NULL;
 		}
 		else if (refCount == 1) {
-			*thePointer = new T();
-			(*thePointer)->SyncState(theSync);
-			theSync.AddRefCount(thePointer, refCount);
+			T* newObject = new T();
+			theSync.AddRefCount(newObject);
+			newObject->SyncState(&theSync);
+			return newObject;
 		}
 		else {
-			return theSync.GetRefCount(thePointer, refCount);
+			return (T*)theSync.GetRefCount(refCount);
 		}
+		
 	}
-
-	return thePointer;
+	else {
+		int refCount = theSync.AddRefCount(thePointer);
+		theSync.mWriter->WriteLong(refCount);
+		if (refCount == 1) {
+			thePointer->SyncState(&theSync);
+		}
+		return thePointer;
+	}
 }
 
 template <typename T>
 void DataSync_SyncSmartPointer(DataSync& theSync, SmartPtr<T>& thePointer)
 {
-	if (theSync.mReader) {
-		if (theSync.mReader->ReadBool()) {
-			thePointer.reset(new T());
-			thePointer->Sync(theSync);
-		}
-		else {
-			thePointer.reset();
-		}
+	if (theSync.mReader != NULL) {
+		RefCount* refCount = DataSync_SyncRefCount(theSync, (T*)thePointer);
+		thePointer = (T*)refCount;
 	}
-	else if (theSync.mWriter) {
-		theSync.mWriter->WriteBool(thePointer != nullptr);
-		if (thePointer) {
-			thePointer->Sync(theSync);
-		}
+	else {
+		
+		DataSync_SyncRefCount(theSync, (T*)thePointer);
+
 	}
 }
 

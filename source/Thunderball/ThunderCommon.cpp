@@ -1646,3 +1646,20 @@ int Sexy::GetColorForCharacter(int param_1)
 		return ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp199,1036", 0xffffff);
 	}
 }
+
+// FUNCTION: POPCAPGAME1 0x00476400
+int Sexy::MyMod(int a, int b)
+{
+	if (a < 0) {
+		return a - -a % b;
+	}
+	else {
+		return a % b;
+	}
+}
+
+// FUNCTION: POPCAPGAME1 0x00404c90
+ImageMgr* Sexy::GetImageMgr()
+{
+	return GetThunderballApp()->mImageMgr;
+}

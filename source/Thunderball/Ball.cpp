@@ -75,9 +75,9 @@ void Ball::AddedToGame()
 }
 
 // STUB: POPCAPGAME1 0x00474e40
-Rect Ball::GetCenter()
+SexyVector2 Ball::GetCenter()
 {
-	return Rect();
+	return SexyVector2(0.0f, 0.0f);
 }
 
 // STUB: POPCAPGAME1 0x0047df90

@@ -45,7 +45,7 @@ void Brick::EditDoPointDrag(float param_1, float param_2)
 }
 
 // STUB: POPCAPGAME1 0x00486a10
-void Brick::EditReflect(float param_1, float param_2, bool param_3, bool param_4)
+void Brick::EditReflect(float param_1, float param_2, bool param_3)
 {
 }
 

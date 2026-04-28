@@ -3,11 +3,11 @@
 
 #include <string>
 
+namespace Sexy
+{
 class Image;
 class MemoryImage;
 
-namespace Sexy
-{
 class ImageMgr {
 public:
     ImageMgr();

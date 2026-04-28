@@ -46,8 +46,9 @@ void Line::EditDrawPoints(Graphics* g)
 }
 
 // STUB: POPCAPGAME1 0x00478db0
-void Line::EditContains(float param_1, float param_2, bool param_3)
+bool Line::EditContains(float param_1, float param_2, bool param_3)
 {
+	return false;
 }
 
 // STUB: POPCAPGAME1 0x00478be0
@@ -61,7 +62,7 @@ void Line::EditDoPointDrag(float param_1, float param_2)
 }
 
 // STUB: POPCAPGAME1 0x00478d10
-void Line::EditReflect(float param_1, float param_2, bool param_3, bool param_4)
+void Line::EditReflect(float param_1, float param_2, bool param_3)
 {
 }
 
