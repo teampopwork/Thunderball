@@ -31,6 +31,7 @@ add_executable(popcapgame1 WIN32
     DebugMgr.cpp
     EffectMgr.cpp
     FloatingTextMgr.cpp
+    InterfaceMgr.cpp
     AIMgr.cpp
     Res.cpp
     SimpleButton.cpp
