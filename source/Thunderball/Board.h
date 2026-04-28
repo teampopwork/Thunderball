@@ -21,6 +21,7 @@ class DataSync;
 class DataWriter;
 class Buffer;
 class HighScoreEntry;
+class AIMgr;
 class LogicMgr;
 
 // VTABLE: POPCAPGAME1 0x005d76d4 Sexy::ButtonListener
@@ -28,6 +29,8 @@ class LogicMgr;
 class Board : public Widget, public ButtonListener
 {
   public:
+	ThunderballApp* mApp; // +0xb0
+	AIMgr* mAIMgr; // +0x134
 	LogicMgr* mLogicMgr; // +0x154
 	Widget* mEndLevelDialog; // +0x160
 

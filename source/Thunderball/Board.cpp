@@ -1,13 +1,18 @@
 #include "Board.h"
 
+#include "AIMgr.h"
+#include "LogicMgr.h"
+
 #include <SexyAppFramework/WidgetManager.h>
 
 using namespace Sexy;
 
 // STUB: POPCAPGAME1 0x004238a0
-Board::Board(ThunderballApp* app)
+Board::Board(ThunderballApp* theApp)
 {
-	mLogicMgr = NULL;
+	mApp = theApp;
+	mAIMgr = new AIMgr(this);
+	mLogicMgr = new LogicMgr(this);
 }
 
 // STUB: POPCAPGAME1 0x004299a0
