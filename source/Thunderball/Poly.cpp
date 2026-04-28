@@ -153,7 +153,7 @@ void Poly::InitDefaults()
 {
 }
 
-// STUB: POPCAPGAME1 0x0001f194
+// STUB: POPCAPGAME1 0x00476bf0
 void Poly::AddBubbles(int param_1)
 {
 }

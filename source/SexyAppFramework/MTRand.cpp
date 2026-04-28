@@ -120,12 +120,14 @@ void MTRand::SRand(unsigned long seed)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004fce40
 unsigned long MTRand::Next()
 {
 	DBG_ASSERT(gRandAllowed==0);
 	return NextNoAssert();
 }
 
+// FUNCTION: POPCAPGAME1 0x004fb6a0
 unsigned long MTRand::NextNoAssert()
 {
     unsigned long y;

@@ -21,6 +21,7 @@ namespace Sexy
 	std::string gAppDataFolder = "";
 }
 
+// FUNCTION: POPCAPGAME1 0x004fce50
 int Sexy::Rand()
 {
 	return gMTRand.Next();

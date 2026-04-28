@@ -24,6 +24,7 @@ class HighScoreEntry;
 class AIMgr;
 class CollisionMgr;
 class DebugMgr;
+class EffectMgr;
 class LogicMgr;
 
 // VTABLE: POPCAPGAME1 0x005d76d4 Sexy::ButtonListener
@@ -35,6 +36,7 @@ class Board : public Widget, public ButtonListener
 	AIMgr* mAIMgr; // +0x134
 	CollisionMgr* mCollisionMgr; // +0x13c
 	DebugMgr* mDebugMgr; // +0x140
+	EffectMgr* mEffectMgr; // +0x144
 	LogicMgr* mLogicMgr; // +0x154
 	Widget* mEndLevelDialog; // +0x160
 
