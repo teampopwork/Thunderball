@@ -176,3 +176,426 @@ bool GlobalEditVal::EditGetSetValHook(const std::string& param_1, bool param_2)
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// STUB: POPCAPGAME1 0x00422ab0
+LevelEditor::LevelEditor(Board* param_1)
+{
+}
+
+// SYNTHETIC: POPCAPGAME1 0x00422d60
+// Sexy::LevelEditor::`scalar deleting destructor'
+
+// STUB: POPCAPGAME1 0x00421400
+LevelEditor::~LevelEditor()
+{
+}
+
+// STUB: POPCAPGAME1 0x
+void LevelEditor::MouseMove(int param_1, int param_2)
+{
+}
+
+// STUB: POPCAPGAME1 0x
+void LevelEditor::MouseEnter()
+{
+}
+
+// STUB: POPCAPGAME1 0x
+void LevelEditor::MouseLeave()
+{
+}
+
+// STUB: POPCAPGAME1 0x
+void LevelEditor::RefreshEditWidgets()
+{
+}
+
+// STUB: POPCAPGAME1 0x
+void LevelEditor::SetNumEditors(int param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x
+void LevelEditor::InsertSelObject(PhysObj* param_1, bool param_2)
+{
+}
+
+// STUB: POPCAPGAME1 0x
+std::list<Sexy::SmartPtr<PhysObj>>::iterator LevelEditor::EditGetObjAt(int param_1, int param_2)
+{
+	return std::list<Sexy::SmartPtr<PhysObj>>::iterator();
+}
+
+// STUB: POPCAPGAME1 0x
+void LevelEditor::EditGetClosestGridPos(float* param_1, float* param_2)
+{
+}
+
+// STUB: POPCAPGAME1 0x00403190
+int LevelEditor::GetMouseX()
+{
+	return 0;
+}
+
+// STUB: POPCAPGAME1 0x00403210
+int LevelEditor::GetMouseY()
+{
+	return 0;
+}
+
+// STUB: POPCAPGAME1 0x0042b0c0
+void LevelEditor::EditClearLevel()
+{
+}
+
+// STUB: POPCAPGAME1 0x00428b50
+void LevelEditor::EditCopyAttributes()
+{
+}
+
+// STUB: POPCAPGAME1 0x0040a220
+void LevelEditor::EditBindBlocks(bool param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x0040b0f0
+void LevelEditor::ConnectHole(bool param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x0040a2c0
+void LevelEditor::EditCheckBindMove(PhysObj* param_1, float param_2, float param_3)
+{
+}
+
+// STUB: POPCAPGAME1 0x0040a360
+void LevelEditor::EditSetDrawMovements(bool param_1, bool param_2)
+{
+}
+
+// STUB: POPCAPGAME1 0x00403290
+void LevelEditor::EditClearUndoPoint()
+{
+}
+
+// STUB: POPCAPGAME1 0x0040b1b0
+void LevelEditor::EditMoveSel(int param_1, int param_2)
+{
+}
+
+// STUB: POPCAPGAME1 0x0040a410
+void LevelEditor::EditResetMoveTimes()
+{
+}
+
+// STUB: POPCAPGAME1 0x0040b060
+void LevelEditor::Reset()
+{
+}
+
+// STUB: POPCAPGAME1 0x004074c0
+void LevelEditor::DoBrickDrag(bool param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x0040a520
+void LevelEditor::DoBrickAttach()
+{
+}
+
+// STUB: POPCAPGAME1 0x0040a680
+void LevelEditor::ReversePoly()
+{
+}
+
+// STUB: POPCAPGAME1 0x00411990
+void LevelEditor::GiveEqualPhase()
+{
+}
+
+// STUB: POPCAPGAME1 0x004032b0
+void LevelEditor::GetLastFocusEditor()
+{
+}
+
+// STUB: POPCAPGAME1 0x00407520
+void LevelEditor::DoRightClickPopup(bool param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x0040a6f0
+void LevelEditor::GetObjZOrder(std::list<Sexy::SmartPtr<PhysObj>>::iterator param_1, bool param_2, bool param_3)
+{
+}
+
+// STUB: POPCAPGAME1 0x00411b60
+void LevelEditor::ShowKeyboardHelp()
+{
+}
+
+// STUB: POPCAPGAME1 0x004032f0
+bool LevelEditor::IsAltKeyUsed(int param_1)
+{
+	return false;
+}
+
+// STUB: POPCAPGAME1 0x00403480
+void LevelEditor::CreateNewBrick()
+{
+}
+
+// STUB: POPCAPGAME1 0x00423080
+void LevelEditor::StartPlaceObj(int param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x004076c0
+void LevelEditor::GetCurBrickAttributes()
+{
+}
+
+// STUB: POPCAPGAME1 0x0040a830
+void LevelEditor::MoveFeverStuff(bool param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x0040b300
+void LevelEditor::ShowFreeBallStuff(bool param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x00407740
+void LevelEditor::DrawObjectEdit(Graphics* param_1, PhysObj* param_2, int param_3)
+{
+}
+
+// STUB: POPCAPGAME1 0x004117e0
+void LevelEditor::EditClearSel()
+{
+}
+
+// STUB: POPCAPGAME1 0x00422d90
+void LevelEditor::EditBringToFront(bool param_1, bool param_2)
+{
+}
+
+// STUB: POPCAPGAME1 0x00411c50
+void LevelEditor::SetSelectFlags(int param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x00411d80
+void LevelEditor::SetDisplayFlags(int param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x00411dc0
+void LevelEditor::SetInterfaceMode(int param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x0041f310
+void LevelEditor::SyncGlobals(DataSync* param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x0041f5f0
+void LevelEditor::BeginOrderMode(bool param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x004118c0
+void LevelEditor::RemoveSelObject(PhysObj* param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x0040a450
+void LevelEditor::SetDragMode(int param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x0041f6a0
+void LevelEditor::MouseUp(int param_1, int param_2, int param_3)
+{
+}
+
+// STUB: POPCAPGAME1 0x004280a0
+void LevelEditor::SaveLevel(std::string* param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x00428770
+void LevelEditor::DoAutoSave(bool param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x00428e40
+void LevelEditor::Update()
+{
+}
+
+// STUB: POPCAPGAME1 0x00425f90
+void LevelEditor::EditCopy(int param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x00426450
+void LevelEditor::EditMarkUndoPoint(bool param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x004265c0
+void LevelEditor::SelectNextObject(bool param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x00426790
+void LevelEditor::SetSingleSelMode(bool param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x00426730
+void LevelEditor::MouseDrag(int param_1, int param_2)
+{
+}
+
+// STUB: POPCAPGAME1 0x00428aa0
+void LevelEditor::EditDelete(bool param_1, bool param_2)
+{
+}
+
+// STUB: POPCAPGAME1 0x0042ab00
+void LevelEditor::EditClearPlace()
+{
+}
+
+// STUB: POPCAPGAME1 0x0042ab30
+void LevelEditor::EditClear()
+{
+}
+
+// STUB: POPCAPGAME1 0x0042e060
+void LevelEditor::LoadLevel(std::string* param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x0042e0b0
+void LevelEditor::LoadNextLevel()
+{
+}
+
+// STUB: POPCAPGAME1 0x0042e1f0
+void LevelEditor::InspectAutoSaves(bool param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x0042b490
+void LevelEditor::AddLine()
+{
+}
+
+// STUB: POPCAPGAME1 0x0042b6c0
+void LevelEditor::AddPoly()
+{
+}
+
+// STUB: POPCAPGAME1 0x0042b8b0
+void LevelEditor::AddBrick(bool param_1, bool param_2)
+{
+}
+
+// STUB: POPCAPGAME1 0x0042ba70
+void LevelEditor::MakeBrickCircle(bool param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x0042c270
+void LevelEditor::LoadImageObject()
+{
+}
+
+// STUB: POPCAPGAME1 0x00428cb0
+void LevelEditor::IncPlaceObj(int param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x00428d20
+void LevelEditor::DoPageUpDown(bool param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x00428d50
+void LevelEditor::MouseWheel(int param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x0042ab50
+void LevelEditor::EditPaste(int param_1, bool param_2)
+{
+}
+
+// STUB: POPCAPGAME1 0x0042b210
+void LevelEditor::EditPerformUndo(bool param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x0042bda0
+void LevelEditor::DoNumberKeyBuffer(int param_1, bool param_2)
+{
+}
+
+// STUB: POPCAPGAME1 0x0042e950
+void LevelEditor::MouseDown(int param_1, int param_2, int param_3)
+{
+}
+
+// STUB: POPCAPGAME1 0x0042be30
+void LevelEditor::KeyDown(KeyCode param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x0042c8e0
+void LevelEditor::ReflectSelected(bool param_1, bool param_2)
+{
+}
+
+// STUB: POPCAPGAME1 0x00421590
+void LevelEditor::Init()
+{
+}
+
+// STUB: POPCAPGAME1 0x0042e620
+void LevelEditor::ToggleEdit(bool param_1, bool param_2)
+{
+}
+
+// STUB: POPCAPGAME1 0x0042eee0
+void LevelEditor::KeyChar(char param_1)
+{
+}
+
+// FUNCTION: POPCAPGAME1 0x00402fd0
+void LevelEditor::AddedToManager(WidgetManager* param_1)
+{
+	Widget::AddedToManager(param_1);
+}
+
+// STUB: POPCAPGAME1 0x00428940
+void LevelEditor::RemovedFromManager(WidgetManager* param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x00403310
+void LevelEditor::CreateGridImage()
+{
+}
+
+// STUB: POPCAPGAME1 0x00403550
+void LevelEditor::DrawGrid(Graphics* param_1)
+{
+}
+
+// STUB: POPCAPGAME1 0x004a6820
+void LevelEditor::Draw(Graphics* param_1)
+{
+}

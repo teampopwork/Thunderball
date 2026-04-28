@@ -6,6 +6,7 @@
 #include "EffectMgr.h"
 #include "FloatingTextMgr.h"
 #include "InterfaceMgr.h"
+#include "LevelEditor.h"
 #include "LogicMgr.h"
 
 #include <SexyAppFramework/WidgetManager.h>
@@ -22,6 +23,7 @@ Board::Board(ThunderballApp* theApp)
 	mEffectMgr = new EffectMgr();
 	mFloatingTextMgr = new FloatingTextMgr();
 	mInterfaceMgr = new InterfaceMgr(this);
+	mLevelEditor = new LevelEditor(this);
 	mLogicMgr = new LogicMgr(this);
 }
 

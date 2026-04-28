@@ -27,6 +27,7 @@ class DebugMgr;
 class EffectMgr;
 class FloatingTextMgr;
 class InterfaceMgr;
+class LevelEditor;
 class LogicMgr;
 
 // VTABLE: POPCAPGAME1 0x005d76d4 Sexy::ButtonListener
@@ -41,6 +42,7 @@ class Board : public Widget, public ButtonListener
 	EffectMgr* mEffectMgr; // +0x144
 	FloatingTextMgr* mFloatingTextMgr; // +0x148
 	InterfaceMgr* mInterfaceMgr; // +0x14c
+	LevelEditor* mLevelEditor; // +0x150
 	LogicMgr* mLogicMgr; // +0x154
 	Widget* mEndLevelDialog; // +0x160
 
