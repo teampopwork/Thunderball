@@ -11,6 +11,7 @@
 #include "Mover.h"
 #include "PegInfo.h"
 #include "Poly.h"
+#include "Gun.h"
 #include "ThunderCommon.h"
 
 #include <ImageLib/ImageLib.h>
@@ -80,7 +81,7 @@ PhysObj* PhysObj::ClassFactory(int param_1)
 	case 6:
 		return new Brick();
 	case 7:
-		return new AIBall();
+		return new Gun(GetBoard());
 	case 8:
 		return new Hole();
 	}

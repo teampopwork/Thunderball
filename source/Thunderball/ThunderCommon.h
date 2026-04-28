@@ -20,6 +20,7 @@ class SimpleButton;
 class DialogButton;
 class ThunderCheckbox;
 class ImageMgr;
+class Board;
 enum StyleShot;
 
 void SetButtonFontColor(int color);
@@ -49,6 +50,7 @@ ThunderButton* MakeBottomButton(int theId, ButtonListener* theListener, std::str
 int GetColorForCharacter(int param_1);
 int MyMod(int a, int b);
 ImageMgr* GetImageMgr();
+Board* GetBoard();
 // 04896b0 DoDrawStat
 } // namespace Sexy
 

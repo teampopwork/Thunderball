@@ -40,7 +40,6 @@ public:
 	virtual float GetXPos();
 	virtual float GetYPos();
 	virtual void SetActiveWithGrowAnim(bool param_1);
-
 	virtual void InitDefaults();
 
 	void AddBubbles(int param_1);

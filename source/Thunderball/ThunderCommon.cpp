@@ -1663,3 +1663,9 @@ ImageMgr* Sexy::GetImageMgr()
 {
 	return GetThunderballApp()->mImageMgr;
 }
+
+// FUNCTION: POPCAPGAME1 0x00404c80
+Board* Sexy::GetBoard()
+{
+	return GetThunderballApp()->mBoard;
+}
