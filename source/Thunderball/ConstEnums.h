@@ -25,6 +25,9 @@ enum PegType {
 	POWERUP = 4
 };
 
+enum EndLevelMode;
+
+
 } // namespace Sexy
 
 #endif // __CONSTENUMS_H__

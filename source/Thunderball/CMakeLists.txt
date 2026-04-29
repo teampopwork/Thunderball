@@ -2,6 +2,7 @@ project(Thunderball LANGUAGES CXX)
 
 add_executable(popcapgame1 WIN32
     AdventureScreen.cpp
+    EndLevelDialog.cpp
     Board.cpp
     CharacterMgr.cpp
     ConfigParser.cpp

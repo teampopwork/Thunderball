@@ -29,6 +29,7 @@ class FloatingTextMgr;
 class InterfaceMgr;
 class LevelEditor;
 class LogicMgr;
+class SoundMgr;
 
 // VTABLE: POPCAPGAME1 0x005d76d4 Sexy::ButtonListener
 // VTABLE: POPCAPGAME1 0x005d76f4 Sexy::Board
@@ -44,7 +45,8 @@ class Board : public Widget, public ButtonListener
 	InterfaceMgr* mInterfaceMgr; // +0x14c
 	LevelEditor* mLevelEditor; // +0x150
 	LogicMgr* mLogicMgr; // +0x154
-	Widget* mEndLevelDialog; // +0x160
+	SoundMgr* mSoundMgr; // +0x158
+	EndLevelDialog* mEndLevelDialog; // +0x160
 
 	Board(ThunderballApp* app);
 	virtual ~Board();
