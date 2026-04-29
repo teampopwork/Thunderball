@@ -10,6 +10,7 @@
 #include "ThunderCommon.h"
 #include "ThunderSlider.h"
 #include "ThunderballApp.h"
+#include "EndLevelDialog.h"
 
 #include <SexyAppFramework/DialogButton.h>
 #include <SexyAppFramework/Widget.h>

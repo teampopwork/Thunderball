@@ -1,6 +1,8 @@
 #include "Board.h"
 
+#include "ThunderballApp.h"
 #include "AIMgr.h"
+#include "CharacterMgr.h"
 #include "CollisionMgr.h"
 #include "DebugMgr.h"
 #include "EffectMgr.h"
@@ -9,7 +11,7 @@
 #include "LevelEditor.h"
 #include "LogicMgr.h"
 #include "SoundMgr.h"
-#Include "EndLevelDialog.h"
+#include "EndLevelDialog.h"
 
 #include <SexyAppFramework/WidgetManager.h>
 
@@ -29,7 +31,7 @@ Board::Board(ThunderballApp* theApp)
 	mLevelEditor = new LevelEditor(this);
 	mLogicMgr = new LogicMgr(this);
 	mSoundMgr = new SoundMgr();
-	mEndLevelDialog = new EndLevelDialog(thhis);
+	mEndLevelDialog = new EndLevelDialog(this);
 }
 
 // STUB: POPCAPGAME1 0x004299a0

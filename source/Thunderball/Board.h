@@ -22,6 +22,7 @@ class DataWriter;
 class Buffer;
 class HighScoreEntry;
 class AIMgr;
+class CharacterMgr;
 class CollisionMgr;
 class DebugMgr;
 class EffectMgr;
@@ -30,6 +31,7 @@ class InterfaceMgr;
 class LevelEditor;
 class LogicMgr;
 class SoundMgr;
+class EndLevelDialog;
 
 // VTABLE: POPCAPGAME1 0x005d76d4 Sexy::ButtonListener
 // VTABLE: POPCAPGAME1 0x005d76f4 Sexy::Board
@@ -38,6 +40,7 @@ class Board : public Widget, public ButtonListener
   public:
 	ThunderballApp* mApp; // +0xb0
 	AIMgr* mAIMgr; // +0x134
+	CharacterMgr* mCharacterMgr; // +0x138
 	CollisionMgr* mCollisionMgr; // +0x13c
 	DebugMgr* mDebugMgr; // +0x140
 	EffectMgr* mEffectMgr; // +0x144

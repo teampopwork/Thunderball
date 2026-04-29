@@ -41,6 +41,7 @@ add_executable(popcapgame1 WIN32
     LogicMgr.cpp
     HighScoreMgr.cpp
     ImageMgr.cpp
+    SoundMgr.cpp
     StoryScreen.cpp
     LevelScreen.cpp
     ThunderCommon.cpp

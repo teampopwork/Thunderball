@@ -1,7 +1,7 @@
 #ifndef __ENDLEVELDIALOG_H__
 #define __ENDLEVELDIALOG_H__
 
-#include 
+#include "ConstEnums.h"
 
 #include <SexyAppFramework/ButtonListener.h>
 #include <SexyAppFramework/Widget.h>
