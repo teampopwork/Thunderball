@@ -31,6 +31,7 @@ class InterfaceMgr;
 class LevelEditor;
 class LogicMgr;
 class SoundMgr;
+class SlotMachineDialog;
 class EndLevelDialog;
 
 // VTABLE: POPCAPGAME1 0x005d76d4 Sexy::ButtonListener
@@ -49,6 +50,7 @@ class Board : public Widget, public ButtonListener
 	LevelEditor* mLevelEditor; // +0x150
 	LogicMgr* mLogicMgr; // +0x154
 	SoundMgr* mSoundMgr; // +0x158
+	SlotMachineDialog* mSlotMachineDialog; // +0x15c
 	EndLevelDialog* mEndLevelDialog; // +0x160
 
 	Board(ThunderballApp* app);

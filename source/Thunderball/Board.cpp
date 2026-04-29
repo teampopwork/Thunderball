@@ -11,6 +11,7 @@
 #include "LevelEditor.h"
 #include "LogicMgr.h"
 #include "SoundMgr.h"
+#include "SlotMachineDialog.h"
 #include "EndLevelDialog.h"
 
 #include <SexyAppFramework/WidgetManager.h>
@@ -31,6 +32,7 @@ Board::Board(ThunderballApp* theApp)
 	mLevelEditor = new LevelEditor(this);
 	mLogicMgr = new LogicMgr(this);
 	mSoundMgr = new SoundMgr();
+	mSlotMachineDialog = new SlotMachineDialog(this);
 	mEndLevelDialog = new EndLevelDialog(this);
 }
 
