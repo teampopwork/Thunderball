@@ -11,8 +11,9 @@
 #include "LevelEditor.h"
 #include "LogicMgr.h"
 #include "SoundMgr.h"
-#include "SlotMachineDialog.h"
+#include "ReplayDialog.h"
 #include "EndLevelDialog.h"
+#include "SlotMachineDialog.h"
 
 #include <SexyAppFramework/WidgetManager.h>
 
@@ -32,8 +33,9 @@ Board::Board(ThunderballApp* theApp)
 	mLevelEditor = new LevelEditor(this);
 	mLogicMgr = new LogicMgr(this);
 	mSoundMgr = new SoundMgr();
-	mSlotMachineDialog = new SlotMachineDialog(this);
+	mReplayDialog = new ReplayDialog(this);
 	mEndLevelDialog = new EndLevelDialog(this);
+	mSlotMachineDialog = new SlotMachineDialog(this);
 }
 
 // STUB: POPCAPGAME1 0x004299a0
