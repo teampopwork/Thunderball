@@ -14,6 +14,7 @@
 #include "ReplayDialog.h"
 #include "EndLevelDialog.h"
 #include "SlotMachineDialog.h"
+#include "CharacterDialog.h"
 
 #include <SexyAppFramework/WidgetManager.h>
 
@@ -180,9 +181,26 @@ void Board::ResizeEndLevelDialog()
 {
 }
 
-// STUB: POPCAPGAME1 0x004022f0
+// FUNCTION: POPCAPGAME1 0x004022f0
 void Board::DoCharacterDialog(bool param_1)
 {
+	mUnk0xea = 1;
+	CharacterDialog* aDialog = new CharacterDialog(this);
+	int iVar1 = aDialog->mWidth;
+	int iVar5 = 0;
+	if (aDialog->mUnk0x219 != 0) {
+		// STRING: POPCAPGAME1 0x005d28e0
+		iVar5 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp16,1076", 0x28);
+	} else {
+		// STRING: POPCAPGAME1 0x005d28a4
+		iVar5 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp17,1076", 0x3c);
+	}
+
+	aDialog->Resize((800 - iVar1) / 2, iVar5, iVar1, aDialog->GetPreferredHeight(iVar5));
+	if (param_1) {
+		aDialog->DoScroll(true);
+	}
+	mApp->AddDialog(aDialog->mId, aDialog);
 }
 
 // STUB: POPCAPGAME1 0x004023f0

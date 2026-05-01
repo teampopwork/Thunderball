@@ -17,6 +17,7 @@ add_executable(popcapgame1 WIN32
     NewUserDialog.cpp
     OptionsDialog.cpp
     ReplayDialog.cpp
+    CharacterDialog.cpp
     PlayerInfo.cpp
     PhysObj.cpp
     Poly.cpp

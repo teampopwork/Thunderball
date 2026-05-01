@@ -42,6 +42,7 @@ class Board : public Widget, public ButtonListener
 {
   public:
 	ThunderballApp* mApp; // +0xb0
+	int mUnk0xea; // +0xea
 	AIMgr* mAIMgr; // +0x134
 	CharacterMgr* mCharacterMgr; // +0x138
 	CollisionMgr* mCollisionMgr; // +0x13c
