@@ -1,26 +1,33 @@
 #include "Board.h"
 
-#include "ThunderballApp.h"
 #include "AIMgr.h"
+#include "CharacterDialog.h"
 #include "CharacterMgr.h"
 #include "CollisionMgr.h"
 #include "DebugMgr.h"
 #include "EffectMgr.h"
+#include "EndLevelDialog.h"
 #include "FloatingTextMgr.h"
 #include "InterfaceMgr.h"
 #include "LevelEditor.h"
 #include "LogicMgr.h"
-#include "SoundMgr.h"
 #include "ReplayDialog.h"
-#include "EndLevelDialog.h"
 #include "SlotMachineDialog.h"
-#include "CharacterDialog.h"
+#include "SoundMgr.h"
+#include "Gun.h"
+#include "Poly.h"
+#include "PhysObj.h"
+#include "ThunderballApp.h"
+#include "ThunderCommon.h"
+#include "ThunderButton.h"
+#include "Res.h"
+#include "TypingCheck.h"
 
 #include <SexyAppFramework/WidgetManager.h>
 
 using namespace Sexy;
 
-// STUB: POPCAPGAME1 0x004238a0
+// FUNCTION: POPCAPGAME1 0x004238a0
 Board::Board(ThunderballApp* theApp)
 {
 	mApp = theApp;
@@ -37,6 +44,72 @@ Board::Board(ThunderballApp* theApp)
 	mReplayDialog = new ReplayDialog(this);
 	mEndLevelDialog = new EndLevelDialog(this);
 	mSlotMachineDialog = new SlotMachineDialog(this);
+
+	mUnk0x1a8 = 0x4b;
+	mUnk0x1ac = 0x28;
+	mUnk0x1b0 = 0x28a;
+	mUnk0x170 = 0;
+	mUnk0x1b4 = 0x230;
+	mUnk0xc1 = false;
+	mUnk0xc2 = false;
+	mUnk0xc3 = false;
+	mUnk0xea = false;
+	mUnk0xc7 = false;
+	mUnk0xc0 = true;
+	mUnk0x11d = true;
+	mUnk0x11e = false;
+	mUnk0x120 = true;
+	mUnk0x121 = false;
+	mUnk0x122 = false;
+	mUnk0x123 = false;
+	mUnk0xcc = 0;
+	mUnk0xd0 = 0xfa;
+	mUnk0xc8 = 0;
+	mUnk0xd4 = 0;
+	mUnk0xd8 = 0x14;
+	mUnk0x1d0 = 0;
+	mUnk0x1b8 = 0;
+	mUnk0x1bc = 0;
+	mUnk0x1c0 = 0;
+	mUnk0xec = 0;
+	mUnk0xf0 = 0;
+	mUnk0xf4 = 0;
+	mUnk0x1c8 = 0;
+	mUnk0x1cc = 0;
+	mUnk0x130 = 0;
+	mUnk0x188 = 0;
+	mUnk0x18c = 0;
+
+	mGun = new Gun(this);
+
+	float fVar25 = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp3,147",0x46) - mUnk0x1ac;
+	float fVar26 = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp2,147",400) - mUnk0x1a8;
+	mGun->SetPos(fVar25, fVar26);
+
+	mMenuButton = MakeEmbeddedButton(0, this, IMAGE_DLG_MENU, false);
+	mMenuButton->Move(
+		ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp4,153",0xc),
+		ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp5,153",0x21c)
+	);
+	mMenuButton->mUnk0x148 = false;
+	AddWidget(mMenuButton);
+
+	mReplayButton = MakeEmbeddedButton(1, this, IMAGE_DLG_INSTANTREPLAY, false);
+	mReplayButton->Move(
+		ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp6,158",0x2e0),
+		ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp7,158",0x21c)
+	);
+	mReplayButton->mUnk0x148 = false;
+	mReplayButton->mDisabled = true;
+	mReplayButton->mUnk0x158 = false;
+	AddWidget(mReplayButton);
+
+	char* checkStrs[] = {"kathy", "steve", "shanon", "zoom", "scott", "seattle", "piano", "pitcher", "tennis", NULL};
+	for (int i = 0; checkStrs[i] != NULL; i++) {
+		//mTypingCheckList[i] = TypingCheck(checkStrs[i]);
+	}
+
+	Clear(true);
 }
 
 // STUB: POPCAPGAME1 0x004299a0
@@ -161,14 +234,37 @@ bool Board::HasShot()
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x00402030
+// FUNCTION: POPCAPGAME1 0x00402030
 void Board::PositionReplayDialog()
 {
+	int iVar2 = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp8,672",0x48);
+	int iVar3 = mReplayDialog->GetPreferredHeight(iVar2);
+	int iVar5 = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp10,676",600) - iVar3;
+	int iVar4 = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp9,675",0x31e);
+
+	if (ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp11,678",10) < mUnk0x108) {
+		if (mApp->Is3DAccelerated()) {
+			iVar4 -= (mUnk0xfc - 10) * ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp13,682",0x10) / 10;
+			iVar5 += (mUnk0xfc - 10) * ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp12,681",0x10) / 10;
+		}
+	}
+
+	mReplayDialog->Resize(iVar4, iVar5, iVar2, iVar3);
 }
 
-// STUB: POPCAPGAME1 0x00402130
+// FUNCTION: POPCAPGAME1 0x00402130
 void Board::ShowReplayDialog()
 {
+	mLogicMgr->mUnk0xf5 = 1;
+	mReplayDialog->StopBlinkingButtons();
+	if (mReplayDialog->mWidgetManager == NULL) {
+		PositionReplayDialog();
+		if (mUnk0xc5 == 0) {
+			mReplayDialog->DoScroll(true);
+			mReplayDialog->mY = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp14,813",10) + mReplayDialog->mHeight - IMAGE_DLG_REPLAYTOP->mHeight;
+		}
+		mWidgetManager->AddWidget(mReplayDialog);
+	}
 }
 
 // STUB: POPCAPGAME1 0x004021b0
@@ -191,7 +287,8 @@ void Board::DoCharacterDialog(bool param_1)
 	if (aDialog->mUnk0x219 != 0) {
 		// STRING: POPCAPGAME1 0x005d28e0
 		iVar5 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp16,1076", 0x28);
-	} else {
+	}
+	else {
 		// STRING: POPCAPGAME1 0x005d28a4
 		iVar5 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp17,1076", 0x3c);
 	}
@@ -351,7 +448,7 @@ void Board::Clear(bool param_1)
 }
 
 // STUB: POPCAPGAME1 0x00421070
-void Board::AddObj(PhysObj* param_1, std::list<Sexy::SmartPtr<PhysObj> >::iterator param_2)
+void Board::AddObj(PhysObj* param_1, std::list<Sexy::SmartPtr<PhysObj>>::iterator param_2)
 {
 }
 
@@ -401,7 +498,7 @@ void Board::DoStageDialog(bool param_1)
 }
 
 // STUB: POPCAPGAME1 0x004227c0
-void Board::LoadLevelBase(std::string* param_1, std::list<Sexy::SmartPtr<PhysObj> > param_2, bool param_3)
+void Board::LoadLevelBase(std::string* param_1, std::list<Sexy::SmartPtr<PhysObj>> param_2, bool param_3)
 {
 }
 
@@ -519,8 +616,7 @@ void Board::DrawScreenSaver(Graphics* g)
 }
 
 // STUB: POPCAPGAME1 0x004024e0
-bool Board::EditingLevel() 
+bool Board::EditingLevel()
 {
 	return false;
 }
-

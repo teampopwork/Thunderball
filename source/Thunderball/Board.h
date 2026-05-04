@@ -1,18 +1,18 @@
 #ifndef __BOARD_H__
 #define __BOARD_H__
 
-#include "PhysObj.h"
-
 #include <SexyAppFramework/ButtonListener.h>
 #include <SexyAppFramework/Widget.h>
 #include <SexyAppFramework/SmartPtr.h>
 
 #include <string>
 #include <list>
+#include <deque>
 
 namespace Sexy
 {
 class ThunderballApp;
+class ThunderButton;
 class Ball;
 class WidgetManager;
 class Graphics;
@@ -34,6 +34,9 @@ class SoundMgr;
 class ReplayDialog;
 class EndLevelDialog;
 class SlotMachineDialog;
+class Gun;
+class PhysObj;	
+class TypingCheck;
 
 
 // VTABLE: POPCAPGAME1 0x005d76d4 Sexy::ButtonListener
@@ -41,8 +44,33 @@ class SlotMachineDialog;
 class Board : public Widget, public ButtonListener
 {
   public:
+	std::list<TypingCheck> mTypingCheckList; // +0xbc
 	ThunderballApp* mApp; // +0xb0
-	int mUnk0xea; // +0xea
+	SmartPtr<Gun> mGun; // +0xbc
+	bool mUnk0xc0; // +0xc0
+	bool mUnk0xc1; // +0xc1
+	bool mUnk0xc2; // +0xc2
+	bool mUnk0xc3; // +0xc3
+	bool mUnk0xc5; // +0xc5
+	bool mUnk0xc7; // +0xc7
+	int mUnk0xc8; // +0xc8
+	int mUnk0xcc; // +0xcc
+	int mUnk0xd0; // +0xd0
+	int mUnk0xd4; // +0xd4
+	int mUnk0xd8; // +0xd8
+	bool mUnk0xea; // +0xea
+	int mUnk0xec; // +0xec
+	int mUnk0xf0; // +0xf0
+	int mUnk0xf4; // +0xf4
+	int mUnk0xfc; // +0xfc
+	int mUnk0x108; // +0x108
+	bool mUnk0x11d; // +0x11d
+	bool mUnk0x11e; // +0x11e
+	bool mUnk0x120; // +0x120
+	bool mUnk0x121; // +0x121
+	bool mUnk0x122; // +0x122
+	bool mUnk0x123; // +0x123
+	int mUnk0x130; // +0x130
 	AIMgr* mAIMgr; // +0x134
 	CharacterMgr* mCharacterMgr; // +0x138
 	CollisionMgr* mCollisionMgr; // +0x13c
@@ -56,6 +84,30 @@ class Board : public Widget, public ButtonListener
 	ReplayDialog* mReplayDialog; // +0x15c
 	EndLevelDialog* mEndLevelDialog; // +0x160
 	SlotMachineDialog* mSlotMachineDialog; // +0x164
+	ThunderButton* mMenuButton; // +0x168
+	ThunderButton* mReplayButton; // +0x16c
+	int mUnk0x170; // +0x170
+	std::deque<DataWriter*> mUnk0x174; // +0x174
+	int mUnk0x188; // +0x188
+	int mUnk0x18c; // +0x18c
+	int mUnk0x1a8; // +0x1a8
+	int mUnk0x1ac; // +0x1ac
+	int mUnk0x1b0; // +0x1b0
+	int mUnk0x1b4; // +0x1b4
+	int mUnk0x1b8; // +0x1b8
+	int mUnk0x1bc; // +0x1bc
+	int mUnk0x1c0; // +0x1c0
+	int mUnk0x1c8; // +0x1c8
+	int mUnk0x1cc; // +0x1cc
+	int mUnk0x1d0; // +0x1d0
+
+	std::string mUnk0x1ec; // +0x1ec
+	std::vector<PhysObj*> mUnk0x1f4; // +0x1f4
+	std::vector<PhysObj*> mUnk0x204; // +0x204
+	std::vector<PhysObj*> mUnk0x214; // +0x214
+	std::vector<PhysObj*> mUnk0x224; // +0x224
+	std::vector<PhysObj*> mUnk0x234; // +0x234
+	std::vector<PhysObj*> mUnk0x244; // +0x244
 
 	Board(ThunderballApp* app);
 	virtual ~Board();

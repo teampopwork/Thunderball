@@ -58,6 +58,7 @@ add_executable(popcapgame1 WIN32
     UpsellScreen.cpp
     UserDialog.cpp
     WidgetMover.cpp
+    TypingCheck.cpp
 )
 
 target_include_directories(popcapgame1 PRIVATE

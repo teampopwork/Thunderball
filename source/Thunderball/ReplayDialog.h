@@ -1,15 +1,16 @@
 #ifndef __REPLAYDIALOG_H__
 #define __REPLAYDIALOG_H__
 
+#include "ThunderDialog.h"
+
 #include <SexyAppFramework/ButtonListener.h>
-#include <SexyAppFramework/Widget.h>
 
 namespace Sexy {
 class Board;
 class Graphics;
 class WidgetManager;
 
-class ReplayDialog : public Widget, public ButtonListener {
+class ReplayDialog : public ThunderDialog {
 public:
 	ReplayDialog(Board* param_1);
 	virtual ~ReplayDialog();

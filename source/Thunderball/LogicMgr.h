@@ -20,6 +20,7 @@ enum PowerupType;
 class LogicMgr {
 public:
 	int mUnk0x4;
+	bool mUnk0xf5; // +0xf5
 
 	LogicMgr(Board* param_1);
 	virtual ~LogicMgr();
