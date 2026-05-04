@@ -3,7 +3,7 @@
 using namespace Sexy;
 
 // STUB: POPCAPGAME1 0x004a9960
-ReplayDialog::ReplayDialog(Board* param_1)
+ReplayDialog::ReplayDialog(Board* param_1) : ThunderDialog(0, false, "", "", "", 0)
 {
 }
 
