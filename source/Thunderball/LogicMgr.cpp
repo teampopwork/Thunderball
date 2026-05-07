@@ -1,5 +1,7 @@
 #include "LogicMgr.h"
 
+#include <SexyAppFramework/Common.h>
+
 using namespace Sexy;
 
 // STUB: POPCAPGAME1 0x004610d0
@@ -70,14 +72,14 @@ void LogicMgr::MouseWheel(int param_1)
 	// TODO
 }
 
-void LogicMgr::KeyChar(char param_1)
+bool LogicMgr::KeyChar(SexyChar param_1)
 {
-	// TODO
+	return false;
 }
 
-void LogicMgr::KeyDown(KeyCode param_1)
+bool LogicMgr::KeyDown(KeyCode param_1)
 {
-	// TODO
+	return false;
 }
 
 // STUB: POPCAPGAME1 0x00440500
@@ -460,9 +462,9 @@ void LogicMgr::UpdateWrapAroundBall()
 	// TODO
 }
 
-void LogicMgr::AddStandardText(const std::string& param_1, float param_2, float param_3, int param_4)
+FloatingText* LogicMgr::AddStandardText(const std::string& param_1, float param_2, float param_3, int param_4)
 {
-	// TODO
+	return NULL;
 }
 
 void LogicMgr::AddStyleScoreText(int param_1, int param_2)

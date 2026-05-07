@@ -1,6 +1,7 @@
 #include "Board.h"
 
 #include "AIMgr.h"
+#include "Brick.h"
 #include "CharacterDialog.h"
 #include "CharacterMgr.h"
 #include "CollisionMgr.h"
@@ -8,22 +9,24 @@
 #include "EffectMgr.h"
 #include "EndLevelDialog.h"
 #include "FloatingTextMgr.h"
+#include "Gun.h"
 #include "InterfaceMgr.h"
 #include "LevelEditor.h"
 #include "LogicMgr.h"
+#include "PhysObj.h"
+#include "PlayerInfo.h"
+#include "Poly.h"
 #include "ReplayDialog.h"
+#include "Res.h"
 #include "SlotMachineDialog.h"
 #include "SoundMgr.h"
-#include "Gun.h"
-#include "Poly.h"
-#include "PhysObj.h"
-#include "ThunderballApp.h"
-#include "ThunderCommon.h"
 #include "ThunderButton.h"
-#include "Res.h"
+#include "ThunderCommon.h"
+#include "ThunderballApp.h"
 #include "TypingCheck.h"
 
 #include <SexyAppFramework/WidgetManager.h>
+#include <list>
 
 using namespace Sexy;
 
@@ -82,22 +85,22 @@ Board::Board(ThunderballApp* theApp)
 
 	mGun = new Gun(this);
 
-	float fVar25 = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp3,147",0x46) - mUnk0x1ac;
-	float fVar26 = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp2,147",400) - mUnk0x1a8;
+	float fVar25 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp3,147", 0x46) - mUnk0x1ac;
+	float fVar26 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp2,147", 400) - mUnk0x1a8;
 	mGun->SetPos(fVar25, fVar26);
 
 	mMenuButton = MakeEmbeddedButton(0, this, IMAGE_DLG_MENU, false);
 	mMenuButton->Move(
-		ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp4,153",0xc),
-		ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp5,153",0x21c)
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp4,153", 0xc),
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp5,153", 0x21c)
 	);
 	mMenuButton->mUnk0x148 = false;
 	AddWidget(mMenuButton);
 
 	mReplayButton = MakeEmbeddedButton(1, this, IMAGE_DLG_INSTANTREPLAY, false);
 	mReplayButton->Move(
-		ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp6,158",0x2e0),
-		ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp7,158",0x21c)
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp6,158", 0x2e0),
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp7,158", 0x21c)
 	);
 	mReplayButton->mUnk0x148 = false;
 	mReplayButton->mDisabled = true;
@@ -106,7 +109,7 @@ Board::Board(ThunderballApp* theApp)
 
 	char* checkStrs[] = {"kathy", "steve", "shanon", "zoom", "scott", "seattle", "piano", "pitcher", "tennis", NULL};
 	for (int i = 0; checkStrs[i] != NULL; i++) {
-		//mTypingCheckList[i] = TypingCheck(checkStrs[i]);
+		mTypingCheckList.push_back(TypingCheck(checkStrs[i]));
 	}
 
 	Clear(true);
@@ -142,44 +145,86 @@ void Board::LostFocus()
 	Widget::LostFocus();
 }
 
-// STUB: POPCAPGAME1 0x00402790
+// FUNCTION: POPCAPGAME1 0x00402790
 void Board::MouseMove(int theX, int theY)
 {
+	if (!mDebugMgr->MouseMove(theX, theY)) {
+		mLogicMgr->MouseMove(theX, theY);
+	}
 }
 
-// STUB: POPCAPGAME1 0x004027d0
+// FUNCTION: POPCAPGAME1 0x004027d0
 void Board::MouseDrag(int theX, int theY)
 {
+	if (!mDebugMgr->MouseDrag(theX, theY)) {
+		mLogicMgr->MouseDrag(theX, theY);
+	}
 }
 
-// STUB: POPCAPGAME1 0x00402810
+// FUNCTION: POPCAPGAME1 0x00402810
 void Board::MouseDown(int theX, int theY, int theClickCount)
 {
+	if (mUnk0x1c0 != mUpdateCnt) {
+		if (mUnk0x130 != 0) {
+			mUnk0x130 = 1;
+		}
+	}
+	else if (!mDebugMgr->MouseDown(theX, theY, theClickCount)) {
+		if (mUnk0x1b8 != 0) {
+			Pause(false);
+		}
+		else {
+			mLogicMgr->MouseDown(theX, theY, theClickCount, false, false);
+		}
+	}
 }
 
-// STUB: POPCAPGAME1 0x004028a0
+// FUNCTION: POPCAPGAME1 0x004028a0
 void Board::MouseUp(int theX, int theY, int theClickCount)
 {
+	if (!mDebugMgr->MouseUp(theX, theY, theClickCount) && (mUnk0x1b8 == 0)) {
+		mLogicMgr->MouseUp(theX, theY, theClickCount, false);
+	}
 }
 
-// STUB: POPCAPGAME1 0x004028f0
+// FUNCTION: POPCAPGAME1 0x004028f0
 void Board::MouseEnter()
 {
+	if (!mDebugMgr->MouseEnter()) {
+		mLogicMgr->MouseEnter();
+	}
 }
 
-// STUB: POPCAPGAME1 0x00402910
+// FUNCTION: POPCAPGAME1 0x00402910
 void Board::MouseLeave()
 {
+	if (!mDebugMgr->MouseLeave()) {
+		mLogicMgr->MouseLeave();
+	}
 }
 
-// STUB: POPCAPGAME1 0x00402930
+// FUNCTION: POPCAPGAME1 0x00402930
 void Board::KeyDown(KeyCode theKey)
 {
+	if (!mUnk0xea && !mLogicMgr->KeyDown(theKey) && (mUnk0x1b8 == 0)) {
+		if (theKey == KEYCODE_RETURN) {
+			MouseDown(mWidgetManager->mLastMouseX, mWidgetManager->mLastMouseY, 1);
+		}
+		else if (theKey == KEYCODE_LEFT) {
+			mLogicMgr->MouseWheel(-1);
+		}
+		else if (theKey == KEYCODE_RIGHT) {
+			mLogicMgr->MouseWheel(1);
+		}
+	}
 }
 
-// STUB: POPCAPGAME1 0x00406ec0
+// FUNCTION: POPCAPGAME1 0x00406ec0
 void Board::MouseWheel(int theDelta)
 {
+	if (!mDebugMgr->MouseWheel(theDelta) && (mUnk0x1b4 == 0)) {
+		mLogicMgr->MouseWheel(theDelta);
+	}
 }
 
 // STUB: POPCAPGAME1 0x00406f70
@@ -197,9 +242,33 @@ void Board::ButtonDepress(int theId)
 {
 }
 
-// STUB: POPCAPGAME1 0x0042df70
+// FUNCTION: POPCAPGAME1 0x0042df70
 void Board::KeyChar(SexyChar theChar)
 {
+	bool bVar1 = mUnk0xea;
+	if (mDebugMgr->KeyChar(theChar)) {
+		mUnk0xea = false;
+		if (bVar1) {
+			mApp->KillDialog(1);
+			mApp->KillDialog(0x23);
+			mApp->KillDialog(0xd);
+		}
+	}
+	else {
+		if (!mUnk0xea) {
+			if (mLogicMgr->KeyChar(theChar) && (mUnk0x1b8 == 0 || theChar == ' ')) {
+				std::list<TypingCheck>::iterator it = mTypingCheckList.begin();
+				for (int i = 0; i < 9; i++, ++it) {
+					if (it->Check(theChar)) {
+						ActivateTypingCheck(i);
+					}
+				}
+				if (theChar == ' ') {
+					Pause(false);
+				}
+			}
+		}
+	}
 }
 
 // STUB: POPCAPGAME1 0x00425290
@@ -222,30 +291,30 @@ void Board::SubmitTotalStats()
 {
 }
 
-// STUB: POPCAPGAME1 0x00402000
+// FUNCTION: POPCAPGAME1 0x00402000
 bool Board::Cheated()
 {
-	return false;
+	return mDebugMgr->mUnk0x20;
 }
 
-// STUB: POPCAPGAME1 0x00402010
+// FUNCTION: POPCAPGAME1 0x00402010
 bool Board::HasShot()
 {
-	return false;
+	return mLogicMgr->mUnk0x248 > 0;
 }
 
 // FUNCTION: POPCAPGAME1 0x00402030
 void Board::PositionReplayDialog()
 {
-	int iVar2 = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp8,672",0x48);
+	int iVar2 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp8,672", 0x48);
 	int iVar3 = mReplayDialog->GetPreferredHeight(iVar2);
-	int iVar5 = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp10,676",600) - iVar3;
-	int iVar4 = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp9,675",0x31e);
+	int iVar5 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp10,676", 600) - iVar3;
+	int iVar4 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp9,675", 0x31e);
 
-	if (ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp11,678",10) < mUnk0x108) {
+	if (ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp11,678", 10) < mUnk0x108) {
 		if (mApp->Is3DAccelerated()) {
-			iVar4 -= (mUnk0xfc - 10) * ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp13,682",0x10) / 10;
-			iVar5 += (mUnk0xfc - 10) * ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp12,681",0x10) / 10;
+			iVar4 -= (mUnk0xfc - 10) * ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp13,682", 0x10) / 10;
+			iVar5 += (mUnk0xfc - 10) * ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp12,681", 0x10) / 10;
 		}
 	}
 
@@ -261,7 +330,7 @@ void Board::ShowReplayDialog()
 		PositionReplayDialog();
 		if (mUnk0xc5 == 0) {
 			mReplayDialog->DoScroll(true);
-			mReplayDialog->mY = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp14,813",10) + mReplayDialog->mHeight - IMAGE_DLG_REPLAYTOP->mHeight;
+			mReplayDialog->mY = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp14,813", 10) + mReplayDialog->mHeight - IMAGE_DLG_REPLAYTOP->mHeight;
 		}
 		mWidgetManager->AddWidget(mReplayDialog);
 	}
@@ -320,14 +389,33 @@ void Board::DoReplayFileDialog(bool param_1, int param_2, bool param_3)
 {
 }
 
-// STUB: POPCAPGAME1 0x00406c10
+// FUNCTION: POPCAPGAME1 0x00406c10
 void Board::CheckIncTip()
 {
+	if (mUnk0x122) {
+		if (mApp->mCurProfile != NULL) {
+			mApp->mCurProfile->IncTip(mEndLevelDialog->mUnk0x258);
+		}
+		mUnk0x122 = false;
+	}
 }
 
-// STUB: POPCAPGAME1 0x004026f0
+// FUNCTION: POPCAPGAME1 0x004026f0
 void Board::SetSlowMo(bool param_1, int param_2)
 {
+	mUnk0xc1 = param_1;
+	mUnk0xc3 = false;
+	mUnk0xc8 = 0;
+	mUnk0xc2 = false;
+	mUnk0xcc = 0;
+	mUnk0xd0 = param_2;
+	mUnk0xd4 = 0;
+	if (!param_1) {
+		if (!mLogicMgr->mUnk0xfa) {
+			mLogicMgr->KillSlowMoSound();
+		}
+		mUnk0x11c = false;
+	}
 }
 
 // STUB: POPCAPGAME1 0x00406da0
@@ -335,19 +423,52 @@ void Board::UpdateTwoPlayerStats()
 {
 }
 
-// STUB: POPCAPGAME1 0x00402760
+// FUNCTION: POPCAPGAME1 0x00402760
 void Board::BeginShot()
 {
+	if (mDebugMgr->mUnk0x4 == 0) {
+		if (!mApp->IsScreenSaver()) {
+			mApp->SetCursor(CURSOR_POINTER);
+		}
+	}
 }
 
-// STUB: POPCAPGAME1 0x00402ab0
+// FUNCTION: POPCAPGAME1 0x00402ab0
 void Board::ClearZoom()
 {
+	mUnk0xf8 = 0;
+	mUnk0x104 = 0;
+	mUnk0x108 = 0;
+	PositionReplayDialog();
 }
 
-// STUB: POPCAPGAME1 0x00402ad0
+// FUNCTION: POPCAPGAME1 0x00402ad0
 void Board::UpdateMgrs()
 {
+	if (!mLogicMgr->mUnk0xf5) {
+		mAIMgr->Update();
+	}
+
+	mDebugMgr->Update();
+	mLogicMgr->Update();
+
+	if (!mUnk0xc2) {
+		mCharacterMgr->CalcLookPos(this, false);
+		mCharacterMgr->Update();
+		mEffectMgr->Update(mUnk0xc1);
+		mSoundMgr->Update();
+	}
+	else {
+		mCharacterMgr->UpdateSlowMo();
+		mSoundMgr->UpdateSounds();
+	}
+
+	if (mUnk0xc1) {
+		mEffectMgr->UpdateSlowMo(mUnk0xd0 / 1000.0f);
+	}
+
+	mFloatingTextMgr->Update();
+	mInterfaceMgr->Update();
 }
 
 // STUB: POPCAPGAME1 0x00402ba0
@@ -355,15 +476,24 @@ void Board::UpdateSlowMo()
 {
 }
 
-// STUB: POPCAPGAME1 0x004073a0
+// FUNCTION: POPCAPGAME1 0x004073a0
 bool Board::IsAltKeyUsed(WPARAM wParam)
 {
+	if (wParam == 0x65) {
+		return true;
+	}
+
+	if (EditingLevel()) {
+		return mLevelEditor->IsAltKeyUsed(wParam);
+	}
+
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x00402cf0
+// FUNCTION: POPCAPGAME1 0x00402cf0
 void Board::FinishHighScoreEntryDialog(std::string* param_1)
 {
+	mEndLevelDialog->FinishHighScoreEntryDialog(param_1);
 }
 
 // STUB: POPCAPGAME1 0x00406c50
@@ -376,9 +506,17 @@ void Board::MakeShadow(Image* param_1, int param_2, int param_3)
 {
 }
 
-// STUB: POPCAPGAME1 0x004098b0
+// FUNCTION: POPCAPGAME1 0x004098b0
 void Board::SyncColorblind()
 {
+	for (std::list<SmartPtr<PhysObj>>::iterator it = mUnk0x190.begin(); it != mUnk0x190.end(); ++it) {
+		PhysObj* obj = it->get();
+		if (obj->GetClass() == 6 && obj->mPegInfo != NULL) {
+			Brick* brick = static_cast<Brick*>(obj);
+			brick->DeleteImage();
+			brick->CreateImage();
+		}
+	}
 }
 
 // STUB: POPCAPGAME1 0x00409aa0
@@ -600,23 +738,125 @@ void Board::Reset()
 {
 }
 
-// STUB: POPCAPGAME1 0x0042db70
+// FUNCTION: POPCAPGAME1 0x0042db70
 void Board::LoadEasterEggLevel(std::string* param_1, int param_2)
 {
+	if (mApp->mGameMode == QUICK_PLAY || mApp->mGameMode == DUEL) {
+		std::string levelName = "levels/" + *param_1;
+		std::string levelPath = levelName + ".dat";
+		mUnk0x1d4 = levelPath;
+		mUnk0x123 = true;
+		mUnk0x124 = param_2;
+		Reset();
+	}
 }
 
-// STUB: POPCAPGAME1 0x0042dc60
+// FUNCTION: POPCAPGAME1 0x0042dc60
 void Board::ActivateTypingCheck(int param_1)
 {
+	std::string aString;
+	int iVar5;
+	bool bVar10;
+	uint uVar6;
+	bool bVar7;
+	switch (param_1) {
+	case 0:
+		if ((mLogicMgr->mUnk0x4 != 1) || (mUnk0xb4 != 2)) return;
+
+		iVar5 = mLogicMgr->mUnk0x128;
+		bVar10 = mLogicMgr->mUnk0x1cc[iVar5] != 2;
+		uVar6 = (uint) bVar10;
+		*(uint*) (mLogicMgr->mUnk0x1cc[iVar5]) = (int) (uVar6 << 0x1f) >> 0x1f & 2;
+		*(uint*) (mLogicMgr->mUnk0x1e4[iVar5]) = (int) (uVar6 << 0x1f) >> 0x1f & 1000;
+		mLogicMgr->ActivatePowerup(static_cast<Sexy::PowerupType>(2), bVar10);
+		break;
+
+	case 1:
+		if (mLogicMgr->mUnk0x4 != 1) {
+			return;
+		}
+
+		mLogicMgr->SetWearHat(true);
+		break;
+
+	case 2:
+		SetShowBackground(false);
+		break;
+
+	case 3:
+		bVar7 = !mUnk0x11d;
+		mUnk0x11d = bVar7;
+		aString = bVar7 ? "Zoom Enabled" : "Zoom Disabled";
+		break;
+
+	case 4:
+		bVar7 = !mUnk0x11e;
+		mUnk0x11e = bVar7;
+		aString = bVar7 ? "RightClick Speedup Enabled" : "RightClick Speedup Disabled";
+		break;
+
+	case 5:
+		LoadEasterEggLevel(new std::string("seattle"), 0);
+		break;
+
+	case 6:
+		LoadEasterEggLevel(new std::string("piano"), 1);
+		break;
+
+	case 7:
+		LoadEasterEggLevel(new std::string("pitcher"), 2);
+		break;
+
+	case 8:
+		LoadEasterEggLevel(new std::string("tennisracket"), 3);
+		break;
+
+	default:
+		return;
+	}
+	if (!aString.empty()) {
+		FloatingText* floatingText = mLogicMgr->AddStandardText(
+			aString,
+			mGun->mUnk0x114,
+			mGun->mUnk0x118 + ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp54,2698", 0x5a),
+			0x30
+		);
+
+		floatingText->mUnk0x68 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp55,2702", 100) + 10;
+		floatingText->mUnk0x60 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp56,2704", 0xffff00);
+		floatingText->mUnk0x54 = 0xffffffff;
+		floatingText->mUnk0x8c = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp57,2706", 0.0f);
+		floatingText->mUnk0x78 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp58,2707", 10);
+		floatingText->mUnk0x74 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp59,2708", 10);
+	}
 }
 
-// STUB: POPCAPGAME1 0x00410940
+// FUNCTION: POPCAPGAME1 0x00410940
 void Board::DrawScreenSaver(Graphics* g)
 {
+	g->SetColor(Color(0));
+	g->FillRect(0, 0, mWidth, mHeight);
+
+	g->SetFont(FONT_OVERLOAD24OUTLINE);
+
+	g->SetColor(Color(0xffffff00));
+
+	std::string str = "Peggle ScreenSaver Will Resume in";
+	Rect rect;
+	rect.mWidth = mWidth;
+	rect.mX = 0;
+	rect.mY = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp64,2976", 200);
+	rect.mHeight = 0;
+	g->WriteWordWrapped(rect, str);
+
+	str = StrFormat("%d", mUnk0x1c8 / 100 + 1);
+	g->SetFont(FONT_OVERLOAD24OUTLINE);
+	rect.mY += ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp65,2981", 0x3c);
+	g->WriteWordWrapped(rect, str);
 }
 
-// STUB: POPCAPGAME1 0x004024e0
+// FUNCTION: POPCAPGAME1 0x004024e0
 bool Board::EditingLevel()
 {
-	return false;
+	return mLevelEditor->mWidgetManager != NULL;
 }

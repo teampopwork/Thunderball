@@ -1,6 +1,8 @@
 #ifndef __LOGIC_MGR_H__
 #define __LOGIC_MGR_H__
 
+#include <SexyAppFramework/Common.h>
+
 #include <string>
 
 namespace Sexy
@@ -12,6 +14,7 @@ class Ball;
 class PhysObj;
 class Hole;
 class DataSync;
+class FloatingText;
 enum KeyCode;
 enum LogicState;
 enum StyleShot;
@@ -21,6 +24,11 @@ class LogicMgr {
 public:
 	int mUnk0x4;
 	bool mUnk0xf5; // +0xf5
+	bool mUnk0xfa; // +0xfa
+	int mUnk0x128; // +0x128
+	int mUnk0x1cc[4]; // +0x1cc
+	int mUnk0x1e4[4]; // +0x1e4
+	int mUnk0x248; // +0x248
 
 	LogicMgr(Board* param_1);
 	virtual ~LogicMgr();
@@ -35,8 +43,8 @@ public:
 	void MouseDown(int param_1, int param_2, int param_3, bool param_4, bool param_5);
 	void MouseUp(int param_1, int param_2, int param_3, bool param_4);
 	void MouseWheel(int param_1);
-	void KeyChar(char param_1);
-	void KeyDown(KeyCode param_1);
+	bool KeyChar(SexyChar param_1);
+	bool KeyDown(KeyCode param_1);
 
 	void BeginInitLevel();
 	void BeginTurn(bool param_1);
@@ -109,7 +117,7 @@ public:
 	void DoPowerup(Ball* param_1, PhysObj* param_2, PowerupType param_3, bool param_4);
 	void DoWrapAround(Ball* param_1);
 	void UpdateWrapAroundBall();
-	void AddStandardText(const std::string& param_1, float param_2, float param_3, int param_4);
+	FloatingText* AddStandardText(const std::string& param_1, float param_2, float param_3, int param_4);
 	void AddStyleScoreText(int param_1, int param_2);
 	int GetGoalPegsLeft();
 	int GetRemainingGoalPeg();

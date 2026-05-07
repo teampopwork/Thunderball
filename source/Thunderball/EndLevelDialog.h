@@ -16,6 +16,8 @@ class Graphics;
 
 class EndLevelDialog : public Widget, public ButtonListener {
 public:
+	int mUnk0x258; // +0x258
+
 	EndLevelDialog(Board* param_1);
 	virtual ~EndLevelDialog();
 

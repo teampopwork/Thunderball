@@ -13,6 +13,9 @@ class SexyVector2;
 // VTABLE: POPCAPGAME1 0x005f1f4c
 class Poly : public PhysObj {
 public:
+	int mUnk0x114;
+	int mUnk0x118;
+
 	Poly();
 	virtual ~Poly();
 

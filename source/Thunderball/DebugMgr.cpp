@@ -28,33 +28,39 @@ void DebugMgr::SyncFlipperState()
 }
 
 // FUNCTION: POPCAPGAME1 0x0054b760
-void DebugMgr::MouseMove(int param_1, int param_2)
+bool DebugMgr::MouseMove(int theX, int theY)
 {
+	return false;
 }
 
 // FUNCTION: POPCAPGAME1 0x0054b760
-void DebugMgr::MouseDrag(int param_1, int param_2)
+bool DebugMgr::MouseDrag(int theX, int theY)
 {
+	return false;
 }
 
 // STUB: POPCAPGAME1 0x00432dc0
-void DebugMgr::MouseEnter()
+bool DebugMgr::MouseEnter()
 {
+	return false;
 }
 
 // STUB: POPCAPGAME1 0x00402910
-void DebugMgr::MouseLeave()
+bool DebugMgr::MouseLeave()
 {
+	return false;
 }
 
 // FUNCTION: POPCAPGAME1 0x00437350
-void DebugMgr::KeyChar(char param_1)
+bool DebugMgr::KeyChar(SexyChar theKey)
 {
+	return false;
 }
 
 // FUNCTION: POPCAPGAME1 0x00437350
-void DebugMgr::MouseWheel(int param_1)
+bool DebugMgr::MouseWheel(int theDelta)
 {
+	return false;
 }
 
 // STUB: POPCAPGAME1 0x00439ab0
@@ -94,13 +100,15 @@ void DebugMgr::SetMouseBall(Ball* param_1)
 }
 
 // STUB: POPCAPGAME1 0x0043e520
-void DebugMgr::MouseUp(int param_1, int param_2, int param_3)
+bool DebugMgr::MouseUp(int theX, int theY, int theClickCount)
 {
+	return false;
 }
 
 // STUB: POPCAPGAME1 0x00044b4a0
-void DebugMgr::MouseDown(int param_1, int param_2, int param_3)
+bool DebugMgr::MouseDown(int theX, int theY, int theClickCount)
 {
+	return false;
 }
 
 // STUB: POPCAPGAME1 0x0044db10

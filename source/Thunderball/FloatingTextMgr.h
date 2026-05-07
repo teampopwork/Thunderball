@@ -3,9 +3,18 @@
 
 namespace Sexy
 {
-class FloatingText;
 class Graphics;
 class DataSync;
+
+class FloatingText {
+	public:
+		int mUnk0x54;
+		int mUnk0x60;
+		int mUnk0x68;
+		int mUnk0x74;
+		int mUnk0x78;
+		int mUnk0x8c;
+};
 
 class FloatingTextMgr {
 public:

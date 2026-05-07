@@ -44,9 +44,10 @@ class TypingCheck;
 class Board : public Widget, public ButtonListener
 {
   public:
-	std::list<TypingCheck> mTypingCheckList; // +0xbc
+	std::list<TypingCheck> mTypingCheckList; // +0x8c
 	ThunderballApp* mApp; // +0xb0
 	SmartPtr<Gun> mGun; // +0xbc
+	int mUnk0xb4; // +0xb4
 	bool mUnk0xc0; // +0xc0
 	bool mUnk0xc1; // +0xc1
 	bool mUnk0xc2; // +0xc2
@@ -62,14 +63,18 @@ class Board : public Widget, public ButtonListener
 	int mUnk0xec; // +0xec
 	int mUnk0xf0; // +0xf0
 	int mUnk0xf4; // +0xf4
+	int mUnk0xf8; // +0xf8
 	int mUnk0xfc; // +0xfc
+	int mUnk0x104; // +0x104
 	int mUnk0x108; // +0x108
+	bool mUnk0x11c; // +0x10c
 	bool mUnk0x11d; // +0x11d
 	bool mUnk0x11e; // +0x11e
 	bool mUnk0x120; // +0x120
 	bool mUnk0x121; // +0x121
 	bool mUnk0x122; // +0x122
 	bool mUnk0x123; // +0x123
+	int mUnk0x124; // +0x124
 	int mUnk0x130; // +0x130
 	AIMgr* mAIMgr; // +0x134
 	CharacterMgr* mCharacterMgr; // +0x138
@@ -90,6 +95,7 @@ class Board : public Widget, public ButtonListener
 	std::deque<DataWriter*> mUnk0x174; // +0x174
 	int mUnk0x188; // +0x188
 	int mUnk0x18c; // +0x18c
+	std::list<Sexy::SmartPtr<PhysObj>> mUnk0x190; // +0x190
 	int mUnk0x1a8; // +0x1a8
 	int mUnk0x1ac; // +0x1ac
 	int mUnk0x1b0; // +0x1b0
@@ -100,7 +106,7 @@ class Board : public Widget, public ButtonListener
 	int mUnk0x1c8; // +0x1c8
 	int mUnk0x1cc; // +0x1cc
 	int mUnk0x1d0; // +0x1d0
-
+	std::string mUnk0x1d4; // +0x1d4
 	std::string mUnk0x1ec; // +0x1ec
 	std::vector<PhysObj*> mUnk0x1f4; // +0x1f4
 	std::vector<PhysObj*> mUnk0x204; // +0x204
