@@ -3,6 +3,7 @@
 #include "AdventureScreen.h"
 #include "Board.h"
 #include "CharacterMgr.h"
+#include "HelpScreen.h"
 #include "HighScoreMgr.h"
 #include "ImageMgr.h"
 #include "LevelScreen.h"
@@ -862,10 +863,32 @@ void ThunderballApp::ShowAdventureScreen()
 {
 }
 
-// STUB: POPCAPGAME1 0x0042f860
+// FUNCTION: POPCAPGAME1 0x0042f860
 void ThunderballApp::ShowBoard(bool param_1, bool param_2)
 {
-	printf("ThunderballApp::ShowBoard called with %d, %d\n", param_1, param_2);
+	CheckScrollOff(mLoadingScreen, 1, true);
+	CheckScrollOff(mMainMenu, 1, true);
+	CheckScrollOff(mLevelScreen, 1, true);
+	CheckScrollOff(mTrophyScreen, 1, true);
+	CheckScrollOff(mHelpScreen, 1, true);
+	CheckScrollOff(mStoryScreen, 1, true);
+	CheckScrollOff(mAdventureScreen, 1, true);
+	CleanupScreens(true);
+
+	if (mCurProfile != NULL) {
+		SetColorblind(mCurProfile->mUnk0x60);
+	}
+
+	mBoard = new Board(this);
+
+	mBoard->Resize(0, 0, mWidth, mHeight);
+	mWidgetManager->AddWidget(mBoard);
+	mWidgetManager->SetFocus(mBoard);
+	ScrollOn(mBoard);
+
+	if (param_2) {
+		mBoard->Reset();
+	}
 }
 
 // STUB: POPCAPGAME1 0x00423540
@@ -957,8 +980,8 @@ void ThunderballApp::ShowStoryScreen(bool param_1, bool param_2)
 		mStoryScreen = new StoryScreen(this, param_1, param_2);
 
 		mStoryScreen->Resize(0, 0, mWidth, mHeight);
-    	mWidgetManager->AddWidget(mStoryScreen);
-    	mWidgetManager->SetFocus(mStoryScreen);
+		mWidgetManager->AddWidget(mStoryScreen);
+		mWidgetManager->SetFocus(mStoryScreen);
 
 		ScrollOn(mStoryScreen);
 	}
