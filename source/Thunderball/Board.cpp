@@ -237,9 +237,19 @@ void Board::Update()
 {
 }
 
-// STUB: POPCAPGAME1 0x00425f00
+// FUNCTION: POPCAPGAME1 0x00425f00
 void Board::ButtonDepress(int theId)
 {
+	if (mUnk0x108 == 0) {
+		if ((theId == 1) && (mLogicMgr->mUnk0x4 == 1 || mLogicMgr->mUnk0x4 == 5) && (mUnk0xfc != 0) && (mReplayDialog->mWidgetManager == NULL)) {
+			mReplayDialog->SetMode(false, mReplayButton->mUnk0x150, true);
+			ShowReplay(-1, false);
+			ShowReplayDialog();
+		}
+		else if (theId == 0) {
+			mApp->DoOptionsDialog();
+		}
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0042df70
@@ -733,9 +743,42 @@ void Board::LoadLevel(std::string* param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x0042da00
+// FUNCTION: POPCAPGAME1 0x0042da00
 void Board::Reset()
 {
+	SubmitTotalStats();
+	CheckIncTip();
+	mUnk0xf8 = 0;
+	mUnk0xec++;
+	mUnk0xf4++;
+	mUnk0xb4 = mApp->mGameMode;
+	mUnk0x104 = 0;
+	mUnk0x108 = 0;
+	mUnk0x10c = 0;
+	mUnk0x110 = 0;
+	mUnk0x11c = 0;
+	mUnk0x120 = true;
+	mUnk0x12c = 0;
+
+	if (mApp->mCurProfile != NULL && mApp->mGameMode == ADVENTURE) {
+		mApp->mCurProfile->mUnk0x208++;
+		if (1 < mApp->mCurProfile->mUnk0x208) {
+			mApp->mCurProfile->mUnk0x20c++;
+		}
+		mApp->mCurProfile->mUnk0xec = true;
+	}
+
+	mUnk0xea = false;
+	mUnk0xc7 = false;
+	mUnk0x11f = 0;
+
+	mApp->KillDialog(1);
+	mWidgetManager->RemoveWidget(mReplayDialog);
+	RemoveSlotMachineDialog();
+
+	if (mEndLevelDialog->mWidgetManager == NULL || mEndLevelDialog->mVisible == false) {
+		mWidgetManager->RemoveWidget(mEndLevelDialog);
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0042db70
