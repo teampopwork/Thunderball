@@ -285,9 +285,18 @@ void Board::Draw(Graphics* g)
 {
 }
 
-// STUB: POPCAPGAME1 0x00402280
+// FUNCTION: POPCAPGAME1 0x00402280
 void Board::ShowEndLevelDialog()
 {
+	if (mLogicMgr->mUnk0x124) {
+		if (mApp->mCurProfile != NULL && mApp->mCurProfile->mUnk0xee) {
+			mApp->mCurProfile->mUnk0xee = false;
+			mApp->mCurProfile->mUnk0xec = true;
+		}
+	}
+
+	mEndLevelDialog->SetVisible(true);
+	mWidgetManager->AddWidget(mEndLevelDialog);
 }
 
 // STUB: POPCAPGAME1 0x00402480

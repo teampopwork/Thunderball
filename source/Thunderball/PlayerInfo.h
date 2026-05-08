@@ -53,7 +53,7 @@ public:
 	std::string mUnk0xd0;
 	bool mUnk0xec;
 	bool mUnk0xed;
-	unsigned char mUnk0xee;
+	bool mUnk0xee;
 	bool mUnk0xef;
 	std::multiset<int> mAdventureScores; // +0xf0
 	std::multiset<int> mUnk0xfc;         // +0xfc
