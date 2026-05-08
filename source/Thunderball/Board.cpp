@@ -299,9 +299,15 @@ void Board::ShowEndLevelDialog()
 	mWidgetManager->AddWidget(mEndLevelDialog);
 }
 
-// STUB: POPCAPGAME1 0x00402480
+// FUNCTION: POPCAPGAME1 0x00402480
 void Board::RemoveSlotMachineDialog()
 {
+	if (mSlotMachineDialog->mWidgetManager != NULL) {
+		mWidgetManager->RemoveWidget(mSlotMachineDialog);
+		mSoundMgr->PauseMusic(false);
+		mUnk0x1c0 = 0;
+		mIsOver = Contains(mWidgetManager->mLastMouseX, mWidgetManager->mLastMouseY);
+	}
 }
 
 // STUB: POPCAPGAME1 0x00406a20
