@@ -9,10 +9,11 @@ This project aims to decompile the English 1.01 executable of Peggle Deluxe from
 
 ## Building
 Requirements:
- - CMake 3.18 or higher
+ - CMake 3.25 or higher
+ - Ninja build system
  - Microsoft Visual C++ 14. A portable version can be obtained can be obtained [here.](https://github.com/bananapizzuh/msvc80-sp1)
 
-Run `cmake -B build/ -G "NMake Makefiles"` then `cmake --build build` to build.
+Once getting the portable msvc toolchain, move the folder to `Thunderball/msvc80` and run `cmake --workflow --preset release-x86` to build.
 
 ## Accuracy
 For accuracy checking, we are using a tool derived from the Lego Island decompilation, [reccmp](https://github.com/isledecomp/reccmp). To install reccmp, install it through pip: `pip install git+https://github.com/isledecomp/reccmp`

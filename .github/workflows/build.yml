@@ -27,14 +27,12 @@ jobs:
     - name: Setup cmake
       uses: jwlawson/actions-setup-cmake@v2
       with:
-        cmake-version: '3.18.x'
+        cmake-version: '3.25.x'
 
     - name: Build
       shell: cmd
       run: |
-        call .\msvc80\vcvars32.bat
-        cmake -B build -DCMAKE_BUILD_TYPE=Release -G "NMake Makefiles"
-        cmake --build build
+        cmake --workflow --preset release-x86
 
     - name: Upload Artifact
       uses: actions/upload-artifact@main

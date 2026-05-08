@@ -1,0 +1,42 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 25,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "release-x86",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/",
+      "environment": {
+        "VCINSTALLDIR": "${sourceDir}/msvc80/",
+        "PATH": "${sourceDir}/msvc80/bin;${sourceDir}/msvc80/PlatformSDK/Bin;$penv{PATH}",
+        "INCLUDE": "${sourceDir}/msvc80/include;${sourceDir}/msvc80/PlatformSDK/Include;$penv{INCLUDE}",
+        "LIB": "${sourceDir}/msvc80/lib;${sourceDir}/msvc80/PlatformSDK/Lib;$penv{LIB}"
+      },
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "${sourceDir}/msvc80/bin/cl.exe",
+        "CMAKE_CXX_COMPILER": "${sourceDir}/msvc80/bin/cl.exe",
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "release-x86",
+      "configurePreset": "release-x86",
+      "inheritConfigureEnvironment": true
+    }
+  ],
+  "workflowPresets": [
+    {
+      "name": "release-x86",
+      "steps": [
+        { "type": "configure", "name": "release-x86" },
+        { "type": "build", "name": "release-x86" }
+      ]
+    }
+  ]
+}
