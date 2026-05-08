@@ -109,7 +109,7 @@ Board::Board(ThunderballApp* theApp)
 
 	char* checkStrs[] = {"kathy", "steve", "shanon", "zoom", "scott", "seattle", "piano", "pitcher", "tennis", NULL};
 	for (int i = 0; checkStrs[i] != NULL; i++) {
-		mTypingCheckList.push_back(TypingCheck(checkStrs[i]));
+		mTypingCheckList[i] = new TypingCheck(checkStrs[i]);
 	}
 
 	Clear(true);
@@ -267,9 +267,8 @@ void Board::KeyChar(SexyChar theChar)
 	else {
 		if (!mUnk0xea) {
 			if (mLogicMgr->KeyChar(theChar) && (mUnk0x1b8 == 0 || theChar == ' ')) {
-				std::list<TypingCheck>::iterator it = mTypingCheckList.begin();
-				for (int i = 0; i < 9; i++, ++it) {
-					if (it->Check(theChar)) {
+				for (int i = 0; i < 9; i++) {
+					if (mTypingCheckList[i]->Check(theChar)) {
 						ActivateTypingCheck(i);
 					}
 				}
@@ -748,14 +747,14 @@ void Board::Reset()
 {
 	SubmitTotalStats();
 	CheckIncTip();
+	mUnk0xb4 = mApp->mGameMode;
 	mUnk0xf8 = 0;
 	mUnk0xec++;
 	mUnk0xf4++;
-	mUnk0xb4 = mApp->mGameMode;
 	mUnk0x104 = 0;
 	mUnk0x108 = 0;
 	mUnk0x10c = 0;
-	mUnk0x110 = 0;
+	mUnk0x110 = false;
 	mUnk0x11c = 0;
 	mUnk0x120 = true;
 	mUnk0x12c = 0;
@@ -776,7 +775,7 @@ void Board::Reset()
 	mWidgetManager->RemoveWidget(mReplayDialog);
 	RemoveSlotMachineDialog();
 
-	if (mEndLevelDialog->mWidgetManager == NULL || mEndLevelDialog->mVisible == false) {
+	if (mEndLevelDialog->mWidgetManager == NULL || mEndLevelDialog->mVisible != false) {
 		mWidgetManager->RemoveWidget(mEndLevelDialog);
 	}
 }
