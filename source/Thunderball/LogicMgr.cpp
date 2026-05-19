@@ -4,10 +4,17 @@
 
 using namespace Sexy;
 
-// STUB: POPCAPGAME1 0x004610d0
+// FUNCTION: POPCAPGAME1 0x004610d0
 LogicMgr::LogicMgr(Board* param_1)
 {
-	// TODO
+	mBoard = param_1;
+	mUnk0x1d0 = 0;
+	//mUnk0x1cc = NULL;
+	mUnk0x54 = 0;
+	mUnk0x21 = 0;
+	mUnk0xac = 0;
+	mUnk0xb0 = 0;
+	Clear(true, false);
 }
 
 // STUB: POPCAPGAME1 0x0045c990
@@ -234,6 +241,7 @@ void LogicMgr::WriteClickTimes()
 {
 	// TODO
 }
+
 
 void LogicMgr::SyncState(DataSync* theSync)
 {

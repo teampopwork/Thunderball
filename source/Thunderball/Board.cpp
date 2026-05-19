@@ -22,8 +22,10 @@
 #include "SoundMgr.h"
 #include "ThunderButton.h"
 #include "ThunderCommon.h"
+#include "ThunderDialog.h"
 #include "ThunderballApp.h"
 #include "TypingCheck.h"
+#include "GameStats.h"
 
 #include <SexyAppFramework/WidgetManager.h>
 #include <list>
@@ -310,9 +312,15 @@ void Board::RemoveSlotMachineDialog()
 	}
 }
 
-// STUB: POPCAPGAME1 0x00406a20
+// FUNCTION: POPCAPGAME1 0x00406a20
 void Board::SubmitTotalStats()
 {
+	if (!mUnk0x11f && !mLogicMgr->mUnk0x124) {
+		if ((mApp->mGameMode == ADVENTURE || mApp->mGameMode == QUICK_PLAY || mApp->mGameMode == CHALLENGE) && (0 < mLogicMgr->mUnk0x248[0]->mUnk0x0)) {
+			mUnk0x11f = true;
+			mApp->mCurProfile->AddTotalStats(mLogicMgr->mUnk0x248[0]);
+		}
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x00402000
@@ -324,7 +332,7 @@ bool Board::Cheated()
 // FUNCTION: POPCAPGAME1 0x00402010
 bool Board::HasShot()
 {
-	return mLogicMgr->mUnk0x248 > 0;
+	return mLogicMgr->mUnk0x248[0]->mUnk0x0 > 0;
 }
 
 // FUNCTION: POPCAPGAME1 0x00402030
@@ -398,9 +406,21 @@ void Board::DoSlotMachineDialog(Ball* param_1, PhysObj* param_2)
 {
 }
 
-// STUB: POPCAPGAME1 0x00402500
+// FUNCTION: POPCAPGAME1 0x00402500
 void Board::NotifyRemoving()
 {
+	mSoundMgr->PauseMusic(false);
+	mWidgetManager->RemoveWidget(mLevelEditor);
+	mWidgetManager->RemoveWidget(mReplayDialog);
+	mWidgetManager->RemoveWidget(mSlotMachineDialog);
+
+	if (mEndLevelDialog->mWidgetManager != NULL || mEndLevelDialog->mVisible || mWidgetManager == NULL) {
+		mWidgetManager->RemoveWidget(mEndLevelDialog);
+	} else {
+		mEndLevelDialog->DoScrollOff(0);
+		mApp->KillDialog(1);
+		mApp->KillDialog(0x23);
+	}
 }
 
 // STUB: POPCAPGAME1 0x004025c0

@@ -16,7 +16,7 @@ HighScoreMgr::~HighScoreMgr()
 }
 
 // STUB: POPCAPGAME1 0x0045c300
-void HighScoreMgr::CreateDefHighScores(std::list<std::string>* theList, std::string* param)
+void HighScoreMgr::CreateDefHighScores(std::list<HighScoreEntry>* theList, std::string* param)
 {
 }
 
@@ -36,8 +36,9 @@ void HighScoreMgr::Load()
 }
 
 // STUB: POPCAPGAME1 0x00472430
-void HighScoreMgr::GetScores(std::string* param_1, bool param_2)
+std::list<HighScoreEntry>* HighScoreMgr::GetScores(std::string* param_1, bool param_2)
 {
+    return NULL;
 }
 
 // STUB: POPCAPGAME1 0x00472210

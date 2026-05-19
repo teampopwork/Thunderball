@@ -13,7 +13,12 @@ class StageInfo;
 
 class StageInfo {
 public:
-	int GetLevelInfo(int);
+	LevelInfo* GetLevelInfo(int param_1);
+};
+
+class LevelInfo {
+	public:
+	std::string mUnk0x14;
 };
 
 class StageMgr {

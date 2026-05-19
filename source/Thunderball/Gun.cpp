@@ -25,10 +25,10 @@ void Gun::UpdateSlowMo(float param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x00477bf0
+// FUNCTION: POPCAPGAME1 0x00477bf0
 bool Gun::CanFire()
 {
-	return false;
+	return mUnk0x10c != 0;
 }
 
 // STUB: POPCAPGAME1 0x004754a0

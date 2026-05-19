@@ -2,6 +2,7 @@
 #define __ENDLEVELDIALOG_H__
 
 #include "ConstEnums.h"
+#include "ThunderDialog.h"
 
 #include <SexyAppFramework/ButtonListener.h>
 #include <SexyAppFramework/Widget.h>
@@ -14,7 +15,7 @@ namespace Sexy
 class Board;
 class Graphics;
 
-class EndLevelDialog : public Widget, public ButtonListener {
+class EndLevelDialog : public ThunderDialog, public ButtonListener {
 public:
 	int mUnk0x258; // +0x258
 

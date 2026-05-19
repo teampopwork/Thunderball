@@ -2,6 +2,11 @@
 
 using namespace Sexy;
 
+LevelInfo* StageInfo::GetLevelInfo(int param_1)
+{
+	return NULL;
+}
+
 StageMgr::StageMgr(ThunderballApp* theApp)
 {
 }

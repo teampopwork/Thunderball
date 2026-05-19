@@ -15,6 +15,8 @@ class Ball;
 // VTABLE: POPCAPGAME1 0x005f1234
 class Gun : public Poly {
 public:
+	int mUnk0x10c;
+
 	Gun(Board* param_1);
 	virtual ~Gun();
 
