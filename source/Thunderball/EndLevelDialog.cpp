@@ -3,7 +3,7 @@
 using namespace Sexy;
 
 // STUB: POPCAPGAME1 0x004a1a10
-EndLevelDialog::EndLevelDialog(Board* param_1)
+EndLevelDialog::EndLevelDialog(Board* param_1) : ThunderDialog(0, false, "", "", "", 0)
 {
 }
 
