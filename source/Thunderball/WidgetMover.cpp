@@ -26,10 +26,10 @@ MovingWidget::MovingWidget()
 bool MovingWidget::Update()
 {
 	mTicks -= 1;
-    float t = (float)mTicks / 20.0;
+	float t = (float) mTicks / 20.0;
 
-    mWidget->Move((1.0 - t) * mTargetX + t * mStartX, (1.0 - t) * mTargetY + t * mStartY);
-	
+	mWidget->Move((1.0 - t) * mTargetX + t * mStartX, (1.0 - t) * mTargetY + t * mStartY);
+
 	if (mTicks == 0) {
 		if (mRemoveWhenDone) {
 			gSexyApp->mWidgetManager->RemoveWidget(mWidget);
@@ -107,54 +107,42 @@ void WidgetMover::RemoveWidget(Widget* param_1)
 // FUNCTION: POPCAPGAME1 0x00421f80
 void WidgetMover::ScrollOff(Widget* param_1, int param_2, bool param_3)
 {
-	if (param_1 == NULL) {
-		return;
-	}
-
 	MovingWidget* pMVar6 = GetWidgetData(param_1, true);
-	if (pMVar6 == NULL) {
-		return;
-	}
-
 	int iVar2 = param_1->mX;
 	int iVar3 = param_1->mY;
 	int iVar4 = param_1->mWidth;
 	int iVar5 = param_1->mHeight;
 
 	pMVar6->mTicks = 0x14;
-	float fVar7 = (float) iVar3;
-	float fVar8 = (float) iVar2;
-	pMVar6->mStartY = fVar7;
-	pMVar6->mStartX = fVar8;
+	pMVar6->mStartX = (float) iVar2;
+	pMVar6->mStartY = (float) iVar3;
 	pMVar6->mRemoveWhenDone = param_3;
 
 	switch (param_2) {
 	case 0:
-		pMVar6->mTargetY = fVar7;
-		pMVar6->mTargetX = fVar8;
+		pMVar6->mTargetX = (float) iVar2;
+		pMVar6->mTargetY = (float) iVar3;
 		break;
 	case 1:
-		pMVar6->mTargetY = fVar7;
 		pMVar6->mTargetX = (float) -iVar4;
+		pMVar6->mTargetY = (float) iVar3;
 		break;
 	case 2:
-		// Use app width
-		pMVar6->mTargetY = fVar7;
 		pMVar6->mTargetX = (float) gSexyApp->mWidth;
+		pMVar6->mTargetY = (float) iVar3;
 		break;
 	case 3:
+		pMVar6->mTargetX = (float) iVar2;
 		pMVar6->mTargetY = (float) gSexyApp->mHeight;
-		pMVar6->mTargetX = fVar8;
 		break;
 	case 4:
+		pMVar6->mTargetX = (float) iVar2;
 		pMVar6->mTargetY = (float) -iVar5;
-		pMVar6->mTargetX = fVar8;
 		break;
 	default:
 		break;
 	}
 
-	// set widget removal flags and hide mouse
 	param_1->mWidgetFlagsMod.mRemoveFlags |= 0x31;
 	param_1->mMouseVisible = false;
 }

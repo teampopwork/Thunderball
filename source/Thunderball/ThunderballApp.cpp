@@ -22,6 +22,7 @@
 #include "ThunderCommon.h"
 #include "ThunderDialog.h"
 #include "TrophyScreen.h"
+#include "UpsellScreen.h"
 #include "WidgetMover.h"
 
 #include <SexyAppFramework/BassMusicInterface.h>
@@ -247,7 +248,7 @@ void ThunderballApp::CleanupScreen(Widget* param_1)
 // FUNCTION: POPCAPGAME1 0x00429390
 void ThunderballApp::CleanupScreens(bool param_1)
 {
-	/*if (param_1) {
+	if (param_1) {
 		if (mBoard != NULL) {
 			if (mBoard->NeedSaveGame()) {
 				mBoard->SaveGame();
@@ -266,7 +267,7 @@ void ThunderballApp::CleanupScreens(bool param_1)
 	mHelpScreen = NULL;
 
 	CleanupScreen(mLevelScreen);
-	mLevelScreen = NULL;*/
+	mLevelScreen = NULL;
 
 	CleanupScreen(mLoadingScreen);
 	mLoadingScreen = NULL;
@@ -274,14 +275,14 @@ void ThunderballApp::CleanupScreens(bool param_1)
 	CleanupScreen(mMainMenu);
 	mMainMenu = NULL;
 
-	/*CleanupScreen(mTrophyScreen);
+	CleanupScreen(mTrophyScreen);
 	mTrophyScreen = NULL;
 
 	CleanupScreen(mStoryScreen);
 	mStoryScreen = NULL;
 
 	CleanupScreen(mAdventureScreen);
-	mAdventureScreen = NULL;*/
+	mAdventureScreen = NULL;
 
 	KillDialog(1);
 	KillDialog(35);
@@ -1007,9 +1008,43 @@ void ThunderballApp::ShowUpsellScreen()
 {
 }
 
-// STUB: POPCAPGAME1 0x0042ff70
+// FUNCTION: POPCAPGAME1 0x0042ff70
 void ThunderballApp::StartAdventureGame()
 {
+	if (mCurProfile != NULL) {
+		if (mCurProfile->JustBeatAdventure()) {
+			mCurProfile->RestartAdventure();
+		}
+	}
+
+	PlayerInfo* aProfile = mCurProfile;
+	mGameMode = GameMode::ADVENTURE;
+	if (aProfile == NULL) {
+		mUnk0x764 = 0;
+		mUnk0x768 = 0;
+	}
+	else {
+		int stage = aProfile->mUnk0x30;
+		if (stage < 0) {
+			stage = 0;
+		} else if (10 < stage) {
+			stage = 10;
+		}
+		mUnk0x764 = stage;
+
+		int level = aProfile->mUnk0x34;
+		if (level < 0) {
+			level = 0;
+		} else if (5 < level) {
+			level = 5;
+		}
+		mUnk0x768 = level;
+	}
+
+	if (aProfile != NULL && aProfile->mUnk0x61 && mUnk0x768 == 0) {
+		ShowStoryScreen(false, false);
+	}
+	ShowBoard(true, false);
 }
 
 // STUB: POPCAPGAME1 0x004058b0
