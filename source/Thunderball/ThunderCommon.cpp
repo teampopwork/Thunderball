@@ -1669,3 +1669,42 @@ Board* Sexy::GetBoard()
 {
 	return GetThunderballApp()->mBoard;
 }
+
+// FUNCTION: POPCAPGAME1 0x00488710
+void Sexy::DrawAdventureFrame(Graphics* g, int param_1, int param_2, int param_3, int param_4, const std::string& param_5)
+{
+	g->SetColor(Color(0, ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp14,142", 0x80)));
+	g->FillRect(param_1, param_2, param_3, param_4);
+
+	g->SetColor(Color(0, ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp15,144", 0x80)));
+	g->FillRect(
+		param_1,
+		param_2 - ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp17,145", 0x14),
+		param_3,
+		ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp16,145", 0x14)
+	);
+
+	g->SetFont(GetFontById(ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp18,147", 0xe)));
+	g->SetColor(Color(ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp19,148", 0xffd305)));
+	int aWidth = g->GetFont()->StringWidth(param_5);
+	g->DrawString(param_5, (param_3 - aWidth) / 2 + param_1, param_2 - ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp20,149", 0x10));
+	Rect aRect = Rect(
+		param_1 + ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp21,153", 8),
+		param_2 - ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp22,153", 0x1c),
+		param_3 + ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp24,153", 0x24),
+		param_4 + ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp23,153", 0x10)
+	);
+
+	g->DrawImageBox(aRect, IMAGE_DLG_BLUEFRAME);
+
+	if (ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp25,157", false)) {
+		Rect aRect2 = IMAGE_DLG_STAGEBAR->GetCelRect(0);
+		aRect = Rect(
+			param_1 - ModVal(0,"SEXY_SEXYMODVAL.\\AdventureScreen.cpp26,160",4),
+			param_2 -  ModVal(0,"SEXY_SEXYMODVAL.\\AdventureScreen.cpp27,160",2),
+			param_2 + ModVal(0,"SEXY_SEXYMODVAL.\\AdventureScreen.cpp28,160",9),
+			aRect2.mHeight
+		);
+		g->DrawImageBox(aRect, IMAGE_DLG_STAGEBAR);
+	}
+}

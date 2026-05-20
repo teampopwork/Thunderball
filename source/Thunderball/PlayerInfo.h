@@ -16,7 +16,7 @@ class GameStats;
 
 class PlayerInfo {
 public:
-	std::string mName;    // +0x04
+	std::string mName;    // +0x4
 	unsigned int mUseSeq; // +0x20
 	unsigned int mId;     // +0x24
 	int mUnk0x28;

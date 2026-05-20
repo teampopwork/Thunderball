@@ -8,7 +8,16 @@ namespace Sexy
 {
 class DataSync;
 
-class HighScoreEntry {};
+class HighScoreEntry {
+public:
+	std::string mName;
+	int mScore;
+
+	HighScoreEntry()
+		: mName(), mScore(0)
+	{
+	}
+};
 
 class HighScoreMgr {
 public:

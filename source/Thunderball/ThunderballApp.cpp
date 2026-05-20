@@ -858,9 +858,19 @@ void ThunderballApp::SetSfxVolume(double theVolume)
 	SexyApp::SetSfxVolume(theVolume);
 }
 
-// STUB: POPCAPGAME1 0x00429890
+// FUNCTION: POPCAPGAME1 0x00429890
 void ThunderballApp::ShowAdventureScreen()
 {
+	CheckPlayMusic(false);
+	CheckScrollOff(mMainMenu, 1, true);
+	CleanupScreens(true);
+
+	mAdventureScreen = new AdventureScreen(this);
+
+	mAdventureScreen->Resize(0, 0, mWidth, mHeight);
+	mWidgetManager->AddWidget(mAdventureScreen);
+	mWidgetManager->SetFocus(mAdventureScreen);
+	ScrollOn(mAdventureScreen);
 }
 
 // FUNCTION: POPCAPGAME1 0x0042f860
