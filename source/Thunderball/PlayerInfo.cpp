@@ -1,7 +1,7 @@
 #include "PlayerInfo.h"
 
-#include "DataSync.h"
 #include "ConstEnums.h"
+#include "DataSync.h"
 
 #include <SexyAppFramework/Buffer.h>
 #include <SexyAppFramework/SexyApp.h>
@@ -23,7 +23,7 @@ PlayerInfo::PlayerInfo(const PlayerInfo& param_1)
 // FUNCTION: POPCAPGAME1 0x461680
 PlayerInfo& PlayerInfo::operator=(const PlayerInfo& other)
 {
-	mName.assign(other.mName, 0, (size_t)-1);
+	mName.assign(other.mName, 0, (size_t) -1);
 	mUseSeq = other.mUseSeq;
 	mId = other.mId;
 	mUnk0x28 = other.mUnk0x28;
@@ -45,16 +45,16 @@ PlayerInfo& PlayerInfo::operator=(const PlayerInfo& other)
 	mUnk0x64 = other.mUnk0x64;
 	mUnk0x68 = other.mUnk0x68;
 	mUnk0x6c = other.mUnk0x6c;
-	mUnk0x70 = other.mUnk0x70;
-	mUnk0x74 = other.mUnk0x74;
-	mUnk0x78 = other.mUnk0x78;
-	mUnk0x7c = other.mUnk0x7c;
-	mUnk0x80 = other.mUnk0x80;
-	mUnk0x84 = other.mUnk0x84;
-	mUnk0x88 = other.mUnk0x88;
-	mUnk0x8c = other.mUnk0x8c;
-	mUnk0x90 = other.mUnk0x90;
-	mUnk0x94 = other.mUnk0x94;
+	mUnk0x70[0] = other.mUnk0x70[0];
+	mUnk0x70[1] = other.mUnk0x70[1];
+	mUnk0x70[2] = other.mUnk0x70[2];
+	mUnk0x70[3] = other.mUnk0x70[3];
+	mUnk0x70[4] = other.mUnk0x70[4];
+	mUnk0x70[5] = other.mUnk0x70[5];
+	mUnk0x70[6] = other.mUnk0x70[6];
+	mUnk0x70[7] = other.mUnk0x70[7];
+	mUnk0x70[8] = other.mUnk0x70[8];
+	mUnk0x70[9] = other.mUnk0x70[9];
 	mUnk0x98 = other.mUnk0x98;
 	mUnk0xb4 = other.mUnk0xb4;
 	mUnk0xd0 = other.mUnk0xd0;
@@ -63,19 +63,23 @@ PlayerInfo& PlayerInfo::operator=(const PlayerInfo& other)
 	mUnk0xee = other.mUnk0xee;
 	mUnk0xef = other.mUnk0xef;
 
-	if (&mAdventureScores != &other.mAdventureScores)
+	if (&mAdventureScores != &other.mAdventureScores) {
 		mAdventureScores = other.mAdventureScores;
+	}
 
-	if (&mUnk0xfc != &other.mUnk0xfc)
+	if (&mUnk0xfc != &other.mUnk0xfc) {
 		mUnk0xfc = other.mUnk0xfc;
+	}
 
-	if (&mUnk0x108 != &other.mUnk0x108)
+	if (&mUnk0x108 != &other.mUnk0x108) {
 		mUnk0x108 = other.mUnk0x108;
+	}
 
 	mUnk0x114 = other.mUnk0x114;
 
-	if (&mUnk0x118 != &other.mUnk0x118)
+	if (&mUnk0x118 != &other.mUnk0x118) {
 		mUnk0x118 = other.mUnk0x118;
+	}
 
 	mUnk0x124 = other.mUnk0x124;
 	mUnk0x128 = other.mUnk0x128;
@@ -93,17 +97,20 @@ PlayerInfo& PlayerInfo::operator=(const PlayerInfo& other)
 // SYNTHETIC: POPCAPGAME1 0x00429360
 // Sexy::PlayerInfo::`scalar deleting destructor'
 
-// STUB: POPCAPGAME1 0x004267c0
+// FUNCTION: POPCAPGAME1 0x004267c0
 PlayerInfo::~PlayerInfo()
 {
 }
 
-// STUB: POPCAPGAME1 0x00403840
+// FUNCTION: POPCAPGAME1 0x00403840
 void PlayerInfo::AddTotalStats(GameStats* theStats)
 {
+	mUnk0x12c.Add(theStats);
+	mUnk0x198.Add(theStats);
+	mUnk0xec = true;
 }
 
-// STUB: POPCAPGAME1 0x004fc300
+// FUNCTION: POPCAPGAME1 0x004fc300
 void PlayerInfo::AwardTrophy()
 {
 }
@@ -133,27 +140,48 @@ void PlayerInfo::DeleteSavedGames()
 	DeleteSavedGame(GameMode::DUEL);
 }
 
-// STUB: POPCAPGAME1 0x0041f860
+// FUNCTION: POPCAPGAME1 0x0041f860
 void PlayerInfo::DeleteUserFiles()
 {
+
+	gSexyApp->EraseFile(GetAppDataFolder() + StrFormat("userdata/user%d.dat", mId));
+	DeleteSavedGames();
 }
 
-// STUB: POPCAPGAME1 0x004037f0
+// FUNCTION: POPCAPGAME1 0x004037f0
 int PlayerInfo::GetAdventureEfficiencyBonus()
 {
-	return 0;
+	int iVar3 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PlayerInfo.cpp120,446", 10000000) - ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PlayerInfo.cpp121,446", 200000) * mUnk0x20c;
+	int iVar2 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PlayerInfo.cpp122,447", 100000);
+	if (iVar3 >= iVar2) {
+		return iVar3;
+	}
+	else {
+		return iVar2;
+	}
 }
 
-// STUB: POPCAPGAME1 0x004037e0
+// FUNCTION: POPCAPGAME1 0x004037e0
 int PlayerInfo::GetMaxLevel()
 {
-	return 0;
+	return mUnk0x28 * 5 + mUnk0x2c;
 }
 
-// STUB: POPCAPGAME1 0x00412680
+// FUNCTION: POPCAPGAME1 0x00412680
 std::string PlayerInfo::GetSavedGameName(GameMode theGameMode)
 {
-	return "";
+	switch (theGameMode) {
+	case GameMode::ADVENTURE:
+		return GetAppDataFolder() + StrFormat("userdata/stage%d.dat", mId);
+	case GameMode::QUICK_PLAY:
+		return GetAppDataFolder() + StrFormat("userdata/arcade%d.dat", mId);
+	case GameMode::DUEL:
+		return GetAppDataFolder() + StrFormat("userdata/duel%d.dat", mId);
+	case GameMode::CHALLENGE:
+		return GetAppDataFolder() + StrFormat("userdata/trophy%d.dat", mId);
+	default:
+		return "";
+	}
 }
 
 // STUB: POPCAPGAME1 0x0040d110
@@ -162,20 +190,37 @@ int PlayerInfo::GetTrophyTopScore(int trophyId)
 	return 0;
 }
 
-// STUB: POPCAPGAME1 0x004037b0
+// FUNCTION: POPCAPGAME1 0x004037b0
 void PlayerInfo::IncTip(int tipId)
 {
+	mUnk0x68++;
+	if (tipId <= 9U) {
+		mUnk0x70[tipId]++;
+		mUnk0xec = true;
+	} else {
+		mUnk0x6c++;
+		mUnk0xec = true;
+	}
 }
 
-// STUB: POPCAPGAME1 0x004036b0
-void PlayerInfo::IsLevelUnlocked(int param_1, int param_2)
+// FUNCTION: POPCAPGAME1 0x004036b0
+bool PlayerInfo::IsLevelUnlocked(int param_1, int param_2)
 {
+	if (mUnk0x28 < param_1) {
+		return false;
+	}
+
+	if (mUnk0x28 > param_1) {
+		return true;
+	}
+
+	return mUnk0x2c > param_2;
 }
 
-// STUB: POPCAPGAME1 0x004038f0
+// FUNCTION: POPCAPGAME1 0x004038f0
 bool PlayerInfo::IsTipSet(int tipId)
 {
-	return false;
+	return (mUnk0x64 & 1 << (tipId & 0x1f)) != 0;
 }
 
 // FUNCTION: POPCAPGAME1 0x00403870
@@ -229,16 +274,16 @@ void PlayerInfo::Reset(bool param_1)
 	mUnk0x68 = 0;
 	mUnk0x6c = 0;
 	mUnk0x50 = -1;
-	mUnk0x70 = 0;
-	mUnk0x74 = 0;
-	mUnk0x78 = 0;
-	mUnk0x7c = 0;
-	mUnk0x80 = 0;
-	mUnk0x84 = 0;
-	mUnk0x88 = 0;
-	mUnk0x8c = 0;
-	mUnk0x90 = 0;
-	mUnk0x94 = 0;
+	mUnk0x70[0] = "";
+	mUnk0x70[1] = "";
+	mUnk0x70[2] = "";
+	mUnk0x70[3] = "";
+	mUnk0x70[4] = "";
+	mUnk0x70[5] = "";
+	mUnk0x70[6] = "";
+	mUnk0x70[7] = "";
+	mUnk0x70[8] = "";
+	mUnk0x70[9] = "";
 	mUnk0x30 = -1;
 	mUnk0x28 = 0;
 	mUnk0x2c = 0;

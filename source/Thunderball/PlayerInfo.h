@@ -38,16 +38,7 @@ public:
 	int mUnk0x64;
 	int mUnk0x68;
 	int mUnk0x6c;
-	int mUnk0x70;
-	int mUnk0x74;
-	int mUnk0x78;
-	int mUnk0x7c;
-	int mUnk0x80;
-	int mUnk0x84;
-	int mUnk0x88;
-	int mUnk0x8c;
-	int mUnk0x90;
-	int mUnk0x94;
+	const char* mUnk0x70[10];
 	std::string mUnk0x98;
 	std::string mUnk0xb4;
 	std::string mUnk0xd0;
@@ -56,7 +47,7 @@ public:
 	bool mUnk0xee;
 	bool mUnk0xef;
 	std::multiset<int> mAdventureScores; // +0xf0
-	std::multiset<int> mUnk0xfc;         // +0xfc
+	std::multiset<int> mUnk0xfc;              // +0xfc
 	std::map<int, class MemoryImage*, std::greater<int> > mUnk0x108; // +0x108
 	int mUnk0x114;
 	std::set<std::string, struct StringLessNoCase> mUnk0x118;        // +0x118
@@ -108,7 +99,7 @@ public:
 	void DecTip(int tipId);
 	void SetTip(int tipId);
 	bool IsTipSet(int tipId);
-	void IsLevelUnlocked(int param_1, int param_2);
+	bool IsLevelUnlocked(int param_1, int param_2);
 
 	void Reset(bool param_1);
 };
