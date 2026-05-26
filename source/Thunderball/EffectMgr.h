@@ -3,12 +3,16 @@
 
 namespace Sexy
 {
-class Effect;
 class PhysObj;
 class Graphics;
 class DataSync;
 class SexyVector2;
 enum EffectType;
+
+class Effect {
+public:
+	int mUnk0xc;
+};
 
 class EffectMgr {
 public:
@@ -16,29 +20,29 @@ public:
 	virtual ~EffectMgr();
 
 	void Clear();
-	void AddEffect(EffectType param_1, float param_2, float param_3, int param_4, bool param_5);
-	void AddLevelBumper(PhysObj* param_1);
-	void AddSpookyBallWrap(float param_1, float param_2, float param_3, float param_4);
-	void AddSpookyBall(float param_1, float param_2, bool param_3);
-	void AddStyleSpin(float param_1, float param_2);
-	void AddJimmy(bool param_1, int param_2, int param_3);
-	void AddCatcherGlow(int param_1, bool param_2);
-	void AddPyramid(float param_1, float param_2, bool param_3);
-	void AddFeverRainbow(int param_1);
-	void AddRay(float param_1, float param_2);
-	void AddFeverHoleEffect(float param_1, float param_2, int param_3);
-	void AddSpaceBlast(float param_1, float param_2, int param_3);
-	void AddZenPowerup(float param_1, float param_2);
-	void AddCannonBlast(float param_1, float param_2, float param_3);
-	void AddFeverPointsBlast(float param_1, float param_2);
-	void AddFeverBlast(float param_1, float param_2);
-	void AddFeverScoreText();
-	void AddBubble(float param_1, float param_2);
-	void AddFlowerSparkles(float param_1, float param_2);
-	void AddCoinFlip(float param_1, float param_2, bool param_3);
-	void AddMasterBadge(float param_1, float param_2, int param_3);
-	void AddRibbon(float param_1, float param_2, int param_3);
-	void AddExtremeFever(float param_1, float param_2, bool param_3, int param_4);
+	Effect* AddEffect(EffectType param_1, float param_2, float param_3, int param_4, bool param_5);
+	Effect* AddLevelBumper(PhysObj* param_1);
+	Effect* AddSpookyBallWrap(float param_1, float param_2, float param_3, float param_4);
+	Effect* AddSpookyBall(float param_1, float param_2, bool param_3);
+	Effect* AddStyleSpin(float param_1, float param_2);
+	Effect* AddJimmy(bool param_1, int param_2, int param_3);
+	Effect* AddCatcherGlow(int param_1, bool param_2);
+	Effect* AddPyramid(float param_1, float param_2, bool param_3);
+	Effect* AddFeverRainbow(int param_1);
+	Effect* AddRay(float param_1, float param_2);
+	Effect* AddFeverHoleEffect(float param_1, float param_2, int param_3);
+	Effect* AddSpaceBlast(float param_1, float param_2, int param_3);
+	Effect* AddZenPowerup(float param_1, float param_2);
+	Effect* AddCannonBlast(float param_1, float param_2, float param_3);
+	Effect* AddFeverPointsBlast(float param_1, float param_2);
+	Effect* AddFeverBlast(float param_1, float param_2);
+	Effect* AddFeverScoreText();
+	Effect* AddBubble(float param_1, float param_2);
+	Effect* AddFlowerSparkles(float param_1, float param_2);
+	Effect* AddCoinFlip(float param_1, float param_2, bool param_3);
+	Effect* AddMasterBadge(float param_1, float param_2, int param_3);
+	Effect* AddRibbon(float param_1, float param_2, int param_3);
+	Effect* AddExtremeFever(float param_1, float param_2, bool param_3, int param_4);
 
 	void Update(bool param_1);
 	void UpdateSlowMo(float param_1);
@@ -54,7 +58,6 @@ public:
 	int PriorityToList(int param_1);
 	void SetCrackPoint(SexyVector2* param_1, int param_2, int param_3, int param_4);
 	void SetPriority(Effect* param_1, int param_2, int param_3); // overload helper
-    
 };
 
 } // namespace Sexy

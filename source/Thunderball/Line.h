@@ -4,15 +4,19 @@
 #include "PhysObj.h"
 
 #include <SexyAppFramework/Rect.h>
+#include <SexyAppFramework/SexyVector.h>
 
 namespace Sexy
 {
 
-class SexyVector2;
-
 // VTABLE: POPCAPGAME1 0x005f1a44
 class Line : public PhysObj {
 public:
+	float mUnk0xec; // +0xec
+	float mUnk0xf0; // +0xf0
+	float mUnk0xf4; // +0xf4
+	float mUnk0xf8; // +0xf8
+
 	Line();
 	Line(float param_1, float param_2, float param_3, float param_4);
 	virtual ~Line();

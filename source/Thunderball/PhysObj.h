@@ -21,6 +21,7 @@ class PhysObj : public EditValObj {
 public:
 	static int mSyncType;
 	static bool mFastLoad;
+	static int mOutlineMode;
 
 	int mUnk0x10; // +0x10
 

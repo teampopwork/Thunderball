@@ -1700,11 +1700,15 @@ void Sexy::DrawAdventureFrame(Graphics* g, int param_1, int param_2, int param_3
 	if (ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp25,157", false)) {
 		Rect aRect2 = IMAGE_DLG_STAGEBAR->GetCelRect(0);
 		aRect = Rect(
-			param_1 - ModVal(0,"SEXY_SEXYMODVAL.\\AdventureScreen.cpp26,160",4),
-			param_2 -  ModVal(0,"SEXY_SEXYMODVAL.\\AdventureScreen.cpp27,160",2),
-			param_2 + ModVal(0,"SEXY_SEXYMODVAL.\\AdventureScreen.cpp28,160",9),
+			param_1 - ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp26,160", 4),
+			param_2 - ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp27,160", 2),
+			param_2 + ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp28,160", 9),
 			aRect2.mHeight
 		);
 		g->DrawImageBox(aRect, IMAGE_DLG_STAGEBAR);
 	}
+}
+
+void Sexy::RotateXY(float* param_1, float* param_2, float param_3, float param_4, float param_5)
+{
 }

@@ -1,9 +1,11 @@
 #ifndef __POLY_H__
 #define __POLY_H__
 
+#include "Line.h"
 #include "PhysObj.h"
 
 #include <string>
+#include <vector>
 
 namespace Sexy
 {
@@ -13,13 +15,32 @@ class SexyVector2;
 // VTABLE: POPCAPGAME1 0x005f1f4c
 class Poly : public PhysObj {
 public:
-	int mUnk0x114;
-	int mUnk0x118;
+	std::vector<SexyVector2*> mUnk0xe8;    // +0xe4
+	std::vector<SexyVector2*> mUnk0xf8;    // +0xf8
+	std::vector<SmartPtr<Line>> mUnk0x108; // +0x108
+	float mUnk0x114;                       // +0x114
+	float mUnk0x118;                       // +0x118
+	float mUnk0x11c;                       // +0x11c
+	float mUnk0x120;                       // +0x120
+	float mUnk0x124;                       // +0x124
+	float mUnk0x128;                       // +0x128
+	bool mUnk0x12c;                        // +0x12c
+	bool mUnk0x12d;                        // +0x12d
+	bool mUnk0x12e;                        // +0x12e
+	bool mUnk0x12f;                        // +0x12f
+	bool mUnk0x130;                        // +0x130
+	int mUnk0x134;                         // +0x134
+	int mUnk0x138;                         // +0x138
+	int mUnk0x13c;                         // +0x13c
+	int mUnk0x140;                         // +0x140
+	bool mUnk0x144;                        // +0x144
+	bool mUnk0x145;                        // +0x145
+	bool mUnk0x146;                        // +0x146
 
 	Poly();
 	virtual ~Poly();
 
-	virtual bool EditGetSetValHook(std::string* param_1, bool param_2);
+	virtual bool EditGetSetValHook(const std::string& param_1, bool param_2);
 	virtual void SyncState(DataSync* theSync);
 	virtual int GetClass();
 	virtual void EditDrawOutline(Graphics* g);

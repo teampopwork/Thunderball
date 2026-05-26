@@ -38,7 +38,7 @@ public:
 	float mUnk0x58;
 	float mUnk0x5c;
 	float mUnk0x60;
-	int mUnk0x64;
+	float mUnk0x64;
 
     virtual bool EditGetSetValHook(const std::string& param_1, bool param_2);
 

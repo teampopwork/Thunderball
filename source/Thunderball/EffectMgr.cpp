@@ -23,118 +23,141 @@ void EffectMgr::Clear()
 }
 
 // STUB: POPCAPGAME1 0x0044de40
-void EffectMgr::AddEffect(EffectType param_1, float param_2, float param_3, int param_4, bool param_5)
+Effect* EffectMgr::AddEffect(EffectType param_1, float param_2, float param_3, int param_4, bool param_5)
 {
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x0045bc60
-void EffectMgr::AddLevelBumper(PhysObj* param_1)
+Effect* EffectMgr::AddLevelBumper(PhysObj* param_1)
 {
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x004514d0
-void EffectMgr::AddSpookyBallWrap(float param_1, float param_2, float param_3, float param_4)
+Effect* EffectMgr::AddSpookyBallWrap(float param_1, float param_2, float param_3, float param_4)
 {
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x00451310
-void EffectMgr::AddSpookyBall(float param_1, float param_2, bool param_3)
+Effect* EffectMgr::AddSpookyBall(float param_1, float param_2, bool param_3)
 {
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x00451140
-void EffectMgr::AddStyleSpin(float param_1, float param_2)
+Effect* EffectMgr::AddStyleSpin(float param_1, float param_2)
 {
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x00450ff0
-void EffectMgr::AddJimmy(bool param_1, int param_2, int param_3)
+Effect* EffectMgr::AddJimmy(bool param_1, int param_2, int param_3)
 {
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x00450d30
-void EffectMgr::AddCatcherGlow(int param_1, bool param_2)
+Effect* EffectMgr::AddCatcherGlow(int param_1, bool param_2)
 {
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x00450c60
-void EffectMgr::AddPyramid(float param_1, float param_2, bool param_3)
+Effect* EffectMgr::AddPyramid(float param_1, float param_2, bool param_3)
 {
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x00450940
-void EffectMgr::AddFeverRainbow(int param_1)
+Effect* EffectMgr::AddFeverRainbow(int param_1)
 {
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x0044fd20
-void EffectMgr::AddRay(float param_1, float param_2)
+Effect* EffectMgr::AddRay(float param_1, float param_2)
 {
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x0044fe00
-void EffectMgr::AddFeverHoleEffect(float param_1, float param_2, int param_3)
+Effect* EffectMgr::AddFeverHoleEffect(float param_1, float param_2, int param_3)
 {
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x0044fa20
-void EffectMgr::AddSpaceBlast(float param_1, float param_2, int param_3)
+Effect* EffectMgr::AddSpaceBlast(float param_1, float param_2, int param_3)
 {
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x0044f830
-void EffectMgr::AddZenPowerup(float param_1, float param_2)
+Effect* EffectMgr::AddZenPowerup(float param_1, float param_2)
 {
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x0044efe0
-void EffectMgr::AddCannonBlast(float param_1, float param_2, float param_3)
+Effect* EffectMgr::AddCannonBlast(float param_1, float param_2, float param_3)
 {
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x0044ec30
-void EffectMgr::AddFeverPointsBlast(float param_1, float param_2)
+Effect* EffectMgr::AddFeverPointsBlast(float param_1, float param_2)
 {
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x0044e880
-void EffectMgr::AddFeverBlast(float param_1, float param_2)
+Effect* EffectMgr::AddFeverBlast(float param_1, float param_2)
 {
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x0044e7f0
-void EffectMgr::AddFeverScoreText()
+Effect* EffectMgr::AddFeverScoreText()
 {
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x0044e740
-void EffectMgr::AddBubble(float param_1, float param_2)
+Effect* EffectMgr::AddBubble(float param_1, float param_2)
 {
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x0044e010
-void EffectMgr::AddFlowerSparkles(float param_1, float param_2)
+Effect* EffectMgr::AddFlowerSparkles(float param_1, float param_2)
 {
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x0044dfc0
-void EffectMgr::AddCoinFlip(float param_1, float param_2, bool param_3)
+Effect* EffectMgr::AddCoinFlip(float param_1, float param_2, bool param_3)
 {
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x0044df70
-void EffectMgr::AddMasterBadge(float param_1, float param_2, int param_3)
+Effect* EffectMgr::AddMasterBadge(float param_1, float param_2, int param_3)
 {
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x0044df20
-void EffectMgr::AddRibbon(float param_1, float param_2, int param_3)
+Effect* EffectMgr::AddRibbon(float param_1, float param_2, int param_3)
 {
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x0044e1c0
-void EffectMgr::AddExtremeFever(float param_1, float param_2, bool param_3, int param_4)
+Effect* EffectMgr::AddExtremeFever(float param_1, float param_2, bool param_3, int param_4)
 {
+	return NULL;
 }
 
 // STUB: POPCAPGAME1 0x0045bf10
