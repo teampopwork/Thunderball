@@ -12,8 +12,7 @@ class ThunderballApp;
 class Graphics;
 class ThunderButton;
 class HyperlinkWidget;
-
-class StoryData {};
+class StoryData;
 
 class StoryScreen : public Widget, public ButtonListener {
 public:

@@ -5,6 +5,7 @@
 #include "ThunderCommon.h"
 #include "PlayerInfo.h"
 #include "Res.h"
+#include "StageMgr.h"
 
 #include <SexyAppFramework/HyperlinkWidget.h>
 #include <SexyAppFramework/ModVal.h>
