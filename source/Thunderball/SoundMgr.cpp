@@ -1,50 +1,95 @@
 #include "SoundMgr.h"
 
 #include "ThunderCommon.h"
+#include "ThunderballApp.h"
+#include "DataSync.h"
+
+#include <SexyAppFramework/MusicInterface.h>
+#include <SexyAppFramework/SoundInstance.h>
+#include <SexyAppFramework/SoundManager.h>
 
 using namespace Sexy;
 
-// STUB: POPCAPGAME1 0x0045f1d0
+// FUNCTION: POPCAPGAME1 0x0045f1d0
 SoundMgr::SoundMgr()
 {
+	Clear();
+	mUnk0x14 = 1.0f;
+	mUnk0x1c = false;
+	mUnk0x18 = 0.0f;
 }
 
 // SYNTHETIC: POPCAPGAME1 0x0045f290
 // Sexy::SoundMgr::`scalar deleting destructor'
 
-// STUB: POPCAPGAME1 0x00458dd0
+// FUNCTION: POPCAPGAME1 0x00458dd0
 SoundMgr::~SoundMgr()
 {
 }
 
-// STUB: POPCAPGAME1 0x00437560
+// FUNCTION: POPCAPGAME1 0x00437560
 void SoundMgr::PauseMusic(bool param_1)
 {
+	if (mUnk0x1c != param_1) {
+		mUnk0x1c = param_1;
+		if (mUnk0x1c) {
+			GetThunderballApp()->mMusicInterface->PauseAllMusic();
+		}
+		else {
+			GetThunderballApp()->mMusicInterface->ResumeAllMusic();
+		}
+	}
 }
 
-// STUB: POPCAPGAME1 0x004375a0
+// FUNCTION: POPCAPGAME1 0x004375a0
 void SoundMgr::FadeMusic(int param_1)
 {
+	if (0.0f < GetThunderballApp()->mMusicVolume && 0.0f < GetThunderballApp()->mSfxVolume) {
+		if (mUnk0x20 < param_1) {
+			mUnk0x20 = param_1;
+		}
+		mUnk0x18 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\SoundMgr.cpp1421,101", -0.03f);
+	}
 }
 
-// STUB: POPCAPGAME1 0x00437600
+// FUNCTION: POPCAPGAME1 0x00437600
 void SoundMgr::CancelFade()
 {
+	mUnk0x20 = 0;
+	mUnk0x18 = 0.0f;
+	mUnk0x14 = 1.0f;
 }
 
-// STUB: POPCAPGAME1 0x00441f30
+// FUNCTION: POPCAPGAME1 0x00441f30
 void SoundMgr::KillAllSounds()
 {
+	mUnk0x4.clear();
+	for (std::list<SoundInstance*>::iterator it = mUnk0x48.begin(); it != mUnk0x48.end(); ++it) {
+		delete *it;
+	}
+	mUnk0x48.clear();
 }
 
-// STUB: POPCAPGAME1 0x00442e90
+// FUNCTION: POPCAPGAME1 0x00442e90
 void SoundMgr::Clear()
 {
+	mUnk0x4.clear();
+	mUnk0x28.clear();
+	mUnk0x10 = 0;
+	KillAllSounds();
 }
 
-// STUB: POPCAPGAME1 0x0045f2c0
+// FUNCTION: POPCAPGAME1 0x0045f2c0
 void SoundMgr::SyncState(DataSync* param_1)
 {
+	// DataSync_SyncSTLMapImplSimple<int, SoundDesc*>(param_1, mUnk0x4);
+	if (0x2f < param_1->mVersion) {
+		param_1->SyncLong(mUnk0x10);
+	}
+
+	if (param_1->mReader != NULL) {
+		mUnk0x28.clear();
+	}
 }
 
 // STUB: POPCAPGAME1 0x00458e80
@@ -54,13 +99,32 @@ SoundInstance* SoundMgr::PlaySample(SoundDesc* param_1)
 }
 
 // FUNCTION: POPCAPGAME1 0x0045af70
-void SoundMgr::AddSound(int param_1)
+void SoundMgr::AddSound(int param_1, int param_2)
 {
+	AddSound(param_1, 0.0f, 0,0, param_2, -1.0f);
 }
 
-// STUB: POPCAPGAME1 0x00458f30
+// FUNCTION: POPCAPGAME1 0x00458f30
 void SoundMgr::AddSound(int param_1, float param_2, int param_3, int param_4, int param_5, float param_6)
 {
+	if (param_6 == 0.0f) {
+		SoundDesc theDesc;
+		theDesc.mUnk0x4 = param_1;
+		theDesc.mUnk0xc = param_2;
+		theDesc.mUnk0x8 = param_3;
+		theDesc.mUnk0x0 = param_5;
+		theDesc.mUnk0x10 = param_6;
+		if (param_4 == 0) {
+			PlaySample(&theDesc);
+		} else {
+			theDesc.mUnk0x0 = param_4 + mUnk0x10;
+			theDesc.mUnk0x4 = param_5;
+			theDesc.mUnk0x8 = param_1;
+			theDesc.mUnk0xc = param_3;
+			theDesc.mUnk0x10 = param_2;
+			mUnk0x4.insert(std::pair<int, SoundDesc*>(theDesc.mUnk0x0, &theDesc));
+		}
+	}
 }
 
 // STUB: POPCAPGAME1 0x00452810

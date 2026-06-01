@@ -7,6 +7,8 @@ namespace Sexy
 {
 class ConfigParser {
 public:
+	int mUnk0x9c;
+
 	ConfigParser(bool throwExceptions);
 	virtual ~ConfigParser();
 
