@@ -27,11 +27,11 @@ MainMenu::MainMenu(ThunderballApp* theApp)
 {
 	mApp = theApp;
 
-	// STRING: POPCAPGAME1 0x006084ec
 	mAdventureButton = MakeEmbeddedButton(
 		0,
 		this,
 		IMAGE_MM_ADVENTURE,
+		// STRING: POPCAPGAME1 0x006084ec
 		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\MainMenu.cpp468,52", true)
 	);
 	mAdventureButton->mUnk0x140 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\MainMenu.cpp469,53", 0);
@@ -746,7 +746,7 @@ void MainMenu::SyncPlayerInfo()
 			if ((int) aPlayerInfo->mUnk0xfc.size() >= mApp->mTrophyMgr->mUnk0x20) {
 				mUnk0xC8 = 2;
 
-				if ((int) aPlayerInfo->mUnk0x118.size() >= mApp->mStageMgr->mUnk0x24) {
+				if (aPlayerInfo->mUnk0x118.size() >= mApp->mStageMgr->mUnk0x1c.size()) {
 					mUnk0xC8 = 3;
 				}
 			}
@@ -774,8 +774,8 @@ void MainMenu::SyncPlayerInfo()
 		if (doBlink != (bool) (0 < mAdventureButton->mUnk0x14c)) {
 			if (doBlink) {
 				mAdventureButton->mUnk0x151 = true;
-				// STRING: POPCAPGAME1 0x005fe86c
 				mAdventureButton->mUnk0x154 =
+					// STRING: POPCAPGAME1 0x005fe86c
 					ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\MainMenu.cpp517,216", 0x78);
 				mAdventureButton->Blink(1000, true);
 			}
