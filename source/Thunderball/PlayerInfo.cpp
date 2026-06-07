@@ -20,6 +20,24 @@ PlayerInfo::PlayerInfo(const PlayerInfo& param_1)
 {
 }
 
+// TEMPLATE: POPCAPGAME1 0x0041dcb0
+// std::_Tree<std::_Tset_traits<int,std::less<int>,std::allocator<int>,0> >::erase(class std::_Tree<class std::_Tset_traits<int, struct std::less<int>, class std::allocator<int>, 1>>::iterator, class std::_Tree<class std::_Tset_traits<int, struct std::less<int>, class std::allocator<int>, 1>>::iterator)
+
+// TEMPLATE: POPCAPGAME1 0x00442500
+// std::_Tree<std::_Tset_traits<int,std::less<int>,std::allocator<int>,1> >::_Copy(class std::_Tree<class std::_Tset_traits<int, struct std::less<int>, class std::allocator<int>, 1>> const &)
+
+// TEMPLATE: POPCAPGAME1 0x0041dd80
+// std::_Tree<std::_Tmap_traits<int,Sexy::MemoryImage *,std::greater<int>,std::allocator<std::pair<int const ,Sexy::MemoryImage *> >,1> >::erase(class std::_Tree<class std::_Tmap_traits<int, class Sexy::SoundMgr::SoundDesc *, struct std::less<int>, class std::allocator<struct std::pair<int const, class Sexy::SoundMgr::SoundDesc *>>, 1>>::iterator, class std::_Tree<class std::_Tmap_traits<int, class Sexy::SoundMgr::SoundDesc *, struct std::less<int>, class std::allocator<struct std::pair<int const, class Sexy::SoundMgr::SoundDesc *>>, 1>>::iterator)
+
+// TEMPLATE: POPCAPGAME1 0x004423f0
+// std::_Tree<std::_Tmap_traits<int,Sexy::MemoryImage *,std::greater<int>,std::allocator<std::pair<int const ,Sexy::MemoryImage *> >,0> >::_Copy(class std::_Tree<class std::_Tmap_traits<int, class Sexy::MemoryImage *, struct std::greater<int>, class std::allocator<struct std::pair<int const, class Sexy::MemoryImage *>>, 0>> const &)
+
+// TEMPLATE: POPCAPGAME1 0x0041ffe0
+// std::_Tree<std::_Tset_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,Sexy::StringLessNoCase,std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,0> >::erase(class std::_Tree<class std::_Tset_traits<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, struct Sexy::StringLessNoCase, class std::allocator<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>, 0>>::iterator, class std::_Tree<class std::_Tset_traits<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, struct Sexy::StringLessNoCase, class std::allocator<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>, 0>>::iterator)
+
+// TEMPLATE: POPCAPGAME1 0x00453040
+// std::_Tree<std::_Tset_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,Sexy::StringLessNoCase,std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,0> >::_Copy(class std::_Tree<class std::_Tset_traits<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, struct Sexy::StringLessNoCase, class std::allocator<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>, 0>> const &)
+
 // FUNCTION: POPCAPGAME1 0x461680
 PlayerInfo& PlayerInfo::operator=(const PlayerInfo& other)
 {
@@ -93,9 +111,6 @@ PlayerInfo& PlayerInfo::operator=(const PlayerInfo& other)
 
 	return *this;
 }
-
-// SYNTHETIC: POPCAPGAME1 0x00429360
-// Sexy::PlayerInfo::`scalar deleting destructor'
 
 // FUNCTION: POPCAPGAME1 0x004267c0
 PlayerInfo::~PlayerInfo()
@@ -172,13 +187,17 @@ std::string PlayerInfo::GetSavedGameName(GameMode theGameMode)
 {
 	switch (theGameMode) {
 	case GameMode::ADVENTURE:
-		return GetAppDataFolder() + StrFormat("userdata/stage%d.dat", mId);
+		// STRING: POPCAPGAME1 0x005d6740
+		return GetAppDataFolder() + StrFormat("userdata/stage%d.sav", mId);
 	case GameMode::QUICK_PLAY:
-		return GetAppDataFolder() + StrFormat("userdata/arcade%d.dat", mId);
+		// STRING: POPCAPGAME1 0x005d6728
+		return GetAppDataFolder() + StrFormat("userdata/arcade%d.sav", mId);
 	case GameMode::DUEL:
-		return GetAppDataFolder() + StrFormat("userdata/duel%d.dat", mId);
+		// STRING: POPCAPGAME1 0x005d6710
+		return GetAppDataFolder() + StrFormat("userdata/duel%d.sav", mId);
 	case GameMode::CHALLENGE:
-		return GetAppDataFolder() + StrFormat("userdata/trophy%d.dat", mId);
+		// STRING: POPCAPGAME1 0x005d66fc
+		return GetAppDataFolder() + StrFormat("userdata/trophy%d.sav", mId);
 	default:
 		return "";
 	}

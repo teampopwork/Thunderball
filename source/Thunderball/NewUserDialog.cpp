@@ -128,9 +128,11 @@ void NewUserDialog::Draw(Graphics* g)
 void NewUserDialog::DrawOverlay(Graphics* g)
 {
 	if (0 < mUnk0x1A8) {
+		// STRING: POPCAPGAME1 0x005fb520
 		float fVar1 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp680,177", 0x14);
 		Transform aTransform;
 		if (mUnk0x1A8 > fVar1) {
+			// STRING: POPCAPGAME1 0x005fb4d8
 			float aScale = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp681,181", 2.0f) *
 						   (1.0 - (mUnk0x1A8 / fVar1) + 1.0);
 			aTransform.Scale(aScale, aScale);
@@ -139,8 +141,10 @@ void NewUserDialog::DrawOverlay(Graphics* g)
 		g->DrawImageTransform(
 			IMAGE_MM_APPROVEDSTAMP,
 			aTransform,
-			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp682,188", 0xfa),
-			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp683,188", 0x131)
+			// STRING: POPCAPGAME1 0x005fb448
+			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp682,184", 0xfa),
+			// STRING: POPCAPGAME1 0x005fb490
+			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp683,184", 0x131)
 		);
 	}
 }
@@ -180,7 +184,8 @@ int NewUserDialog::GetPreferredHeight(int theWidth)
 	}
 	else {
 		return ThunderDialog::GetPreferredHeight(theWidth) +
-			   ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp660,72", 0x28);
+		// STRING: POPCAPGAME1 0x00x5fb0e8
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp660,72", 0x28);
 	}
 }
 
@@ -206,21 +211,30 @@ void NewUserDialog::Resize(int theX, int theY, int theWidth, int theHeight)
 
 	if (mUnk0x188) {
 		mUnk0x184->Move(
+			// STRING: POPCAPGAME1 0x005fb3b8
 			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp661,101", 0xd2),
+			// STRING: POPCAPGAME1 0x005fb400
 			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp662,101", 0x107)
 		);
 
 		mUnk0x180->Resize(
-			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp663,102", 0x91) + mX,
-			mY + ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp664,102", 300),
-			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp665,102", 0xb4),
-			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp666,102", 0x20)
+			// STRING: POPCAPGAME1 0x005fb298
+			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp663,102", 145) + mX,
+			// STRING: POPCAPGAME1 0x005fb2e0
+			mY + ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp664,102", 180),
+			// STRING: POPCAPGAME1 0x005fb328
+			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp665,102", 300),
+			// STRING: POPCAPGAME1 0x005fb370
+			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp666,102", 32)
 		);
 
+		// STRING: POPCAPGAME1 0x005fb250
 		int iVar5 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp667,104", 0x96);
 
 		mNoButton->Resize(
+			// STRING: POPCAPGAME1 0x005fb1c0
 			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp668,105", 0x136) + mX,
+			// STRING: POPCAPGAME1 0x005fb208
 			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp669,105", 0x16d) + mY,
 			iVar5,
 			mNoButton->mHeight
@@ -231,8 +245,10 @@ void NewUserDialog::Resize(int theX, int theY, int theWidth, int theHeight)
 
 	mUnk0x180->Resize(
 		mX + 0x30,
+		// STRING: POPCAPGAME1 0x005fb130
 		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp670,108", 0x69) + mY,
 		mWidth - 96,
+		// STRING: POPCAPGAME1 0x005fb178
 		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\NewUserDialog.cpp671,108", 0x18)
 	);
 }

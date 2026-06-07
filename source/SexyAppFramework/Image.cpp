@@ -102,6 +102,12 @@ void AnimInfo::SetPerFrameDelay(int theFrame, int theTime)
 	mPerFrameDelay[theFrame] = theTime;
 }
 
+// TEMPLATE: POPCAPGAME1 0x004e7680
+// std::vector<int,std::allocator<int> >::resize
+
+// TEMPLATE: POPCAPGAME1 0x004ff7d0
+// std::vector<Sexy::DataElement *,std::allocator<Sexy::DataElement *> >::erase
+
 // FUNCTION: POPCAPGAME1 0x004ea330
 void AnimInfo::Compute(int theNumCels, int theBeginFrameTime, int theEndFrameTime)
 {
@@ -212,6 +218,7 @@ Rect Image::GetAnimCelRect(int theTime)
 		return Rect(0,aCel*aCelHeight,mWidth,aCelHeight);
 }
 
+// FUNCTION: POPCAPGAME1 0x004e81c0
 void Image::CopyAttributes(Image *from)
 {
 	mNumCols = from->mNumCols;

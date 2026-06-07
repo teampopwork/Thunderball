@@ -8,8 +8,8 @@ using namespace Sexy;
 LogicMgr::LogicMgr(Board* param_1)
 {
 	mBoard = param_1;
-	mUnk0x1d0 = 0;
-	//mUnk0x1cc = NULL;
+	mUnk0x1cc[1] = POWERUP_0;
+	mUnk0x1cc[0] = POWERUP_0;
 	mUnk0x54 = 0;
 	mUnk0x21 = 0;
 	mUnk0xac = 0;
@@ -41,21 +41,24 @@ void LogicMgr::DrawBack(Graphics* g)
 	// TODO
 }
 
+// FUNCTION: POPCAPGAME1 0x00437340
 void LogicMgr::MouseEnter()
 {
 	// TODO
 }
 
+// FUNCTION: POPCAPGAME1 0x00437340
 void LogicMgr::MouseLeave()
 {
-	// TODO
 }
 
+// STUB: POPCAPGAME1 0x0043d5d0
 void LogicMgr::MouseMove(int param_1, int param_2)
 {
 	// TODO
 }
 
+// STUB: POPCAPGAME1 0x0043d620
 void LogicMgr::MouseDrag(int param_1, int param_2)
 {
 	// TODO

@@ -22,7 +22,6 @@ class LevelStats;
 enum KeyCode;
 enum LogicState;
 enum StyleShot;
-enum PowerupType;
 
 class LogicMgr {
 	class ClickInfo {};
@@ -69,6 +68,7 @@ public:
 	int mUnk0x74;                           // +0x74
 	int mUnk0x78;                           // +0x78
 	std::string mUnk0x80;                   // +0x80
+	std::string mUnk0x9c;                   // +0x9c
 	int mUnk0xa0;                           // +0xa0
 	int mUnk0xa4;                           // +0xa4
 	bool mUnk0xa8;                          // +0xa8
@@ -125,25 +125,24 @@ public:
 	int mUnk0x164;                          // +0x164
 	int mUnk0x168;                          // +0x168
 	int mUnk0x16c;                          // +0x16c
+	int mUnk0x170;                          // +0x170
 	int mUnk0x174;                          // +0x174
 	int mUnk0x178;                          // +0x178
 	int mUnk0x17c;                          // +0x17c
 	int mUnk0x180;                          // +0x180
 	int mUnk0x184;                          // +0x184
 	int mUnk0x188;                          // +0x188
-	std::string mUnk0x18c;                  // +0x18c
-	std::string mUnk0x1a8;                  // +0x1a8
+	std::string mUnk0x18c[2];               // +0x18c
 	int mUnk0x1c4;                          // +0x1c4
 	int mUnk0x1c8;                          // +0x1c8
-	int mUnk0x1cc[4];                       // +0x1cc
-	int mUnk0x1d0;                          // +0x1d0
+	PowerupType mUnk0x1cc[2];               // +0x1cc
 	int mUnk0x1d4;                          // +0x1d4
 	int mUnk0x1d8;                          // +0x1d8
 	int mUnk0x1dc;                          // +0x1dc
-	int mUnk0x1e4[4];                       // +0x1e4
+	int mUnk0x1e4[14];                       // +0x1e4
 	bool mUnk0x244;                         // +0x244
 	bool mUnk0x245;                         // +0x245
-	GameStats* mUnk0x248[2];                // +0x248
+	GameStats mUnk0x248[2];                   // +0x248
 	int mUnk0x320;                          // +0x320
 	int mUnk0x324;                          // +0x324
 	int mUnk0x328;                          // +0x328

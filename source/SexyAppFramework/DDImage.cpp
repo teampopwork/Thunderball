@@ -135,6 +135,7 @@ void DDImage::SetSurface(LPDIRECTDRAWSURFACE theSurface)
 	mNoLock = false;
 }
 
+// FUNCTION: POPCAPGAME1 0x004c2e70
 bool DDImage::GenerateDDSurface()
 {
 	if (mSurface != NULL)
@@ -592,6 +593,7 @@ void DDImage::PurgeBits()
 	MemoryImage::PurgeBits();
 }
 
+// FUNCTION: POPCAPGAME1 0x004c37b0
 void DDImage::DeleteAllNonSurfaceData()
 {
 	delete [] mBits;
@@ -2752,6 +2754,9 @@ void DDImage::BltMirror(Image* theImage, int theX, int theY, const Rect& theSrcR
 
 	DeleteAllNonSurfaceData();
 }
+
+// TEMPLATE: POPCAPGAME1 0x004d3320
+// Sexy::TRect<double>::Intersection
 
 // FUNCTION: POPCAPGAME1 0x004f69c0
 void DDImage::BltF(Image* theImage, float theX, float theY, const Rect& theSrcRect, const Rect &theClipRect, const Color& theColor, int theDrawMode)

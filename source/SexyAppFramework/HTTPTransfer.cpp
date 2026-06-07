@@ -5,6 +5,7 @@
 
 using namespace Sexy;
 
+// GLOBAL: POPCAPGAME1 0x0064ade0
 static int gCurTransferId = 1;
 
 // FUNCTION: POPCAPGAME1 0x005007b0
@@ -63,6 +64,7 @@ std::string HTTPTransfer::GetAbsURL(const std::string& theBaseURL, const std::st
 	return aURL;
 }
 
+// FUNCTION: POPCAPGAME1 0x004fb7a0
 void HTTPTransfer::Fail(int theResult)
 {	
 	mResult = theResult;
@@ -335,6 +337,7 @@ void HTTPTransfer::GetThreadProc()
 	mTransferPending = false;
 }
 
+// FUNCTION: POPCAPGAME1 0x00511430
 void HTTPTransfer::GetThreadProcStub(void *theArg)
 {
 	((HTTPTransfer*) theArg)->GetThreadProc();
@@ -459,6 +462,9 @@ void HTTPTransfer::Post(const std::string& theBaseURL, const std::string& theRel
 	
 	PostHelper(GetAbsURL(theBaseURL, theRelURL), theParams);
 }
+
+// TEMPLATE: POPCAPGAME1 0x4092a0
+// std::basic_string<char,std::char_traits<char>,std::allocator<char> >::erase(unsigned int, unsigned int)
 
 // FUNCTION: POPCAPGAME1 0x00519490
 void HTTPTransfer::SendRequestString(const std::string& theHost, const std::string& theSendString)

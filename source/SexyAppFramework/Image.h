@@ -6,6 +6,9 @@
 #include "Rect.h"
 #include "Point.h"
 
+// GLOBAL: POPCAPGAME1 0x0064a5d0
+// ??_R0?AVImage@Sexy@@@8
+
 namespace Sexy
 {
 
@@ -46,6 +49,7 @@ class SexyMatrix3;
 class SysFont;
 class TriVertex;
 
+// VTABLE: POPCAPGAME1 0x0060de14
 class Image
 {
 	friend class			Sexy::SysFont;

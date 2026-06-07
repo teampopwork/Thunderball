@@ -204,7 +204,7 @@ void ThunderDialog::Draw(Graphics* g)
 
 		g->DrawImage(connector, 
 			// STRING: POPCAPGAME1 0x005fcc48
-			ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp864,307",0) + (mWidth - connector->mWidth) / 2,
+			ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderDialog.cpp865,307",0) + (mWidth - connector->mWidth) / 2,
 			connectY
 			);
 	}

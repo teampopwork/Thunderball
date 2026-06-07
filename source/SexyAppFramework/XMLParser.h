@@ -44,6 +44,7 @@ public:
 	XMLParamMapIteratorList	mAttributeIteratorList; // stores attribute iterators in their original order
 };
 
+// VTABLE: POPCAPGAME1 0x0060f2f4
 class XMLParser
 {
 protected:

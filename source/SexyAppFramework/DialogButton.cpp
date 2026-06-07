@@ -12,7 +12,7 @@ static int gDialogButtonColors[][3] = {
 	{132, 132, 132},
 	{212, 212, 212}};
 
-// FUNCTION: POPCAPGAME1 0x00548f60
+// FUNCTION: POPCAPGAME1 0x005480e0
 DialogButton::DialogButton(Image* theComponentImage, int theId, ButtonListener* theListener) :
 	ButtonWidget(theId, theListener)
 {
@@ -24,6 +24,9 @@ DialogButton::DialogButton(Image* theComponentImage, int theId, ButtonListener* 
 
 	SetColors(gDialogButtonColors, NUM_COLORS);
 }
+
+// TEMPLATE: POPCAPGAME1 0x004379f0
+// std::vector<Sexy::Color,std::allocator<Sexy::Color> >::operator[]
 
 // FUNCTION: POPCAPGAME1 0x005469e0
 void DialogButton::Draw(Graphics* g)

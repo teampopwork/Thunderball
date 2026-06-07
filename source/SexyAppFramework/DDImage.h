@@ -4,12 +4,16 @@
 #include "MemoryImage.h"
 #include <ddraw.h>
 
+// GLOBAL: POPCAPGAME1 0x0064a5b4
+// ??_R0?AVDDImage@Sexy@@@8
+
 namespace Sexy
 {
 
 class DDInterface;
 class SysFont;
 
+// VTABLE: POPCAPGAME1 0x0060e6f4
 class DDImage : public MemoryImage
 {
 protected:

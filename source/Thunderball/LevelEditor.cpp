@@ -45,6 +45,7 @@ std::string EditVal::ToString()
 double EditVal::ToNum()
 {
 	if (mNumCached == false) {
+		// STRING: POPCAPGAME1 0x005d549c
 		int iVar1 = sscanf(mString.c_str(), "%lf", &mNum);
 		if (iVar1 != 1) {
 			mNum = 0;

@@ -39,6 +39,7 @@ typedef std::list<PreModalInfo> PreModalInfoList;
 
 typedef std::vector<std::pair<Widget*, int> > DeferredOverlayVector;
 
+// VTABLE: POPCAPGAME1 0x0061385c
 class WidgetManager : public WidgetContainer
 {
 public:	

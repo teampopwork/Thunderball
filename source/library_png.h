@@ -142,16 +142,35 @@
 // LIBRARY: POPCAPGAME1 0x0056f7e0
 // _png_write_chunk
 
+// STRING: POPCAPGAME1 0x00615428
+// "1.0.5"
 
+// LIBRARY: POPCAPGAME1 0x0055e190
+// _png_create_read_struct
 
+// LIBRARY: POPCAPGAME1 0x00564d90
+// _png_set_read_fn
 
+// LIBRARY: POPCAPGAME1 0x00560150
+// _png_destroy_read_struct
 
+// LIBRARY: POPCAPGAME1 0x0055e2d0
+// _png_read_info
 
+// LIBRARY: POPCAPGAME1 0x00564960
+// _png_get_IHDR
 
+// LIBRARY: POPCAPGAME1 0x005606a0
+// _png_set_palette_to_rgb
 
+// LIBRARY: POPCAPGAME1 0x005601f0
+// _png_set_filler
 
+// LIBRARY: POPCAPGAME1 0x005606b0
+// _png_set_gray_to_rgb
 
+// LIBRARY: POPCAPGAME1 0x0055f340
+// _png_read_rows
 
-
-
-
+// LIBRARY: POPCAPGAME1 0x0055f3e0
+// _png_read_end

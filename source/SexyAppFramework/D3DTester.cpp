@@ -10,6 +10,7 @@
 using namespace Sexy;
 static const int gD3DTestTextureWidth = 64;
 static const int gD3DTestTextureHeight = 64;
+// GLOBAL: POPCAPGAME1 0x006512c2
 static bool gD3DTestHas32BitTexture = false;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -162,6 +163,7 @@ void D3DTestImage::CopyToTexture4444(LPDIRECTDRAWSURFACE7 theTexture, int offx, 
 
 	DDSURFACEDESC2 aDesc;
 	aDesc.dwSize = sizeof(aDesc);
+	// STRING: POPCAPGAME1 0x0060e004
 	D3DTester::CheckDXError(theTexture->Lock(NULL,&aDesc,DDLOCK_SURFACEMEMORYPTR | DDLOCK_WAIT | DDLOCK_WRITEONLY,NULL),"Lock Texture");
 
 	int aWidth = min(texWidth,(GetWidth()-offx));
@@ -190,12 +192,14 @@ void D3DTestImage::CopyToTexture4444(LPDIRECTDRAWSURFACE7 theTexture, int offx, 
 		}
 	}
 
+	// STRING: POPCAPGAME1 0x0060dff4
 	D3DTester::CheckDXError(theTexture->Unlock(NULL),"Texture Unlock");
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
 // FUNCTION: POPCAPGAME1 0x004e5080
 void D3DTestImage::DrawPieceToDevice(LPDIRECT3DDEVICE7 theDevice, LPDIRECTDRAWSURFACE7 theTexture, float x, float y, int offx, int offy, int texWidth, int texHeight, DWORD theColor)
 {
@@ -218,13 +222,16 @@ void D3DTestImage::DrawPieceToDevice(LPDIRECT3DDEVICE7 theDevice, LPDIRECTDRAWSU
 		{ x+texWidth,		y+texHeight,		0,	1,	theColor,	0,	maxU,	maxV }
 	};
 		
+	// STRING: POPCAPGAME1 0x0060e2d4
 	D3DTester::CheckDXError(theDevice->SetTexture(0, theTexture),"SetTexture theTexture");
+	// STRING: POPCAPGAME1 0x0060e2c4
 	D3DTester::CheckDXError(theDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, D3DFVF_TLVERTEX, aVertex, 4, D3DDP_WAIT),"DrawPrimitive");
 	D3DTester::CheckDXError(theDevice->SetTexture(0, NULL),"SetTexture NULL");
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
 // FUNCTION: POPCAPGAME1 0x004e5210
 void D3DTestImage::DrawToDevice(LPDIRECT3DDEVICE7 theDevice, LPDIRECTDRAWSURFACE7 theTexture, int x, int y, DWORD theColor)
 {
@@ -439,6 +446,7 @@ D3DTester::D3DTester()
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
 // FUNCTION: POPCAPGAME1 0x004dcdf0
 D3DTester::~D3DTester()
 {
@@ -447,6 +455,10 @@ D3DTester::~D3DTester()
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// TEMPLATE: POPCAPGAME1 0x0040da10
+// std::basic_string<char,std::char_traits<char>,std::allocator<char> >::operator=(char const *)
+
 // FUNCTION: POPCAPGAME1 0x004e1410
 bool D3DTester::CheckRegistry()
 {
@@ -461,6 +473,7 @@ bool D3DTester::CheckRegistry()
 	DWORD aVersion = 0;
 	aSize = sizeof(aVersion);
 	aType = REG_DWORD;
+	// STRING: POPCAPGAME1 0x0060ddfc
 	if (RegQueryValueExA(mRegKey, "Version", 0, &aType, (uchar*) &aVersion, &aSize) != ERROR_SUCCESS)
 		return false;
 
@@ -471,6 +484,7 @@ bool D3DTester::CheckRegistry()
 	DWORD aMinVidMemory = 0;
 	aSize = sizeof(aMinVidMemory);
 	aType = REG_DWORD;
+	// STRING: POPCAPGAME1 0x0060ddec
 	if (RegQueryValueExA(mRegKey, "MinVidMemory", 0, &aType, (uchar*) &aMinVidMemory, &aSize) != ERROR_SUCCESS)
 		return false;
 
@@ -481,6 +495,7 @@ bool D3DTester::CheckRegistry()
 	DWORD aRecVidMemory = 0;
 	aSize = sizeof(aRecVidMemory);
 	aType = REG_DWORD;
+	// STRING: POPCAPGAME1 0x0060dddc
 	if (RegQueryValueExA(mRegKey, "RecVidMemory", 0, &aType, (uchar*) &aRecVidMemory, &aSize) != ERROR_SUCCESS)
 		return false;
 
@@ -491,6 +506,7 @@ bool D3DTester::CheckRegistry()
 	UUID aGUID;
 	aSize = sizeof(aGUID);
 	aType = REG_BINARY;
+	// STRING: POPCAPGAME1 0x0060ddd0
 	if (RegQueryValueExA(mRegKey, "DisplayGUID", 0, &aType, (uchar*) &aGUID, &aSize) != ERROR_SUCCESS)
 		return false;
 
@@ -504,6 +520,7 @@ bool D3DTester::CheckRegistry()
 	char aBuf[4096];
 	aType = REG_SZ;
 	aSize = 4096;
+	// STRING: POPCAPGAME1 0x0060ddc0
 	if (RegQueryValueExA(mRegKey, "FailureReason", 0, &aType, (uchar*) aBuf, &aSize) != ERROR_SUCCESS)
 		return false;
 
@@ -512,6 +529,7 @@ bool D3DTester::CheckRegistry()
 	// Get warining
 	aType = REG_SZ;
 	aSize = 4096;
+	// STRING: POPCAPGAME1 0x00609adc
 	if (RegQueryValueExA(mRegKey, "Warning", 0, &aType, (uchar*) aBuf, &aSize) != ERROR_SUCCESS)
 		return false;
 
@@ -632,6 +650,10 @@ bool D3DTester::IsSupportedCard(const char *theDisplayDesc)
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// TEMPLATE: POPCAPGAME1 0x4db390
+// +call std::basic_string<char,std::char_traits<char>,std::allocator<char> >::find_first_of
+
 // FUNCTION: POPCAPGAME1 0x004e52b0
 bool D3DTester::Init(HWND theHWND, LPDIRECTDRAW7 theDDraw)
 {
@@ -640,6 +662,8 @@ bool D3DTester::Init(HWND theHWND, LPDIRECTDRAW7 theDDraw)
 
 	if (mCheckRegistry)
 	{
+		// STRING: POPCAPGAME1 0x0060e498
+		// "\\Test3D"
 		std::string aKey = RemoveTrailingSlash("SOFTWARE\\" + gSexyAppBase->mRegKey) + "\\Test3D";
 		RegCreateKeyExA(HKEY_CURRENT_USER, aKey.c_str(),0,"",REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,NULL,&mRegKey,NULL);
 	}
@@ -652,8 +676,10 @@ bool D3DTester::Init(HWND theHWND, LPDIRECTDRAW7 theDDraw)
 			extern HMODULE gDDrawDLL;
 
 			typedef HRESULT (WINAPI *DirectDrawCreateExFunc)(GUID FAR *lpGUID, LPVOID *lplpDD, REFIID iid, IUnknown FAR *pUnkOuter);
+			// STRING: POPCAPGAME1 0x0060e484
 			DirectDrawCreateExFunc aDirectDrawCreateExFunc = (DirectDrawCreateExFunc)GetProcAddress(gDDrawDLL,"DirectDrawCreateEx");
-			if (aDirectDrawCreateExFunc == NULL)							
+			if (aDirectDrawCreateExFunc == NULL)			
+				// STRING: POPCAPGAME1 0x0060e46c				
 				return Fail("No DirectDrawCreateEx"); 			
 
 			CheckDXError(aDirectDrawCreateExFunc(NULL, (LPVOID*)&mDD7, IID_IDirectDraw7, NULL),"DirectDrawCreateEx");
@@ -668,6 +694,7 @@ bool D3DTester::Init(HWND theHWND, LPDIRECTDRAW7 theDDraw)
 		{
 			// Get Device GUID
 			DDDEVICEIDENTIFIER2 aDeviceInfo;
+			// STRING: POPCAPGAME1 0x0060e458
 			CheckDXError(mDD7->GetDeviceIdentifier(&aDeviceInfo,0), "GetDeviceIdentifier");
 			mDisplayGUID = aDeviceInfo.guidDeviceIdentifier;
 			mDisplayDriver = aDeviceInfo.szDriver;
@@ -689,6 +716,7 @@ bool D3DTester::Init(HWND theHWND, LPDIRECTDRAW7 theDDraw)
 		HRESULT aResult =  mDD7->GetAvailableVidMem(&ddsCaps, &dwTotal, &dwFree);
 		if (!SUCCEEDED(aResult))
 		{
+			// STRING: POPCAPGAME1 0x0060e438
 			Warn(StrFormat("GetAvailableVidMem failed: %s",GetDirectXErrorString(aResult).c_str()));
 		}
 		else
@@ -696,8 +724,10 @@ bool D3DTester::Init(HWND theHWND, LPDIRECTDRAW7 theDDraw)
 			dwTotal += (aBPP/8)*aWidth*aHeight;
 			dwTotal /= (1024*1024);
 			if (dwTotal < mMinVidMemory)
+				// STRING: POPCAPGAME1 0x0060e41c
 				return Fail("Not enough video memory.");
 			else if (dwTotal < mRecommendedVidMemory)
+				// STRING: POPCAPGAME1 0x0060e408
 				Warn("Low video memory.");
 		}
 
@@ -715,6 +745,7 @@ bool D3DTester::Init(HWND theHWND, LPDIRECTDRAW7 theDDraw)
 
 		// Get date on driver dll
 		std::string aPath = mDisplayDriver;
+		// STRING: POPCAPGAME1 0x0060e404
 		if (aPath.find_first_of("/\\")==std::string::npos)
 		{
 			char aBuf[_MAX_PATH+1];
@@ -736,11 +767,14 @@ bool D3DTester::Init(HWND theHWND, LPDIRECTDRAW7 theDDraw)
 
 		// Check supported cards
 		if (!IsSupportedCard(mDisplayDescription.c_str()))
+		// STRING: POPCAPGAME1 0x0060e3e8
 			Warn(StrFormat("Unsupported video card: %s",mDisplayDescription.c_str()));
 
 		// Get Direct3D7 to test 3d capabilities
+		// STRING: POPCAPGAME1 0x0060dfb0
 		CheckDXError(mDD7->QueryInterface(IID_IDirect3D7, (LPVOID*)&mD3D7),"QueryInterface IID_IDirect3D7"); 
 
+		// STRING: POPCAPGAME1 0x0060e3d4
 		CheckDXError(mDD7->SetCooperativeLevel(theHWND, DDSCL_NORMAL),"SetCooperativeLevel");
 
 		// Create Primary Surface for test rendering
@@ -751,18 +785,22 @@ bool D3DTester::Init(HWND theHWND, LPDIRECTDRAW7 theDDraw)
 		ddsd.ddsCaps.dwCaps = DDSCAPS_OFFSCREENPLAIN | DDSCAPS_3DDEVICE;
 		ddsd.dwWidth = 100;
 		ddsd.dwHeight = 100;
+		// STRING: POPCAPGAME1 0x0060e3bc
 		CheckDXError(mDD7->CreateSurface(&ddsd, &mPrimarySurface, NULL),"CreateSurface (Primary)");
 		mTestImage.Create(ddsd.dwWidth,ddsd.dwHeight);
 
-
+		// STRING: POPCAPGAME1 0x0060e3ac
 		CheckDXError(mD3D7->CreateDevice(IID_IDirect3DHALDevice, mPrimarySurface, &mD3DDevice7),"CreateDevice");
 
 		DWORD aFormat = 0;
+		// FUNCTION: POPCAPGAME1 0x0060e398
 		CheckDXError(mD3DDevice7->EnumTextureFormats(PixelFormatsCallback,&aFormat),"EnumTextureFormats");
 		if (!(aFormat & PixelFormat_A8R8G8B8))
 		{
+			// STRING: POPCAPGAME1 0x0060e370
 			Warn("A8R8G8B8 texture format not supported.");
 			if (!(aFormat & PixelFormat_A4R4G4B4))
+				// STRING: POPCAPGAME1 0x0060e338
 				return Fail("A4R4G4B4 and A8R8G8B8 texture formats not supported.");
 
 			gD3DTestHas32BitTexture = false;
@@ -801,7 +839,9 @@ bool D3DTester::Init(HWND theHWND, LPDIRECTDRAW7 theDDraw)
 			aDesc.ddpfPixelFormat.dwBBitMask		= 0x000F;
 		}
 
+		// STRING: POPCAPGAME1 0x0060e318
 		CheckDXError(mDD7->CreateSurface(&aDesc, &mTextureSurface, NULL), "CreateSurface (TextureSurface1)");
+		// STRING: POPCAPGAME1 0x0060e2f8
 		CheckDXError(mDD7->CreateSurface(&aDesc, &mTextureSurface2, NULL), "CreateSurface (TextureSurfacd2)");
 	}
 	catch(TestException &ex)
@@ -814,6 +854,8 @@ bool D3DTester::Init(HWND theHWND, LPDIRECTDRAW7 theDDraw)
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// FUNCTION: POPCAPGAME1 0x004c2ce0
 HRESULT CALLBACK D3DTester::PixelFormatsCallback(LPDDPIXELFORMAT theFormat, LPVOID lpContext)
 {
 	*((DWORD*)lpContext) |= D3DInterface::GetDDPixelFormat(theFormat);
@@ -938,13 +980,27 @@ void D3DTester::CopyPrimaryToTestImage()
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
 // FUNCTION: POPCAPGAME1 0x004e5cf0
 bool D3DTester::TestAlphaBlend()
 {
 	try
 	{
 		CheckDXError(mD3DDevice7->BeginScene());
+		// STRING: POPCAPGAME1 0x0060e588
 		CheckDXError(mD3DDevice7->Clear(0, NULL, D3DCLEAR_TARGET ,0xff000000, 1.0f, 0L),"Clear");
+
+		// STRING: POPCAPGAME1 0x0060e560
+		// "D3DRENDERSTATE_ALPHABLENDENABLE, TRUE"
+
+		// STRING: POPCAPGAME1 0x0060e534
+		// "D3DRENDERSTATE_SRCBLEND, D3DBLEND_SRCALPHA"
+
+		// STRING: POPCAPGAME1 0x0060e504
+		// "D3DRENDERSTATE_DESTBLEND, D3DBLEND_INVSRCALPHA"
+
+		// STRING: POPCAPGAME1 0x0060e4dc
+		// "D3DRENDERSTATE_CULLMODE, D3DCULL_NONE"
 
 		SafeSetRenderState(D3DRENDERSTATE_ALPHABLENDENABLE,TRUE);
 		SafeSetRenderState(D3DRENDERSTATE_SRCBLEND,  D3DBLEND_SRCALPHA);
@@ -976,14 +1032,17 @@ bool D3DTester::TestAlphaBlend()
 		if (isUniform)
 			return true;
 		else
+			// STRING: POPCAPGAME1 0x0060e4bc
 			return Warn("Alpha blend test not uniform.");
 	}
 	else
+		// STRING: POPCAPGAME1 0x0060e4a0
 		return Fail("Alpha blend Not Supported");
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
 // FUNCTION: POPCAPGAME1 0x004e5f80
 bool D3DTester::TestAdditiveBlend()
 {
@@ -993,7 +1052,11 @@ bool D3DTester::TestAdditiveBlend()
 		CheckDXError(mD3DDevice7->Clear(0, NULL, D3DCLEAR_TARGET ,0xff000000, 1.0f, 0L),"Clear");
 
 		SafeSetRenderState(D3DRENDERSTATE_ALPHABLENDENABLE,TRUE);
+		// STRING: POPCAPGAME1 0x0060e5fc
+		// "D3DRENDERSTATE_SRCBLEND, D3DBLEND_ONE"
 		SafeSetRenderState(D3DRENDERSTATE_SRCBLEND,  D3DBLEND_ONE);
+		// STRING: POPCAPGAME1 0x0060e5d4
+		// "D3DRENDERSTATE_DESTBLEND, D3DBLEND_ONE"
 		SafeSetRenderState(D3DRENDERSTATE_DESTBLEND, D3DBLEND_ONE);
 		SafeSetRenderState(D3DRENDERSTATE_CULLMODE, D3DCULL_NONE);
 
@@ -1022,9 +1085,11 @@ bool D3DTester::TestAdditiveBlend()
 		if (isUniform)
 			return true;
 		else
+			// STRING: POPCAPGAME1 0x0060e5b0
 			return Warn("Additive blend test not uniform.");
 	}
 	else
+		// STRING: POPCAPGAME1 0x0060e590
 		return Fail("Additive blend not supported.");
 }
 
@@ -1068,9 +1133,11 @@ bool D3DTester::TestAlphaAddBlend()
 		if (isUniform)
 			return true;
 		else
+			// STRING: POPCAPGAME1 0x0060e644
 			return Warn("AlphaAdd blend test not uniform.");
 	}
 	else
+		// STRING: POPCAPGAME1 0x0060e624
 		return Fail("AlphaAdd blend not supported.");
 }
 
@@ -1089,6 +1156,8 @@ bool D3DTester::TestAlphaModulate()
 		SafeSetRenderState(D3DRENDERSTATE_DESTBLEND, D3DBLEND_INVSRCALPHA);
 		SafeSetRenderState(D3DRENDERSTATE_CULLMODE, D3DCULL_NONE);
 
+		// STRING: POPCAPGAME1 0x0060e6b4
+		// "D3DTSS_ALPHAOP, D3DTOP_MODULATE"
 		SafeSetTextureStageState(0,D3DTSS_ALPHAOP, D3DTOP_MODULATE);
 
 		D3DTestImage anImage(64,64);
@@ -1116,9 +1185,11 @@ bool D3DTester::TestAlphaModulate()
 		if (isUniform)
 			return true;
 		else
+			// STRING: POPCAPGAME1 0x0060e68c
 			return Warn("AlphaModulated blend test not uniform.");
 	}
 	else
+		// STRING: POPCAPGAME1 0x0060e668
 		return Fail("AlphaModulated blend not supported.");
 }
 ///////////////////////////////////////////////////////////////////////////////

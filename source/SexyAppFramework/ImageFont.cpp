@@ -76,6 +76,28 @@ ListDataElement::ListDataElement(const ListDataElement& theListDataElement)
 		mElementVector.push_back(theListDataElement.mElementVector[i]->Duplicate());
 }
 
+// TEMPLATE: POPCAPGAME1 0x004e7820
+// std::vector<int,std::allocator<int> >::insert
+
+// TEMPLATE: POPCAPGAME1 0x004e48d0
+// std::vector<Sexy::DataElement *,std::allocator<Sexy::DataElement *> >::_Insert_n
+
+// TEMPLATE: POPCAPGAME1 0x00438320
+// std::_Allocate<Sexy::DataElement *>
+
+// TEMPLATE: POPCAPGAME1 0x004427e0
+// std::vector<Sexy::DataElement *,std::allocator<Sexy::DataElement *> >::_Umove<Sexy::DataElement * *>
+
+// TEMPLATE: POPCAPGAME1 0x00443390
+// std::vector<Sexy::DataElement *,std::allocator<Sexy::DataElement *> >::_Ufill
+
+// TEMPLATE: POPCAPGAME1 0x0043f770
+// std::fill<Sexy::DataElement * *,Sexy::DataElement *>
+
+// TEMPLATE: POPCAPGAME1 0x0043f790
+// stdext::_Unchecked_move_backward<Sexy::DataElement * *,Sexy::DataElement * *>
+
+
 // FUNCTION: POPCAPGAME1 0x00512330
 ListDataElement& ListDataElement::operator=(const ListDataElement& theListDataElement)
 {
@@ -153,6 +175,9 @@ FontLayer::FontLayer(const FontLayer& theFontLayer) :
 		mCharData[i] = theFontLayer.mCharData[i];	
 }
 
+// FUNCTION: POPCAPGAME1 0x004ea850
+// Sexy::FontLayer::~FontLayer
+
 // FUNCTION: POPCAPGAME1 0x004f98c0
 FontData::FontData()
 {
@@ -166,8 +191,17 @@ FontData::FontData()
 		mCharMap[i] = (uchar) i;
 }
 
-// TEMPLATE: POPCAPGAME1 0x004fa400
+// SYNTHETIC: POPCAPGAME1 0x004fa400
 // Sexy::FontData::`scalar deleting destructor'
+
+// TEMPLATE: POPCAPGAME1 0x00437e50
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,bool,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,bool> >,0> >::const_iterator::_Inc
+
+// TEMPLATE: POPCAPGAME1 0x00514a50
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,bool,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,bool> >,0> >::erase(class std::_Tree<class std::_Tmap_traits<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, class Sexy::FontLayer *, struct std::less<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>, class std::allocator<struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const, class Sexy::FontLayer *>>, 0>>::iterator, class std::_Tree<class std::_Tmap_traits<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, class Sexy::FontLayer *, struct std::less<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>, class std::allocator<struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const, class Sexy::FontLayer *>>, 0>>::iterator)
+
+// TEMPLATE: POPCAPGAME1 0x004f6e00
+// std::list<Sexy::FontLayer,std::allocator<Sexy::FontLayer> >::clear
 
 // FUNCTION: POPCAPGAME1 0x004f99a0
 FontData::~FontData()
@@ -206,7 +240,10 @@ bool FontData::Error(const std::string& theError)
 
 		if (mCurrentLine.length() > 0)
 		{
-			anErrorString += " on Line " + StrFormat("%d:\r\n\r\n", mCurrentLineNum) + mCurrentLine;
+			// STRING: POPCAPGAME1 0x0060e1c4
+			anErrorString += " on Line " +
+				// STRING: POPCAPGAME1 0x0060e1d0
+				StrFormat("%d:\r\n\r\n", mCurrentLineNum) + mCurrentLine;
 		}
 
 		mApp->Popup(anErrorString);
@@ -214,6 +251,9 @@ bool FontData::Error(const std::string& theError)
 
 	return false;
 }
+
+// TEMPLATE: POPCAPGAME1 0x005025e0
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,bool,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,bool> >,0> >::find
 
 // FUNCTION: POPCAPGAME1 0x004e3120
 bool FontData::DataToLayer(DataElement* theSource, FontLayer** theFontLayer)
@@ -228,6 +268,7 @@ bool FontData::DataToLayer(DataElement* theSource, FontLayer** theFontLayer)
 	FontLayerMap::iterator anItr = mFontLayerMap.find(aLayerName);
 	if (anItr == mFontLayerMap.end())
 	{
+		// STRING: POPCAPGAME1 0x0060e1d8
 		Error("Undefined Layer");
 		return false;
 	}
@@ -1147,7 +1188,9 @@ ActiveFontLayer::~ActiveFontLayer()
 		delete mScaledImage;
 }
 
-////
+// TEMPLATE: POPCAPGAME1 0x004dc780
+// std::list<Sexy::ActiveFontLayer,std::allocator<Sexy::ActiveFontLayer> >::_Buynode(void)
+
 // FUNCTION: POPCAPGAME1 0x004f9c20
 ImageFont::ImageFont(SexyAppBase* theSexyApp, const std::string& theFontDescFileName)
 {	

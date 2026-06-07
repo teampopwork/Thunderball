@@ -6,6 +6,9 @@
 
 #include <list>
 
+// TEMPLATE: POPCAPGAME1 0x004bc5c0
+// Sexy::TRect<int>::Intersection
+
 namespace Sexy
 {
 

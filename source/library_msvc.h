@@ -638,9 +638,6 @@
 // STRING: POPCAPGAME1 0x00626bd8
 // "EncodePointer"
 
-// FUNCTION: POPCAPGAME1 0x005ab4d4
-// _use_encode_pointer
-
 // LIBRARY: POPCAPGAME1 0x005a364f
 // __addlocaleref
 
@@ -657,7 +654,7 @@
 // strcmp
 
 // GLOBAL: POPCAPGAME1 0x0064f9d8
-// __initialmbcinfo
+// _lpdays
 
 // GLOBAL: POPCAPGAME1 0x0064ecb0
 // _cfltcvt_tab
@@ -889,6 +886,9 @@
 // _stricmp
 
 // LIBRARY: POPCAPGAME1 0x0059e380
+// strchr
+
+// LIBRARY: POPCAPGAME1 0x005a0060
 // strrchr
 
 // LIBRARY: POPCAPGAME1 0x0059d14d
@@ -2330,3 +2330,252 @@
 
 // TEMPLATE: POPCAPGAME1 0x
 // std::exception::exception(char const *const &)
+
+// GLOBAL: POPCAPGAME1 0x0064fbd8
+// _pow10pos
+
+// GLOBAL: POPCAPGAME1 0x0064fd38
+// _pow10neg
+
+// GLOBAL: POPCAPGAME1 0x00626c58
+// __lookuptable
+
+// GLOBAL: POPCAPGAME1 0x0064f7b8
+// _lookuptrailbytes
+
+// STRING: POPCAPGAME1 0x0060f460
+// "C"
+
+// GLOBAL: POPCAPGAME1 0x00688cc0
+// wcbuffer
+
+// GLOBAL: POPCAPGAME1 0x0064e764
+// __lconv_c
+
+// STRING: POPCAPGAME1 0x0062de14
+// "1#SNAN"
+
+// STRING: POPCAPGAME1 0x0062de0c
+// "1#IND"
+
+// STRING: POPCAPGAME1 0x0062de04
+// "1#INF"
+
+// STRING: POPCAPGAME1 0x0062ddfc
+// "1#QNAN"`
+
+// LIBRARY: POPCAPGAME1 0x0059de60
+// _chkstk
+
+// GLOBAL: POPCAPGAME1 0x0064fa0c
+// _days
+
+// LIBRARY: POPCAPGAME1 0x0059f151
+// operator delete[]
+
+// LIBRARY: POPCAPGAME1 0x005b15aa
+// _get_daylight
+
+// LIBRARY: POPCAPGAME1 0x005b15de
+// _get_dstbias
+
+// LIBRARY: POPCAPGAME1 0x005b1612
+// _get_timezone
+
+// STRING: POPCAPGAME1 0x00625900
+// "e+000"
+
+// GLOBAL: POPCAPGAME1 0x00688e84
+// _outputformat
+
+// GLOBAL: POPCAPGAME1 0x00625720
+// _first_127char
+
+// GLOBAL: POPCAPGAME1 0x0064ebb8
+// _ctype_loc_style
+
+// GLOBAL: POPCAPGAME1 0x00688418
+// _wenviron
+
+// LIBRARY: POPCAPGAME1 0x005a17bb
+// _threadstart
+
+// LIBRARY: POPCAPGAME1 0x005a251f
+// __iob_func
+
+// LIBRARY: POPCAPGAME1 0x0059c52c
+// _CallCatchBlock2
+
+// STRING: POPCAPGAME1 0x006257a0
+// "_.,"
+
+// GLOBAL: POPCAPGAME1 0x006887b8
+// __lc_handle
+
+// GLOBAL: POPCAPGAME1 0x0062d4a0
+// __rg_country
+
+// GLOBAL: POPCAPGAME1 0x0062d298
+// __rg_language
+
+// STRING: POPCAPGAME1 0x0062d574
+// "Norwegian-Nynorsk"
+
+// GLOBAL: POPCAPGAME1 0x00688414
+// __initenv
+
+// GLOBAL: POPCAPGAME1 0x0062be44
+// __dnames
+
+// GLOBAL: POPCAPGAME1 0x0062be5c
+// __mnames
+
+// LIBRARY: POPCAPGAME1 0x005abb79
+// _inconsistency
+
+// GLOBAL: POPCAPGAME1 0x00688e8c
+// _commode
+
+// GLOBAL: POPCAPGAME1 0x00626cb4
+// ccsField
+
+// GLOBAL: POPCAPGAME1 0x00626cbc
+// utf8encoding
+
+// GLOBAL: POPCAPGAME1 0x00626cc4
+// utf16encoding
+
+// GLOBAL: POPCAPGAME1 0x00626cd0
+// unicodeencoding
+
+// LIBRARY: POPCAPGAME1 0x005b8bb7
+// _tsopen_nolock(1)
+
+// LIBRARY: POPCAPGAME1 0x005bb052
+// _tsopen_nolock(2)
+
+// LIBRARY: POPCAPGAME1 0x004fa800
+// std::ios_base::_Callfns
+
+// GLOBAL: POPCAPGAME1 0x006887d8
+// _stdbuf
+
+// GLOBAL: POPCAPGAME1 0x0064ecfc
+// XAMtoTagTab
+
+// GLOBAL: POPCAPGAME1 0x0064ed10
+// newcw
+
+// GLOBAL: POPCAPGAME1 0x0064ebb4
+// _pwctype
+
+// LIBRARY: POPCAPGAME1 0x0059c2b2
+// _CallSETranslator
+
+// LIBRARY: POPCAPGAME1 0x0059c424
+// _GetRangeOfTrysToCheck
+
+// STRING: POPCAPGAME1 0x006257a8
+// "=;"
+
+// GLOBAL: POPCAPGAME1 0x006256D8
+// __lc_category
+
+// STRING: POPCAPGAME1 0x006257a4
+// ";"
+
+// LIBRARY: POPCAPGAME1 0x005ac6f8
+// _whiteout
+
+// LIBRARY: POPCAPGAME1 0x005ac6e2
+// _inc
+
+// LIBRARY: POPCAPGAME1 0x005ac68e
+// __check_float_string
+
+// GLOBAL: POPCAPGAME1 0x0064f4a0
+// __initiallocalestructinfo
+
+// LIBRARY: POPCAPGAME1 0x0059e2a6
+// atoi
+
+// LIBRARY: POPCAPGAME1 0x005b6b21
+// _ValidateExecute
+
+// GLOBAL: POPCAPGAME1 0x0064ebc0
+// ??_R0?AVbad_exception@std@@@8
+
+// LIBRARY: POPCAPGAME1 0x0059bae5
+// type_info::operator== 
+
+// STRING: POPCAPGAME1 0x006257bc
+// "bad exception"
+
+// LIBRARY: POPCAPGAME1 0x0059b8d2
+// std::exception::exception(char const *const &)
+
+// LIBRARY: POPCAPGAME1 0x00646f44
+// __TI2?AVbad_exception@std@@
+
+// LIBRARY: POPCAPGAME1 0x0059c1fa
+// _UnwindNestedFrames
+
+// LIBRARY: POPCAPGAME1 0x005abbd0
+// _CallSettingFrame
+
+// GLOBAL: POPCAPGAME1 0x006883d0
+// buf
+
+// GLOBAL: POPCAPGAME1 0x0064fb70
+// _d_max
+
+// GLOBAL: POPCAPGAME1 0x0064fb60
+// _d_inf
+
+// LIBRARY: POPCAPGAME1 0x0058b108
+// std::_Lockit::_Lockit
+
+// STRING: POPCAPGAME1 0x0060e1a0
+// _
+
+// LIBRARY: POPCAPGAME1 0x0059c1c3
+// _JumpToContinuation
+
+// STRING: POPCAPGAME1 0x0062d570
+// "ACP"
+
+// STRING: POPCAPGAME1 0x0062d56c
+// "OCP"
+
+// LIBRARY: POPCAPGAME1 0x005a2b98
+// __crtLCMapStringA_stat
+
+// GLOBAL: POPCAPGAME1 0x0064f5d4
+// _daylight
+
+// GLOBAL: POPCAPGAME1 0x0064f5d8
+// _dstbias
+
+// GLOBAL: POPCAPGAME1 0x0064f5d0
+// _timezone
+
+// LIBRARY: POPCAPGAME1 0x0059d16f
+// __ArrayUnwind
+
+// STRING: POPCAPGAME1 0x005d5f80
+// "list<T> too long"
+
+// LIBRARY: POPCAPGAME1 0x005bcc82
+// _select@20
+
+// LIBRARY: POPCAPGAME1 0x005bcc7c
+// ___WSAFDIsSet@8
+
+// STRING: POPCAPGAME1 0x005d5f58
+// "map/set<T> too long"
+
+// STRING: POPCAPGAME1 0x005d5f6c
+// vector<T> too long
+
+// LIBRARY: POPCAPGAME1 0x005ab2e0
+// _CIsin_pentium4

@@ -33,6 +33,9 @@ Poly::Poly()
 // SYNTHETIC: POPCAPGAME1 0x00483300
 // Sexy::Poly::`scalar deleting destructor'
 
+// TEMPLATE: POPCAPGAME1 0x0047daa0
+// std::_Destroy_range<Sexy::SmartPtr<Sexy::Line>,std::allocator<Sexy::SmartPtr<Sexy::Line> > >
+
 // FUNCTION: POPCAPGAME1 0x00481770
 Poly::~Poly()
 {
@@ -380,6 +383,7 @@ void Poly::DrawLight(Graphics* g)
 // FUNCTION: POPCAPGAME1 0x0047b9d0
 void Poly::NotifyCollision(PhysObj* param_1)
 {
+	// STRING: POPCAPGAME1 0x005f11d4
 	if (mUnk0x78 == "movetoggle" && !mUnk0x26 && mMover != NULL && 0 < mMover->mTime) {
 		if (mUnk0x4c % mMover->mTime < 10) {
 			if (mUnk0x130) {

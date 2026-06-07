@@ -14,6 +14,7 @@ SexyString Sexy::DIALOG_NO_STRING				= _S("NO");
 SexyString Sexy::DIALOG_OK_STRING				= _S("OK");
 SexyString Sexy::DIALOG_CANCEL_STRING			= _S("CANCEL");
 
+// GLOBAL: POPCAPGAME1 0x0064bc08
 static int gDialogColors[][3] = 
 {{255, 255, 255},
 {255, 255, 0},
@@ -293,7 +294,7 @@ void Dialog::RemovedFromManager(WidgetManager* theWidgetManager)
 // FUNCTION: POPCAPGAME1 0x00540bb0
 void Dialog::OrderInManagerChanged()
 {
-	Widget::OrderInManagerChanged();
+	// Widget::OrderInManagerChanged();
 	if (mYesButton != NULL)
 		mWidgetManager->PutInfront(mYesButton,this);
 	if (mNoButton != NULL)

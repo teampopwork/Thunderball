@@ -46,17 +46,21 @@ using namespace Sexy;
 const int DEMO_FILE_ID = 0x42BEEF78;
 const int DEMO_VERSION = 2;
 
+// GLOBAL: POPCAPGAME1 0x006873ac
 SexyAppBase* Sexy::gSexyAppBase = NULL;
 
 SEHCatcher Sexy::gSEHCatcher;
 
+// GLOBAL: POPCAPGAME1 0x006873b0
 HMODULE gDDrawDLL = NULL;
+// GLOBAL: POPCAPGAME1 0x006873b4
 HMODULE gDSoundDLL = NULL;
 HMODULE gVersionDLL = NULL;
 
 //typedef struct { UINT cbSize; DWORD dwTime; } LASTINPUTINFO;
 typedef BOOL (WINAPI*GetLastInputInfoFunc)(LASTINPUTINFO *plii);
 GetLastInputInfoFunc gGetLastInputInfoFunc = NULL;
+// GLOBAL: POPCAPGAME1 0x006873c0
 static bool gScreenSaverActive = false;
 
 #ifndef SPI_GETSCREENSAVERRUNNING
@@ -111,6 +115,8 @@ unsigned char gDraggingCursorData[] = {
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
 	0x00
 };
+
+// GLOBAL: POPCAPGAME1 0x006873c4
 static DDImage* gFPSImage = NULL; 
 
 //////////////////////////////////////////////////////////////////////////
@@ -124,6 +130,7 @@ void* GetSHGetFolderPath(const char* theDLL, HMODULE* theMod)
 
 	if (aMod != NULL)
 	{
+		// STRING: POPCAPGAME1 0x00612720
 		*((void**)&aFunc) = (void*)GetProcAddress(aMod, "SHGetFolderPathA");
 		if (aFunc == NULL)
 		{
@@ -666,6 +673,7 @@ void SexyAppBase::WriteDemoBuffer()
 {
 	if (mRecordingDemoBuffer)
 	{
+		// STRING: POPCAPGAME1 0x006127a4
 		FILE* aFP = fopen(mDemoFileName.c_str(), "w+b");
 
 		if (aFP != NULL)
@@ -732,6 +740,7 @@ void SexyAppBase::DemoSyncBuffer(Buffer* theBuffer)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x0052e290
 void SexyAppBase::DemoSyncString(std::string* theString)
 {
 	Buffer aBuffer;
@@ -940,6 +949,12 @@ Dialog*	SexyAppBase::GetDialog(int theDialogId)
 	return NULL;
 }
 
+// TEMPLATE: POPCAPGAME1 0x0040c8e0
+// std::_Tree<std::_Tmap_traits<int,Sexy::Dialog *,std::less<int>,std::allocator<std::pair<int const ,Sexy::Dialog *> >,0> >::find
+
+// TEMPLATE: POPCAPGAME1 0x0040e970
+// std::_Tree<std::_Tmap_traits<int,Sexy::MemoryImage *,std::greater<int>,std::allocator<std::pair<int const ,Sexy::MemoryImage *> >,1> >::erase(class std::_Tree<class std::_Tmap_traits<int, class Sexy::RefCount *, struct std::less<int>, class std::allocator<struct std::pair<int const, class Sexy::RefCount *>>, 0>>::iterator)
+
 // FUNCTION: POPCAPGAME1 0x0052e350
 bool SexyAppBase::KillDialog(int theDialogId, bool removeWidget, bool deleteWidget)
 {
@@ -992,6 +1007,24 @@ int SexyAppBase::GetDialogCount()
 {
 	return mDialogMap.size();
 }
+
+// TEMPLATE: POPCAPGAME1 0x0041d770
+// std::_Tree<std::_Tmap_traits<int,Sexy::Dialog *,std::less<int>,std::allocator<std::pair<int const ,Sexy::Dialog *> >,0> >::insert
+
+// TEMPLATE: POPCAPGAME1 0x00444390
+// std::_Tree<std::_Tmap_traits<int,Sexy::MemoryImage *,std::greater<int>,std::allocator<std::pair<int const ,Sexy::MemoryImage *> >,1> >::_Insert
+
+// TEMPLATE: POPCAPGAME1 0x004ba9d0
+// std::_Tree<std::_Tmap_traits<int,Sexy::MemoryImage *,std::greater<int>,std::allocator<std::pair<int const ,Sexy::MemoryImage *> >,1> >::_Buynode(struct std::_Tree_nod<class std::_Tmap_traits<int, void *, struct std::less<int>, class std::allocator<struct std::pair<int const, void *>>, 0>>::_Node *, struct std::_Tree_nod<class std::_Tmap_traits<int, void *, struct std::less<int>, class std::allocator<struct std::pair<int const, void *>>, 0>>::_Node *, struct std::_Tree_nod<class std::_Tmap_traits<int, void *, struct std::less<int>, class std::allocator<struct std::pair<int const, void *>>, 0>>::_Node *, struct std::pair<int const, void *> const &, char)
+
+// TEMPLATE: POPCAPGAME1 0x00408960
+// std::_Tree<std::_Tmap_traits<int,Sexy::Dialog *,std::less<int>,std::allocator<std::pair<int const ,Sexy::Dialog *> >,0> >::_Lrotate
+
+// TEMPLATE: POPCAPGAME1 0x0052adf0
+// std::_Tree<std::_Tmap_traits<int,Sexy::MemoryImage *,std::greater<int>,std::allocator<std::pair<int const ,Sexy::MemoryImage *> >,1> >::_Rrotate
+
+// TEMPLATE: POPCAPGAME1 0x00408c60
+// std::_Tree<std::_Tmap_traits<int,Sexy::Dialog *,std::less<int>,std::allocator<std::pair<int const ,Sexy::Dialog *> >,0> >::const_iterator::_Dec
 
 // FUNCTION: POPCAPGAME1 0x00534330
 void SexyAppBase::AddDialog(int theDialogId, Dialog* theDialog)
@@ -1069,6 +1102,9 @@ void SexyAppBase::URLOpenSucceeded(const std::string& theURL)
 		Shutdown();	
 }
 
+// TEMPLATE: POPCAPGAME1 0x004088c0
+// std::basic_string<char,std::char_traits<char>,std::allocator<char> >::compare(unsigned int, unsigned int, char const *, unsigned int)
+
 // FUNCTION: POPCAPGAME1 0x0052e4b0
 bool SexyAppBase::OpenURL(const std::string& theURL, bool shutdownOnOpen)
 {
@@ -1079,6 +1115,7 @@ bool SexyAppBase::OpenURL(const std::string& theURL, bool shutdownOnOpen)
 		mOpeningURL = theURL;
 		mOpeningURLTime = GetTickCount();		
 
+		// STRING: POPCAPGAME1 0x00609d3c
 		if ((int) ShellExecuteA(NULL, "open", theURL.c_str(), NULL, NULL, SW_SHOWNORMAL) > 32)
 		{
 			return true;
@@ -1166,18 +1203,23 @@ void SexyAppBase::TakeScreenshot()
 		return;
 
 	// Get free image name
+	// STRING: POPCAPGAME1 0x00612934
 	std::string anImageDir = GetAppDataFolder() + "_screenshots";
 	MkDir(anImageDir);
+	// STRING: POPCAPGAME1 0x0060f570
 	anImageDir += "/";
 
 	WIN32_FIND_DATAA aData;
 	int aMaxId = 0;
+	// STRING: POPCAPGAME1 0x005ebc10
 	std::string anImagePrefix = "image";
+	// STRING: POPCAPGAME1 0x005d875c
 	HANDLE aHandle = FindFirstFileA((anImageDir + "*.png").c_str(), &aData);
 	if (aHandle!=INVALID_HANDLE_VALUE)
 	{
 		do {
 			int aNum = 0;
+			// STRING: POPCAPGAME1 0x0061292c
 			if (sscanf(aData.cFileName,(anImagePrefix + "%d.png").c_str(), &aNum)==1)
 			{
 				if (aNum>aMaxId)
@@ -1503,6 +1545,18 @@ double SexyAppBase::GetLoadingThreadProgress()
 	return min(mCompletedLoadingThreadTasks / (double) mNumLoadingThreadTasks, 1.0);
 }
 
+// TEMPLATE: POPCAPGAME1 0x004086d0
+// std::basic_string<char,std::char_traits<char>,std::allocator<char> >::rfind
+
+// TEMPLATE: POPCAPGAME1 0x00401040
+// std::char_traits<char>::compare
+
+// TEMPLATE: POPCAPGAME1 0x00406200
+// std::basic_string<char,std::char_traits<char>,std::allocator<char> >::c_str
+
+// TEMPLATE: POPCAPGAME1 0x0040cc80
+// std::basic_string<char,std::char_traits<char>,std::allocator<char> >::append(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const &, unsigned int, unsigned int)
+
 // FUNCTION: POPCAPGAME1 0x0052eb20
 bool SexyAppBase::RegistryWrite(const std::string& theValueName, ulong theType, const uchar* theValue, ulong theLength)
 {
@@ -1525,6 +1579,7 @@ bool SexyAppBase::RegistryWrite(const std::string& theValueName, ulong theType, 
 
 	HKEY aGameKey;
 	
+	// STRING: POPCAPGAME1 0x005d7f9c
 	std::string aKeyName = RemoveTrailingSlash("SOFTWARE\\" + mRegKey);
 	std::string aValueName;
 
@@ -1543,6 +1598,7 @@ bool SexyAppBase::RegistryWrite(const std::string& theValueName, ulong theType, 
 	if (aResult != ERROR_SUCCESS)
 	{
 		ulong aDisp;
+		// STRING: POPCAPGAME1 0x005d6890
 		aResult = RegCreateKeyExA(HKEY_CURRENT_USER, aKeyName.c_str(), 0, "Key", REG_OPTION_NON_VOLATILE,
 			KEY_ALL_ACCESS, NULL, &aGameKey, &aDisp);
 	}
@@ -1658,6 +1714,7 @@ bool SexyAppBase::RegistryEraseKey(const SexyString& _theKeyName)
 	return true;
 }
 
+// FUNCTION: POPCAPGAME1 0x0052f200
 void SexyAppBase::RegistryEraseValue(const SexyString& _theValueName)
 {
 	std::string theValueName = SexyStringToStringFast(_theValueName);
@@ -2148,14 +2205,40 @@ std::string SexyAppBase::GetGameSEHInfo()
 	int aSecLoaded = (GetTickCount() - mTimeLoaded) / 1000;
 
 	char aTimeStr[16];
+	// STRING: POPCAPGAME1 0x00612a00
 	sprintf(aTimeStr, "%02d:%02d:%02d", (aSecLoaded/60/60), (aSecLoaded/60)%60, aSecLoaded%60);
 	
 	char aThreadIdStr[16];
+	// STRING: POPCAPGAME1 0x006129fc
 	sprintf(aThreadIdStr, "%X", mPrimaryThreadId);
+
+	// STRING: POPCAPGAME1 0x00612370
+	// "Product: "
+
+	// STRING: POPCAPGAME1 0x0060e1e8
+	// "\r\n"
+
+	// STRING: POPCAPGAME1 0x00612364
+	// "Version"
 
 	std::string anInfoString = 
 		"Product: " + mProdName + "\r\n" +		
 		"Version: " + mProductVersion + "\r\n";			
+
+	// STRING: POPCAPGAME1 0x006129e4
+	// "Time Loaded: "
+
+	// STRING: POPCAPGAME1 0x006129d4
+	// "\r\nFullscreen: "
+
+	// STRING: POPCAPGAME1 0x006129f8
+	// "No"
+
+	// STRING: POPCAPGAME1 0x006129f4
+	// "Yes"
+
+	// STRING: POPCAPGAME1 0x006129bc
+	// "\r\nPrimary ThreadId: "
 
 	anInfoString +=
 		"Time Loaded: " + std::string(aTimeStr) + "\r\n"
@@ -2314,6 +2397,7 @@ bool SexyAppBase::DoUpdateFrames()
 	}
 }
 
+// GLOBAL: POPCAPGAME1 0x006873c1
 bool gIsFailing = false;
 
 void SexyAppBase::Redraw(Rect* theClipRect)
@@ -2492,6 +2576,7 @@ static void FPSDrawCoords(int theX, int theY)
 }
 
 ///////////////////////////// Demo TimeLeft Stuff
+// GLOBAL: POPCAPGAME1 0x006873c8
 static DDImage* gDemoTimeLeftImage = NULL;
 // FUNCTION: POPCAPGAME1 0x00530960
 static void CalculateDemoTimeLeft()
@@ -2540,6 +2625,7 @@ static void UpdateScreenSaverInfo(DWORD theTick)
 		return;
 
 	// Get screen saver timeout		
+	// GLOBAL: POPCAPGAME1 0x00687494
 	static DWORD aPeriodicTick = 0;
 	static DWORD aScreenSaverTimeout = 60000;
 	static BOOL aScreenSaverEnabled = TRUE;
@@ -2820,6 +2906,12 @@ int SexyAppBase::MsgBox(const std::wstring& theText, const std::wstring& theTitl
 	return aResult;
 }
 
+// STRING: POPCAPGAME1 0x00612a44
+// "FATAL ERROR"
+
+// STRING: POPCAPGAME1 0x00612a38
+// "FATAL_ERROR"
+
 // FUNCTION: POPCAPGAME1 0x00531110
 void SexyAppBase::Popup(const std::string& theString)
 {
@@ -2849,6 +2941,12 @@ void SexyAppBase::Popup(const std::wstring& theString)
 		::MessageBoxW(mHWnd, theString.c_str(), SexyStringToWString(GetString("FATAL_ERROR", _S("FATAL ERROR"))).c_str(), MB_APPLMODAL | MB_ICONSTOP);
 	EndPopup();
 }
+
+// TEMPLATE: POPCAPGAME1 0x0043f250
+// std::list<std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >,0> >::iterator,std::allocator<std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >,0> >::iterator> >::_Buynode
+
+// TEMPLATE: POPCAPGAME1 0x0052de60
+// std::list<std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >,0> >::iterator,std::allocator<std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >,0> >::iterator> >::_Incsize
 
 // FUNCTION: POPCAPGAME1 0x00534440
 void SexyAppBase::SafeDeleteWidget(Widget* theWidget)
@@ -2925,6 +3023,7 @@ static INT_PTR CALLBACK MarkerListDialogProc(HWND hwnd, UINT msg, WPARAM wParam,
 				int aMinutes = (aTotalSeconds/60)%60;
 				int anHours = (aTotalSeconds/3600);
 
+				// STRING: POPCAPGAME1 0x006127a8
 				SexyString aStr = StrFormat(_S("%s (%02d:%02d:%02d)"), anItr->first.c_str(),anHours,aMinutes,aSeconds);				
 				GetTextExtentPoint32(hDCListBox, aStr.c_str(), aStr.length(), &aSize);
 				dwExtent = max (aSize.cx + tm.tmAveCharWidth, (int)dwExtent);
@@ -3052,6 +3151,7 @@ static INT_PTR CALLBACK JumpToTimeDialogProc(HWND hwnd, UINT msg, WPARAM wParam,
 				char aBuf[1024];
 				DWORD aLength = 1000;
 				DWORD aType = REG_SZ;
+				// STRING: POPCAPGAME1 0x00612a54
 				if (RegQueryValueExA(aGameKey, "DemoJumpTime", 0, &aType, (uchar*) aBuf, &aLength) == ERROR_SUCCESS)
 				{
 					aBuf[aLength] = 0;
@@ -3086,6 +3186,7 @@ static INT_PTR CALLBACK JumpToTimeDialogProc(HWND hwnd, UINT msg, WPARAM wParam,
 					}
 
 					int aTime = 0;
+					// STRING: POPCAPGAME1 0x00612a50
 					char *aPtr = strtok(aBuf,":");
 					while (aPtr != NULL)
 					{
@@ -3882,6 +3983,7 @@ bool SexyAppBase::PrepareDemoCommand(bool required)
 	return mUpdateCount == mLastDemoUpdateCnt;
 }
 
+// FUNCTION: POPCAPGAME1 0x00529d00
 void SexyAppBase::ProcessDemo()
 {
 	if (mPlayingDemoBuffer)
@@ -4110,6 +4212,7 @@ bool SexyAppBase::DebugKeyDown(int theKey)
 	{	
 #ifndef RELEASEFINAL
 		if (ReparseModValues())
+			// STRING: POPCAPGAME1 0x006127c8
 			PlaySoundA("c:\\windows\\media\\Windows XP Menu Command.wav", NULL, SND_ASYNC);				
 		else
 		{
@@ -4839,6 +4942,7 @@ void SexyAppBase::MakeWindow()
 
 		// Enable 3d setting
 		bool is3D = false;
+		// STRING: POPCAPGAME1 0x00613134
 		bool is3DOptionSet = RegistryReadBoolean("Is3D", &is3D);
 		if (is3DOptionSet)
 		{
@@ -4864,6 +4968,11 @@ void SexyAppBase::MakeWindow()
 	{
 		if (mForceWindowed)
 		{
+			// STRING: POPCAPGAME1 0x006130ec
+			// "PLEASE_SET_COLOR_DEPTH"
+
+			// STRING: POPCAPGAME1 0x00613104
+			// "Please set your desktop color depth to 16 bit."
 			Popup(GetString("PLEASE_SET_COLOR_DEPTH", _S("Please set your desktop color depth to 16 bit.")));
 			DoExit(1);
 		}
@@ -4895,6 +5004,15 @@ void SexyAppBase::MakeWindow()
 		}
 		else
 		{
+			// STRING: POPCAPGAME1 0x00612e1c
+			// "FAILED_INIT_DIRECTDRAW"
+
+			// STRING: POPCAPGAME1 0x00612e34
+			// "Failed to initialize DirectDraw: "
+
+			// STRING: POPCAPGAME1 0x0060db6c
+			// " "
+
 			Popup(GetString("FAILED_INIT_DIRECTDRAW", _S("Failed to initialize DirectDraw: ")) + StringToSexyString(DDInterface::ResultToString(aResult) + " " + mDDInterface->mErrorString));
 			DoExit(1);
 		}
@@ -4936,6 +5054,9 @@ void SexyAppBase::DeleteNativeImageData()
 		++anItr;
 	}
 }
+
+// TEMPLATE: POPCAPGAME1 0x00406300
+// std::_Tree<std::_Tset_traits<int,std::less<int>,std::allocator<int>,0> >::const_iterator::_Inc
 
 // FUNCTION: POPCAPGAME1 0x0052cfc0
 void SexyAppBase::DeleteExtraImageData()
@@ -4979,6 +5100,7 @@ void SexyAppBase::LoadingThreadProcStub(void *theArg)
 	aSexyApp->LoadingThreadProc();		
 
 	char aStr[256];
+	// STRING: POPCAPGAME1 0x00612788
 	sprintf(aStr, "Resource Loading Time: %d\r\n", (GetTickCount() - aSexyApp->mTimeLoaded));
 	OutputDebugStringA(aStr);
 
@@ -5781,6 +5903,12 @@ bool SexyAppBase::LoadProperties(const std::string& theFileName, bool required, 
 			return true;
 		else
 		{
+			// STRING: POPCAPGAME1 0x00612ac0
+			// "Unable to open properties file "
+
+			// STRING: POPCAPGAME1 0x00x612aa8
+			// UNABLE_OPEN_PROPERTIES
+
 			Popup(GetString("UNABLE_OPEN_PROPERTIES", _S("Unable to open properties file ")) + StringToSexyString(theFileName));
 			return false;
 		}
@@ -5789,6 +5917,15 @@ bool SexyAppBase::LoadProperties(const std::string& theFileName, bool required, 
 	{
 		if (!CheckSignature(aBuffer, theFileName))
 		{
+			// STRING: POPCAPGAME1 0x00612a8c
+			// "Signature check failed on "
+
+			// STRING: POPCAPGAME1 0x00612a74
+			// "PROPERTIES_SIG_FAILED"
+
+			// STRING: POPCAPGAME1 0x00610898
+			// "'"
+
 			Popup(GetString("PROPERTIES_SIG_FAILED", _S("Signature check failed on ")) + StringToSexyString(theFileName + "'"));
 			return false;
 		}
@@ -5815,6 +5952,7 @@ bool SexyAppBase::LoadProperties()
 // FUNCTION: POPCAPGAME1 0x0053c370
 void SexyAppBase::LoadResourceManifest()
 {
+	// STRING: POPCAPGAME1 0x005d7504
 	if (!mResourceManager->ParseResourcesFile("properties\\resources.xml"))
 		ShowResourceError(true);
 }
@@ -5902,6 +6040,9 @@ SexyString SexyAppBase::GetString(const std::string& theId)
 		return _S("");
 }
 
+// TEMPLATE: POPCAPGAME1 0x00502240
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<wchar_t,std::char_traits<wchar_t>,std::allocator<wchar_t> >,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,std::basic_string<wchar_t,std::char_traits<wchar_t>,std::allocator<wchar_t> > > >,0> >::find
+
 // FUNCTION: POPCAPGAME1 0x0052dd40
 SexyString SexyAppBase::GetString(const std::string& theId, const SexyString& theDefault)
 {
@@ -5979,6 +6120,9 @@ void SexyAppBase::DoParseCmdLine()
 	mCmdLineParsed = true;
 }
 
+// TEMPLATE: POPCAPGAME1 0x004097c0
+// std::operator==<char,std::char_traits<char>,std::allocator<char> >
+
 void SexyAppBase::ParseCmdLine(const std::string& theCmdLine)
 {
 	// Command line example:  -play -demofile="game demo.dmo"
@@ -6024,10 +6168,17 @@ void SexyAppBase::ParseCmdLine(const std::string& theCmdLine)
 	}
 }
 
+// TEMPLATE: POPCAPGAME1 0x00409740
+// std::_Tree<std::_Tset_traits<int,std::less<int>,std::allocator<int>,0> >::_Buynode(void)
+
+// TEMPLATE: POPCAPGAME1 0x0041d6c0
+// std::_Tree<std::_Tset_traits<int,std::less<int>,std::allocator<int>,0> >::insert
+
 // FUNCTION: POPCAPGAME1 0x00537260
 static int GetMaxDemoFileNum(const std::string& theDemoPrefix, int theMaxToKeep, bool doErase)
 {
 	WIN32_FIND_DATAA aData;
+	// STRING: POPCAPGAME1 0x00612c7c
 	HANDLE aHandle = FindFirstFileA((theDemoPrefix + "*.dmo").c_str(), &aData);
 	if (aHandle==INVALID_HANDLE_VALUE)
 		return 0;
@@ -6058,11 +6209,13 @@ static int GetMaxDemoFileNum(const std::string& theDemoPrefix, int theMaxToKeep,
 // FUNCTION: POPCAPGAME1 0x005379a0
 void SexyAppBase::HandleCmdLineParam(const std::string& theParamName, const std::string& theParamValue)
 {
+	// STRING: POPCAPGAME1 0x00612d10
 	if (theParamName == "-play")
 	{
 		mPlayingDemoBuffer = true;
 		mRecordingDemoBuffer = false;
 	}
+	// STRING: POPCAPGAME1 0x00612d08
 	else if (theParamName == "-recnum")
 	{
 		int aNum = atoi(theParamValue.c_str());
@@ -6070,6 +6223,7 @@ void SexyAppBase::HandleCmdLineParam(const std::string& theParamName, const std:
 			aNum=5;
 
 		int aDemoFileNum = GetMaxDemoFileNum(mDemoPrefix, aNum, true) + 1;
+		// STRING: POPCAPGAME1 0x00612c74
 		mDemoFileName = SexyStringToString(StrFormat(StringToSexyString(mDemoPrefix + "%d.dmo").c_str(),aDemoFileNum));
 		if (mDemoFileName.length() < 2 || (mDemoFileName[1] != ':' && mDemoFileName[2] != '\\'))
 		{
@@ -6078,6 +6232,7 @@ void SexyAppBase::HandleCmdLineParam(const std::string& theParamName, const std:
 		mRecordingDemoBuffer = true;
 		mPlayingDemoBuffer = false;
 	}
+	// STRING: POPCAPGAME1 0x00612cfc
 	else if (theParamName == "-playnum")
 	{
 		int aNum = atoi(theParamValue.c_str())-1;
@@ -6089,11 +6244,13 @@ void SexyAppBase::HandleCmdLineParam(const std::string& theParamName, const std:
 		mRecordingDemoBuffer = false;
 		mPlayingDemoBuffer = true;
 	}
+	// STRING: POPCAPGAME1 0x00612cf4
 	else if (theParamName == "-record")
 	{
 		mRecordingDemoBuffer = true;
 		mPlayingDemoBuffer = false;
 	}
+	// STRING: POPCAPGAME1 0x00612ce8
 	else if (theParamName == "-demofile")
 	{
 		mDemoFileName = theParamValue;
@@ -6102,22 +6259,31 @@ void SexyAppBase::HandleCmdLineParam(const std::string& theParamName, const std:
 			mDemoFileName = GetAppDataFolder() + mDemoFileName;
 		}
 	}	
+	// STRING: POPCAPGAME1 0x00612ce0
 	else if (theParamName == "-crash")
 	{
 		// Try to access NULL
 		char* a = 0;
 		*a = '!';		
 	}
+	// STRING: POPCAPGAME1 0x00612cd0
 	else if (theParamName == "-screensaver")
 	{
 		mIsScreenSaver = true;
 	}
+	// STRING: POPCAPGAME1 0x00612cc4
 	else if (theParamName == "-changedir")
 	{
 		mChangeDirTo = theParamValue;
 	}
 	else
 	{
+		// STRING: POPCAPGAME1 0x00612c84
+		// "INVALID_COMMANDLINE_PARAM"
+		
+		// STRING: POPCAPGAME1 0x00612ca0
+		// "Invalid command line parameter: "
+
 		Popup(GetString("INVALID_COMMANDLINE_PARAM", _S("Invalid command line parameter: ")) + StringToSexyString(theParamName));
 		DoExit(0);
 	}
@@ -6161,7 +6327,7 @@ void SexyAppBase::InitHook()
 }
 
 // TEMPLATE: POPCAPGAME1 0x0052db40
-// std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const,double>::~pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const,double>
+// std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,double>::~pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,double>
 
 // TEMPLATE: POPCAPGAME1 0x0040f1e0
 //  std::operator+<char,std::char_traits<char>,std::allocator<char> >(char const *, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const &)

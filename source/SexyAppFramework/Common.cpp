@@ -103,6 +103,9 @@ std::string Sexy::GetAppDataFolder()
 	return Sexy::gAppDataFolder;
 }
 
+// TEMPLATE: POPCAPGAME1 0x0040cab0
+// std::basic_string<char,std::char_traits<char>,std::allocator<char> >::append(unsigned int, char)
+
 // FUNCTION: POPCAPGAME1 0x00507e00
 void Sexy::SetAppDataFolder(const std::string& thePath)
 {
@@ -266,6 +269,9 @@ std::wstring Sexy::SexyStringToWString(const SexyString& theString)
 	return StringToWString(theString);
 #endif
 }
+
+// TEMPLATE: POPCAPGAME1 0x0040da90
+// std::basic_string<char,std::char_traits<char>,std::allocator<char> >::substr
 
 // FUNCTION: POPCAPGAME1 0x005080b0
 std::string Sexy::Trim(const std::string& theString)
@@ -650,6 +656,7 @@ std::string Sexy::GetPathFrom(const std::string& theRelPath, const std::string& 
 // FUNCTION: POPCAPGAME1 0x004fe170
 bool Sexy::AllowAllAccess(const std::string& theFileName)
 {
+	// STRING: POPCAPGAME1 0x0060f278
 	HMODULE aLib = LoadLibraryA("advapi32.dll");
 	if (aLib == NULL)
 		return false;
@@ -673,11 +680,17 @@ bool Sexy::AllowAllAccess(const std::string& theFileName)
 	DWORD (WINAPI *fnSetEntriesInAcl)(ULONG cCountOfExplicitEntries, PEXPLICIT_ACCESS pListOfExplicitEntries, PACL OldAcl, PACL* NewAcl);
 	PVOID (WINAPI *fnFreeSid)(PSID pSid);
 
+	// STRING: POPCAPGAME1 0x0060f264
 	*(void**)&fnSetFileSecurity = (void*)GetProcAddress(aLib, "SetFileSecurityA");
+	// STRING: POPCAPGAME1 0x0060f248
 	*(void**)&fnSetSecurityDescriptorDacl = (void*)GetProcAddress(aLib, "SetSecurityDescriptorDacl");
+	// STRING: POPCAPGAME1 0x0060f228
 	*(void**)&fnInitializeSecurityDescriptor = (void*)GetProcAddress(aLib, "InitializeSecurityDescriptor");
+	// STRING: POPCAPGAME1 0x0060f20c
 	*(void**)&fnAllocateAndInitializeSid = (void*)GetProcAddress(aLib, "AllocateAndInitializeSid");
+	// STRING: POPCAPGAME1 0x0060f1f8
 	*(void**)&fnSetEntriesInAcl = (void*)GetProcAddress(aLib, "SetEntriesInAclA");
+	// STRING: POPCAPGAME1 0x0060f1f0
 	*(void**)&fnFreeSid = (void*) GetProcAddress(aLib, "FreeSid");
 
 	if (!(fnSetFileSecurity && fnSetSecurityDescriptorDacl && fnInitializeSecurityDescriptor && fnAllocateAndInitializeSid && fnSetEntriesInAcl && fnFreeSid))
@@ -735,6 +748,9 @@ bool Sexy::AllowAllAccess(const std::string& theFileName)
 	return result;
 }
 
+// TEMPLATE: POPCAPGAME1 0x0040cd90
+// std::basic_string<char,std::char_traits<char>,std::allocator<char> >::append(char const *, unsigned int)
+
 // FUNCTION: POPCAPGAME1 0x00508b50
 bool Sexy::Deltree(const std::string& thePath)
 {
@@ -751,6 +767,7 @@ bool Sexy::Deltree(const std::string& thePath)
 	
 	WIN32_FIND_DATAA aFindData;
 
+	// STRING: POPCAPGAME1 0x005d8774
 	HANDLE aFindHandle = FindFirstFileA((aSourceDir + "*.*").c_str(), &aFindData); 
 	if (aFindHandle == INVALID_HANDLE_VALUE)
 		return false;
@@ -759,7 +776,9 @@ bool Sexy::Deltree(const std::string& thePath)
 	{		
 		if ((aFindData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0)
 		{
+			// STRING: POPCAPGAME1 0x006107d0
 			if ((strcmp(aFindData.cFileName, ".") != 0) &&
+				// STRING: POPCAPGAME1 0x006107d4
 				(strcmp(aFindData.cFileName, "..") != 0))
 			{
 				// Follow the directory
@@ -862,6 +881,9 @@ std::string Sexy::RemoveTrailingSlash(const std::string& theDirectory)
 		return theDirectory;
 }
 
+// TEMPLATE: POPCAPGAME1 0x00502bd0
+// std::operator+<char,std::char_traits<char>,std::allocator<char> >(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const &, char)
+
 // FUNCTION: POPCAPGAME1 0x00509060
 std::string	Sexy::AddTrailingSlash(const std::string& theDirectory, bool backSlash)
 {
@@ -901,6 +923,9 @@ time_t Sexy::GetFileDate(const std::string& theFileName)
 
 	return aFileDate;
 }
+
+// TEMPLATE: POPCAPGAME1 0x0040cb60
+// std::basic_string<char,std::char_traits<char>,std::allocator<char> >::assign(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const &, unsigned int, unsigned int)
 
 // FUNCTION: POPCAPGAME1 0x00509110
 std::string Sexy::vformat(const char* fmt, va_list argPtr) 

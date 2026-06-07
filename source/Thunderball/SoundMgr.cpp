@@ -10,6 +10,9 @@
 
 using namespace Sexy;
 
+// TEMPLATE: POPCAPGAME1 0x00
+// std::_Tree<std::_Tmap_traits<int,Sexy::MemoryImage *,std::greater<int>,std::allocator<std::pair<int const ,Sexy::MemoryImage *> >,1> >::_Buynode(void)
+
 // FUNCTION: POPCAPGAME1 0x0045f1d0
 SoundMgr::SoundMgr()
 {
@@ -21,6 +24,12 @@ SoundMgr::SoundMgr()
 
 // SYNTHETIC: POPCAPGAME1 0x0045f290
 // Sexy::SoundMgr::`scalar deleting destructor'
+
+// TEMPLATE: POPCAPGAME1 0x0043f190
+// std::list<PakCollection,std::allocator<PakCollection> >::_Tidy
+
+// TEMPLATE: POPCAPGAME1 0x00449dc0
+// std::_Tree<std::_Tmap_traits<int,Sexy::MemoryImage *,std::greater<int>,std::allocator<std::pair<int const ,Sexy::MemoryImage *> >,1> >::erase(class std::_Tree<class std::_Tmap_traits<int, class Sexy::SoundMgr::SoundDesc *, struct std::less<int>, class std::allocator<struct std::pair<int const, class Sexy::SoundMgr::SoundDesc *>>, 1>>::iterator, class std::_Tree<class std::_Tmap_traits<int, class Sexy::SoundMgr::SoundDesc *, struct std::less<int>, class std::allocator<struct std::pair<int const, class Sexy::SoundMgr::SoundDesc *>>, 1>>::iterator)
 
 // FUNCTION: POPCAPGAME1 0x00458dd0
 SoundMgr::~SoundMgr()
@@ -59,6 +68,9 @@ void SoundMgr::CancelFade()
 	mUnk0x18 = 0.0f;
 	mUnk0x14 = 1.0f;
 }
+
+// TEMPLATE: POPCAPGAME1 0x0043f110
+// std::_Tree<std::_Tmap_traits<int,Sexy::MemoryImage *,std::greater<int>,std::allocator<std::pair<int const ,Sexy::MemoryImage *> >,1> >::_Erase
 
 // FUNCTION: POPCAPGAME1 0x00441f30
 void SoundMgr::KillAllSounds()

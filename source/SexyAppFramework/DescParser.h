@@ -33,6 +33,7 @@ public:
 
 typedef std::vector<DataElement*> ElementVector;
 
+// VTABLE: POPCAPGAME1 0x0060f3dc
 class ListDataElement : public DataElement
 {
 public:

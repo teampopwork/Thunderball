@@ -47,13 +47,16 @@ bool MovingWidget::Update()
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-// SYNTHETIC: POPCAPGAME1 0x0040d3c0
-// Sexy::WidgetMover::`scalar deleting destructor'
+// TEMPLATE: POPCAPGAME1 0x00409490
+// std::list<tagMSG,std::allocator<tagMSG> >::_Buynode(void)
 
 // FUNCTION: POPCAPGAME1 0x0040d390
 WidgetMover::WidgetMover()
 {
 }
+
+// SYNTHETIC: POPCAPGAME1 0x0040d3c0
+// Sexy::WidgetMover::`scalar deleting destructor'
 
 // STUB: POPCAPGAME1 0x0040c660
 WidgetMover::~WidgetMover()

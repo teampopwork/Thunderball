@@ -115,6 +115,7 @@ bool DDInterface::GotDXError(HRESULT theResult, const char *theContext)
 	if (!SUCCEEDED(theResult))
 	{
 		std::string anError = GetDirectXErrorString(theResult);
+		// STRING: POPCAPGAME1 0x0060df0c
 		mErrorString = StrFormat("%s: %s",theContext, anError.c_str());
 
 		return true;
@@ -128,6 +129,9 @@ DDImage* DDInterface::GetScreenImage()
 {
 	return mScreenImage;
 }
+
+// GLOBAL: POPCAPGAME1 0x0060dcdc
+// IID_IDirectDrawSurface
 
 // FUNCTION: POPCAPGAME1 0x004c1d90
 HRESULT	DDInterface::CreateSurface(DDSURFACEDESC2 *theDesc, LPDIRECTDRAWSURFACE *theSurface, void*)
@@ -748,6 +752,12 @@ void DDInterface::AddDDImage(DDImage* theDDImage)
 
 	mDDImageSet.insert(theDDImage);
 }
+
+// TEMPLATE: POPCAPGAME1 0x004dd070
+// std::_Tree<std::_Tset_traits<Sexy::MemoryImage *,std::less<Sexy::MemoryImage *>,std::allocator<Sexy::MemoryImage *>,0> >::find
+
+// TEMPLATE: POPCAPGAME1 0x0040e6b0
+// std::_Tree<std::_Tset_traits<int,std::less<int>,std::allocator<int>,0> >::erase(class std::_Tree<class std::_Tset_traits<class Sexy::MemoryImage *, struct std::less<class Sexy::MemoryImage *>, class std::allocator<class Sexy::MemoryImage *>, 0>>::iterator)
 
 // FUNCTION: POPCAPGAME1 0x004dec70
 void DDInterface::RemoveDDImage(DDImage* theDDImage)

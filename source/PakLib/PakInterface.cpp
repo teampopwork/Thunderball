@@ -14,6 +14,7 @@ enum
 // GLOBAL: POPCAPGAME1 0x0064bf60
 PakInterface* gPakInterface = new PakInterface();
 
+// FUNCTION: POPCAPGAME1 0x005595c0
 static std::string StringToUpper(const std::string& theString)
 {
 	std::string aString;
@@ -33,6 +34,21 @@ PakInterface::PakInterface()
 PakInterface::~PakInterface()
 {
 }
+
+// TEMPLATE: POPCAPGAME1 0x00559e50
+// std::list<PakCollection,std::allocator<PakCollection> >::push_back
+
+// TEMPLATE: POPCAPGAME1 0x00559660
+// std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,PakRecord>::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,PakRecord>(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const &, class PakRecord const &)
+
+// TEMPLATE: POPCAPGAME1 0x0055a3e0
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,PakRecord,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,PakRecord> >,0> >::insert
+
+// TEMPLATE: POPCAPGAME1 0x00559370
+// std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,PakRecord>::~pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,PakRecord>
+
+// TEMPLATE: POPCAPGAME1 0x005590f0
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,PakRecord,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,PakRecord> >,0> >::const_iterator::_Inc
 
 // FUNCTION: POPCAPGAME1 0x0055a560
 bool PakInterface::AddPakFile(const std::string& theFileName)

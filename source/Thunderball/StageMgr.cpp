@@ -59,6 +59,12 @@ StageMgr::StageMgr(ThunderballApp* theApp)
 // SYNTHETIC: POPCAPGAME1 0x004619d0
 // Sexy::StageMgr::`scalar deleting destructor'
 
+// TEMPLATE: POPCAPGAME1 0x00445d70
+//  std::_Destroy_range<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >
+
+// TEMPLATE: POPCAPGAME1 0x0044c820
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,Sexy::SmartPtr<Sexy::LevelInfo>,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,Sexy::SmartPtr<Sexy::LevelInfo> > >,1> >::erase(class std::_Tree<class std::_Tmap_traits<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, class Sexy::SmartPtr<class Sexy::LevelInfo>, struct std::less<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>, class std::allocator<struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const, class Sexy::SmartPtr<class Sexy::LevelInfo>>>, 1>>::iterator, class std::_Tree<class std::_Tmap_traits<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, class Sexy::SmartPtr<class Sexy::LevelInfo>, struct std::less<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>, class std::allocator<struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const, class Sexy::SmartPtr<class Sexy::LevelInfo>>>, 1>>::iterator)
+
 // FUNCTION: POPCAPGAME1 0x0045f380
 StageMgr::~StageMgr()
 {

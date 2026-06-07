@@ -927,6 +927,39 @@ void LoadingScreen::UpdateParticles()
 // TEMPLATE: POPCAPGAME1 0x004b2420
 // std::vector<Sexy::Particle,std::allocator<Sexy::Particle> >::push_back
 
+// TEMPLATE: POPCAPGAME1 0x0049d710
+// std::_Uninit_fill_n<Sexy::Particle *,unsigned int,Sexy::Particle,std::allocator<Sexy::Particle> >
+
+// TEMPLATE: POPCAPGAME1 0x004b0f90
+// std::vector<Sexy::Particle,std::allocator<Sexy::Particle> >::insert
+
+// TEMPLATE: POPCAPGAME1 0x004ad450
+// std::vector<Sexy::Particle,std::allocator<Sexy::Particle> >::_Insert_n
+
+// TEMPLATE: POPCAPGAME1 0x00444790
+// std::vector<wchar_t,std::allocator<wchar_t> >::_Xlen
+
+// TEMPLATE: POPCAPGAME1 0x00406160
+// std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >::size
+
+// TEMPLATE: POPCAPGAME1 0x004381a0
+// std::_Allocate<Sexy::Particle> 
+
+// TEMPLATE: POPCAPGAME1 0x0049c450
+// std::_Uninit_copy<Sexy::Particle *,Sexy::Particle *,std::allocator<Sexy::Particle> >
+
+// TEMPLATE: POPCAPGAME1 0x0049f0d0
+// std::vector<Sexy::Particle,std::allocator<Sexy::Particle> >::_Umove<Sexy::Particle *>
+
+// TEMPLATE: POPCAPGAME1 0x0049d8c0
+// stdext::_Unchecked_move_backward<Sexy::Particle *,Sexy::Particle *>
+
+// TEMPLATE: POPCAPGAME1 0x0049e960
+// std::vector<Sexy::Particle,std::allocator<Sexy::Particle> >::_Ufill
+
+// TEMPLATE: POPCAPGAME1 0x0049d6e0
+// std::fill<Sexy::Particle *,Sexy::Particle>
+
 // FUNCTION: POPCAPGAME1 0x004b3b90
 void Sexy::LoadingScreen::SpawnParticles()
 {
@@ -994,7 +1027,7 @@ void Sexy::LoadingScreen::SpawnParticles()
 }
 
 // TEMPLATE: POPCAPGAME1 0x0040f290
-// std::operator+<char,std::char_traits<char>,std::allocator<char> >(class std::basic_string<char, struct
+// std::operator+<char,std::char_traits<char>,std::allocator<char> >(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const &, char const *)
 // std::char_traits<char>, class std::allocator<char>> const &, char const *)
 
 // FUNCTION: POPCAPGAME1 0x004a6f90

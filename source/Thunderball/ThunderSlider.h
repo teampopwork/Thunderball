@@ -6,6 +6,7 @@
 namespace Sexy
 {
 class Graphics;
+// VTABLE: POPCAPGAME1 0x00609e54
 class ThunderSlider : public Slider {
 public:
 	std::string mUnk0xB8;

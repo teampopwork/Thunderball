@@ -74,6 +74,7 @@ MTRand::MTRand()
 }
 
 static int gRandAllowed = 0;
+// FUNCTION: POPCAPGAME1 0x004fb610
 void MTRand::SetRandAllowed(bool allowed)
 {
 	if (allowed)

@@ -21,7 +21,9 @@ static int gMaxTextureAspectRatio;
 static DWORD gSupportedPixelFormats;
 static bool gTextureSizeMustBePow2;
 static const int MAX_TEXTURE_SIZE = 1024;
+// GLOBAL: POPCAPGAME1 0x006512c0
 static bool gLinearFilter = false;
+// GLOBAL: POPCAPGAME1 0x0064a578
 std::string D3DInterface::mErrorString;
 static const int gVertexType = D3DFVF_TLVERTEX;
 
@@ -57,9 +59,11 @@ bool D3DInterface::CheckDXError(HRESULT theError, const char *theMsg)
 		std::string aMsg;
 		std::string anError = GetDirectXErrorString(theError);
 		aMsg = theMsg;
+		// STRING: POPCAPGAME1 0x0060d6e0
 		aMsg += ": ";
 		aMsg += anError;
 		mErrorString = aMsg;
+		// STRING: POPCAPGAME1 0x0060df78
 		gSexyAppBase->RegistryWriteString("Test3D\\RuntimeError",aMsg);
 
 	//	DisplayError(theError,theMsg);
@@ -358,7 +362,10 @@ bool D3DInterface::InitFromDDInterface(DDInterface *theInterface)
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// GLOBAL: POPCAPGAME1 0x006512c1
 bool gD3DInterfacePreDrawError = false;
+
 // FUNCTION: POPCAPGAME1 0x004c2490
 bool D3DInterface::PreDraw()
 {
@@ -420,6 +427,7 @@ bool D3DInterface::PreDraw()
 // FUNCTION: POPCAPGAME1 0x004df7a0
 static LPDIRECTDRAWSURFACE7 CreateTextureSurface(LPDIRECT3DDEVICE7 theDevice, LPDIRECTDRAW7 theDraw, int theWidth, int theHeight, PixelFormat theFormat)
 {
+	// STRING: POPCAPGAME1 0x0060dfe4
 	if (D3DInterface::CheckDXError(theDevice->SetTexture(0, NULL),"SetTexture NULL"))
 		return NULL;
 
@@ -896,6 +904,10 @@ TextureData::~TextureData()
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// TEMPLATE: POPCAPGAME1 0x004d32c0
+// std::vector<Sexy::TextureDataPiece,std::allocator<Sexy::TextureDataPiece> >::size
+
 // FUNCTION: POPCAPGAME1 0x004dfa30
 void TextureData::ReleaseTextures()
 {
@@ -919,6 +931,40 @@ void TextureData::ReleaseTextures()
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// TEMPLATE: POPCAPGAME1 0x004e7740
+// std::vector<Sexy::TextureDataPiece,std::allocator<Sexy::TextureDataPiece> >::resize
+
+// TEMPLATE: POPCAPGAME1 0x004ad0a0
+// std::vector<Sexy::TextureDataPiece,std::allocator<Sexy::TextureDataPiece> >::_Insert_n
+
+// TEMPLATE: POPCAPGAME1 0x004d3640
+// std::_Allocate<Sexy::TextureDataPiece>
+
+// TEMPLATE: POPCAPGAME1 0x0043e230
+// std::_Uninit_copy<Sexy::TextureDataPiece *,Sexy::TextureDataPiece *,std::allocator<Sexy::TextureDataPiece> >
+
+// TEMPLATE: POPCAPGAME1 0x0049e920
+// std::vector<Sexy::TextureDataPiece,std::allocator<Sexy::TextureDataPiece> >::_Ufill
+
+// TEMPLATE: POPCAPGAME1 0x00443550
+// std::vector<Sexy::TextureDataPiece,std::allocator<Sexy::TextureDataPiece> >::_Umove<Sexy::TextureDataPiece *>
+
+// TEMPLATE: POPCAPGAME1 0x0043f620
+// std::fill<Sexy::TextureDataPiece *,Sexy::TextureDataPiece>
+
+// TEMPLATE: POPCAPGAME1 0x00440d60
+// stdext::_Unchecked_move_backward<Sexy::TextureDataPiece *,Sexy::TextureDataPiece *>
+
+// TEMPLATE: POPCAPGAME1 0x004dbbf0
+// std::_Copy_backward_opt<Sexy::TextureDataPiece *,Sexy::TextureDataPiece *>
+
+// TEMPLATE: POPCAPGAME1 0x004dd920
+// std::vector<Sexy::TextureDataPiece,std::allocator<Sexy::TextureDataPiece> >::erase
+
+// TEMPLATE: POPCAPGAME1 0x0043df90
+// std::_Copy_opt<Sexy::TextureDataPiece *,Sexy::TextureDataPiece *>
+
 // FUNCTION: POPCAPGAME1 0x004e96b0
 void TextureData::CreateTextureDimensions(MemoryImage *theImage)
 {
@@ -1184,6 +1230,12 @@ static void SetLinearFilter(LPDIRECT3DDEVICE7 theDevice, bool linear)
 	{
 		D3DTEXTUREMAGFILTER aFilter = linear ? D3DTFG_LINEAR : D3DTFG_POINT;		
 
+		// STRING: POPCAPGAME1 0x0060e030
+		// "SetTextureStageState LINEAR"
+
+		// STRING: POPCAPGAME1 0x0060e014
+		// "SetTextureStageState Point"
+
 		const char *aDebugContext = linear ? "SetTextureStageState LINEAR" : "SetTextureStageState Point";
 
 		D3DInterface::CheckDXError(theDevice->SetTextureStageState(0,D3DTSS_MINFILTER, aFilter),aDebugContext);
@@ -1196,6 +1248,7 @@ static void SetLinearFilter(LPDIRECT3DDEVICE7 theDevice, bool linear)
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
 // FUNCTION: POPCAPGAME1 0x004dfbb0
 void TextureData::Blt(LPDIRECT3DDEVICE7 theDevice, float theX, float theY, const Rect& theSrcRect, const Color& theColor)
 {
@@ -1237,7 +1290,7 @@ void TextureData::Blt(LPDIRECT3DDEVICE7 theDevice, float theX, float theY, const
 				{ x+aWidth,			y+aHeight,		0,	1,	aColor,	0,	u2,		v2 }
 			};
 
-			
+			// STRING: POPCAPGAME1 0x0060e064
 			D3DInterface::CheckDXError(theDevice->SetTexture(0, aTexture),"SetTexture gTexture");			
 			D3DInterface::CheckDXError(theDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, gVertexType, aVertex, 4, 0),"DrawPrimitive (Tri) 1");
 
@@ -1276,6 +1329,7 @@ struct VertexList
 			delete mVerts; 
 	}
 
+	// FUNCTION: POPCAPGAME1 0x004c27a0
 	void reserve(int theCapacity)
 	{
 		if (mCapacity < theCapacity)
@@ -1407,6 +1461,8 @@ void PointClipper<Pred>::ClipPoints(int n, float clipVal, VertexList &in, Vertex
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// FUNCTION: POPCAPGAME1 0x004dfdd0
 static void DrawPolyClipped(LPDIRECT3DDEVICE7 theDevice, const Rect *theClipRect, const VertexList &theList)
 {
 	VertexList l1, l2;
@@ -1456,6 +1512,8 @@ static void DoPolyTextureClip(VertexList &theList)
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// FUNCTION: POPCAPGAME1 0x004dff80
 void TextureData::BltTransformed(LPDIRECT3DDEVICE7 theDevice, const SexyMatrix3 &theTrans, const Rect& theSrcRect, const Color& theColor, const Rect *theClipRect, float theX, float theY, bool center)
 {
 	int srcLeft = theSrcRect.mX;
@@ -1537,6 +1595,7 @@ void TextureData::BltTransformed(LPDIRECT3DDEVICE7 theDevice, const SexyMatrix3 
 			D3DInterface::CheckDXError(theDevice->SetTexture(0, aTexture),"SetTexture gTexture");
 
 			if (!clipped)
+				// STRING: POPCAPGAME1 0x0060e090
 				D3DInterface::CheckDXError(theDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, gVertexType, aVertex, 4, 0),"DrawPrimitive (Tri) 3");
 			else
 			{
@@ -1567,6 +1626,11 @@ void TextureData::BltTransformed(LPDIRECT3DDEVICE7 theDevice, const SexyMatrix3 
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// TEMPLATE: POPCAPGAME1 0x004d32e0
+// std::vector<Sexy::TextureDataPiece,std::allocator<Sexy::TextureDataPiece> >::operator[]
+
+// FUNCTION: POPCAPGAME1 0x004e0420
 void TextureData::BltTriangles(LPDIRECT3DDEVICE7 theDevice, const TriVertex theVertices[][3], int theNumTriangles, DWORD theColor, float tx, float ty)
 {	
 	if ((mMaxTotalU <= 1.0) && (mMaxTotalV <= 1.0))
@@ -1707,6 +1771,17 @@ void TextureData::BltTriangles(LPDIRECT3DDEVICE7 theDevice, const TriVertex theV
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// TEMPLATE: POPCAPGAME1 0x004e4820
+// std::_Tree<std::_Tset_traits<Sexy::MemoryImage *,std::less<Sexy::MemoryImage *>,std::allocator<Sexy::MemoryImage *>,0> >::insert
+
+// TEMPLATE: POPCAPGAME1 0x0040dfe0
+// std::_Tree<std::_Tset_traits<int,std::less<int>,std::allocator<int>,0> >::_Insert
+
+// TEMPLATE: POPCAPGAME1 0x00408a80
+// std::_Tree<std::_Tset_traits<int,std::less<int>,std::allocator<int>,0> >::const_iterator::_Dec
+
+// FUNCTION: POPCAPGAME1 0x004e9ca0
 bool D3DInterface::CreateImageTexture(MemoryImage *theImage)
 {
 	bool wantPurge = false;
@@ -1733,6 +1808,8 @@ bool D3DInterface::CreateImageTexture(MemoryImage *theImage)
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// FUNCTION: POPCAPGAME1 0x004e0c30
 bool D3DInterface::RecoverBits(MemoryImage* theImage)
 {
 	if (theImage->mD3DData == NULL)
@@ -1868,6 +1945,8 @@ void D3DInterface::Cleanup()
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// FUNCTION: POPCAPGAME1 0x004c2a00
 void D3DInterface::SetupDrawMode(int theDrawMode, const Color &theColor, Image *theImage)
 {
 	if (theDrawMode == Graphics::DRAWMODE_NORMAL)
@@ -1900,6 +1979,8 @@ void D3DInterface::SetupDrawMode(int theDrawMode, const Color &theColor, Image *
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// FUNCTION: POPCAPGAME1 0x004f66b0
 void D3DInterface::Blt(Image* theImage, float theX, float theY, const Rect& theSrcRect, const Color& theColor, int theDrawMode, bool linearFilter)
 {
 	if (!mTransformStack.empty())
@@ -1926,6 +2007,8 @@ void D3DInterface::Blt(Image* theImage, float theX, float theY, const Rect& theS
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// FUNCTION: POPCAPGAME1 0x004ec130
 void D3DInterface::BltMirror(Image* theImage, float theX, float theY, const Rect& theSrcRect, const Color& theColor, int theDrawMode, bool linearFilter)
 {
 	SexyTransform2D aTransform;		
@@ -1939,6 +2022,8 @@ void D3DInterface::BltMirror(Image* theImage, float theX, float theY, const Rect
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// FUNCTION: POPCAPGAME1 0x004ec1d0
 void D3DInterface::BltClipF(Image* theImage, float theX, float theY, const Rect& theSrcRect, const Rect *theClipRect, const Color& theColor, int theDrawMode)
 {
 	SexyTransform2D aTransform;
@@ -1982,6 +2067,11 @@ void D3DInterface::BltRotated(Image* theImage, float theX, float theY, const Rec
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// TEMPLATE: POPCAPGAME1 0x004dd0e0
+// std::list<Sexy::FontLayer,std::allocator<Sexy::FontLayer> >::back
+
+// FUNCTION: POPCAPGAME1 0x004e9d80
 void D3DInterface::BltTransformed(Image* theImage, const Rect* theClipRect, const Color& theColor, int theDrawMode, const Rect &theSrcRect, const SexyMatrix3 &theTransform, bool linearFilter, float theX, float theY, bool center)
 {
 	if (!PreDraw())
@@ -2025,6 +2115,8 @@ void D3DInterface::BltTransformed(Image* theImage, const Rect* theClipRect, cons
 }
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// FUNCTION: POPCAPGAME1 0x004e0e20
 void D3DInterface::DrawLine(double theStartX, double theStartY, double theEndX, double theEndY, const Color& theColor, int theDrawMode)
 {
 	if (!PreDraw())
@@ -2063,11 +2155,14 @@ void D3DInterface::DrawLine(double theStartX, double theStartY, double theEndX, 
 	};
 
 	D3DInterface::CheckDXError(mD3DDevice->SetTexture(0, NULL),"SetTexture NULL");
+	// STRING: POPCAPGAME1 0x0060e0d8
 	D3DInterface::CheckDXError(mD3DDevice->DrawPrimitive(D3DPT_LINESTRIP, gVertexType, aVertex, 3, 0),"DrawPrimitive (Line)");
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// FUNCTION: POPCAPGAME1 0x004e0fe0
 void D3DInterface::FillRect(const Rect& theRect, const Color& theColor, int theDrawMode)
 {
 	if (!PreDraw())
@@ -2133,6 +2228,8 @@ void D3DInterface::DrawTriangle(const TriVertex &p1, const TriVertex &p2, const 
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// FUNCTION: POPCAPGAME1 0x004e1210
 void D3DInterface::FillPoly(const Point theVertices[], int theNumVertices, const Rect *theClipRect, const Color &theColor, int theDrawMode, int tx, int ty)
 {
 	if (theNumVertices<3)
@@ -2164,6 +2261,7 @@ void D3DInterface::FillPoly(const Point theVertices[], int theNumVertices, const
 	if (theClipRect != NULL)
 		DrawPolyClipped(mD3DDevice,theClipRect,aList);
 	else
+		// STRING: POPCAPGAME1 0x0060e108
 		D3DInterface::CheckDXError(mD3DDevice->DrawPrimitive(D3DPT_TRIANGLEFAN, gVertexType, &aList[0], aList.size(), 0),"DrawPrimitive (FillPoly)");
 }
 
@@ -2177,6 +2275,8 @@ void D3DInterface::DrawTriangleTex(const TriVertex &p1, const TriVertex &p2, con
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// FUNCTION: POPCAPGAME1 0x004e9f20
 void D3DInterface::DrawTrianglesTex(const TriVertex theVertices[][3], int theNumTriangles, const Color &theColor, int theDrawMode, Image *theTexture, float tx, float ty, bool blend)
 {
 	if (!PreDraw())

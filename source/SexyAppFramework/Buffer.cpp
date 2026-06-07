@@ -193,6 +193,24 @@ std::string Buffer::ToWebString() const
 	return aString;
 }
 
+// TEMPLATE: POPCAPGAME1 0x004ff680
+// std::basic_string<wchar_t,std::char_traits<wchar_t>,std::allocator<wchar_t> >::_Grow
+
+// TEMPLATE: POPCAPGAME1 0x00501740
+// std::basic_string<wchar_t,std::char_traits<wchar_t>,std::allocator<wchar_t> >::append
+
+// TEMPLATE: POPCAPGAME1 0x004fed50
+// std::basic_string<wchar_t,std::char_traits<wchar_t>,std::allocator<wchar_t> >::_Copy
+
+// TEMPLATE: POPCAPGAME1 0x004fcb60
+// std::_Allocate<wchar_t>
+
+// TEMPLATE: POPCAPGAME1 0x004fda50
+// std::allocator<wchar_t>::allocate
+
+// TEMPLATE: POPCAPGAME1 0x004fc6c0
+// std::basic_string<wchar_t,std::char_traits<wchar_t>,std::allocator<wchar_t> >::_Chassign
+
 // FUNCTION: POPCAPGAME1 0x00503590
 std::wstring Buffer::UTF8ToWideString() const
 {
@@ -274,6 +292,9 @@ void Buffer::Clear()
 	mData.clear();
 }
 
+// TEMPLATE: POPCAPGAME1 0x0050f5b0
+// std::vector<unsigned char,std::allocator<unsigned char> >::push_back
+
 // FUNCTION: POPCAPGAME1 0x005119f0
 void Buffer::WriteByte(uchar theByte)
 {	
@@ -290,6 +311,27 @@ void Buffer::WriteByte(uchar theByte)
 	if (mWriteBitPos > mDataBitSize)
 		mDataBitSize = mWriteBitPos;
 }
+
+// TEMPLATE: POPCAPGAME1 0x0050e1b0
+// std::vector<unsigned char,std::allocator<unsigned char> >::insert
+
+// TEMPLATE: POPCAPGAME1 0x0050b390
+// std::vector<unsigned char,std::allocator<unsigned char> >::_Insert_n
+
+// TEMPLATE: POPCAPGAME1 0x00408cf0
+// std::allocator<unsigned char>::allocate
+
+// TEMPLATE: POPCAPGAME1 0x00502840
+// std::vector<unsigned char,std::allocator<unsigned char> >::_Ufill
+
+// TEMPLATE: POPCAPGAME1 0x004ff1d0
+// std::vector<unsigned char,std::allocator<unsigned char> >::_Umove<unsigned char *>`
+
+// TEMPLATE: POPCAPGAME1 0x004ff260
+// std::fill<unsigned char *,unsigned char>
+
+// TEMPLATE: POPCAPGAME1 0x004ff280
+// stdext::_Unchecked_move_backward<unsigned char *,unsigned char *>
 
 // FUNCTION: POPCAPGAME1 0x00511a90
 void Buffer::WriteNumBits(int theNum, int theBits)

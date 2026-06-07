@@ -64,16 +64,21 @@ void ReplayDialog::Resize(int param_1, int param_2, int param_3, int param_4)
 {
 	ThunderDialog::Resize(param_1, param_2, param_3, param_4);
 	mReplayButton->Move(
+		// STRING: POPCAPGAME1 0x005fb648
 		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ReplayDialog.cpp711,117", 10),
+		// STRING: POPCAPGAME1 0x005fb690
 		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ReplayDialog.cpp712,117", 10)
 	);
 
+	// STRING: POPCAPGAME1 0x005fb600
 	int iVar3 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ReplayDialog.cpp713,118", 10);
+	// STRING: POPCAPGAME1 0x005fb5b8
 	int iVar1 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ReplayDialog.cpp714,119", 0x53);
 
 	for (int i = 0; i < 4; i++) {
 		if (mOptionButtons[i]->mVisible) {
 			mOptionButtons[i]->Move(iVar1, iVar3);
+			// STRING: POPCAPGAME1 0x005fb570
 			iVar3 += IMAGE_DLG_REPLAYSEGMENT->mHeight + ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ReplayDialog.cpp715,125", -2);
 		}
 	}

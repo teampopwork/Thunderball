@@ -10,6 +10,7 @@ namespace Sexy
 
 class Graphics;
 
+// VTABLE: POPCAPGAME1 0x0060dd34
 class Font
 {
 public:

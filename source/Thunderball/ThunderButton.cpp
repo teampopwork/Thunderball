@@ -67,6 +67,7 @@ void ThunderButton::Draw(Graphics* g)
 
 			if (mUnk0x151) {
 				int pulseTime =
+					// STRING: POPCAPGAME1 0x006012c0
 					ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderButton.cpp817,146", 0x1e);
 				int totalCycle = pulseTime + mUnk0x154;
 				int halfCycle = mUnk0x154 / 2;
@@ -83,6 +84,7 @@ void ThunderButton::Draw(Graphics* g)
 				}
 
 				mOverAlpha = mOverAlpha * mOverAlpha;
+				// STRING: POPCAPGAME1 0x00601278
 				mOverAlpha *= ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderButton.cpp818,159", 0.7f);
 
 				mIsOver = false;
@@ -111,6 +113,7 @@ void ThunderButton::Draw(Graphics* g)
 		g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
 		g->SetColorizeImages(true);
 
+		// STRING: POPCAPGAME1 0x00601230
 		Color aColor(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderButton.cpp819,182", 0x404040));
 		g->SetColor(aColor);
 

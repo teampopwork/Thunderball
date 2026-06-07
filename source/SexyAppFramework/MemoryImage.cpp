@@ -15,6 +15,8 @@
 using namespace Sexy;
 
 #ifdef OPTIMIZE_SOFTWARE_DRAWING
+// GLOBAL: POPCAPGAME1 0x006512c3
+// gOptimizeSoftwareDrawing
 bool gOptimizeSoftwareDrawing = false;
 #endif
 
@@ -129,6 +131,7 @@ MemoryImage::MemoryImage(const MemoryImage& theMemoryImage) :
 	mApp->AddMemoryImage(this);
 }
 
+// FUNCTION: POPCAPGAME1 0x004e3be0
 MemoryImage::~MemoryImage()
 {	
 	mApp->RemoveMemoryImage(this);
@@ -1230,6 +1233,7 @@ void MemoryImage::SetBits(ulong* theBits, int theWidth, int theHeight, bool comm
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004cf920
 void MemoryImage::Create(int theWidth, int theHeight)
 {
 	delete [] mBits;
@@ -1245,6 +1249,7 @@ void MemoryImage::Create(int theWidth, int theHeight)
 	BitsChanged();	
 }
 
+// FUNCTION: POPCAPGAME1 0x004e3c70
 ulong* MemoryImage::GetBits()
 {
 	if (mBits == NULL)
@@ -1649,6 +1654,7 @@ void MemoryImage::BltRotated(Image* theImage, float theX, float theY, const Rect
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004d1490
 void MemoryImage::SlowStretchBlt(Image* theImage, const Rect& theDestRect, const FRect& theSrcRect, const Color& theColor, int theDrawMode)
 {
 	theImage->mDrawn = true;
@@ -1693,6 +1699,7 @@ void MemoryImage::SlowStretchBlt(Image* theImage, const Rect& theDestRect, const
 }
 
 //TODO: Make the special version
+// FUNCTION: POPCAPGAME1 0x004d2790
 void MemoryImage::FastStretchBlt(Image* theImage, const Rect& theDestRect, const FRect& theSrcRect, const Color& theColor, int theDrawMode)
 {
 	theImage->mDrawn = true;
@@ -1775,6 +1782,7 @@ void MemoryImage::StretchBlt(Image* theImage, const Rect& theDestRect, const Rec
 		SlowStretchBlt(theImage, aDestRect, aSrcRect, theColor, theDrawMode);
 }
 
+// FUNCTION: POPCAPGAME1 0x004d29a0
 void MemoryImage::BltMatrixHelper(Image* theImage, float x, float y, const SexyMatrix3 &theMatrix, const Rect& theClipRect, const Color& theColor, int theDrawMode, const Rect &theSrcRect, void *theSurface, int theBytePitch, int thePixelFormat, bool blend)
 {
 	MemoryImage *anImage = dynamic_cast<MemoryImage*>(theImage);
@@ -1823,6 +1831,7 @@ void MemoryImage::BltMatrix(Image* theImage, float x, float y, const SexyMatrix3
 	BitsChanged();
 }
 
+// FUNCTION: POPCAPGAME1 0x004d2bd0
 void MemoryImage::BltTrianglesTexHelper(Image *theTexture, const TriVertex theVertices[][3], int theNumTriangles, const Rect &theClipRect, const Color &theColor, int theDrawMode, void *theSurface, int theBytePitch, int thePixelFormat, float tx, float ty, bool blend)
 {
 	MemoryImage *anImage = dynamic_cast<MemoryImage*>(theTexture);
@@ -1852,6 +1861,7 @@ void MemoryImage::BltTrianglesTexHelper(Image *theTexture, const TriVertex theVe
 
 }
 
+// FUNCTION: POPCAPGAME1 0x004d2ce0
 void MemoryImage::FillScanLinesWithCoverage(Span* theSpans, int theSpanCount, const Color& theColor, int theDrawMode, const BYTE* theCoverage, int theCoverX, int theCoverY, int theCoverWidth, int theCoverHeight)
 {
 	ulong* theBits = GetBits();
@@ -1904,6 +1914,7 @@ void MemoryImage::BltTrianglesTex(Image *theTexture, const TriVertex theVertices
 	BitsChanged();
 }
 
+// FUNCTION: POPCAPGAME1 0x004db290
 bool MemoryImage::Palletize()
 {
 	CommitBits();

@@ -14,6 +14,7 @@ namespace Sexy
 class DataSync;
 class GameStats;
 
+// VTABLE: POPCAPGAME1 0x005d7c74
 class PlayerInfo {
 public:
 	std::string mName;    // +0x4

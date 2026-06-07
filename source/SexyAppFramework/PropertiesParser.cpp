@@ -4,6 +4,7 @@
 
 using namespace Sexy;
 
+// FUNCTION: POPCAPGAME1 0x00500150
 PropertiesParser::PropertiesParser(SexyAppBase* theApp)
 {
 	mApp = theApp;
@@ -24,7 +25,7 @@ void PropertiesParser::Fail(const SexyString& theErrorText)
 	}
 }
 
-
+// FUNCTION: POPCAPGAME1 0x00500180
 PropertiesParser::~PropertiesParser()
 {
 }
@@ -244,6 +245,7 @@ bool PropertiesParser::DoParseProperties()
 	return !mHasFailed;
 }
 
+// FUNCTION: POPCAPGAME1 0x005209f0
 bool PropertiesParser::ParsePropertiesBuffer(const Buffer& theBuffer)
 {
 	mXMLParser = new XMLParser();
@@ -259,6 +261,7 @@ bool PropertiesParser::ParsePropertiesFile(const std::string& theFilename)
 	return DoParseProperties();	
 }
 
+// FUNCTION: POPCAPGAME1 0x00502e70
 SexyString PropertiesParser::GetErrorText()
 {
 	return mError;

@@ -68,6 +68,7 @@ static void png_pak_read_data(png_structp png_ptr, png_bytep data, png_size_t le
 
 	if (check != length)
 	{
+		// STRING: POPCAPGAME1 0x0061540c
 		png_error(png_ptr, "Read Error");
 	}
 }
@@ -272,7 +273,9 @@ Image* GetGIFImage(const std::string& theFileName)
 	*/
 	status=p_fread(magick, sizeof(char), 6, fp);
 
+	// STRING: POPCAPGAME1 0x00615444
 	if (((strncmp((char *) magick,"GIF87",5) != 0) &&
+	// STRING: POPCAPGAME1 0x0061543c
 		(strncmp((char *) magick,"GIF89",5) != 0)))
 		return NULL;
 
@@ -376,6 +379,7 @@ Image* GetGIFImage(const std::string& theFileName)
 					*/
 					loop=false;
 					if (ReadBlobBlock(fp,(char *) header) > 0)
+					// STRING: POPCAPGAME1 0x00615430
 					loop=!strncmp((char *) header,"NETSCAPE2.0",11);
 					while (ReadBlobBlock(fp,(char *) header) > 0)
 					if (loop)
@@ -882,6 +886,7 @@ bool ImageLib::WritePNGImage(const std::string& theFileName, Image* theImage)
 
 	FILE *fp;
 
+	// STRING: POPCAPGAME1 0x0060db0c
 	if ((fp = fopen(theFileName.c_str(), "wb")) == NULL)
 		return false;
 

@@ -13,7 +13,12 @@ enum GameMode {
 	DEMO = 6
 };
 
-enum PowerupType;
+enum PowerupType {
+	POWERUP_0 = 0,
+	POWERUP_1 = 1,
+	POWERUP_2 = 2
+};
+
 enum StyleShot;
 enum LogicState;
 

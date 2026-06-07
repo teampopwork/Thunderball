@@ -21,6 +21,7 @@ HyperlinkWidget::HyperlinkWidget(int theId, ButtonListener* theButtonListener) :
 void HyperlinkWidget::Draw(Graphics* g)
 {
 	if (mFont == NULL)
+	// STRING: POPCAPGAME1 0x00613b80
 		mFont = new SysFont(mWidgetManager->mApp, "Arial Unicode MS", 10); //baz changed
 
 	int aFontX = (mWidth - mFont->StringWidth(mLabel))/2;

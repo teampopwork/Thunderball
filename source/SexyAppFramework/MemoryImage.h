@@ -8,6 +8,9 @@
 extern bool gOptimizeSoftwareDrawing;
 #endif
 
+// GLOBAL: POPCAPGAME1 0x0064a5ec
+// ??_R0?AVMemoryImage@Sexy@@@8
+
 namespace Sexy
 {
 
@@ -16,6 +19,7 @@ const ulong MEMORYCHECK_ID = 0x4BEEFADE;
 class NativeDisplay;
 class SexyAppBase;
 
+// VTABLE: POPCAPGAME1 0x0060e21c
 class MemoryImage : public Image
 {
 public:

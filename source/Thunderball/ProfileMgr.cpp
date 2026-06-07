@@ -11,8 +11,8 @@ using namespace Sexy;
 
 int gProfileVersion = 1;
 
-// SYNTHETIC: POPCAPGAME1 0x00464d60
-// Sexy::ProfileMgr::`scalar deleting destructor'
+// TEMPLATE: POPCAPGAME1 0x0043f530
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,Sexy::PlayerInfo,Sexy::StringLessNoCase,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,Sexy::PlayerInfo> >,0> >::_Buynode(void)
 
 // FUNCTION: POPCAPGAME1 0x00464ce0
 ProfileMgr::ProfileMgr()
@@ -20,10 +20,19 @@ ProfileMgr::ProfileMgr()
 	Clear();
 }
 
+// SYNTHETIC: POPCAPGAME1 0x00464d60
+// Sexy::ProfileMgr::`scalar deleting destructor'
+
+// TEMPLATE: POPCAPGAME1 0x00453610
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,Sexy::PlayerInfo,Sexy::StringLessNoCase,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,Sexy::PlayerInfo> >,0> >::erase(class std::_Tree<class std::_Tmap_traits<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, class Sexy::PlayerInfo, struct Sexy::StringLessNoCase, class std::allocator<struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const, class Sexy::PlayerInfo>>, 0>>::iterator, class std::_Tree<class std::_Tmap_traits<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, class Sexy::PlayerInfo, struct Sexy::StringLessNoCase, class std::allocator<struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const, class Sexy::PlayerInfo>>, 0>>::iterator)
+
 // FUNCTION: POPCAPGAME1 0x00461640
 ProfileMgr::~ProfileMgr()
 {
 }
+
+// TEMPLATE: POPCAPGAME1 0x0044c270
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,Sexy::PlayerInfo,Sexy::StringLessNoCase,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,Sexy::PlayerInfo> >,0> >::_Erase
 
 // FUNCTION: POPCAPGAME1 0x00458d50
 void ProfileMgr::Clear()
@@ -59,6 +68,9 @@ void ProfileMgr::Save()
 
 	gSexyAppBase->WriteBytesToFile("userdata/users.dat", aWriter.mMemoryHandle, aWriter.mMemoryPosition);
 }
+
+// TEMPLATE: POPCAPGAME1 0x00442370
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,Sexy::PlayerInfo,Sexy::StringLessNoCase,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,Sexy::PlayerInfo> >,0> >::find
 
 // FUNCTION: POPCAPGAME1 0x00442e10
 PlayerInfo* ProfileMgr::GetProfile(const std::string& theName)

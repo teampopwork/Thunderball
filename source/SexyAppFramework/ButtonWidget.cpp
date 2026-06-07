@@ -217,7 +217,7 @@ void ButtonWidget::SetDisabled(bool isDisabled)
 // FUNCTION: POPCAPGAME1 0x00541a80
 void ButtonWidget::MouseEnter()
 {
-	Widget::MouseEnter();
+	// Widget::MouseEnter();
 
 	if (mOverAlphaFadeInSpeed==0 && mOverAlpha>0)
 		mOverAlpha = 0;
@@ -231,7 +231,7 @@ void ButtonWidget::MouseEnter()
 // FUNCTION: POPCAPGAME1 0x00541b40
 void ButtonWidget::MouseLeave()
 {
-	Widget::MouseLeave();
+	// Widget::MouseLeave();
 
 	if (mOverAlphaSpeed==0 && mOverAlpha>0)
 		mOverAlpha = 0;

@@ -15,6 +15,7 @@ FModMusicInfo::FModMusicInfo()
 	mRepeats = false;
 }
 
+// FUNCTION: POPCAPGAME1 0x0054ff80
 FModMusicInterface::FModMusicInterface(HWND theHWnd)
 {	
 	LoadFModDLL();

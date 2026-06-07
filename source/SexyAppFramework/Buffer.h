@@ -9,6 +9,7 @@ namespace Sexy
 
 typedef std::vector<uchar> ByteVector;
 
+// VTABLE: POPCAPGAME1 0x0060f3c8
 class Buffer
 {
 public:

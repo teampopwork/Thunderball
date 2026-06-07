@@ -44,7 +44,7 @@ void XMLParser::Fail(const SexyString& theErrorText)
 	mErrorText = theErrorText;
 }
 
-// STRING: POPCAPGAME1 0x00506280
+// FUNCTION: POPCAPGAME1 0x00506280
 void XMLParser::Init()
 {
 	mSection = _S("");
@@ -83,6 +83,7 @@ bool XMLParser::GetAsciiChar(wchar_t* theChar, bool* error)
 // FUNCTION: POPCAPGAME1 0x004faae0
 bool XMLParser::GetUTF8Char(wchar_t* theChar, bool* error)
 {
+	// GLOBAL: POPCAPGAME1 0x0060f084
 	static const unsigned short aMaskData[] = {
 		0xC0,		// 1 extra byte
 		0xE0,		// 2 extra bytes
@@ -310,6 +311,30 @@ bool XMLParser::OpenFile(const std::string& theFileName)
 	Init();
 	return true;
 }
+
+// TEMPLATE: POPCAPGAME1 0x0050e060
+// std::vector<wchar_t,std::allocator<wchar_t> >::resize
+
+// TEMPLATE: POPCAPGAME1 0x0050b1b0
+// std::vector<wchar_t,std::allocator<wchar_t> >::_Insert_n
+
+// TEMPLATE: POPCAPGAME1 0x004fcb60
+// std::_Allocate<wchar_t>
+
+// TEMPLATE: POPCAPGAME1 0x00502800
+//std::vector<wchar_t,std::allocator<wchar_t> >::_Ufill
+
+// TEMPLATE: POPCAPGAME1 0x00501c30
+// std::vector<wchar_t,std::allocator<wchar_t> >::_Umove<wchar_t *>
+
+// TEMPLATE: POPCAPGAME1 0x004ff200
+// std::fill<wchar_t *,wchar_t>
+
+// TEMPLATE: POPCAPGAME1 0x004ff230
+// stdext::_Unchecked_move_backward<wchar_t *,wchar_t *>
+
+// TEMPLATE: POPCAPGAME1 0x004ff890
+// std::vector<wchar_t,std::allocator<wchar_t> >::erase
 
 // FUNCTION: POPCAPGAME1 0x00510b50
 void XMLParser::SetStringSource(const std::wstring& theString)
@@ -724,11 +749,13 @@ SexyString XMLParser::GetErrorText()
 	return mErrorText;
 }
 
+// FUNCTION: POPCAPGAME1 0x004fae00
 int XMLParser::GetCurrentLineNum()
 {
 	return mLineNum;
 }
 
+// FUNCTION: POPCAPGAME1 0x00502e30
 std::string XMLParser::GetFileName()
 {
 	return mFileName;

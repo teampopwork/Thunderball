@@ -9,6 +9,7 @@ namespace Sexy
 
 class XMLParser;
 
+// VTABLE: POPCAPGAME1 0x0060f2fc
 class PropertiesParser
 {
 public:

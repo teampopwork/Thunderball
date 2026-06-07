@@ -9,6 +9,7 @@ namespace Sexy
 class ImageFont;
 class SexyAppBase;
 
+// VTABLE: POPCAPGAME1 0x0060dd8c
 class SysFont : public Font
 {
 public:	

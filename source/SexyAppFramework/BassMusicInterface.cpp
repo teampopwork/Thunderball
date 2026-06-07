@@ -22,6 +22,9 @@ BassMusicInfo::BassMusicInfo()
 // SYNTHETIC: POPCAPGAME1 0x0054fe80
 // Sexy::BassMusicInterface::`scalar deleting destructor'
 
+// TEMPLATE: POPCAPGAME1 0x54c7d0
+// std::_Tree<std::_Tset_traits<PerfInfo,std::less<PerfInfo>,std::allocator<PerfInfo>,0> >::_Buynode(void)
+
 // FUNCTION: POPCAPGAME1 0x0054fc60
 BassMusicInterface::BassMusicInterface(HWND theHWnd)
 {
@@ -190,6 +193,12 @@ void BassMusicInterface::StopAllMusic()
 	}
 }
 
+// TEMPLATE: POPCAPGAME1 0x0040ca40
+// std::_Tree<std::_Tmap_traits<int,Sexy::FModMusicInfo,std::less<int>,std::allocator<std::pair<int const ,Sexy::FModMusicInfo> >,0> >::find
+
+// TEMPLATE: POPCAPGAME1 0x005050e0
+// std::_Tree<std::_Tset_traits<PerfInfo,std::less<PerfInfo>,std::allocator<PerfInfo>,0> >::erase(class std::_Tree<class std::_Tmap_traits<int, class Sexy::FModMusicInfo, struct std::less<int>, class std::allocator<struct std::pair<int const, class Sexy::FModMusicInfo>>, 0>>::iterator)
+
 // FUNCTION: POPCAPGAME1 0x0054eac0
 void BassMusicInterface::UnloadMusic(int theSongId)
 {
@@ -207,6 +216,9 @@ void BassMusicInterface::UnloadMusic(int theSongId)
 		mMusicMap.erase(anItr);
 	}
 }
+
+// TEMPLATE: POPCAPGAME1 0x004fecf0
+// std::_Tree<std::_Tset_traits<PerfInfo,std::less<PerfInfo>,std::allocator<PerfInfo>,0> >::_Erase
 
 // FUNCTION: POPCAPGAME1 0x0054ccd0
 void BassMusicInterface::UnloadAllMusic()
@@ -233,6 +245,9 @@ void BassMusicInterface::PauseMusic(int theSongId)
 		gBass->BASS_ChannelPause(aMusicInfo->GetHandle());
 	}
 }
+
+// TEMPLATE: POPCAPGAME1 0x0054bac0
+// std::_Tree<std::_Tset_traits<PerfInfo,std::less<PerfInfo>,std::allocator<PerfInfo>,0> >::const_iterator::_Inc
 
 // FUNCTION: POPCAPGAME1 0x0054cdc0
 void BassMusicInterface::PauseAllMusic()
@@ -267,6 +282,9 @@ void BassMusicInterface::ResumeMusic(int theSongId)
 		gBass->BASS_ChannelResume(aMusicInfo->GetHandle());
 	}
 }
+
+// TEMPLATE: POPCAPGAME1 0x0040ca40
+// std::_Tree<std::_Tmap_traits<int,Sexy::FModMusicInfo,std::less<int>,std::allocator<std::pair<int const ,Sexy::FModMusicInfo> >,0> >::find
 
 // FUNCTION: POPCAPGAME1 0x0054d5f0
 void BassMusicInterface::FadeIn(int theSongId, int theOffset, double theSpeed, bool noLoop)
@@ -376,6 +394,9 @@ void BassMusicInterface::SetSongMaxVolume(int theSongId, double theMaxVolume)
 		gBass->BASS_ChannelSetAttributes(aMusicInfo->GetHandle(), -1, (int) (aMusicInfo->mVolume*100), -101);
 	}
 }
+
+// TEMPLATE: POPCAPGAME1 0x0040ca40
+// std::_Tree<std::_Tmap_traits<int,Sexy::FModMusicInfo,std::less<int>,std::allocator<std::pair<int const ,Sexy::FModMusicInfo> >,0> >::find
 
 // FUNCTION: POPCAPGAME1 0x0054d8e0
 bool BassMusicInterface::IsPlaying(int theSongId)

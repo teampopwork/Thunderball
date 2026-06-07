@@ -157,6 +157,7 @@ static int p_fseek(PFILE* theFile, long theOffset, int theOrigin)
 	return fseek(theFile->mFP, theOffset, theOrigin);
 }
 
+// FUNCTION: POPCAPGAME1 0x005501b0
 static int p_ftell(PFILE* theFile)
 {
 	if (GetPakPtr() != NULL)
@@ -164,6 +165,7 @@ static int p_ftell(PFILE* theFile)
 	return ftell(theFile->mFP);
 }
 
+// FUNCTION: POPCAPGAME1 0x004fa9c0
 static size_t p_fread(void* thePtr, int theSize, int theCount, PFILE* theFile)
 {
 	if (GetPakPtr() != NULL)

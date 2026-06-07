@@ -6,6 +6,7 @@
 namespace Sexy
 {
 
+// VTABLE: POPCAPGAME1 0x0060f30c
 class HTTPTransfer
 {
 public:

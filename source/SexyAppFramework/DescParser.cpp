@@ -8,6 +8,7 @@ DescParser::DescParser()
 	mCmdSep = CMDSEP_SEMICOLON;
 }
 
+// FUNCTION: POPCAPGAME1 0x0051baf0
 DescParser::~DescParser()
 {
 }

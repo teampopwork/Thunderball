@@ -9,6 +9,7 @@ namespace Sexy
 class DataSync;
 class SoundInstance;
 
+// VTABLE: POPCAPGAME1 0x005e9f5c
 class SoundMgr {
 	class SoundDesc {
 	public:

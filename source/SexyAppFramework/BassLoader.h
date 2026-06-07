@@ -12,6 +12,7 @@
 namespace Sexy
 {
 
+// VTABLE: POPCAPGAME1 0x00614bd0
 struct BASS_INSTANCE
 {
 	BASS_INSTANCE(const char *dllName);

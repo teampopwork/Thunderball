@@ -82,7 +82,6 @@ public:
 	void EndBit();
 
 	void SetLong(ulong theValue, ulong thePosition);
-
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -96,12 +95,12 @@ public:
 	typedef std::map<RefCount*, int> RefCountToIntMap;
 	typedef std::map<int, RefCount*> IntToRefCountMap;
 
-	DataReader* mReader; // +0x4
-	DataWriter* mWriter; // +0x8
+	DataReader* mReader;   // +0x4
+	DataWriter* mWriter;   // +0x8
 	DataReader mReaderObj; // +0xC ????
 	DataWriter mWriterObj; // +0x2C ????
 
-	int mVersion; // +0x48
+	int mVersion;  // +0x48
 	bool mUnk0x4c; // +0x4c
 
 	DataSync();
@@ -133,7 +132,7 @@ public:
 	RefCount* GetRefCount(int theIndex);
 
 	void RegisterPointer(void* thePtr);
-	void Reset();	
+	void Reset();
 	void ResetPointerTable();
 
 	DataReader* StartReadMemory(const void* theMemory, ulong theLength, bool deallocate);
@@ -145,9 +144,9 @@ private:
 	PointerToIntMap mPointerToIntMap;
 	IntToPointerMap mIntToPointerMap;
 	RefCountToIntMap mRefCountToIntMap;
-	IntToRefCountMap mIntToRefCountMap; // +0x
+	IntToRefCountMap mIntToRefCountMap;   // +0x
 	std::vector<void**> mPointerSyncList; // +0x80
-	int mCurPointerIndex; // +0x90
+	int mCurPointerIndex;                 // +0x90
 };
 
 template <typename TContainer>
@@ -189,9 +188,8 @@ T* DataSync_SyncRefCount(DataSync& theSync, T* thePointer)
 			return newObject;
 		}
 		else {
-			return (T*)theSync.GetRefCount(refCount);
+			return (T*) theSync.GetRefCount(refCount);
 		}
-		
 	}
 	else {
 		int refCount = theSync.AddRefCount(thePointer);
@@ -207,13 +205,12 @@ template <typename T>
 void DataSync_SyncSmartPointer(DataSync& theSync, SmartPtr<T>& thePointer)
 {
 	if (theSync.mReader != NULL) {
-		RefCount* refCount = DataSync_SyncRefCount(theSync, (T*)thePointer);
-		thePointer = (T*)refCount;
+		RefCount* refCount = DataSync_SyncRefCount(theSync, (T*) thePointer);
+		thePointer = (T*) refCount;
 	}
 	else {
-		
-		DataSync_SyncRefCount(theSync, (T*)thePointer);
 
+		DataSync_SyncRefCount(theSync, (T*) thePointer);
 	}
 }
 
@@ -245,6 +242,11 @@ T* DataSync_SyncRefCountFactory(DataSync& theSync, T& theFactory)
 	}
 
 	return NULL;
+}
+
+template <typename TKey, typename TValue>
+void DataSync_SyncSTLMapImplSimple(DataSync* theSync, std::multimap<TKey, TValue>& theMap)
+{
 }
 
 } // namespace Sexy

@@ -19,6 +19,7 @@ public:
 	int mAlpha;
 
 	static Color Black;
+	// GLOBAL: POPCAPGAME1 0x0065131c
 	static Color White;
 
 public:

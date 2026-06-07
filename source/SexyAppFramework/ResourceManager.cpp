@@ -122,6 +122,8 @@ void ResourceManager::DeleteExtraImageBuffers(const std::string &theGroup)
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// FUNCTION: POPCAPGAME1 0x00503860
 std::string ResourceManager::GetErrorText()
 {
 	return mError;
@@ -136,6 +138,8 @@ bool ResourceManager::HadError()
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// FUNCTION: POPCAPGAME1 0x00509ca0
 bool ResourceManager::Fail(const std::string& theErrorText)
 {
 	if (!mHasFailed)
@@ -158,6 +162,9 @@ bool ResourceManager::Fail(const std::string& theErrorText)
 			mError += std::string(" on Line ") + aLineNumStr;
 
 		if (mXMLParser->GetFileName().length() > 0)
+			// STRING: POPCAPGAME1 0x0061089c
+			// "in File '"
+
 			mError += " in File '" + mXMLParser->GetFileName() + "'";
 	}
 
@@ -459,6 +466,8 @@ bool ResourceManager::ParseSetDefaults(XMLElement &theElement)
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// FUNCTION: POPCAPGAME1 0x00521a20
 bool ResourceManager::ParseResources()
 {
 	for (;;)
@@ -631,6 +640,7 @@ bool ResourceManager::LoadAlphaGridImage(ImageRes *theRes, DDImage *theImage)
 {	
 	ImageLib::Image* anAlphaImage = ImageLib::GetImage(theRes->mAlphaGridImage,true);	
 	if (anAlphaImage==NULL)
+		// STRING: POPCAPGAME1 0x006108ec
 		return Fail(StrFormat("Failed to load image: %s",theRes->mAlphaGridImage.c_str()));
 
 	std::auto_ptr<ImageLib::Image> aDelAlphaImage(anAlphaImage);
@@ -643,6 +653,7 @@ bool ResourceManager::LoadAlphaGridImage(ImageRes *theRes, DDImage *theImage)
 
 
 	if (anAlphaImage->mWidth!=aCelWidth || anAlphaImage->mHeight!=aCelHeight)
+		// STRING: POPCAPGAME1 0x006108bc
 		return Fail(StrFormat("GridAlphaImage size mismatch between %s and %s",theRes->mPath.c_str(),theRes->mAlphaGridImage.c_str()));
 
 	unsigned long *aMasterRowPtr = theImage->mBits;
@@ -689,6 +700,7 @@ bool ResourceManager::LoadAlphaImage(ImageRes *theRes, DDImage *theImage)
 	std::auto_ptr<ImageLib::Image> aDelAlphaImage(anAlphaImage);
 
 	if (anAlphaImage->mWidth!=theImage->mWidth || anAlphaImage->mHeight!=theImage->mHeight)
+		// STRING: POPCAPGAME1 0x00610908
 		return Fail(StrFormat("AlphaImage size mismatch between %s and %s",theRes->mPath.c_str(),theRes->mAlphaImage.c_str()));
 
 	unsigned long* aBits1 = theImage->mBits;

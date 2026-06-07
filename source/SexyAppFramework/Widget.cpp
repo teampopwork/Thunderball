@@ -8,7 +8,8 @@
 
 using namespace Sexy;
 
-// SYNTHETIC: POPCAPGAME1 0x00547c30
+// GLOBAL: POPCAPGAME1 0x0064bb34
+// Sexy::Widget::mWriteColoredString
 bool Widget::mWriteColoredString = true;
 
 // FUNCTION: POPCAPGAME1 0x00547b40
@@ -107,6 +108,36 @@ void Widget::DrawOverlay(Graphics* g, int thePriority)
 	DrawOverlay(g);
 }
 
+// TEMPLATE: POPCAPGAME1 0x00547360
+// std::vector<Sexy::Color,std::allocator<Sexy::Color> >::resize
+
+// TEMPLATE: POPCAPGAME1 0x00546e00
+// std::vector<Sexy::Color,std::allocator<Sexy::Color> >::_Insert_n
+
+// TEMPLATE: POPCAPGAME1 0x00540e50
+// std::_Allocate<Sexy::Color>
+
+// TEMPLATE: POPCAPGAME1 0x00541c60
+// std::_Uninit_copy<Sexy::Color *,Sexy::Color *,std::allocator<Sexy::Color> >
+
+// TEMPLATE: POPCAPGAME1 0x00543190
+// std::vector<Sexy::Color,std::allocator<Sexy::Color> >::_Ufill
+
+// TEMPLATE: POPCAPGAME1 0x0043f8b0
+// std::_Uninit_fill_n<Sexy::Color *,unsigned int,Sexy::Color,std::allocator<Sexy::Color> >
+
+// TEMPLATE: POPCAPGAME1 0x00443580
+// std::vector<Sexy::Color,std::allocator<Sexy::Color> >::_Umove<Sexy::Color *>
+
+// TEMPLATE: POPCAPGAME1 0x00542530
+// stdext::_Unchecked_move_backward<Sexy::Color *,Sexy::Color *>
+
+// TEMPLATE: POPCAPGAME1 0x00443250
+// std::vector<Sexy::Color,std::allocator<Sexy::Color> >::erase
+
+// FUNCTION: POPCAPGAME1 0x0043df40
+// std::_Copy_opt<Sexy::Color *,Sexy::Color *>
+
 // FUNCTION: POPCAPGAME1 0x00543c40
 void Widget::SetColors(int theColors[][3], int theNumColors)
 {
@@ -116,6 +147,9 @@ void Widget::SetColors(int theColors[][3], int theNumColors)
 		SetColor(i, Color(theColors[i][0], theColors[i][1], theColors[i][2]));
 	MarkDirty();
 }
+
+// TEMPLATE: POPCAPGAME1 0x00444290
+// std::vector<Sexy::Color,std::allocator<Sexy::Color> >::clear
 
 // FUNCTION: POPCAPGAME1 0x00543cb0
 void Widget::SetColors(int theColors[][4], int theNumColors)

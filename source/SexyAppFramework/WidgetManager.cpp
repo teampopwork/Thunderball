@@ -11,6 +11,9 @@
 using namespace Sexy;
 using namespace std;
 
+// TEMPLATE: POPCAPGAME1 0x00541e10
+// std::list<Sexy::PreModalInfo,std::allocator<Sexy::PreModalInfo> >::_Buynode(void)
+
 // FUNCTION: POPCAPGAME1 0x00547950
 WidgetManager::WidgetManager(SexyAppBase* theApp)
 {
@@ -107,6 +110,7 @@ Widget* WidgetManager::GetWidgetAt(int x, int y, int* theWidgetX, int* theWidget
 	return aWidget;
 }
 
+// FUNCTION: POPCAPGAME1 0x0053e360
 bool WidgetManager::IsLeftButtonDown()
 {
 	return (mActualDownButtons&1)?true:false;
@@ -133,6 +137,9 @@ void WidgetManager::DoMouseUps()
 	}
 }
 
+// TEMPLATE: POPCAPGAME1 0x00422270
+// std::vector<std::pair<Sexy::Widget *,int>,std::allocator<std::pair<Sexy::Widget *,int> > >::push_back
+
 // FUNCTION: POPCAPGAME1 0x005482a0
 void WidgetManager::DeferOverlay(Widget* theWidget, int thePriority)
 {
@@ -140,6 +147,18 @@ void WidgetManager::DeferOverlay(Widget* theWidget, int thePriority)
 	if (thePriority < mMinDeferredOverlayPriority)
 		mMinDeferredOverlayPriority = thePriority;
 }
+
+// TEMPLATE: POPCAPGAME1 0x00480d20
+// std::vector<std::pair<Sexy::Widget *,int>,std::allocator<std::pair<Sexy::Widget *,int> > >::resize
+
+// TEMPLATE: POPCAPGAME1 0x0041e0d0
+//std::vector<std::pair<Sexy::Widget *,int>,std::allocator<std::pair<Sexy::Widget *,int> > >::_Insert_n
+
+// TEMPLATE: POPCAPGAME1 0x004432e0
+// std::vector<std::pair<Sexy::Widget *,int>,std::allocator<std::pair<Sexy::Widget *,int> > >::erase
+
+// TEMPLATE: POPCAPGAME1 0x0043f650
+// stdext::unchecked_copy<std::pair<Sexy::Widget *,int> *,std::pair<Sexy::Widget *,int> *>
 
 // FUNCTION: POPCAPGAME1 0x005482e0
 void WidgetManager::FlushDeferredOverlayWidgets(int theMaxPriority)
@@ -204,6 +223,7 @@ void WidgetManager::DoMouseUps(Widget* theWidget, ulong theDownCode)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x0053e3f0
 void WidgetManager::RemapMouse(int& theX, int& theY)
 {
 	theX = ( theX - mMouseSourceRect.mX ) * mMouseDestRect.mWidth / mMouseSourceRect.mWidth + mMouseDestRect.mX;
@@ -262,6 +282,12 @@ void WidgetManager::SetBaseModal(Widget* theWidget, const FlagsMod& theBelowFlag
 		aWidget->LostFocus();		
 	}
 }
+
+// TEMPLATE: POPCAPGAME1 0x00541e30
+// std::list<Sexy::PreModalInfo,std::allocator<Sexy::PreModalInfo> >::_Buynode(struct std::_List_nod<class Sexy::PreModalInfo, class std::allocator<class Sexy::PreModalInfo>>::_Node *, struct std::_List_nod<class Sexy::PreModalInfo, class std::allocator<class Sexy::PreModalInfo>>::_Node *, class Sexy::PreModalInfo const &)
+
+// TEMPLATE: POPCAPGAME1 0x00543b00
+// std::list<Sexy::PreModalInfo,std::allocator<Sexy::PreModalInfo> >::_Incsize
 
 // FUNCTION: POPCAPGAME1 0x00547aa0
 void WidgetManager::AddBaseModal(Widget* theWidget, const FlagsMod& theBelowFlagsMod)

@@ -4,6 +4,7 @@
 #include "Common.h"
 #include <cassert>
 
+// GLOBAL: POPCAPGAME1 0x006867d4
 extern bool gInAssert;
 
 #ifdef SEXY_TRACING_ENABLED

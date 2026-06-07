@@ -1,0 +1,5 @@
+// GLOBAL: POPCAPGAME1 0x0060dccc
+// IID_IDirectDraw7
+
+// GLOBAL: POPCAPGAME1 0x0060dd0c
+// IID_IDirect3DHALDevice

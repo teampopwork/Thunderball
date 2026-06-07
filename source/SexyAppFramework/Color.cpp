@@ -69,6 +69,7 @@ Color::Color(const uchar* theElements) :
 {
 }
 
+// FUNCTION: POPCAPGAME1 0x004c2120
 Color::Color(const int* theElements) :
 	mRed(theElements[0]),
 	mGreen(theElements[1]),
@@ -150,6 +151,7 @@ SexyRGBA Color::ToRGBA() const
 	return anRGBA;
 }
 
+// FUNCTION: POPCAPGAME1 0x004c2180
 bool Sexy::operator==(const Color& theColor1, const Color& theColor2)
 {
 	return 
@@ -159,6 +161,7 @@ bool Sexy::operator==(const Color& theColor1, const Color& theColor2)
 		(theColor1.mAlpha == theColor2.mAlpha);
 }
 
+// FUNCTION: POPCAPGAME1 0x004c21c0
 bool Sexy::operator!=(const Color& theColor1, const Color& theColor2)
 {
 	return 

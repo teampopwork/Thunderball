@@ -316,9 +316,9 @@ void Board::RemoveSlotMachineDialog()
 void Board::SubmitTotalStats()
 {
 	if (!mUnk0x11f && !mLogicMgr->mUnk0x124) {
-		if ((mApp->mGameMode == ADVENTURE || mApp->mGameMode == QUICK_PLAY || mApp->mGameMode == CHALLENGE) && (0 < mLogicMgr->mUnk0x248[0]->mUnk0x0)) {
+		if ((mApp->mGameMode == ADVENTURE || mApp->mGameMode == QUICK_PLAY || mApp->mGameMode == CHALLENGE) && (0 < mLogicMgr->mUnk0x248[0].mUnk0x0)) {
 			mUnk0x11f = true;
-			mApp->mCurProfile->AddTotalStats(mLogicMgr->mUnk0x248[0]);
+			mApp->mCurProfile->AddTotalStats(&mLogicMgr->mUnk0x248[0]);
 		}
 	}
 }
@@ -332,7 +332,7 @@ bool Board::Cheated()
 // FUNCTION: POPCAPGAME1 0x00402010
 bool Board::HasShot()
 {
-	return mLogicMgr->mUnk0x248[0]->mUnk0x0 > 0;
+	return mLogicMgr->mUnk0x248[0].mUnk0x0 > 0;
 }
 
 // FUNCTION: POPCAPGAME1 0x00402030
@@ -362,6 +362,7 @@ void Board::ShowReplayDialog()
 		PositionReplayDialog();
 		if (mUnk0xc5 == 0) {
 			mReplayDialog->DoScroll(true);
+			// STRING: POPCAPGAME1 0x005d2868
 			mReplayDialog->mY = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp14,813", 10) + mReplayDialog->mHeight - IMAGE_DLG_REPLAYTOP->mHeight;
 		}
 		mWidgetManager->AddWidget(mReplayDialog);
@@ -841,11 +842,11 @@ void Board::ActivateTypingCheck(int param_1)
 		if ((mLogicMgr->mUnk0x4 != 1) || (mUnk0xb4 != 2)) return;
 
 		iVar5 = mLogicMgr->mUnk0x128;
-		bVar10 = mLogicMgr->mUnk0x1cc[iVar5] != 2;
+		bVar10 = mLogicMgr->mUnk0x1cc[iVar5] != POWERUP_2;
 		uVar6 = (uint) bVar10;
 		*(uint*) (mLogicMgr->mUnk0x1cc[iVar5]) = (int) (uVar6 << 0x1f) >> 0x1f & 2;
 		*(uint*) (mLogicMgr->mUnk0x1e4[iVar5]) = (int) (uVar6 << 0x1f) >> 0x1f & 1000;
-		mLogicMgr->ActivatePowerup(static_cast<Sexy::PowerupType>(2), bVar10);
+		mLogicMgr->ActivatePowerup(POWERUP_2, bVar10);
 		break;
 
 	case 1:

@@ -58,6 +58,7 @@ typedef std::list<FontLayer> FontLayerList;
 typedef std::map<std::string, FontLayer*> FontLayerMap;
 typedef std::list<Rect> RectList;
 
+// VTABLE: POPCAPGAME1 0x0060ed6c
 class FontData : public DescParser
 {
 public:
@@ -91,6 +92,7 @@ public:
 	bool					LoadLegacy(Image* theFontImage, const std::string& theFontDescFileName);
 };
 
+// VTABLE: POPCAPGAME1 0x0060dd70
 class ActiveFontLayer
 {
 public:
@@ -121,6 +123,7 @@ public:
 
 typedef std::multimap<int, RenderCommand> RenderCommandMap;
 
+// VTABLE: POPCAPGAME1 0x0060e7d4
 class ImageFont : public Font
 {
 public:	

@@ -97,6 +97,7 @@ SharedImageRef::operator Image*()
 	return (MemoryImage*) *this;
 }
 
+// FUNCTION: POPCAPGAME1 0x004db380
 SharedImageRef::operator MemoryImage*()
 {
 	if (mUnsharedImage != NULL)

@@ -14,7 +14,7 @@ DataReader::DataReader()
 {
 }
 
-// SYNTHETIC: POPCAPGAME1 0x004bbdf0
+// SYNTHETIC: POPCAPGAME1 0x004bbf00
 // Sexy::DataReader::`scalar deleting destructor'
 
 // FUNCTION: POPCAPGAME1 0x004bbec0
@@ -153,6 +153,9 @@ void DataReader::EndBit()
 DataWriter::DataWriter() : mFileHandle(NULL), mMemoryHandle(NULL), mMemoryLength(0), mMemoryPosition(0)
 {
 }
+
+// SYNTHETIC: POPCAPGAME1 0x004bbdf0
+// Sexy::DataWriter::`scalar deleting destructor'
 
 // FUNCTION: POPCAPGAME1 0x004bbd20
 DataWriter::~DataWriter()

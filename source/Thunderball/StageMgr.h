@@ -38,6 +38,7 @@ public:
 	LevelInfo* GetLevelInfo(int param_1);
 };
 
+// VTABLE: POPCAPGAME1 0x005eb32c
 class StageMgr {
 public:
 	ThunderballApp* mApp; // +0x4

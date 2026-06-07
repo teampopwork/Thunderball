@@ -82,6 +82,12 @@ Graphics::~Graphics()
 {
 }
 
+// TEMPLATE: POPCAPGAME1 0x004dcb80
+// std::list<Sexy::GraphicsState,std::allocator<Sexy::GraphicsState> >::_Buynode(struct std::_List_nod<class Sexy::GraphicsState, class std::allocator<class Sexy::GraphicsState>>::_Node *, struct std::_List_nod<class Sexy::GraphicsState, class std::allocator<class Sexy::GraphicsState>>::_Node *, class Sexy::GraphicsState const &)
+
+// TEMPLATE: POPCAPGAME1 0x004de6b0
+// std::list<Sexy::GraphicsState,std::allocator<Sexy::GraphicsState> >::_Incsize
+
 // FUNCTION: POPCAPGAME1 0x004e8050
 void Graphics::PushState()
 {
@@ -726,7 +732,7 @@ void Graphics::DrawImageMirror(Image* theImage, int theX, int theY, bool mirror)
 	DrawImageMirror(theImage,theX,theY,Rect(0,0,theImage->mWidth,theImage->mHeight),mirror);
 }
 
-// FUNCTION: POPCAPGAME1 0x004dbf00
+// FUNCTION: POPCAPGAME1 0x004d7a00
 void Graphics::DrawImageMirror(Image* theImage, int theX, int theY, const Rect& theSrcRect, bool mirror)
 {
 	if (!mirror)
@@ -757,7 +763,7 @@ void Graphics::DrawImageMirror(Image* theImage, int theX, int theY, const Rect& 
 		mDestImage->BltMirror(theImage, aDestRect.mX, aDestRect.mY, aSrcRect, mColorizeImages ? mColor : Color::White, mDrawMode);
 }
 
-
+// FUNCTION: POPCAPGAME1 0x004dbf00
 void Graphics::DrawImageMirror(Image* theImage, const Rect& theDestRect, const Rect& theSrcRect, bool mirror)
 {
 	if (!mirror)
@@ -1128,6 +1134,7 @@ void Graphics::DrawImageCel(Image* theImageStrip, const Rect& theDestRect, int t
 	DrawImage(theImageStrip,theDestRect,aSrcRect);
 }
 
+// FUNCTION: POPCAPGAME1 0x004e26d0
 int Graphics::WriteString(const SexyString& theString, int theX, int theY, int theWidth, int theJustification, bool drawString, int theOffset, int theLength, int theOldColor)
 {
 	Font* aFont = GetFont();
@@ -1232,6 +1239,7 @@ static int WriteWordWrappedHelper(Graphics *g, const SexyString& theString, int 
 	return g->WriteString(theString,theX,theY,theWidth,theJustification,drawString,theOffset,theLength,theOldColor);
 }
 
+// FUNCTION: POPCAPGAME1 0x004e2aa0
 int	Graphics::WriteWordWrapped(const Rect& theRect, const SexyString& theLine, int theLineSpacing, int theJustification, int *theMaxWidth, int theMaxChars, int *theLastWidth)
 {
 	Color anOrigColor = GetColor();
