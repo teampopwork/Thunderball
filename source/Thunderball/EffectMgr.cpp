@@ -171,7 +171,7 @@ void EffectMgr::UpdateSlowMo(float param_1)
 }
 
 // STUB: POPCAPGAME1 0x00457340
-void EffectMgr::SyncState(DataSync* param_1)
+void EffectMgr::SyncState(DataSync& param_1)
 {
 }
 

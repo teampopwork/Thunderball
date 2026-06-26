@@ -18,7 +18,7 @@ void PegInfo::SetHit(bool param_1)
 {
 }
 
-void PegInfo::SyncState(DataSync* param_1)
+void PegInfo::SyncState(DataSync& param_1)
 {
 }
 
@@ -54,6 +54,7 @@ void PegInfo::Update(PhysObj* param_1)
 {
 }
 
+// STUB: POPCAPGAME1 0x0047ad10
 void PegInfo::DrawBall(Ball* param_1, Graphics* param_2)
 {
 }

@@ -27,6 +27,7 @@ int Sexy::PhysObj::gCurSortId = 0;
 int Sexy::PhysObj::mSyncType = 0;
 bool Sexy::PhysObj::mFastLoad = true;
 int Sexy::PhysObj::mOutlineMode = 0;
+void (*Sexy::PhysObj::mNotifyCollisionFunc)(PhysObj* param_1, PhysObj* param_2) = NULL;
 
 // FUNCTION: POPCAPGAME1 0x00480660
 PhysObj::PhysObj()
@@ -931,9 +932,9 @@ bool PhysObj::EditGetSetValHook(const std::string& param_1, bool param_2)
 // Sexy::DataSync_SyncRefCount<Sexy::Mover>
 
 // FUNCTION: POPCAPGAME1 0x00480750
-void PhysObj::SyncState(DataSync* theSync)
+void PhysObj::SyncState(DataSync& theSync)
 {
-	DataReader* theReader = theSync->mReader;
+	DataReader* theReader = theSync.mReader;
 	if (theReader != NULL) {
 		InitDefaults();
 	}
@@ -958,112 +959,112 @@ void PhysObj::SyncState(DataSync* theSync)
 	bool bVar18 = (mUnk0xb0 != 0);
 	bool bVar19 = (mUnk0xcc != 0);
 
-	theSync->SyncBoolBit(bVar1);
-	theSync->SyncBoolBit(bVar2);
-	theSync->SyncBoolBit(bVar3);
-	theSync->SyncBoolBit(bVar5);
-	theSync->SyncBoolBit(bVar6);
-	theSync->SyncBoolBit(mUnk0x24);
-	theSync->SyncBoolBit(mUnk0x25);
-	theSync->SyncBoolBit(mUnk0x26);
-	theSync->EndBit();
+	theSync.SyncBoolBit(bVar1);
+	theSync.SyncBoolBit(bVar2);
+	theSync.SyncBoolBit(bVar3);
+	theSync.SyncBoolBit(bVar5);
+	theSync.SyncBoolBit(bVar6);
+	theSync.SyncBoolBit(mUnk0x24);
+	theSync.SyncBoolBit(mUnk0x25);
+	theSync.SyncBoolBit(mUnk0x26);
+	theSync.EndBit();
 
-	theSync->SyncBoolBit(bVar7);
-	theSync->SyncBoolBit(bVar8);
-	theSync->SyncBoolBit(bVar9);
-	theSync->SyncBoolBit(bVar4);
-	theSync->SyncBoolBit(bVar10);
-	theSync->SyncBoolBit(bVar11);
-	theSync->SyncBoolBit(mUnk0x27);
-	theSync->SyncBoolBit(mUnk0x2a);
-	theSync->EndBit();
+	theSync.SyncBoolBit(bVar7);
+	theSync.SyncBoolBit(bVar8);
+	theSync.SyncBoolBit(bVar9);
+	theSync.SyncBoolBit(bVar4);
+	theSync.SyncBoolBit(bVar10);
+	theSync.SyncBoolBit(bVar11);
+	theSync.SyncBoolBit(mUnk0x27);
+	theSync.SyncBoolBit(mUnk0x2a);
+	theSync.EndBit();
 
-	theSync->SyncBoolBit(bVar12);
-	theSync->SyncBoolBit(bVar14);
-	theSync->SyncBoolBit(bVar15);
-	theSync->SyncBoolBit(bVar16);
-	theSync->SyncBoolBit(mUnk0x2b);
-	theSync->SyncBoolBit(bVar17);
-	theSync->SyncBoolBit(mUnk0x28);
-	theSync->SyncBoolBit(bVar13);
-	theSync->EndBit();
+	theSync.SyncBoolBit(bVar12);
+	theSync.SyncBoolBit(bVar14);
+	theSync.SyncBoolBit(bVar15);
+	theSync.SyncBoolBit(bVar16);
+	theSync.SyncBoolBit(mUnk0x2b);
+	theSync.SyncBoolBit(bVar17);
+	theSync.SyncBoolBit(mUnk0x28);
+	theSync.SyncBoolBit(bVar13);
+	theSync.EndBit();
 
-	if (theSync->mVersion >= 0xF) {
-		theSync->SyncBoolBit(mUnk0x2c);
-		theSync->SyncBoolBit(mUnk0x29);
-		theSync->SyncBoolBit(bVar18);
-		theSync->SyncBoolBit(bVar19);
-		theSync->SyncBoolBit(mUnk0x2d);
-		theSync->SyncBoolBit(mUnk0x30);
-		theSync->EndBit();
+	if (theSync.mVersion >= 0xF) {
+		theSync.SyncBoolBit(mUnk0x2c);
+		theSync.SyncBoolBit(mUnk0x29);
+		theSync.SyncBoolBit(bVar18);
+		theSync.SyncBoolBit(bVar19);
+		theSync.SyncBoolBit(mUnk0x2d);
+		theSync.SyncBoolBit(mUnk0x30);
+		theSync.EndBit();
 	}
 
 	if (bVar1) {
-		theSync->SyncFloat(mUnk0x38);
+		theSync.SyncFloat(mUnk0x38);
 	}
 
 	if (bVar2) {
-		theSync->SyncFloat(mUnk0x34);
+		theSync.SyncFloat(mUnk0x34);
 	}
 
 	if (bVar6) {
-		theSync->SyncLong(mUnk0x4c);
+		theSync.SyncLong(mUnk0x4c);
 	}
 
 	if (bVar7) {
-		theSync->SyncLong(mUnk0x40);
+		theSync.SyncLong(mUnk0x40);
 	}
 
 	if (bVar8) {
-		theSync->SyncLong(mUnk0x44);
+		theSync.SyncLong(mUnk0x44);
 	}
 
 	if (bVar9) {
-		theSync->SyncString(mUnk0x94);
+		theSync.SyncString(mUnk0x94);
 	}
 
 	if (bVar4) {
-		theSync->SyncFloat(mUnk0xb8);
+		theSync.SyncFloat(mUnk0xb8);
 	}
 
 	if (bVar10) {
-		theSync->SyncFloat(mUnk0xbc);
+		theSync.SyncFloat(mUnk0xbc);
 	}
 
 	if (bVar11) {
-		theSync->SyncFloat(mUnk0xc0);
+		theSync.SyncFloat(mUnk0xc0);
 	}
 
 	if (bVar12) {
-		theSync->SyncLong(mUnk0xc8);
+		theSync.SyncLong(mUnk0xc8);
 	}
 
 	if (bVar14) {
-		theSync->SyncString(mUnk0x5c);
+		theSync.SyncString(mUnk0x5c);
 	}
 
 	if (bVar15) {
-		theSync->SyncLong(mUnk0x50);
+		theSync.SyncLong(mUnk0x50);
 	}
 
 	if (bVar16) {
-		theSync->SyncByte(mUnk0x54);
+		theSync.SyncByte(mUnk0x54);
 	}
 
 	if (bVar17) {
-		theSync->SyncString(mUnk0x78);
+		theSync.SyncString(mUnk0x78);
 	}
 
 	if (bVar13) {
-		theSync->SyncFloat(mUnk0x3c);
+		theSync.SyncFloat(mUnk0x3c);
 	}
 
 	if (bVar18) {
-		theSync->SyncLong(mUnk0xb0);
+		theSync.SyncLong(mUnk0xb0);
 	}
 
 	if (bVar19) {
-		theSync->SyncByte(mUnk0xcc);
+		theSync.SyncByte(mUnk0xcc);
 	}
 
 	if (bVar3) {
@@ -1074,17 +1075,17 @@ void PhysObj::SyncState(DataSync* theSync)
 	}
 
 	if (bVar5) {
-		DataSync_SyncSmartPointer<Mover>(*theSync, mMover);
+		DataSync_SyncSmartPointer<Mover>(theSync, mMover);
 	}
 
 	if (mSyncType == 2) {
 		bool bVar20 = mUnk0xdc != 0;
-		theSync->SyncBoolBit(mUnk0xe0);
-		theSync->SyncBoolBit(bVar20);
-		theSync->EndBit();
+		theSync.SyncBoolBit(mUnk0xe0);
+		theSync.SyncBoolBit(bVar20);
+		theSync.EndBit();
 
 		if (bVar20) {
-			theSync->SyncLong(mUnk0xdc);
+			theSync.SyncLong(mUnk0xdc);
 		}
 	}
 

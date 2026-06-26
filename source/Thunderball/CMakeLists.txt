@@ -59,6 +59,7 @@ add_executable(popcapgame1 WIN32
     UserDialog.cpp
     WidgetMover.cpp
     TypingCheck.cpp
+    BlendedImage.cpp
 )
 
 target_include_directories(popcapgame1 PRIVATE

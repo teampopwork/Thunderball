@@ -41,7 +41,7 @@ public:
 	virtual ~Poly();
 
 	virtual bool EditGetSetValHook(const std::string& param_1, bool param_2);
-	virtual void SyncState(DataSync* theSync);
+	virtual void SyncState(DataSync& theSync);
 	virtual int GetClass();
 	virtual void EditDrawOutline(Graphics* g);
 	virtual void EditDrawPoints(Graphics* g);
@@ -97,7 +97,7 @@ public:
 	void MoveCenterTo(float param_1, float param_2);
 	void SetScale(float param_1);
 	void InitFromRect(float param_1, float param_2, float param_3, float param_4);
-	void SyncCommon(DataSync* theSync, bool param_2);
+	void SyncCommon(DataSync& theSync, bool param_2);
 };
 
 } // namespace Sexy

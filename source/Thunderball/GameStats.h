@@ -43,7 +43,7 @@ public:
     int GetTotalStylePoints();
     int GetTotalStyleShots();
     void Reset();
-    void SyncState(DataSync* theSync);
+    void SyncState(DataSync& theSync);
 };
 
 } // namespace Sexy

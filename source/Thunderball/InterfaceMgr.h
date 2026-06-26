@@ -52,7 +52,7 @@ public:
 	void AddBottomBall(int param_1);
 	void Update();
 	void AddTopBalls(int param_1);
-	void SyncState(DataSync* param_1);
+	void SyncState(DataSync& param_1);
 	void SyncStageNum();
 	void DrawBallsLeftDetail(Graphics* param_1, int param_2, bool param_3);
 	void DrawOnePlayer(Graphics* param_1);

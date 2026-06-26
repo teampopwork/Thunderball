@@ -92,14 +92,14 @@ void SoundMgr::Clear()
 }
 
 // FUNCTION: POPCAPGAME1 0x0045f2c0
-void SoundMgr::SyncState(DataSync* param_1)
+void SoundMgr::SyncState(DataSync& theSync)
 {
 	// DataSync_SyncSTLMapImplSimple<int, SoundDesc*>(param_1, mUnk0x4);
-	if (0x2f < param_1->mVersion) {
-		param_1->SyncLong(mUnk0x10);
+	if (0x2f < theSync.mVersion) {
+		theSync.SyncLong(mUnk0x10);
 	}
 
-	if (param_1->mReader != NULL) {
+	if (theSync.mReader != NULL) {
 		mUnk0x28.clear();
 	}
 }

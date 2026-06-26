@@ -21,7 +21,7 @@ void HighScoreMgr::CreateDefHighScores(std::list<HighScoreEntry>* theList, std::
 }
 
 // STUB: POPCAPGAME1 0x00471eb0
-void HighScoreMgr::SyncState(DataSync* theSync)
+void HighScoreMgr::SyncState(DataSync& theSync)
 {
 }
 

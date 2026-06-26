@@ -28,7 +28,7 @@ class LogicMgr {
 
 	class PegHitInfo {
 	public:
-		void SyncState(DataSync* theSync);
+		void SyncState(DataSync& theSync);
 	};
 
 	class BallPosInfo {};
@@ -203,7 +203,7 @@ public:
 	void SetState(LogicState param_1);
 	void SyncClickTimes(DataSync* theSync);
 	void WriteClickTimes();
-	void SyncState(DataSync* theSync);
+	void SyncState(DataSync& theSync);
 	void CheckCollisions();
 	void CheckBallStop();
 	void CheckPegHitSkillShot(Ball* param_1, PhysObj* param_2);

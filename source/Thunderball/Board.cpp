@@ -711,7 +711,7 @@ void Board::SyncModeOptions()
 }
 
 // STUB: POPCAPGAME1 0x00424090
-void Board::SyncState(DataSync* theSync)
+void Board::SyncState(DataSync& theSync)
 {
 }
 

@@ -4,6 +4,11 @@
 #include "ConstEnums.h"
 
 #include <SexyAppFramework/SexyApp.h>
+#include <SexyAppFramework/Image.h>
+
+// GLOBAL: POPCAPGAME1 0x00650a55
+static bool mColorblind;
+
 
 namespace Sexy
 {
@@ -27,6 +32,9 @@ class TrophyMgr;
 class HighScoreMgr;
 class ImageMgr;
 class Board;
+class BlendedImage;
+
+static BlendedImage* gBallPegImage[9];
 
 // VTABLE: POPCAPGAME1 0x005d7cb8
 class ThunderballApp : public SexyApp {

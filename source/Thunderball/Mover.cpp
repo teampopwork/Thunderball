@@ -265,6 +265,6 @@ void Mover::InitDefaults()
 }
 
 // STUB: POPCAPGAME1 0x0047a9f0
-void Mover::SyncState(DataSync* param_1)
+void Mover::SyncState(DataSync& param_1)
 {
 }

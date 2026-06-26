@@ -144,7 +144,7 @@ bool Poly::EditGetSetValHook(const std::string& param_1, bool param_2)
 }
 
 // FUNCTION: POPCAPGAME1 0x00488010
-void Poly::SyncState(DataSync* theSync)
+void Poly::SyncState(DataSync& theSync)
 {
 	SyncCommon(theSync, true);
 }
@@ -758,6 +758,6 @@ void Poly::InitFromRect(float param_1, float param_2, float param_3, float param
 }
 
 // STUB: POPCAPGAME1 0x00487d00
-void Poly::SyncCommon(DataSync* theSync, bool param_2)
+void Poly::SyncCommon(DataSync& theSync, bool param_2)
 {
 }

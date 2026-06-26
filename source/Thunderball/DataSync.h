@@ -184,7 +184,7 @@ T* DataSync_SyncRefCount(DataSync& theSync, T* thePointer)
 		else if (refCount == 1) {
 			T* newObject = new T();
 			theSync.AddRefCount(newObject);
-			newObject->SyncState(&theSync);
+			newObject->SyncState(theSync);
 			return newObject;
 		}
 		else {
@@ -195,7 +195,7 @@ T* DataSync_SyncRefCount(DataSync& theSync, T* thePointer)
 		int refCount = theSync.AddRefCount(thePointer);
 		theSync.mWriter->WriteLong(refCount);
 		if (refCount == 1) {
-			thePointer->SyncState(&theSync);
+			thePointer->SyncState(theSync);
 		}
 		return thePointer;
 	}
@@ -215,14 +215,14 @@ void DataSync_SyncSmartPointer(DataSync& theSync, SmartPtr<T>& thePointer)
 }
 
 template <typename T>
-T* DataSync_SyncRefCountFactory(DataSync& theSync, T& theFactory)
+T* DataSync_SyncRefCountFactory(DataSync& theSync, T* theFactory)
 {
 	if (theSync.mReader == NULL) {
 		ulong refCount = theSync.AddRefCount(theFactory);
 		theSync.mWriter->WriteLong(refCount);
 		if (refCount == 1) {
 			theSync.mWriter->WriteLong(theFactory->GetClass());
-			theFactory.SyncState(theSync);
+			theFactory->SyncState(theSync);
 		}
 	}
 	else {
@@ -231,17 +231,29 @@ T* DataSync_SyncRefCountFactory(DataSync& theSync, T& theFactory)
 			return NULL;
 		}
 		else if (refCount == 1) {
-			T* newObject = theFactory.ClassFactory(theSync.mReader->ReadLong());
-			theSync.AddRefCount(newObject, refCount);
+			T* newObject = theFactory->ClassFactory(theSync.mReader->ReadLong());
+			theSync.AddRefCount(theFactory);
 			newObject->SyncState(theSync);
 			return newObject;
 		}
 		else {
-			return theSync.GetRefCount(theFactory, refCount);
+			return (T*)theSync.GetRefCount(refCount);
 		}
 	}
 
 	return NULL;
+}
+
+template <typename T>
+void DataSync_SyncSmartPtrFactory(DataSync& theSync, SmartPtr<T>& thePointer, T* theFactory)
+{
+    if (theSync.mReader != NULL) {
+        RefCount* refCount = DataSync_SyncRefCountFactory(theSync, theFactory);
+        thePointer = (T*) refCount;
+    }
+    else {
+        DataSync_SyncRefCountFactory(theSync, theFactory);
+    }
 }
 
 template <typename TKey, typename TValue>

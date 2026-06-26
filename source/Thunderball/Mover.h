@@ -49,7 +49,7 @@ public:
 	void CalcPos(int param_1, float param_2);
 	void DrawMovement(Graphics* g);
 	void InitDefaults();
-	void SyncState(DataSync* param_1);
+	void SyncState(DataSync& param_1);
 };
 
 } // namespace Sexy

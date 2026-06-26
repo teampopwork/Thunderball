@@ -29,7 +29,7 @@ public:
 	virtual ~Hole();
 
 	virtual bool EditGetSetValHook(std::string* param_1, bool param_2);
-	virtual void SyncState(DataSync* param_1);
+	virtual void SyncState(DataSync& param_1);
 	virtual int GetClass();
 	virtual void EditDrawOutline(Graphics* g);
 	virtual void SetPos(float param_1, float param_2);

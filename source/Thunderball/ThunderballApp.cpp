@@ -24,6 +24,7 @@
 #include "TrophyScreen.h"
 #include "UpsellScreen.h"
 #include "WidgetMover.h"
+#include "BlendedImage.h"
 
 #include <SexyAppFramework/BassMusicInterface.h>
 #include <SexyAppFramework/ButtonWidget.h>
@@ -32,9 +33,6 @@
 #include <SexyAppFramework/SWTri.h>
 #include <SexyAppFramework/SoundManager.h>
 #include <SexyAppFramework/WidgetManager.h>
-
-// GLOBAL: POPCAPGAME1 0x00650a55
-static bool mColorblind;
 
 using namespace Sexy;
 
@@ -293,9 +291,54 @@ void ThunderballApp::CopyBrickTextures()
 {
 }
 
-// STUB: POPCAPGAME1 0x0041c610
+// FUNCTION: POPCAPGAME1 0x0041c610
 void ThunderballApp::CopyPegTextures()
 {
+    MemoryImage* aPegImage = (MemoryImage*)IMAGE_BALLPEG;
+
+    if (mColorblind) {
+        aPegImage = (MemoryImage*)IMAGE_BALLPEGCB;
+    }
+
+    if (ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp161,1225", true) && aPegImage->mWidth == 0x14) {
+        MemoryImage* aPegImage2 = new MemoryImage();
+        aPegImage2->Create(22, 176);
+        aPegImage2->CopyAttributes(aPegImage);
+        aPegImage2->mFilePath = aPegImage->mFilePath;
+        Graphics g = Graphics((Image*)aPegImage2);
+        int iVar2 = 1;
+        int local_14 = 0;
+        while (iVar2 < 0xb1) {
+            Rect aRect = Rect(0, local_14, 0x14, 0x14);
+            g.DrawImage(aPegImage, 1, iVar2, aRect);
+            local_14 += 0x14;
+            iVar2 += 0x16;
+        }
+
+        ReplaceImageById(mResourceManager, (mColorblind ? 1 : 0) + IMAGE_BALLPEG_ID, aPegImage2);
+        aPegImage = aPegImage2;
+    }
+
+    Rect aRect = Rect((aPegImage->mWidth + (aPegImage->mWidth >> 0x1f & 7U) >> 3), aPegImage->mHeight, 0, 0);
+    
+    
+    for (int i = 0; i < 9; i++) {
+        if (gBallPegImage[i] != NULL) {
+            delete gBallPegImage[i];
+        }
+
+        gBallPegImage[i] = new BlendedImage();
+        gBallPegImage[i]->Create(aPegImage, aRect);
+        aRect.mY += 1;
+    }
+
+    if (gBallPegImage[8] != NULL) {
+        delete gBallPegImage[8];
+    }
+    
+    gBallPegImage[8] = new BlendedImage();
+    gBallPegImage[8]->Create((MemoryImage*)IMAGE_PEGSHADOW);
+
 }
 
 // FUNCTION: POPCAPGAME1 0x004302a0

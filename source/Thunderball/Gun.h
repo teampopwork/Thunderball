@@ -20,7 +20,7 @@ public:
 	Gun(Board* param_1);
 	virtual ~Gun();
 
-	virtual void SyncState(DataSync* param_1);
+	virtual void SyncState(DataSync& param_1);
 	virtual int GetClass();
 	virtual void Update();
 	virtual void UpdateSlowMo(float param_1);

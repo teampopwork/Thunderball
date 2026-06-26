@@ -27,7 +27,7 @@ public:
 	void Update();
 	void Clear();
 	void AddText();
-	void SyncState(DataSync* param_1);
+	void SyncState(DataSync& param_1);
 };
 
 } // namespace Sexy

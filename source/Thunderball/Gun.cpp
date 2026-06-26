@@ -89,7 +89,7 @@ void Gun::SetAngle(float param_1, bool param_2)
 }
 
 // STUB: POPCAPGAME1 0x004882c0
-void Gun::SyncState(DataSync* param_1)
+void Gun::SyncState(DataSync& param_1)
 {
 }
 

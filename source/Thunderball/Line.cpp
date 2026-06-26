@@ -25,7 +25,7 @@ Line::~Line()
 }
 
 // STUB: POPCAPGAME1 0x004814f0
-void Line::SyncState(DataSync* sync)
+void Line::SyncState(DataSync& sync)
 {
 }
 

@@ -59,6 +59,6 @@ bool StatsMgr::Save(char* path)
     return false;
 }
 
-void StatsMgr::SyncState(DataSync* sync)
+void StatsMgr::SyncState(DataSync& sync)
 {
 }

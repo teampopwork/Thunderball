@@ -107,18 +107,18 @@ void GameStats::Reset()
 
 
 // FUNCTION: POPCAPGAME1 0x00402e00
-void GameStats::SyncState(DataSync* theSync) 
+void GameStats::SyncState(DataSync& theSync) 
 {
-    if (theSync->mReader != NULL) 
+    if (theSync.mReader != NULL) 
     {
         Reset();
     }
 
     int byte = 1;
-    theSync->SyncByte(byte);
-    theSync->SyncLong(mUnk0x0);
-    theSync->SyncLong(mUnk0x4);
-    theSync->SyncLong(mUnk0x8);
-    theSync->SyncLong(mUnk0xc);
+    theSync.SyncByte(byte);
+    theSync.SyncLong(mUnk0x0);
+    theSync.SyncLong(mUnk0x4);
+    theSync.SyncLong(mUnk0x8);
+    theSync.SyncLong(mUnk0xc);
 
 }

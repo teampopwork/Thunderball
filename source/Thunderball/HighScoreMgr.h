@@ -25,7 +25,7 @@ public:
 	virtual ~HighScoreMgr();
 
 	void CreateDefHighScores(std::list<HighScoreEntry>* theList, std::string* param_1);
-	void SyncState(DataSync* theSync);
+	void SyncState(DataSync& theSync);
 	void Save();
 	void Load();
 	std::list<HighScoreEntry>* GetScores(std::string* param_1, bool param_2);

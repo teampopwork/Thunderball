@@ -52,6 +52,7 @@ ImageMgr* GetImageMgr();
 Board* GetBoard();
 void DrawAdventureFrame(Graphics* g, int param_1, int param_2, int param_3, int param_4, const std::string& param_5);
 void RotateXY(float* param_1, float* param_2, float param_3, float param_4, float param_5);
+void DrawCircle(Graphics *g, float param_2, float param_3, float param_4, Image *param_5, Rect *param_6, int param_7);
 // 04896b0 DoDrawStat
 } // namespace Sexy
 

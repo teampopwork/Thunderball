@@ -16,7 +16,7 @@ public:
 	virtual ~Brick();
 
 	virtual bool EditGetSetValHook(std::string* param_1, bool param_2);
-	virtual void SyncState(DataSync* param_1);
+	virtual void SyncState(DataSync& param_1);
 	virtual int GetClass();
 	virtual void EditGetDragMode(float param_1, float param_2);
 	virtual void EditDoPointDrag(float param_1, float param_2);

@@ -1709,6 +1709,13 @@ void Sexy::DrawAdventureFrame(Graphics* g, int param_1, int param_2, int param_3
 	}
 }
 
+// STUB: POPCAPGAME1 0x004bc2d0
 void Sexy::RotateXY(float* param_1, float* param_2, float param_3, float param_4, float param_5)
 {
+}
+
+// STUB: POPCAPGAME1 0x00407a60
+void Sexy::DrawCircle(Graphics *g ,float param_2, float param_3, float param_4, Image *param_5, Rect *param_6, int param_7) 
+{
+    printf("DrawCircle STUB\n");
 }

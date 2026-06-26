@@ -49,6 +49,6 @@ void FloatingTextMgr::AddText()
 }
 
 // STUB: POPCAPGAME1 0x00471e40
-void FloatingTextMgr::SyncState(DataSync* param_1)
+void FloatingTextMgr::SyncState(DataSync& param_1)
 {
 }

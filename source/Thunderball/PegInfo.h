@@ -25,7 +25,7 @@ public:
 	virtual ~PegInfo();
 
 	virtual bool EditGetSetValHook(const std::string& param_1, bool param_2);
-	virtual void SyncState(DataSync* param_1);
+	virtual void SyncState(DataSync& param_1);
 	virtual void Update(PhysObj* param_1);
 
 	void Reset();

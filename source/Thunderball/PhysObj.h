@@ -22,6 +22,7 @@ public:
 	static int mSyncType;
 	static bool mFastLoad;
 	static int mOutlineMode;
+    static void (*mNotifyCollisionFunc)(PhysObj* param_1, PhysObj* param_2);
 
 	int mUnk0x10; // +0x10
 
@@ -84,7 +85,7 @@ public:
 	static PhysObj* ClassFactory(int param_1);
 
 	virtual bool EditGetSetValHook(const std::string& param_1, bool param_2);
-	virtual void SyncState(DataSync* theSync);
+	virtual void SyncState(DataSync& theSync);
 	virtual int GetClass();
 	virtual uint GetTypeFlags();
 	virtual void EditDrawMovement(Graphics* g);

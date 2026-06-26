@@ -32,7 +32,7 @@ class StatsMgr
 	void Clear();
 	bool Load(char* path);
 	bool Save(char* path);
-	void SyncState(DataSync* sync);
+	void SyncState(DataSync& sync);
 };
 } // namespace Sexy
 

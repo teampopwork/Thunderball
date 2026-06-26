@@ -246,7 +246,7 @@ void LogicMgr::WriteClickTimes()
 }
 
 
-void LogicMgr::SyncState(DataSync* theSync)
+void LogicMgr::SyncState(DataSync& theSync)
 {
 	// TODO
 }

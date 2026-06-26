@@ -58,6 +58,6 @@ void SlotMachineDialog::Init(Ball* param_1, PhysObj* param_2)
 }
 
 // STUB: POPCAPGAME1 0x0049cfe0
-void SlotMachineDialog::SyncState(DataSync* param_1)
+void SlotMachineDialog::SyncState(DataSync& param_1)
 {
 }

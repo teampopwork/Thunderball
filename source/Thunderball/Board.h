@@ -123,6 +123,7 @@ class Board : public Widget, public ButtonListener
 	int mUnk0x1b8; // +0x1b8
 	int mUnk0x1bc; // +0x1bc
 	int mUnk0x1c0; // +0x1c0
+    int mUnk0x1c4; // +0x1c4
 	int mUnk0x1c8; // +0x1c8
 	int mUnk0x1cc; // +0x1cc
 	int mUnk0x1d0; // +0x1d0
@@ -211,7 +212,7 @@ class Board : public Widget, public ButtonListener
 	void     CheckClearAccomplishment();
 	void     DoLevelDone();
 	void     SyncModeOptions();
-	void     SyncState(DataSync* theSync);
+	void     SyncState(DataSync& theSync);
 	void     SetSyncPoint(DataWriter* param_1, bool param_2);
 	void     EndReplay();
 	bool     NeedSaveGame();

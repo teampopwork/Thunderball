@@ -209,7 +209,7 @@ void InterfaceMgr::AddTopBalls(int param_1)
 }
 
 // STUB: POPCAPGAME1 0x0045c5a0
-void InterfaceMgr::SyncState(DataSync* param_1)
+void InterfaceMgr::SyncState(DataSync& param_1)
 {
 }
 

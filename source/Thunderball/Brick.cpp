@@ -24,7 +24,7 @@ bool Brick::EditGetSetValHook(std::string* param_1, bool param_2)
 }
 
 // STUB: POPCAPGAME1 0x00488030
-void Brick::SyncState(DataSync* param_1)
+void Brick::SyncState(DataSync& param_1)
 {
 }
 

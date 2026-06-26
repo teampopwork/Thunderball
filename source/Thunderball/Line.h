@@ -21,7 +21,7 @@ public:
 	Line(float param_1, float param_2, float param_3, float param_4);
 	virtual ~Line();
 
-	virtual void SyncState(DataSync* sync);
+	virtual void SyncState(DataSync& sync);
 	virtual int GetClass();
 	virtual void EditDrawOutline(Graphics* g);
 	virtual void EditDrawPoints(Graphics* g);

@@ -46,7 +46,7 @@ public:
 
 	void Update(bool param_1);
 	void UpdateSlowMo(float param_1);
-	void SyncState(DataSync* param_1);
+	void SyncState(DataSync& param_1);
 
 	Effect* GetEffectByType(EffectType param_1);
 	void EraseAllOfType(EffectType param_1);

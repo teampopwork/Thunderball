@@ -38,7 +38,7 @@ public:
 	void CancelFade();
 	void KillAllSounds();
 	void Clear();
-	void SyncState(DataSync* param_1);
+	void SyncState(DataSync& param_1);
 	SoundInstance* PlaySample(SoundDesc* param_1);
 	void AddSound(int param_1, int param_2);
 	void AddSound(int param_1, float param_2, int param_3, int param_4, int param_5, float param_6);

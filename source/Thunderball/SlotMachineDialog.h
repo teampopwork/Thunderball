@@ -24,7 +24,7 @@ public:
     virtual void MouseDown(int param_1, int param_2, int param_3);
 
     void Init(Ball* param_1, PhysObj* param_2);
-    void SyncState(DataSync* param_1);
+    void SyncState(DataSync& param_1);
 };
 
 } // namespace Sexy
