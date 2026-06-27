@@ -68,7 +68,7 @@ public:
 	virtual ~Ball();
 
 	virtual bool EditGetSetValHook(std::string& param_1, bool param_2);
-	virtual void SyncState(DataSync& param_1);
+	virtual void SyncState(DataSync& theSync);
 	virtual int GetClass();
 	virtual void SetPos(float param_1, float param_2);
 	virtual void Translate(float param_1, float param_2);

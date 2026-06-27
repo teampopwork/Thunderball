@@ -8,6 +8,7 @@
 #include "PegInfo.h"
 #include "Poly.h"
 #include "BlendedImage.h"
+#include "Mover.h"
 
 #include <SexyAppFramework/SexyVector.h>
 #include <SexyAppFramework/SoundManager.h>
@@ -19,7 +20,7 @@ using namespace Sexy;
 float Sexy::Ball::mDefRadius = 6.0f;
 
 // FUNCTION: POPCAPGAME1 0x00480de0
-Ball::Ball(bool param_1)
+Ball::Ball(bool param_1 = false)
 {
     mUnk0xe8 = mCurSortId;
     mUnk0x140 = param_1;
@@ -97,9 +98,142 @@ bool Ball::EditGetSetValHook(std::string& param_1, bool param_2)
     return true;
 }
 
-// STUB: POPCAPGAME1 0x00483410
-void Ball::SyncState(DataSync& param_1)
+// FUNCTION: POPCAPGAME1 0x00483410
+void Ball::SyncState(DataSync& theSync)
 {
+    PhysObj::SyncState(theSync);
+    if (theSync.mReader != NULL) {
+        mUnk0x148 = 1000000;
+        mUnk0x160 = 0;
+        mUnk0x14c = 0;
+        mUnk0x150 = 0;
+        mUnk0x158 = -1000;
+        mUnk0x154 = 0;
+        mUnk0x15c = NULL;
+        mUnk0x142 = false;
+        mUnk0x170 = 0.0f;
+        mUnk0x143 = false;
+    }
+
+    bool local_10 = mMover == NULL;
+    bool local_11 = mUnk0x148 < 1000000;
+    bool local_12 = mUnk0x14c != 0;
+    bool local_13 = mUnk0x15c != NULL;
+    bool local_14 = mUnk0x150 != 0;
+    bool local_15 = mUnk0x158 != -1000;
+    bool local_16 = mUnk0x154 != 0;
+
+    theSync.SyncBoolBit(mUnk0x140);
+    theSync.SyncBoolBit(local_10);
+    theSync.SyncBoolBit(local_11);
+    theSync.SyncBoolBit(mUnk0x160);
+    theSync.SyncBoolBit(mUnk0x163);
+    theSync.SyncBoolBit(local_12);
+    theSync.SyncBoolBit(local_13);
+    theSync.SyncBoolBit(mUnk0x161);
+    theSync.EndBit();
+
+    if (local_10) {
+        if (mMover == NULL && theSync.mReader != NULL) {
+            throw DataReaderException();
+        }
+        mUnk0xec = mMover->mUnk0x54;
+        mUnk0xf0 = mMover->mUnk0x58;
+    } else {
+        theSync.SyncFloat(mUnk0xec);
+        theSync.SyncFloat(mUnk0xf0);
+    }
+    theSync.SyncFloat(mUnk0x13c);
+    if (mUnk0x10 == 2) {
+        theSync.SyncFloat(mUnk0xf4);
+        theSync.SyncFloat(mUnk0xf8);
+        theSync.SyncFloat(mUnk0xfc);
+        theSync.SyncFloat(mUnk0x100);
+        theSync.SyncFloat(mUnk0x134);
+        theSync.SyncFloat(mUnk0x138);
+        theSync.SyncLong(mUnk0xe4);
+        theSync.SyncFloat(mUnk0x10c[0].x);
+        theSync.SyncFloat(mUnk0x10c[0].y);
+        if (0xb < theSync.mVersion) {
+            for (int i = 0; i < 4; i++) {
+                theSync.SyncFloat(mUnk0x10c[i].x);
+                theSync.SyncFloat(mUnk0x10c[i].y);
+            }
+        }
+        if (0xc < theSync.mVersion) {
+            theSync.SyncBoolBit(mUnk0x164);
+            theSync.SyncBoolBit(mUnk0x165);
+            theSync.SyncBoolBit(local_14);
+            theSync.SyncBoolBit(local_15);
+            theSync.SyncBoolBit(local_16);
+            theSync.SyncBoolBit(mUnk0x142);
+            theSync.SyncBoolBit(mUnk0x144);
+            theSync.SyncBoolBit(mUnk0x145);
+            theSync.EndBit();
+        }
+
+        if (0x17 < theSync.mVersion) {
+            theSync.SyncLong(mUnk0xe8);
+        }
+        bool local_17 = mUnk0x178 != 0;
+        if (0x1d < theSync.mVersion) {
+            theSync.SyncBoolBit(mUnk0x146);
+            theSync.SyncBoolBit(mUnk0x18d);
+            theSync.SyncBoolBit(mUnk0x18c);
+            theSync.SyncBoolBit(local_17);
+            theSync.SyncBoolBit(mUnk0x162);
+            theSync.EndBit();
+        }
+
+        if (local_11) {
+            theSync.SyncLong(mUnk0x148);
+        }
+
+        if (local_12) {
+            theSync.SyncLong(mUnk0x14c);
+        }
+
+        if (local_13) {
+            DataSync_SyncSmartPtrFactory<PhysObj>(theSync, mUnk0x15c, NULL);
+        }
+
+        if (local_14) {
+            theSync.SyncLong(mUnk0x150);
+        }
+
+        if (local_15) {
+            theSync.SyncLong(mUnk0x158);
+        }
+
+        if (local_16) {
+            theSync.SyncLong(mUnk0x154);
+        }
+
+        if (local_17) {
+            theSync.SyncLong(mUnk0x178);
+            theSync.SyncLong(mUnk0x17c);
+            if (0x3e < theSync.mVersion) {
+                theSync.SyncLong(mUnk0x180);
+            }
+        }
+
+        if (mUnk0x18d) {
+            DataSync_SyncSmartPtr<Ball>(theSync, mUnk0x188);
+        }
+    }
+
+    if (theSync.mReader != NULL) {
+        bool bVar1 = mUnk0x161;
+        mUnk0x14 = mUnk0xec - mUnk0x13c;
+        mUnk0x1c = mUnk0x13c + mUnk0xec;
+        mUnk0x18 = mUnk0xf0 - mUnk0x13c;
+        mUnk0x20 = mUnk0xf0 + mUnk0x13c;
+        mUnk0x104 = mUnk0xec;
+        mUnk0x108 = mUnk0xf0;
+        if (bVar1) {
+            StartFireballSound();
+        }
+    }
 }
 
 // FUNCTION: POPCAPGAME1 0x004547a0

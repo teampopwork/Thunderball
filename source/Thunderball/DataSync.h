@@ -15,7 +15,9 @@ namespace Sexy
 ///////////////////////////////////////////////////////////////////////////////
 
 // VTABLE: POPCAPGAME1 0x005d5f34
-class DataReaderException : public std::exception {};
+class DataReaderException : public std::exception {
+    
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -203,8 +205,10 @@ T* DataSync_SyncRefCount(DataSync& theSync, T* thePointer)
 	}
 }
 
+
+
 template <typename T>
-void DataSync_SyncSmartPointer(DataSync& theSync, SmartPtr<T>& thePointer)
+void DataSync_SyncSmartPtr(DataSync& theSync, SmartPtr<T>& thePointer)
 {
 	if (theSync.mReader != NULL) {
 		RefCount* refCount = DataSync_SyncRefCount(theSync, (T*) thePointer);

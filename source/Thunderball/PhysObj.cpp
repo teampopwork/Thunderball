@@ -1075,7 +1075,7 @@ void PhysObj::SyncState(DataSync& theSync)
 	}
 
 	if (bVar5) {
-		DataSync_SyncSmartPointer<Mover>(theSync, mMover);
+		DataSync_SyncSmartPtr<Mover>(theSync, mMover);
 	}
 
 	if (mSyncType == 2) {
