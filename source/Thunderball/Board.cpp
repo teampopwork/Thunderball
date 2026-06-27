@@ -909,8 +909,8 @@ void Board::DeleteReplays(bool param_1)
     }
     mUnk0x18c = NULL;
 
-    if (0 < mUnk0x184) {
-        for (int i = 0; i < mUnk0x184; i++) {
+    if (0 < mUnk0x174.size()) {
+        for (int i = 0; i < mUnk0x174.size(); i++) {
             delete mUnk0x174[i];
         }
     }

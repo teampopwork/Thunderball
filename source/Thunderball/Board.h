@@ -114,7 +114,6 @@ class Board : public Widget, public ButtonListener
 	ThunderButton* mReplayButton; // +0x16c
 	int mUnk0x170; // +0x170
 	std::deque<DataWriter*> mUnk0x174; // +0x174
-	int mUnk0x184; // +0x184
 	DataWriter* mUnk0x188; // +0x188
 	DataReader* mUnk0x18c; // +0x18c
 	std::list<Sexy::SmartPtr<PhysObj>> mUnk0x190; // +0x190

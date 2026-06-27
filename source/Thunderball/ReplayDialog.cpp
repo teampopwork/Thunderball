@@ -204,13 +204,13 @@ void ReplayDialog::SetMode(bool param_1, bool param_2, bool param_3)
 {
 	mUnk0x196 = param_1;
 	mUnk0x194 = false;
-	if ((param_3) || (mUnk0x190 < 0) || mUnk0x190 >= mBoard->mUnk0x184) {
+	if ((param_3) || (mUnk0x190 < 0) || mUnk0x190 >= mBoard->mUnk0x174.size()) {
 		mUnk0x190 = -1;
 	}
 
 	mUnk0x195 = param_2;
 	if (param_2) {
-		int iVar1 = mBoard->mUnk0x184;
+		int iVar1 = mBoard->mUnk0x174.size();
 		if (iVar1 > 2) {
 			mUnk0x195 = false;
 		}
@@ -248,10 +248,10 @@ void ReplayDialog::ButtonDepress(int param_1)
 		case 2:
 			mUnk0x190 += (uint) (param_1 == 1) * 2 - 1;
 			if (mUnk0x190 < 0) {
-				mUnk0x190 = mBoard->mUnk0x184 - 1;
+				mUnk0x190 = mBoard->mUnk0x174.size() - 1;
 			}
 
-			if (mBoard->mUnk0x184 <= mUnk0x190) {
+			if (mBoard->mUnk0x174.size() <= mUnk0x190) {
 				mUnk0x190 = 0;
 			}
 
