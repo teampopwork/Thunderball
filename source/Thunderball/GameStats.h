@@ -37,7 +37,7 @@ public:
     int mUnk0x68;
 
     GameStats();
-    void Add(GameStats* theStats);
+    void Add(GameStats& theStats);
     void CheckBestShot(int theScore);
     int GetTotalFreeBalls();
     int GetTotalStylePoints();

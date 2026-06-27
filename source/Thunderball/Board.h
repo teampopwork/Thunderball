@@ -21,6 +21,7 @@ class Graphics;
 class Image;
 class DataSync;
 class DataWriter;
+class DataReader;
 class Buffer;
 class HighScoreEntry;
 class AIMgr;
@@ -39,6 +40,7 @@ class SlotMachineDialog;
 class Gun;
 class PhysObj;	
 class TypingCheck;
+class TrophyInfo;
 
 
 // VTABLE: POPCAPGAME1 0x005d76d4 Sexy::ButtonListener
@@ -92,7 +94,7 @@ class Board : public Widget, public ButtonListener
 	bool mUnk0x122; // +0x122
 	bool mUnk0x123; // +0x123
 	int mUnk0x124; // +0x124
-	int mUnk0x128; // +0x128
+	SmartPtr<TrophyInfo> mUnk0x128; // +0x128
 	bool mUnk0x12c; // +0x12c
 	int mUnk0x130; // +0x130
 	AIMgr* mAIMgr; // +0x134
@@ -111,12 +113,13 @@ class Board : public Widget, public ButtonListener
 	ThunderButton* mMenuButton; // +0x168
 	ThunderButton* mReplayButton; // +0x16c
 	int mUnk0x170; // +0x170
-	std::deque<DataWriter*>* mUnk0x174; // +0x174
+	std::deque<DataWriter*> mUnk0x174; // +0x174
 	int mUnk0x184; // +0x184
-	int mUnk0x188; // +0x188
-	int mUnk0x18c; // +0x18c
+	DataWriter* mUnk0x188; // +0x188
+	DataReader* mUnk0x18c; // +0x18c
 	std::list<Sexy::SmartPtr<PhysObj>> mUnk0x190; // +0x190
-	int mUnk0x1a8; // +0x1a8
+	std::list<Sexy::SmartPtr<Ball>> mUnk0x19c; // +0x1a0
+    int mUnk0x1a8; // +0x1a8
 	int mUnk0x1ac; // +0x1ac
 	int mUnk0x1b0; // +0x1b0
 	int mUnk0x1b4; // +0x1b4
@@ -184,7 +187,7 @@ class Board : public Widget, public ButtonListener
 	void     MakeShadow(Image* param_1, int param_2, int param_3);
 	void     SyncColorblind();
 	void     SetShowBackground(bool param_1);
-	void     DoZoom(Graphics* g);
+	bool     DoZoom(Graphics* g);
 	void     CheckTrophyAccomplishments();
 	void     CheckForBackground();
 	void     CheckExploderForFever(PhysObj* param_1);
@@ -192,7 +195,7 @@ class Board : public Widget, public ButtonListener
 	void     CalcEndLevelDialog();
 	void     PlayMusic();
 	void     DeleteReplays(bool param_1);
-	void     LoadReplayFile(std::string* param_1);
+	bool     LoadReplayFile(std::string& param_1);
 	PhysObj* FindObj(PhysObj* param_1, bool param_2);
 	void     Reload();
 	void     Clear(bool param_1);

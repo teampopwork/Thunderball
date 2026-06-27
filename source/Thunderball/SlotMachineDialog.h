@@ -1,7 +1,7 @@
 #ifndef __SLOTMACHINEDIALOG_H__
 #define __SLOTMACHINEDIALOG_H__
 
-#include <SexyAppFramework/Widget.h>
+#include "ThunderDialog.h"
 
 namespace Sexy {
 class Board;
@@ -10,7 +10,7 @@ class Ball;
 class PhysObj;
 class DataSync;
 
-class SlotMachineDialog : public Widget {
+class SlotMachineDialog : public ThunderDialog {
 public:
     SlotMachineDialog(Board* param_1);
     virtual ~SlotMachineDialog();

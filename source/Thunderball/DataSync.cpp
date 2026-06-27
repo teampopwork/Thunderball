@@ -24,7 +24,7 @@ DataReader::~DataReader()
 }
 
 // FUNCTION: POPCAPGAME1 0x004bbed0
-void DataReader::OpenMemory(const void* theMemory, ulong theLength, bool deallocate)
+void DataReader::OpenMemory(void* theMemory, ulong theLength, bool deallocate)
 {
 	Close();
 
@@ -144,6 +144,29 @@ bool DataReader::ReadBit()
 void DataReader::EndBit()
 {
 	mUnk0x1c = 0;
+}
+
+// FUNCTION: POPCAPGAME1 0x004bc0b0
+void* DataReader::ReadBytesFromMem(ulong theLength) 
+{
+    void* pvVar1 = mMemoryHandle;
+    if (pvVar1 == NULL) {
+        throw DataReaderException();
+    }
+
+    mUnk0x14 += theLength;
+    if (mMemoryPosition < mUnk0x14) {
+        throw DataReaderException();
+    }
+
+    mMemoryHandle = (void*)((char*)pvVar1 + theLength);
+    return pvVar1;
+}
+
+// FUNCTION: POPCAPGAME1 0x004bbe40
+bool DataReader::CanReadBytes(int param_1) 
+{
+    return mUnk0x14 + param_1 <= mMemoryPosition;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -611,7 +634,7 @@ void DataSync::ResetPointerTable()
 DataReader* DataSync::StartReadMemory(const void* theMemory, ulong theLength, bool deallocate)
 {
 	SetReader(&mReaderObj);
-	mReaderObj.OpenMemory(theMemory, theLength, deallocate);
+	mReaderObj.OpenMemory((void*)theMemory, theLength, deallocate);
 	return &mReaderObj;
 }
 

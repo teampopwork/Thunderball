@@ -118,16 +118,20 @@ PlayerInfo::~PlayerInfo()
 }
 
 // FUNCTION: POPCAPGAME1 0x00403840
-void PlayerInfo::AddTotalStats(GameStats* theStats)
+void PlayerInfo::AddTotalStats(GameStats& theStats)
 {
 	mUnk0x12c.Add(theStats);
 	mUnk0x198.Add(theStats);
 	mUnk0xec = true;
 }
 
-// FUNCTION: POPCAPGAME1 0x004fc300
-void PlayerInfo::AwardTrophy()
+// FUNCTION: POPCAPGAME1 0x0041f9c0
+void PlayerInfo::AwardTrophy(int trophyId)
 {
+    std::pair<std::set<int>::iterator, bool> aResult = mUnk0xfc.insert(trophyId);
+    if (aResult.second) {
+        mUnk0xec = true;
+    }
 }
 
 // STUB: POPCAPGAME1 0x0049d670
@@ -268,7 +272,7 @@ void PlayerInfo::LoadDetails()
 		// STRING: POPCAPGAME1 0x005d72b0
 		if (gSexyApp->ReadBufferFromFile(GetAppDataFolder() + StrFormat("userdata/user%d.dat", mId), &aBuffer)) {
 			DataReader aReader;
-			aReader.OpenMemory(aBuffer.GetDataPtr(), aBuffer.GetDataLen(), false);
+			aReader.OpenMemory((void*)aBuffer.GetDataPtr(), aBuffer.GetDataLen(), false);
 			DataSync aSync(aReader);
 			SyncDetails(aSync);
 		}

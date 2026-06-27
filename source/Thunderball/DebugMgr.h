@@ -12,6 +12,7 @@ class DebugMgr {
 public:
 	int mUnk0x4;
 	bool mUnk0x20;
+    bool mUnk0x21;
 
 	DebugMgr(Board* param_1);
 	~DebugMgr();

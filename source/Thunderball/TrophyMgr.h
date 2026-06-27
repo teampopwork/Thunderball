@@ -3,12 +3,29 @@
 #define __TROPHY_MGR_H__
 
 #include <string>
+#include <vector>
+
+#include <SexyAppFramework/SmartPtr.h>
 
 namespace Sexy
 {
 class ThunderballApp;
 class ConfigParser;
-struct TrophyInfo;
+class OpponentInfo {};
+
+class TrophyInfo : public RefCount {
+public:
+    int mId; // +0x8
+    bool mUnk0x60; // +0x60
+    int mUnk0x6c; // +0x6c
+    int mUnk0x70; // +0x70
+    bool mUnk0x74; // +0x74
+    std::vector<std::string>* mUnk0x78; // +0x78
+    int mUnk0x7c; // +0x7c
+    int mUnk0x80; // +0x80
+    std::vector<OpponentInfo> mUnk0x88; // +0x88
+};
+
 struct TrophyPage;
 
 class TrophyMgr {

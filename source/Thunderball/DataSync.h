@@ -24,7 +24,7 @@ class DataReaderException : public std::exception {};
 class DataReader {
 public:
 	FILE* mFileHandle;
-	const void* mMemoryHandle;
+	void* mMemoryHandle;
 	ulong mMemoryLength;
 	ulong mMemoryPosition;
 	int mUnk0x14;
@@ -36,7 +36,7 @@ public:
 
 	virtual ~DataReader(); // vtable+0x0
 
-	void OpenMemory(const void* theMemory, ulong theLength, bool deallocate);
+	void OpenMemory(void* theMemory, ulong theLength, bool deallocate);
 	bool OpenFile(const std::string& theFileName);
 	void Close();
 
@@ -49,6 +49,8 @@ public:
 	void ReadString(std::string& theString);
 	bool ReadBit();
 	void EndBit();
+    void* ReadBytesFromMem(ulong theLength);
+    bool CanReadBytes(int param_1);
 };
 
 ///////////////////////////////////////////////////////////////////////////////

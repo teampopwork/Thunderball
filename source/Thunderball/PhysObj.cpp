@@ -16,7 +16,7 @@
 
 #include <ImageLib/ImageLib.h>
 #include <SexyAppFramework/Graphics.h>
-#include <SexyAppFramework/Image.h>
+#include <SexyAppFramework/MemoryImage.h>
 #include <SexyAppFramework/SexyMatrix.h>
 #include <SexyAppFramework/SexyVector.h>
 
@@ -351,12 +351,12 @@ bool PhysObj::LoadImage()
 		ImageMgr* theImageMgr = GetImageMgr();
 
 		if (mUnk0x94.find('/') != -1) {
-			mUnk0xb4 = (Image*) theImageMgr->GetImage(&mUnk0x94, &mUnk0x2f, true);
+			mUnk0xb4 = theImageMgr->GetImage(&mUnk0x94, &mUnk0x2f, true);
 		}
 		else {
 			// STRING: POPCAPGAME1 0x005f1bfc
 			std::string path = "images/levels/" + mUnk0x94;
-			mUnk0xb4 = (Image*) theImageMgr->GetImage(&path, &mUnk0x2f, true);
+			mUnk0xb4 = theImageMgr->GetImage(&path, &mUnk0x2f, true);
 		}
 
 		ImageLib::gAlphaComposeColor = uVar1;
@@ -376,7 +376,7 @@ void PhysObj::EditReloadImage()
 void PhysObj::DeleteImage()
 {
 	if (mUnk0xc4 != 0 && mUnk0xb4 != NULL) {
-		mUnk0xb4->~Image();
+		delete mUnk0xb4;
 	}
 	mUnk0xb4 = NULL;
 }
@@ -567,7 +567,7 @@ void PhysObj::EditReflect(float param_1, float param_2, bool param_3)
 // FUNCTION: POPCAPGAME1 0x00479b90
 void PhysObj::DrawImage(
 	Graphics* g,
-	Image* param_2,
+	MemoryImage* param_2,
 	float param_3,
 	float param_4,
 	float param_5,

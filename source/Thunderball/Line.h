@@ -16,6 +16,7 @@ public:
 	float mUnk0xf0; // +0xf0
 	float mUnk0xf4; // +0xf4
 	float mUnk0xf8; // +0xf8
+    bool mUnk0x18c; // +0x18c
 
 	Line();
 	Line(float param_1, float param_2, float param_3, float param_4);

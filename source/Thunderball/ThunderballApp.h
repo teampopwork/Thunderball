@@ -33,6 +33,7 @@ class HighScoreMgr;
 class ImageMgr;
 class Board;
 class BlendedImage;
+class GameStats;
 
 static BlendedImage* gBallPegImage[9];
 
@@ -46,6 +47,7 @@ public:
 	int mMaxStage;                     // +0x770
 	int mMaxLevel;                     // +0x774
 	bool mUnk0x779;                    // +0x779
+    int mUnk0x77c;                     // +0x77C
 	int mUnk0x780;                     // +0x780
 	int mUnk0x784;                     // +0x784
 	double mFeverVolume;               // +0x790
@@ -78,6 +80,14 @@ public:
 	ButtonWidget* mWinMinimizeButton;  // +0x870
 	ButtonWidget* mWinUnmaxButton;     // +0x874
 	PlayerInfo* mCurProfile;           // +0x878
+    int mUnk0x87c;                     // +0x87C
+    int mUnk0x880;                     // +0x880
+    int mUnk0x88c;                     // +0x88c
+    int mUnk0x890;                     // +0x890
+    int mUnk0x894;                     // +0x894
+    int mUnk0x898;                     // +0x898
+    GameStats* mUnk0x89c;                     // +0x89C
+    GameStats* mUnk0x908;                     // +0x908
 
 	ThunderballApp();
 	virtual ~ThunderballApp();

@@ -3,7 +3,7 @@
 using namespace Sexy;
 
 // STUB: POPCAPGAME1 0x004ab260
-SlotMachineDialog::SlotMachineDialog(Board* param_1)
+SlotMachineDialog::SlotMachineDialog(Board* param_1) : ThunderDialog(0, false, "", "", "", 0)
 {
 }
 

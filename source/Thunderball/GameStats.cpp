@@ -11,26 +11,26 @@ GameStats::GameStats()
 }
 
 // FUNCTION: POPCAPGAME1 0x00402ed0
-void GameStats::Add(GameStats* theStats)
+void GameStats::Add(GameStats& theStats)
 {
-    mUnk0x0 += theStats->mUnk0x0;
+    mUnk0x0 += theStats.mUnk0x0;
 
-    if (theStats->mUnk0x4 > mUnk0x4)
+    if (theStats.mUnk0x4 > mUnk0x4)
     {
-        mUnk0x4 = theStats->mUnk0x4;
+        mUnk0x4 = theStats.mUnk0x4;
     }
 
-    if (theStats->mUnk0x8 > mUnk0x8)
+    if (theStats.mUnk0x8 > mUnk0x8)
     {
-        mUnk0x8 = theStats->mUnk0x8;
+        mUnk0x8 = theStats.mUnk0x8;
     }
     
-    mUnk0xc += theStats->mUnk0xc;
-    mUnk0x10 += theStats->mUnk0x10;
-    mUnk0x14 += theStats->mUnk0x14;
-    mUnk0x18 += theStats->mUnk0x18;
+    mUnk0xc += theStats.mUnk0xc;
+    mUnk0x10 += theStats.mUnk0x10;
+    mUnk0x14 += theStats.mUnk0x14;
+    mUnk0x18 += theStats.mUnk0x18;
 
-    int* src = &theStats->mUnk0x24;
+    int* src = &theStats.mUnk0x24;
     int* dest = &mUnk0x1c;
     
     int i = 4;

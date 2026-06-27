@@ -377,9 +377,9 @@ void ThunderballApp::DialogButtonDepress(int theDialogId, int theButtonId)
 		FinishNameErrorDialog(0x15);
 	case 0xd:
 		DoScrollOff(0xd);
-		/*if (mBoard != NULL) {
-			mBoard->mUnk0xea = 0;
-		}*/
+		if (mBoard != NULL) {
+			mBoard->mUnk0xea = false;
+		}
 		break;
 	case 0xe:
 		FinishTipDialog(bVar1);
@@ -399,13 +399,13 @@ void ThunderballApp::DialogButtonDepress(int theDialogId, int theButtonId)
 	case 0x1b:
 	case 0x22:
 		KillDialog(theDialogId);
-		/*if (mBoard != NULL) {
+		if (mBoard != NULL) {
 			mBoard->Pause(false);
 			mWidgetManager->SetFocus(mBoard);
 			if (mBoard->mUnk0xc5 != 0) {
-				mBoard->DoReplayFileDialog();2
+				mBoard->DoReplayFileDialog(false, -1, false);
 			}
-		}*/
+		}
 		break;
 	}
 }

@@ -6,8 +6,13 @@
 namespace Sexy
 {
 class LevelStats;
-class TrophyStats;
 class DataSync;
+
+class TrophyStats {
+public:
+    int mUnk0x0; // +0x0
+    int mUnk0x4; // +0x4
+};
 
 class StatsMgr
 {
@@ -18,9 +23,9 @@ class StatsMgr
 	
 	StatsMgr();
 
-	LevelStats*  GetStageStatsForLevel(std::string* param_1);
-	LevelStats*  GetStatsForLevel(std::string* param_1);
-	TrophyStats* GetStatsForTrophy(std::string* param_1);
+	LevelStats*  GetStageStatsForLevel(std::string& param_1);
+	LevelStats*  GetStatsForLevel(std::string& param_1);
+	TrophyStats* GetStatsForTrophy(int param_1);
 
 	void IncCharacterCount(int param_1);
 	void IncCharacterLossCount(int param_1);

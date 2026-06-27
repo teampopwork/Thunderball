@@ -48,7 +48,7 @@ public:
 	bool mUnk0xee;
 	bool mUnk0xef;
 	std::multiset<int> mAdventureScores; // +0xf0
-	std::multiset<int> mUnk0xfc;              // +0xfc
+	std::set<int> mUnk0xfc;              // +0xfc
 	std::map<int, class MemoryImage*, std::greater<int> > mUnk0x108; // +0x108
 	int mUnk0x114;
 	std::set<std::string, struct StringLessNoCase> mUnk0x118;        // +0x118
@@ -83,10 +83,10 @@ public:
 	bool JustBeatAdventure();
 	bool JustStartingAdventure();
 
-	void AddTotalStats(GameStats* theStats);
+	void AddTotalStats(GameStats& theStats);
 	int GetTrophyTopScore(int trophyId);
 	bool CheckTrophyTopScore(int trophyId, int theScore);
-	void AwardTrophy();
+	void AwardTrophy(int trophyId);
 	void SubmitAdventureHighScore(int theScore);
 
 	void SetColorblind(bool isColorblind);

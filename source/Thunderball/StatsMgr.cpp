@@ -6,17 +6,17 @@ StatsMgr::StatsMgr()
 {
 }
 
-LevelStats* StatsMgr::GetStageStatsForLevel(std::string* param_1)
+LevelStats* StatsMgr::GetStageStatsForLevel(std::string& param_1)
 {
     return NULL;
 }
 
-LevelStats* StatsMgr::GetStatsForLevel(std::string* param_1)
+LevelStats* StatsMgr::GetStatsForLevel(std::string& param_1)
 {
     return NULL;
 }
 
-TrophyStats* StatsMgr::GetStatsForTrophy(std::string* param_1)
+TrophyStats* StatsMgr::GetStatsForTrophy(int param_1)
 {
     return NULL;
 }

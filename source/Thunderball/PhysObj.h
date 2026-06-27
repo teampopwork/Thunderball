@@ -11,7 +11,7 @@ namespace Sexy
 {
 class Graphics;
 class PegInfo;
-class Image;
+class MemoryImage;
 class DataSync;
 class Mover;
 class SexyVector2;
@@ -64,7 +64,7 @@ public:
 	std::string mUnk0x94;
 
 	int mUnk0xb0;
-	Image* mUnk0xb4;
+	MemoryImage* mUnk0xb4;
 	float mUnk0xb8;
 	float mUnk0xbc;
 	float mUnk0xc0;
@@ -133,7 +133,7 @@ public:
 
 	void DrawImage(
 		Graphics* g,
-		Image* param_2,
+		MemoryImage* param_2,
 		float param_3,
 		float param_4,
 		float param_5,
