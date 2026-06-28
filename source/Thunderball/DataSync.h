@@ -15,8 +15,11 @@ namespace Sexy
 ///////////////////////////////////////////////////////////////////////////////
 
 // VTABLE: POPCAPGAME1 0x005d5f34
-class DataReaderException : public std::exception {
-    
+struct DataReaderException : public std::exception
+{
+	std::string what;
+    // FUNCTION: POPCAPGAME1 0x00422a20
+	DataReaderException(const std::string &theWhat) : what(theWhat) { }
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -153,6 +156,12 @@ private:
 	int mCurPointerIndex;                 // +0x90
 };
 
+template <class T>
+struct DataSyncFunc_SyncSmartPtrFactory { void Sync(DataSync &theSync, SmartPtr<T> &theVal) { DataSync_SyncSmartPtrFactory<T>(theSync, theVal, NULL); } };
+
+template <class T>
+struct DataSyncFunc_AllocStack { T Alloc() { return T(); } };
+
 template <typename TContainer>
 void DataSync_SyncSTLContainer(DataSync& theSync, TContainer& theValue)
 {
@@ -175,6 +184,41 @@ void DataSync_SyncSTLContainer(DataSync& theSync, TContainer& theValue)
 			i->SyncState(theSync);
 		}
 	}
+}
+
+template <class T, class ValSync, class AllocStackFunc>
+void DataSync_SyncSTLListImpl(DataSync &theSync, T &theList, ValSync theValSync, AllocStackFunc theAllocStack)
+{
+    DataReader *aReader = theSync.mReader;
+    DataWriter *aWriter = theSync.mWriter;
+
+    if (aReader != NULL) 
+    {
+        theList.clear();
+
+        int aNumItems = aReader->ReadLong();
+        for (int i = 0; i < aNumItems; i++)
+        {
+            theList.push_back(theAllocStack.Alloc());
+            theValSync.Sync(theSync, theList.back());
+        }
+    }
+    else
+    {
+        aWriter->WriteLong((int)theList.size());
+        
+        for (typename T::iterator anItr = theList.begin(); anItr != theList.end(); ++anItr)
+        {
+            theValSync.Sync(theSync, *anItr);
+        }
+    }
+}
+
+template <class T, class ValSync>
+void DataSync_SyncSTLListImplSimple(DataSync &theSync, T &theList, ValSync theValSync)
+{
+    DataSyncFunc_AllocStack<typename T::value_type> anAllocStack;
+    DataSync_SyncSTLListImpl(theSync, theList, theValSync, anAllocStack);
 }
 
 template <typename T>

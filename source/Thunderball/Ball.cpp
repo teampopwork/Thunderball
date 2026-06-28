@@ -135,7 +135,7 @@ void Ball::SyncState(DataSync& theSync)
 
     if (local_10) {
         if (mMover == NULL && theSync.mReader != NULL) {
-            throw DataReaderException();
+            throw DataReaderException("");
         }
         mUnk0xec = mMover->mUnk0x54;
         mUnk0xf0 = mMover->mUnk0x58;

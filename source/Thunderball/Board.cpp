@@ -43,6 +43,8 @@
 
 using namespace Sexy;
 
+bool Board::mGenImageOnLoad = false;
+
 // FUNCTION: POPCAPGAME1 0x004238a0
 Board::Board(ThunderballApp* theApp)
 {
@@ -718,7 +720,7 @@ bool Board::IsAltKeyUsed(WPARAM wParam)
 }
 
 // FUNCTION: POPCAPGAME1 0x00402cf0
-void Board::FinishHighScoreEntryDialog(std::string* param_1)
+void Board::FinishHighScoreEntryDialog(std::string& param_1)
 {
 	mEndLevelDialog->FinishHighScoreEntryDialog(param_1);
 }
@@ -1063,9 +1065,65 @@ void Board::DoStageDialog(bool param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x004227c0
-void Board::LoadLevelBase(std::string* param_1, std::list<Sexy::SmartPtr<PhysObj>> param_2, bool param_3)
+// TEMPLATE: POPCAPGAME1 0x00422330
+//  Sexy::DataSync_SyncSTLListImplSimple<std::list<Sexy::SmartPtr<Sexy::PhysObj>,std::allocator<Sexy::SmartPtr<Sexy::PhysObj> > >,Sexy::DataSyncFunc_SyncSmartPtrFactory<Sexy::PhysObj> >
+
+// TEMPLATE: POPCAPGAME1 0x00408ea0
+// Sexy::DataSyncFunc_AllocStack<Sexy::SmartPtr<Sexy::PhysObj> >::Alloc
+
+// TEMPLATE: POPCAPGAME1 0x00408df0
+// Sexy::DataSync_SyncSmartPtrFactory<Sexy::PhysObj>
+
+// TEMPLATE: POPCAPGAME1 0x0040d420
+// std::list<Sexy::SmartPtr<Sexy::PhysObj>,std::allocator<Sexy::SmartPtr<Sexy::PhysObj> > >::clear
+
+// TEMPLATE: POPCAPGAME1 0x0040ab00
+// std::list<Sexy::SmartPtr<Sexy::PhysObj>,std::allocator<Sexy::SmartPtr<Sexy::PhysObj> > >::_Buynode(struct std::_List_nod<class Sexy::SmartPtr<class Sexy::PhysObj>, class std::allocator<class Sexy::SmartPtr<class Sexy::PhysObj>>>::_Node *, struct std::_List_nod<class Sexy::SmartPtr<class Sexy::PhysObj>, class std::allocator<class Sexy::SmartPtr<class Sexy::PhysObj>>>::_Node *, class Sexy::SmartPtr<class Sexy::PhysObj> const &)
+
+// TEMPLATE: POPCAPGAME1 0x0040e1c0
+// std::list<Sexy::SmartPtr<Sexy::PhysObj>,std::allocator<Sexy::SmartPtr<Sexy::PhysObj> > >::_Incsize
+
+// TEMPLATE: POPCAPGAME1 0x004204c0
+// Sexy::DataSync_SyncSTLListImpl<std::list<Sexy::SmartPtr<Sexy::PhysObj>,std::allocator<Sexy::SmartPtr<Sexy::PhysObj> > >,Sexy::DataSyncFunc_SyncSmartPtrFactory<Sexy::PhysObj>,Sexy::DataSyncFunc_AllocStack<Sexy::SmartPtr<Sexy::PhysObj> > >
+
+// FUNCTION: POPCAPGAME1 0x004227c0
+bool Board::LoadLevelBase(std::string& param_1, std::list<Sexy::SmartPtr<PhysObj>> param_2, bool param_3)
 {
+    Buffer aBuffer = Buffer();
+    if (!GetThunderballApp()->ReadBufferFromFile(param_1, &aBuffer, false)) {
+        return param_3;
+    } 
+
+    try {
+        DataSync aSync = DataSync();
+        DataReader* aReader = aSync.StartReadMemory((void*)aBuffer.GetDataPtr(), aBuffer.GetDataLen(), false);
+        aSync.mVersion = aReader->ReadLong();
+        if (0x42 < aSync.mVersion) {
+            throw DataReaderException("Save game version is too new.");
+        }
+
+        PhysObj::mSyncType = aReader->ReadBool();
+        DataSync_SyncSTLListImplSimple(aSync, param_2, DataSyncFunc_SyncSmartPtrFactory<PhysObj>());
+        aSync.SyncPointers();
+        return true;
+    } catch (DataReaderException& e) {
+        Clear(true);
+        std::string aMessage = e.what;
+        
+        if (aMessage.empty()) 
+        {
+            if (param_3) 
+            {
+                aMessage = "Invalid _base Level";
+            } else {
+                aMessage = "Invalid Save Game";
+            }
+        }
+
+        mApp->DoDialogScroll(0x11, true, "Load Error", aMessage, "Ok", 3);
+        Clear(true);
+        return false;
+    }
 }
 
 // STUB: POPCAPGAME1 0x0040fd90
@@ -1152,13 +1210,16 @@ void Board::SetupLevel()
 }
 
 // STUB: POPCAPGAME1 0x00429d10
-void Board::LoadLevel2(std::string* param_1)
+void Board::LoadLevel2(std::string& param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x0042aae0
-void Board::LoadLevel(std::string* param_1)
+// FUNCTION: POPCAPGAME1 0x0042aae0
+void Board::LoadLevel(std::string& param_1)
 {
+    mGenImageOnLoad = false;
+    LoadLevel2(param_1);
+    mGenImageOnLoad = true;
 }
 
 // FUNCTION: POPCAPGAME1 0x0042da00
@@ -1196,14 +1257,30 @@ void Board::Reset()
 
 	if (mEndLevelDialog->mWidgetManager == NULL || mEndLevelDialog->mVisible != false) {
 		mWidgetManager->RemoveWidget(mEndLevelDialog);
-	}
+	} else {
+        mEndLevelDialog->DoScrollOff(false);
+    }
+
+    SyncModeOptions();
+    gSexyApp->mMusicInterface->StopMusic(0);
+    if (!mLogicMgr->mUnk0xf5) {
+        PlayMusic();
+    }
+
+    if (!mUnk0x1d4.empty()) {
+        LoadLevel(mUnk0x1d4);
+    } else {
+        Clear(false);
+        SetupLevel();
+    }
+
 }
 
 // FUNCTION: POPCAPGAME1 0x0042db70
-void Board::LoadEasterEggLevel(std::string* param_1, int param_2)
+void Board::LoadEasterEggLevel(std::string& param_1, int param_2)
 {
 	if (mApp->mGameMode == QUICK_PLAY || mApp->mGameMode == DUEL) {
-		std::string levelName = "levels/" + *param_1;
+		std::string levelName = "levels/" + param_1;
 		std::string levelPath = levelName + ".dat";
 		mUnk0x1d4 = levelPath;
 		mUnk0x123 = true;
@@ -1257,19 +1334,19 @@ void Board::ActivateTypingCheck(int param_1)
 		break;
 
 	case 5:
-		LoadEasterEggLevel(new std::string("seattle"), 0);
+		LoadEasterEggLevel(std::string("seattle"), 0);
 		break;
 
 	case 6:
-		LoadEasterEggLevel(new std::string("piano"), 1);
+		LoadEasterEggLevel(std::string("piano"), 1);
 		break;
 
 	case 7:
-		LoadEasterEggLevel(new std::string("pitcher"), 2);
+		LoadEasterEggLevel(std::string("pitcher"), 2);
 		break;
 
 	case 8:
-		LoadEasterEggLevel(new std::string("tennisracket"), 3);
+		LoadEasterEggLevel(std::string("tennisracket"), 3);
 		break;
 
 	default:

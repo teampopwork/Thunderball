@@ -42,7 +42,7 @@ public:
 
 	void CancelScroll();
 	void DoScroll(int param_1);
-	void DoScrollOff(int param_1);
+	void DoScrollOff(bool param_1);
 	void FinishScroll();
 	int GetLeft();
 	int GetRight();

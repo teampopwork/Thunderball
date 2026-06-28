@@ -48,6 +48,8 @@ class TrophyInfo;
 class Board : public Widget, public ButtonListener
 {
   public:
+    static bool mGenImageOnLoad;
+
 	TypingCheck* mTypingCheckList[9]; // +0x8c
 	ThunderballApp* mApp; // +0xb0
 	GameMode mUnk0xb4; // +0xb4
@@ -181,7 +183,7 @@ class Board : public Widget, public ButtonListener
 	void     UpdateMgrs();
 	void     UpdateSlowMo();
 	bool     IsAltKeyUsed(WPARAM wParam);
-	void     FinishHighScoreEntryDialog(std::string* param_1);
+	void     FinishHighScoreEntryDialog(std::string& param_1);
 	void     DrawShadow(Graphics* g, int param_2, int param_3, bool param_4);
 	void     MakeShadow(Image* param_1, int param_2, int param_3);
 	void     SyncColorblind();
@@ -208,7 +210,7 @@ class Board : public Widget, public ButtonListener
 	void     InitEndLevelDialog(int param_1, bool param_2);
 	void     SyncCharacterOptions(bool param_1);
 	void     DoStageDialog(bool param_1);
-	void     LoadLevelBase(std::string* param_1, std::list<Sexy::SmartPtr<PhysObj> > param_2, bool param_3);
+	bool     LoadLevelBase(std::string& param_1, std::list<Sexy::SmartPtr<PhysObj> > param_2, bool param_3);
 	void     ChangeHighScore(HighScoreEntry* param_1);
 	void     SubmitHighScore();
 	void     CheckClearAccomplishment();
@@ -225,10 +227,10 @@ class Board : public Widget, public ButtonListener
 	void     SaveGame();
 	void     MakeThumbnail();
 	void     SetupLevel();
-	void     LoadLevel2(std::string* param_1);
-	void     LoadLevel(std::string* param_1);
+	void     LoadLevel2(std::string& param_1);
+	void     LoadLevel(std::string& param_1);
 	void     Reset();
-	void     LoadEasterEggLevel(std::string* param_1, int param_2);
+	void     LoadEasterEggLevel(std::string& param_1, int param_2);
 	void     ActivateTypingCheck(int param_1);
 	void     DrawScreenSaver(Graphics* g);
 	bool     EditingLevel();

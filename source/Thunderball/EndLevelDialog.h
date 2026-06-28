@@ -38,7 +38,7 @@ public:
 	void DrawChallengeResult(Graphics* param_1);
 	void DrawTip(Graphics* param_1);
 	void ComputeStats();
-	void FinishHighScoreEntryDialog(std::string* param_1);
+	void FinishHighScoreEntryDialog(std::string& param_1);
 	void InitTip();
 	void Init(EndLevelMode param_1, std::list<int>* param_2);
 	void DrawHighScores(Graphics* param_1);

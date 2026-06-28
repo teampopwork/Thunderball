@@ -82,7 +82,7 @@ void EndLevelDialog::ComputeStats()
 }
 
 // STUB: POPCAPGAME1 0x004a1d60
-void EndLevelDialog::FinishHighScoreEntryDialog(std::string* param_1)
+void EndLevelDialog::FinishHighScoreEntryDialog(std::string& param_1)
 {
 }
 

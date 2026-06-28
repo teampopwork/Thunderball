@@ -76,7 +76,7 @@ void DataReader::ReadBytes(void* theBuffer, ulong theLength)
 		return;
 	}
 
-	throw DataReaderException();
+	throw DataReaderException("");
 }
 
 // FUNCTION: POPCAPGAME1 0x004bc190
@@ -151,12 +151,12 @@ void* DataReader::ReadBytesFromMem(ulong theLength)
 {
     void* pvVar1 = mMemoryHandle;
     if (pvVar1 == NULL) {
-        throw DataReaderException();
+        throw DataReaderException("");
     }
 
     mUnk0x14 += theLength;
     if (mMemoryPosition < mUnk0x14) {
-        throw DataReaderException();
+        throw DataReaderException("");
     }
 
     mMemoryHandle = (void*)((char*)pvVar1 + theLength);
@@ -541,7 +541,7 @@ void DataSync::SyncPointers()
 			IntToPointerMap::iterator aFindItr = mIntToPointerMap.find(a);
 
 			if (aFindItr == mIntToPointerMap.end()) {
-				throw DataReaderException();
+				throw DataReaderException("");
 			}
 			**i = aFindItr->second;
 		}

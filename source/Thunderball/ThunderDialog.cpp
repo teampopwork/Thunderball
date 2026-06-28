@@ -124,13 +124,13 @@ void ThunderDialog::DoScroll(int param_1)
 }
 
 // FUNCTION: POPCAPGAME1 0x00497690
-void ThunderDialog::DoScrollOff(int param_1)
+void ThunderDialog::DoScrollOff(bool param_1)
 {
 	gSexyApp->PlaySample(SOUND_DIALOG_MOVE);
 	mUnk0x161 = param_1;
-	mUnk0x15C = 0xffffffff;
-	mUnk0x150 = -(mHeight);
-	mUnk0x160 = 1;
+	mUnk0x15C = -1;
+	mUnk0x150 = -mHeight;
+	mUnk0x160 = true;
 
 	gSexyApp->KillDialog(mId, false, false);
 	mWidgetFlagsMod.mRemoveFlags |= 0x30;
