@@ -4,9 +4,6 @@
 
 using namespace Sexy;
 
-// FUNCTION: POPCAPGAME1 0x0045f810
-// Sexy::StoryData::~StoryData
-
 // FUNCTION: POPCAPGAME1 0x00441fd0
 LevelInfo::LevelInfo()
 {
@@ -22,6 +19,15 @@ LevelInfo::~LevelInfo()
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+
+// FUNCTION: POPCAPGAME1 0x0044b6b0
+// Sexy::StoryData::StoryData
+
+// TEMPLATE: POPCAPGAME1 0x0044a860
+// std::_Destroy_range<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> *, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> *, class std::allocator<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>> &, struct std::_Nonscalar_ptr_iterator_tag)
+
+// FUNCTION: POPCAPGAME1 0x0045f810
+// Sexy::StoryData::~StoryData
 
 // FUNCTION: POPCAPGAME1 0x00461a00
 StageInfo::StageInfo()

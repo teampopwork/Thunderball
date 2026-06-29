@@ -12,7 +12,11 @@ class ThunderballApp;
 class PlayerInfo;
 class ConfigParser;
 
-class StoryData : public RefCount {};
+class StoryData {
+public:
+    std::string mUnk0x0;
+    int mUnk0x1c;
+};
 
 class LevelInfo : public RefCount {
 public:
@@ -30,7 +34,7 @@ public:
 
 class StageInfo : public RefCount {
 public:
-	StoryData mUnk0x8[5];
+	std::vector<StoryData> mUnk0x8[5];
 	std::vector<SmartPtr<LevelInfo>> mUnk0x5c;
 
 	StageInfo();

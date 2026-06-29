@@ -19,6 +19,8 @@
 
 // GLOBAL: POPCAPGAME1 0x00649f6c
 static int BUBBLE_FADE_TIME = 14;
+static bool gFirstDigit = true;
+
 
 using namespace Sexy;
 
@@ -26,6 +28,11 @@ using namespace Sexy;
 MainMenu::MainMenu(ThunderballApp* theApp)
 {
 	mApp = theApp;
+    gFirstDigit = true;
+    mUnk0xC0 = false;
+    mUnk0xC4 = 0;
+    mUnk0xE4 = 0;
+    mUnk0xD0 = 0;
 
 	mAdventureButton = MakeEmbeddedButton(
 		0,
@@ -234,7 +241,7 @@ void MainMenu::ButtonDepress(int theId)
 		return;
 	}
 
-	mWidth = 0; // ????
+	mUnk0xC0 = false;
 	switch (theId) {
 	case 0:
 		if (mApp->IsTrialOver()) {
@@ -243,8 +250,8 @@ void MainMenu::ButtonDepress(int theId)
 		}
 
 		mApp->mGameMode = GameMode::ADVENTURE;
-		mApp->mUnk0x764 = mX;
-		mApp->mUnk0x768 = mY;
+		mApp->mUnk0x764 = mUnk0xB8;
+		mApp->mUnk0x768 = mUnk0xBC;
 
 		if (mApp->mCurProfile == NULL || (0 < mApp->mCurProfile->mUnk0x48) || !mApp->CheckSaveGame(true)) {
 			StartGame();

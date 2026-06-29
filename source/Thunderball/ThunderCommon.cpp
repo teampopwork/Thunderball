@@ -1719,3 +1719,22 @@ void Sexy::DrawCircle(Graphics *g ,float param_2, float param_3, float param_4, 
 {
     printf("DrawCircle STUB\n");
 }
+
+// FUNCTION: POPCAPGAME1 0x00489f20
+void Sexy::DrawCharacterPlusFrame(Graphics *g, int param_2, int param_3, int param_4)
+{
+    if (param_2 < 0 || param_2 > 11) {
+        param_2 = 0;
+    }
+
+    Image* aImage = GetImageById(param_2 + 0x16a);
+    g->DrawImage(aImage, param_3, param_4);
+
+
+    g->DrawImageBox(Rect(
+        param_2 -  ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp83,688", 8),
+        param_3 - ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp84,688", 8),
+        ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp85,688", 16) + aImage->mWidth,
+        ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp86,688", 16) + aImage->mHeight
+    ), IMAGE_DLG_BLUEFRAME);
+}

@@ -1086,8 +1086,9 @@ void ThunderballApp::StartAdventureGame()
 
 	if (aProfile != NULL && aProfile->mUnk0x61 && mUnk0x768 == 0) {
 		ShowStoryScreen(false, false);
-	}
-	ShowBoard(true, false);
+	} else {
+        ShowBoard(true, false);
+    }
 }
 
 // STUB: POPCAPGAME1 0x004058b0
