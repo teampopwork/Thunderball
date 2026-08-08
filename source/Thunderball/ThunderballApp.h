@@ -27,6 +27,7 @@ class ThunderDialog;
 class ProfileMgr;
 class StatsMgr;
 class StageMgr;
+class LevelInfo;
 class CharacterMgr;
 class TrophyMgr;
 class HighScoreMgr;
@@ -40,18 +41,25 @@ static BlendedImage* gBallPegImage[9];
 // VTABLE: POPCAPGAME1 0x005d7cb8
 class ThunderballApp : public SexyApp {
 public:
+	char mPadding0x728[0x28];           // +0x728
 	int mUnk0x750;                     // +0x750 // part of SexyApp?
+	char mPadding0x754[0xc];            // +0x754
 	GameMode mGameMode;                // +0x760
 	int mUnk0x764;                     // +0x764
 	int mUnk0x768;                     // +0x768
+	char mPadding0x76c[0x4];            // +0x76c
 	int mMaxStage;                     // +0x770
 	int mMaxLevel;                     // +0x774
+	char mPadding0x778;                 // +0x778
 	bool mUnk0x779;                    // +0x779
+	char mPadding0x77a[0x2];            // +0x77a
     int mUnk0x77c;                     // +0x77C
 	int mUnk0x780;                     // +0x780
 	int mUnk0x784;                     // +0x784
+	char mPadding0x788[0x8];            // +0x788
 	double mFeverVolume;               // +0x790
 	bool mShouldShowUpsellButton;      // +0x798
+	char mPadding0x799[0x17];           // +0x799
 	int mUnk0x7b0;                     // +0x7B0
 	int mUnk0x7b8;                     // +0x7B4
 	Board* mBoard;                     // +0x7B8
@@ -63,14 +71,19 @@ public:
 	TrophyScreen* mTrophyScreen;       // +0x7D0
 	StoryScreen* mStoryScreen;         // +0x7D4
 	AdventureScreen* mAdventureScreen; // +0x7D8
+	char mPadding0x7dc[0x58];           // +0x7DC
 	int mUnk0x834;                     // +0x834
+	char mPadding0x838;                 // +0x838
 	bool mUnk0x839;                    // +0x839
 	bool mUnk0x83A;                    // +0x83A
+	char mPadding0x83b;                 // +0x83b
 	bool mUnk0x83C;                    // +0x83C
+	char mPadding0x83d[0x7];            // +0x83d
 	CharacterMgr* mCharacterMgr;       // +0x844
 	HighScoreMgr* mHighScoreMgr;       // +0x848
 	ImageMgr* mImageMgr;               // +0x84C
 	ProfileMgr* mProfileMgr;           // +0x850
+	char mPadding0x854[0x4];            // +0x854
 	StageMgr* mStageMgr;               // +0x858
 	StatsMgr* mStatsMgr;               // +0x85C
 	StatsMgr* mEditStatsMgr;           // +0x860
@@ -82,11 +95,13 @@ public:
 	PlayerInfo* mCurProfile;           // +0x878
     int mUnk0x87c;                     // +0x87C
     int mUnk0x880;                     // +0x880
+	char mPadding0x884[0x8];            // +0x884
     int mUnk0x88c;                     // +0x88c
     int mUnk0x890;                     // +0x890
     int mUnk0x894;                     // +0x894
     int mUnk0x898;                     // +0x898
     GameStats* mUnk0x89c;                     // +0x89C
+	char mPadding0x8a0[0x68];           // +0x8a0
     GameStats* mUnk0x908;                     // +0x908
 
 	ThunderballApp();
@@ -143,7 +158,7 @@ public:
 	void FinishTipDialog(bool);
 	void FinishUserDialog(bool);
 	int GetCurLevel();
-	int GetCurLevelInfo();
+	LevelInfo* GetCurLevelInfo();
 	long double GetFeverVolume();
 	DDImage* GetImage(const std::string&, bool);
 	int GetMaxLevel();

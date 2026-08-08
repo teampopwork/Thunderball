@@ -59,9 +59,11 @@ double EditVal::ToNum()
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-// STUB: POPCAPGAME1 0x00402d00
+// FUNCTION: POPCAPGAME1 0x00402d00
 EditValObj::EditValObj()
 {
+	mEditVal = NULL;
+	mUnk0xc = false;
 }
 
 // SYNTHETIC: POPCAPGAME1 0x004073e0
@@ -73,84 +75,183 @@ bool EditValObj::EditGetSetValHook(const std::string& param_1, bool param_2)
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x0041ec80
+// FUNCTION: POPCAPGAME1 0x0041ec80
 bool EditValObj::EditValSyncNum(int& theNum)
 {
-	return false;
+	if (mEditVal != NULL) {
+		if (mUnk0xc) {
+			theNum = (int) mEditVal->ToNum();
+		}
+		else {
+			*mEditVal = EditVal((double) theNum);
+		}
+	}
+
+	return true;
 }
 
-// STUB: POPCAPGAME1 0x004112a0
+// FUNCTION: POPCAPGAME1 0x004112a0
 bool EditValObj::EditValSyncNum(int& theNum, int param_2, int param_3)
 {
-	return false;
+	if (mEditVal != NULL) {
+		if (mUnk0xc) {
+			theNum = (int) mEditVal->ToNum();
+			if (theNum < param_2) {
+				theNum = param_2;
+			}
+			else if (theNum > param_3) {
+				theNum = param_3;
+			}
+		}
+		else {
+			*mEditVal = EditVal((double) theNum);
+		}
+	}
+
+	return true;
 }
 
-// STUB: POPCAPGAME1 0x00411380
+// FUNCTION: POPCAPGAME1 0x00411380
 bool EditValObj::EditValSyncNum(ulong& theNum)
 {
-	return false;
+	if (mEditVal != NULL) {
+		if (mUnk0xc) {
+			theNum = (ulong) mEditVal->ToNum();
+		}
+		else {
+			*mEditVal = EditVal((double) theNum);
+		}
+	}
+
+	return true;
 }
 
-// STUB: POPCAPGAME1 0x00411470
+// FUNCTION: POPCAPGAME1 0x00411470
 bool EditValObj::EditValSyncNum(float& theNum)
 {
-	return false;
+	if (mEditVal != NULL) {
+		if (mUnk0xc) {
+			theNum = (float) mEditVal->ToNum();
+		}
+		else {
+			*mEditVal = EditVal((double) theNum);
+		}
+	}
+
+	return true;
 }
 
-// STUB: POPCAPGAME1 0x00411530
+// FUNCTION: POPCAPGAME1 0x00411530
 bool EditValObj::EditValSyncNum(float& theNum, float param_2, float param_3)
 {
-	return false;
+	if (mEditVal != NULL) {
+		if (mUnk0xc) {
+			theNum = (float) mEditVal->ToNum();
+			if (theNum < param_2) {
+				theNum = param_2;
+			}
+			else if (theNum > param_3) {
+				theNum = param_3;
+			}
+		}
+		else {
+			*mEditVal = EditVal((double) theNum);
+		}
+	}
+
+	return true;
 }
 
-// STUB: POPCAPGAME1 0x00411640
+// FUNCTION: POPCAPGAME1 0x00411640
 bool EditValObj::EditValSyncBool(bool& theBool)
 {
-	return false;
+	if (mEditVal != NULL) {
+		if (mUnk0xc) {
+			theBool = mEditVal->ToNum() != 0.0;
+		}
+		else {
+			*mEditVal = EditVal((double) (theBool != false));
+		}
+	}
+
+	return true;
 }
 
-// STUB: POPCAPGAME1 0x0041ed40
+// FUNCTION: POPCAPGAME1 0x0041ed40
 bool EditValObj::EditValSyncString(std::string& theString)
 {
-	return false;
+	if (mEditVal != NULL) {
+		if (mUnk0xc) {
+			theString = mEditVal->ToString();
+		}
+		else {
+			EditVal aVal(theString);
+			*mEditVal = aVal;
+		}
+	}
+
+	return true;
 }
 
-// STUB: POPCAPGAME1 0x0040a100
+// FUNCTION: POPCAPGAME1 0x0040a100
 double EditValObj::GetEditValNum()
 {
-	return 0;
+	if (mEditVal != NULL) {
+		return mEditVal->ToNum();
+	}
+
+	return 0.0;
 }
 
-// STUB: POPCAPGAME1 0x00411730
-void EditValObj::SetEditValNum(double theNum)
+// FUNCTION: POPCAPGAME1 0x00411730
+bool EditValObj::SetEditValNum(double theNum)
 {
+	if (mEditVal != NULL) {
+		EditVal aVal(theNum);
+		*mEditVal = aVal;
+		return true;
+	}
+
+	return false;
 }
 
-// STUB: POPCAPGAME1 0x004091f0
+// FUNCTION: POPCAPGAME1 0x004091f0
 bool EditValObj::EditKeyPrefix(const std::string& param_1, const std::string& param_2)
 {
-	return false;
+	return strncmp(param_1.c_str(), param_2.c_str(), param_2.size()) == 0;
 }
 
-// STUB: POPCAPGAME1 0x00402d20
-void EditValObj::EditGetSetVal(const std::string& theKey, EditVal* theVal, bool param_3, bool param_4)
+// FUNCTION: POPCAPGAME1 0x00402d20
+bool EditValObj::EditGetSetVal(const std::string& theKey, EditVal* theVal, bool param_3, bool param_4)
 {
+	mUnk0xd = param_4;
+	mUnk0xc = param_3;
+	mEditVal = theVal;
+	bool aResult = EditGetSetValHook(theKey, param_3);
+	mEditVal = NULL;
+	return aResult;
 }
 
-// STUB: POPCAPGAME1 0x00407410
+// FUNCTION: POPCAPGAME1 0x00407410
 void EditValObj::EditSetVal(const std::string& theKey, EditVal* theVal, bool param_3)
 {
+	EditGetSetVal(theKey, theVal, true, param_3);
 }
 
-// STUB: POPCAPGAME1 0x00407430
+// FUNCTION: POPCAPGAME1 0x00407430
 void EditValObj::EditGetVal(const std::string& theKey, EditVal* theVal)
 {
+	EditGetSetVal(theKey, theVal, false, false);
 }
 
-// STUB: POPCAPGAME1 0x00402d60
+// FUNCTION: POPCAPGAME1 0x00402d60
 bool EditValObj::EditGetSetValDelegate(EditValObj* theObj, const std::string& param_2)
 {
-	return false;
+	if (theObj == NULL || mEditVal == NULL) {
+		return false;
+	}
+
+	return theObj->EditGetSetVal(param_2, mEditVal, mUnk0xc, mUnk0xd);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

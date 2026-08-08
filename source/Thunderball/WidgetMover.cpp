@@ -58,7 +58,7 @@ WidgetMover::WidgetMover()
 // SYNTHETIC: POPCAPGAME1 0x0040d3c0
 // Sexy::WidgetMover::`scalar deleting destructor'
 
-// STUB: POPCAPGAME1 0x0040c660
+// FUNCTION: POPCAPGAME1 0x0040c660
 WidgetMover::~WidgetMover()
 {
 }
