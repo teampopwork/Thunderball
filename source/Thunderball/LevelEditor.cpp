@@ -59,9 +59,11 @@ double EditVal::ToNum()
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-// STUB: POPCAPGAME1 0x00402d00
+// FUNCTION: POPCAPGAME1 0x00402d00
 EditValObj::EditValObj()
 {
+	mEditVal = NULL;
+	mUnk0xc = false;
 }
 
 // SYNTHETIC: POPCAPGAME1 0x004073e0
@@ -115,10 +117,14 @@ bool EditValObj::EditValSyncString(std::string& theString)
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x0040a100
+// FUNCTION: POPCAPGAME1 0x0040a100
 double EditValObj::GetEditValNum()
 {
-	return 0;
+	if (mEditVal != NULL) {
+		return mEditVal->ToNum();
+	}
+
+	return 0.0;
 }
 
 // STUB: POPCAPGAME1 0x00411730

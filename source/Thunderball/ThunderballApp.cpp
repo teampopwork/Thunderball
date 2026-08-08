@@ -705,22 +705,27 @@ void ThunderballApp::FinishUserDialog(bool param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x00405bf0
+// FUNCTION: POPCAPGAME1 0x00405bf0
 int ThunderballApp::GetCurLevel()
 {
-	return 0;
+	return mUnk0x764 * 5 + mUnk0x768;
 }
 
-// STUB: POPCAPGAME1 0x00405ba0
-int ThunderballApp::GetCurLevelInfo()
+// FUNCTION: POPCAPGAME1 0x00405ba0
+LevelInfo* ThunderballApp::GetCurLevelInfo()
 {
-	return 0;
+	StageInfo* aStageInfo = mStageMgr->GetStageInfo(mUnk0x764);
+	if (aStageInfo == NULL) {
+		return NULL;
+	}
+
+	return aStageInfo->GetLevelInfo(mUnk0x768);
 }
 
-// STUB: POPCAPGAME1 0x00405960
+// FUNCTION: POPCAPGAME1 0x00405960
 long double ThunderballApp::GetFeverVolume()
 {
-	return 0.0L;
+	return mFeverVolume;
 }
 
 // STUB: POPCAPGAME1 0x00405ae0
@@ -729,28 +734,69 @@ DDImage* ThunderballApp::GetImage(const std::string& theFileName, bool commitBit
 	return SexyApp::GetImage(theFileName, commitBits);
 }
 
-// STUB: POPCAPGAME1 0x00405bd0
+// FUNCTION: POPCAPGAME1 0x00405bd0
 int ThunderballApp::GetMaxLevel()
 {
-	return 0;
+	if (mCurProfile == NULL) {
+		return 0;
+	}
+
+	return mCurProfile->GetMaxLevel();
 }
 
-// STUB: POPCAPGAME1 0x00405d40
+// FUNCTION: POPCAPGAME1 0x00405d40
 int ThunderballApp::GetMaxLockedLevel()
 {
-	return 0;
+	if (!IsRegistered()) {
+		if (mUnk0x834 == 1) {
+			return 3;
+		}
+		if (mUnk0x834 == 3 || mUnk0x834 == 5) {
+			return 4;
+		}
+		if (mUnk0x834 == 4 || mUnk0x834 == 2) {
+			return 0;
+		}
+	}
+
+	return 1000;
 }
 
-// STUB: POPCAPGAME1 0x00405cf0
+// FUNCTION: POPCAPGAME1 0x00405cf0
 int ThunderballApp::GetMaxLockedStage()
 {
-	return 0;
+	if (!IsRegistered()) {
+		if (mUnk0x834 == 1) {
+			return 0;
+		}
+		if (mUnk0x834 == 2) {
+			return 1;
+		}
+		if (mUnk0x834 == 3) {
+			return 2;
+		}
+		if (mUnk0x834 == 4 || mUnk0x834 == 5) {
+			return 3;
+		}
+	}
+
+	return 1000;
 }
 
-// STUB: POPCAPGAME1 0x00405e30
+// FUNCTION: POPCAPGAME1 0x00405e30
 int ThunderballApp::GetMaxUnlockedCharacter()
 {
-	return 0;
+	if (IsRegistered()) {
+		return 20;
+	}
+	if (mUnk0x834 == 3) {
+		return 2;
+	}
+	if (mUnk0x834 == 5) {
+		return 3;
+	}
+
+	return 20;
 }
 
 // FUNCTION: POPCAPGAME1 0x00405970
