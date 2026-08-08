@@ -52,11 +52,11 @@ public:
 	bool EditValSyncString(std::string& theString);
 
 	double GetEditValNum();
-	void SetEditValNum(double theNum);
+	bool SetEditValNum(double theNum);
 
 	bool EditKeyPrefix(const std::string& param_1, const std::string& param_2);
 
-	void EditGetSetVal(const std::string& theKey, EditVal* theVal, bool param_3, bool param_4);
+	bool EditGetSetVal(const std::string& theKey, EditVal* theVal, bool param_3, bool param_4);
 	void EditSetVal(const std::string& theKey, EditVal* theVal, bool param_3);
 	void EditGetVal(const std::string& theKey, EditVal* theVal);
 
