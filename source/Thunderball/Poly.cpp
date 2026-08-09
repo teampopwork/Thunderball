@@ -9,6 +9,7 @@
 #include "ThunderCommon.h"
 
 #include <SexyAppFramework/SexyVector.h>
+#include <SexyAppFramework/MemoryImage.h>
 #include <algorithm>
 #include <vector>
 
@@ -483,9 +484,54 @@ void Poly::DrawShadow(Graphics* g)
 	}
 }
 
-// STUB: POPCAPGAME1 0x0047e7e0
+// FUNCTION: POPCAPGAME1 0x0047e7e0
 void Poly::Draw(Graphics* g)
 {
+	if (mUnk0xb4 == NULL || mOutlineMode == 2) {
+		DrawPoly(g, mUnk0x40, mUnk0x44);
+		return;
+	}
+
+	Rect rect;
+	if (!mUnk0x12f || !GetStandardRect(&rect)) {
+		bool smooth = !mUnk0x27 && (g->mIs3D || mUnk0x2d);
+		if (mUnk0x138 == 0 || mUnk0x13c == 0) {
+			DrawImage(g, mUnk0x114, mUnk0x118, mUnk0x128, smooth, mUnk0x130);
+			if (mUnk0x140 > 0 &&
+				(mUnk0x140 / ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Poly.cpp99,907", 20)) % 2 == 0) {
+				g->SetColor(Color(ModVal(
+					0,
+					"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Poly.cpp100,909",
+					0x808080)));
+				g->SetColorizeImages(true);
+				g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+				DrawImage(g, mUnk0x114, mUnk0x118, mUnk0x128, smooth, mUnk0x130);
+				g->SetColorizeImages(false);
+				g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+			}
+		}
+		else {
+			float percent = mUnk0x138 / ModVal(
+				0,
+				"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Poly.cpp98,902",
+				20.0f);
+			DrawImage(g, mUnk0x114, mUnk0x118, mUnk0x128, smooth, mUnk0x13c, percent);
+		}
+	}
+	else {
+		for (int x = 0; x < rect.mWidth; x += mUnk0xb4->mWidth) {
+			int width = min(mUnk0xb4->mWidth, rect.mWidth - x);
+			for (int y = 0; y < rect.mHeight; y += mUnk0xb4->mHeight) {
+				int height = min(mUnk0xb4->mHeight, rect.mHeight - y);
+				Rect source(0, 0, width, height);
+				g->DrawImage(mUnk0xb4, x + rect.mX, y + rect.mY, source);
+			}
+		}
+	}
+
+	if (mOutlineMode == 1) {
+		DrawPoly(g, 0, 0xffffff);
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0047a230
