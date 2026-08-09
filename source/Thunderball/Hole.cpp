@@ -1,5 +1,7 @@
 #include "Hole.h"
 
+#include "Ball.h"
+
 using namespace Sexy;
 
 // FUNCTION: POPCAPGAME1 0x004810e0
@@ -37,7 +39,7 @@ void Hole::SyncState(DataSync& param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x00481140
+// FUNCTION: POPCAPGAME1 0x00481140
 int Hole::GetClass()
 {
 	return 8;
@@ -48,24 +50,37 @@ void Hole::EditDrawOutline(Graphics* g)
 {
 }
 
-// STUB: POPCAPGAME1 0x00475540
-void Hole::SetPos(float param_1, float param_2)
+// FUNCTION: POPCAPGAME1 0x00475540
+void Hole::SetPos(float theX, float theY)
 {
+	Translate(theX - mUnk0xf4, theY - mUnk0xf8);
 }
 
-// STUB: POPCAPGAME1 0x004754f0
-void Hole::Translate(float param_1, float param_2)
+// FUNCTION: POPCAPGAME1 0x004754f0
+void Hole::Translate(float theDx, float theDy)
 {
+	mUnk0xf4 += theDx;
+	mUnk0xf8 += theDy;
+	mUnk0x14 += theDx;
+	mUnk0x1c += theDx;
+	mUnk0x18 += theDy;
+	mUnk0x20 += theDy;
 }
 
-// STUB: POPCAPGAME1 0x00475600
-void Hole::SetVelocity(float param_1, float param_2)
+// FUNCTION: POPCAPGAME1 0x00475600
+void Hole::SetVelocity(float theVx, float theVy)
 {
+	mUnk0xfc = theVx;
+	mUnk0x100 = theVy;
 }
 
-// STUB: POPCAPGAME1 0x0047a930
+// FUNCTION: POPCAPGAME1 0x0047a930
 void Hole::Update()
 {
+	PhysObj::Update();
+	if (mUnk0xec != 0) {
+		mUnk0xec--;
+	}
 }
 
 // STUB: POPCAPGAME1 0x0047ce60
@@ -79,38 +94,68 @@ void Hole::DrawLight(Graphics* g)
     PhysObj::DrawLight(g);
 }
 
-// STUB: POPCAPGAME1 0x0047dfa0
+// FUNCTION: POPCAPGAME1 0x0047dfa0
 float Hole::GetXPos()
 {
-	return 0.0f;
+	return mUnk0xf4;
 }
 
-// STUB: POPCAPGAME1 0x00481150
+// FUNCTION: POPCAPGAME1 0x00481150
 float Hole::GetYPos()
 {
-	return 0.0f;
+	return mUnk0xf8;
 }
 
 // FUNCTION: POPCAPGAME1 0x00475580
-void Hole::SetSize(int param_1, int param_2)
+void Hole::SetSize(int theWidth, int theHeight)
 {
-    mUnk0x104 = param_1;
-    mUnk0x108 = param_2;
-    mUnk0x14 = mUnk0xf4 - (float)param_1 * 0.5;
-    mUnk0x1c = (float)(int)param_1 * 0.5 + mUnk0xf4;
-    mUnk0x18 = mUnk0xf8 - (float)param_2 * 0.5;
-    mUnk0x20 = (float)(int)param_2 * 0.5 + mUnk0xf8;
+	float aHalfWidth = (float)theWidth * 0.5;
+	float aHalfHeight = (float)theHeight * 0.5;
+	mUnk0x104 = theWidth;
+	mUnk0x108 = theHeight;
+	mUnk0x14 = mUnk0xf4 - aHalfWidth;
+	mUnk0x1c = aHalfWidth + mUnk0xf4;
+	mUnk0x18 = mUnk0xf8 - aHalfHeight;
+	mUnk0x20 = aHalfHeight + mUnk0xf8;
 }
 
-// STUB: POPCAPGAME1 0x004755f0
-void Hole::SetFlashCount(int param_1)
+// FUNCTION: POPCAPGAME1 0x004755f0
+void Hole::SetFlashCount(int theCount)
 {
+	mUnk0xec = theCount;
 }
 
-// STUB: POPCAPGAME1 0x004781c0
-bool Hole::CheckCollision(Ball* param_1)
+// FUNCTION: POPCAPGAME1 0x004781c0
+bool Hole::CheckCollision(Ball* theBall)
 {
-	return false;
+	float aCenterX = mUnk0xf4;
+	float aCenterY = mUnk0xf8;
+	float aHalfWidth = (float)mUnk0x104 * 0.5f;
+	float aHalfHeight = (float)mUnk0x108 * 0.5f;
+	float aBallX = theBall->mUnk0xec;
+	float aBallY = theBall->mUnk0xf0;
+
+	if (aBallX < aCenterX - aHalfWidth ||
+		aBallX > aCenterX + aHalfWidth ||
+		aBallY < aCenterY - aHalfHeight ||
+		aBallY > aCenterY + aHalfHeight) {
+		return false;
+	}
+
+	if (mUnk0x10c) {
+		float aDeltaX = aBallX - aCenterX;
+		float aDeltaY = aBallY - aCenterY;
+		if (aDeltaX * aDeltaX / (aHalfWidth * aHalfWidth) +
+			aDeltaY * aDeltaY / (aHalfHeight * aHalfHeight) > 1.0f) {
+			return false;
+		}
+	}
+
+	if (mNotifyCollisionFunc != NULL) {
+		mNotifyCollisionFunc(theBall, this);
+		SetFlashCount(100);
+	}
+	return true;
 }
 
 // STUB: POPCAPGAME1 0x0047cac0
