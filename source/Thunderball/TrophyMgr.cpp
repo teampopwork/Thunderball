@@ -17,10 +17,11 @@ TrophyMgr::~TrophyMgr()
 {
 }
 
-// STUB: POPCAPGAME1 0x00471960
+// FUNCTION: POPCAPGAME1 0x00471960
 void TrophyMgr::Clear()
 {
-	// TODO
+	mPages.erase(mPages.begin(), mPages.end());
+	mTrophyInfos.clear();
 }
 
 // STUB: POPCAPGAME1 0x00474550
@@ -51,14 +52,14 @@ bool TrophyMgr::ReadTrophyConfig(ConfigParser* theParser, TrophyInfo* theInfo)
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x004430b0
+// FUNCTION: POPCAPGAME1 0x004430b0
 TrophyInfo* TrophyMgr::GetTrophyInfoById(int theId)
 {
 	std::map<int, TrophyInfo*>::iterator anItr = mTrophyInfos.find(theId);
 	return anItr == mTrophyInfos.end() ? NULL : anItr->second;
 }
 
-// STUB: POPCAPGAME1 0x0043d970
+// FUNCTION: POPCAPGAME1 0x0043d970
 TrophyPage* TrophyMgr::GetTrophyPage(int theId)
 {
 	if (theId >= 0 && theId < (int)mPages.size())
