@@ -132,10 +132,30 @@ Effect* EffectMgr::AddFeverRainbow(int param_1)
 	return NULL;
 }
 
-// STUB: POPCAPGAME1 0x0044fd20
+// FUNCTION: POPCAPGAME1 0x0044fd20
 Effect* EffectMgr::AddRay(float param_1, float param_2)
 {
-	return NULL;
+	Effect* effect = AddEffect(
+		(EffectType)0x10,
+		param_1,
+		param_2,
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp781,4163", 1),
+		false);
+	effect->mUnk0x10 = ModVal(
+		0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp782,4164", 200);
+	int angleRange = ModVal(
+		0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp784,4165", 100);
+	effect->mUnk0x30 = ModVal(
+		0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp783,4165", 362) +
+		Rand() % angleRange;
+	int velocityRange = ModVal(
+		0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp785,4167", 10);
+	effect->mUnk0x28 =
+		(float)((Rand() % (velocityRange * 2 + 1) - velocityRange) * 3.14159274101257 / 180.0);
+	effect->mUnk0x2c = ModVal(
+		0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp786,4169", 0.01f) *
+		effect->mUnk0x28;
+	return effect;
 }
 
 // STUB: POPCAPGAME1 0x0044fe00
@@ -192,22 +212,42 @@ Effect* EffectMgr::AddFlowerSparkles(float param_1, float param_2)
 	return NULL;
 }
 
-// STUB: POPCAPGAME1 0x0044dfc0
+// FUNCTION: POPCAPGAME1 0x0044dfc0
 Effect* EffectMgr::AddCoinFlip(float param_1, float param_2, bool param_3)
 {
-	return NULL;
+	Effect* effect = AddEffect((EffectType)8, param_1, param_2, 0, false);
+	effect->mUnk0x10 = 250;
+	effect->mUnk0x30 = Rand() % 360;
+	effect->mUnk0x34 = param_3;
+	return effect;
 }
 
-// STUB: POPCAPGAME1 0x0044df70
+// FUNCTION: POPCAPGAME1 0x0044df70
 Effect* EffectMgr::AddMasterBadge(float param_1, float param_2, int param_3)
 {
-	return NULL;
+	Effect* effect = AddEffect(
+		(EffectType)0x21,
+		param_1,
+		param_2,
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp591,3676", 0),
+		false);
+	effect->mUnk0x10 = 0;
+	effect->mUnk0xc = -param_3;
+	return effect;
 }
 
-// STUB: POPCAPGAME1 0x0044df20
+// FUNCTION: POPCAPGAME1 0x0044df20
 Effect* EffectMgr::AddRibbon(float param_1, float param_2, int param_3)
 {
-	return NULL;
+	Effect* effect = AddEffect(
+		(EffectType)7,
+		param_1,
+		param_2,
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp590,3666", 0),
+		false);
+	effect->mUnk0x10 = 0;
+	effect->mUnk0xc = -param_3;
+	return effect;
 }
 
 // STUB: POPCAPGAME1 0x0044e1c0
