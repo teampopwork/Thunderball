@@ -30,6 +30,7 @@
 #include <SexyAppFramework/ButtonWidget.h>
 #include <SexyAppFramework/DDImage.h>
 #include <SexyAppFramework/Debug.h>
+#include <SexyAppFramework/EditWidget.h>
 #include <SexyAppFramework/ResourceManager.h>
 #include <SexyAppFramework/SWTri.h>
 #include <SexyAppFramework/SoundManager.h>
@@ -764,9 +765,14 @@ void ThunderballApp::FinishHighScoreEntryDialog(bool param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x00408500
+// FUNCTION: POPCAPGAME1 0x00408500
 void ThunderballApp::FinishNameErrorDialog(int param_1)
 {
+	DoScrollOff(param_1);
+	NewUserDialog* aDialog = static_cast<NewUserDialog*>(GetDialog(param_1 != 11 ? 20 : 10));
+	if (aDialog != NULL) {
+		mWidgetManager->SetFocus(aDialog->mUnk0x180);
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0041c840
