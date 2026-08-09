@@ -7,6 +7,7 @@
 #include "SoundMgr.h"
 #include "ThunderballApp.h"
 
+#include <SexyAppFramework/Font.h>
 #include <SexyAppFramework/Graphics.h>
 #include <SexyAppFramework/MemoryImage.h>
 
@@ -110,14 +111,44 @@ void InterfaceMgr::AddScoreUpdateDelay(int theDelay)
 	}
 }
 
-// STUB: POPCAPGAME1 0x00436890
-void InterfaceMgr::DrawScore(Graphics* param_1, std::string* param_2, bool param_3)
+// FUNCTION: POPCAPGAME1 0x00436890
+void InterfaceMgr::DrawScore(Graphics* theGraphics, std::string* theText, bool isLeftSide)
 {
+	theGraphics->SetFont(FONT_SCORE_DISP);
+	theGraphics->SetColor(Color(0xffffff));
+	int aTextWidth = theGraphics->GetFont()->StringWidth(*theText);
+	// STRING: POPCAPGAME1 0x005dc7a8
+	// STRING: POPCAPGAME1 0x005dc760
+	int aRight = isLeftSide
+		? ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp953,542", 295)
+		: ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp954,542", 670);
+	// STRING: POPCAPGAME1 0x005dc718
+	if (aTextWidth > ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp955,543", 100)) {
+		// STRING: POPCAPGAME1 0x005dc6d0
+		aRight += ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp956,544", 5);
+	}
+	// STRING: POPCAPGAME1 0x005dc688
+	theGraphics->DrawString(*theText, aRight - aTextWidth, ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp957,545", 28));
 }
 
-// STUB: POPCAPGAME1 0x00436950
-void InterfaceMgr::DrawSmallMode(Graphics* param_1, std::string* param_2, bool param_3)
+// FUNCTION: POPCAPGAME1 0x00436950
+void InterfaceMgr::DrawSmallMode(Graphics* theGraphics, std::string* theText, bool isLeftSide)
 {
+	theGraphics->SetFont(FONT_SMALL_DISP);
+	theGraphics->SetColor(Color(0xffffff));
+	// STRING: POPCAPGAME1 0x005dc910
+	// STRING: POPCAPGAME1 0x005dc8c8
+	int anX = isLeftSide
+		? ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp958,568", 128)
+		: ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp959,568", 508);
+	int aTextWidth = theGraphics->GetFont()->StringWidth(*theText);
+	// STRING: POPCAPGAME1 0x005dc880
+	if (aTextWidth > ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp960,569", 75)) {
+		// STRING: POPCAPGAME1 0x005dc838
+		anX -= ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp961,570", 6);
+	}
+	// STRING: POPCAPGAME1 0x005dc7f0
+	theGraphics->DrawString(*theText, anX, ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp962,571", 20));
 }
 
 // FUNCTION: POPCAPGAME1 0x0043ca00
@@ -126,9 +157,24 @@ void InterfaceMgr::DrawMode(Graphics* param_1, std::string* param_2, bool param_
     DrawSmallMode(param_1, param_2, param_3);
 }
 
-// STUB: POPCAPGAME1 0x00436a10
-void InterfaceMgr::DrawDetail(Graphics* param_1, std::string* param_2, bool param_3, int param_4)
+// FUNCTION: POPCAPGAME1 0x00436a10
+void InterfaceMgr::DrawDetail(Graphics* theGraphics, std::string* theText, bool isLeftSide, int theOffset)
 {
+	theGraphics->SetFont(FONT_SMALL_DISP);
+	theGraphics->SetColor(Color(0xffffff));
+	// STRING: POPCAPGAME1 0x005dca78
+	// STRING: POPCAPGAME1 0x005dca30
+	int anX = isLeftSide
+		? ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp963,581", 128)
+		: ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp964,581", 508);
+	int aTextWidth = theGraphics->GetFont()->StringWidth(*theText);
+	// STRING: POPCAPGAME1 0x005dc9e8
+	if (aTextWidth > ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp965,582", 75)) {
+		// STRING: POPCAPGAME1 0x005dc9a0
+		anX -= ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp966,583", 6);
+	}
+	// STRING: POPCAPGAME1 0x005dc958
+	theGraphics->DrawString(*theText, anX + theOffset, ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp967,584", 35));
 }
 
 // STUB: POPCAPGAME1 0x00436ae0
