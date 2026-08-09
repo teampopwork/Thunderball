@@ -5,6 +5,8 @@
 #include "DataSync.h"
 #include "LogicMgr.h"
 #include "PhysObj.h"
+#include "Res.h"
+#include "SoundMgr.h"
 #include "ThunderballApp.h"
 
 #include <SexyAppFramework/Common.h>
@@ -102,10 +104,55 @@ void SlotMachineDialog::CalcCurLight()
 	mUnk0x19c[mUnk0x198] = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\SlotMachineDialog.cpp774,273", 30);
 }
 
-// STUB: POPCAPGAME1 0x0049b3d0
-bool SlotMachineDialog::UpdatePointer(bool param_1)
+// FUNCTION: POPCAPGAME1 0x0049b3d0
+void SlotMachineDialog::UpdatePointer(bool param_1)
 {
-    return false;
+	bool aStopping = false;
+	int anOldLight = mUnk0x198;
+	if (mUnk0x248 > 0) {
+		double anAngle = mUnk0x190;
+		mUnk0x248--;
+		aStopping = true;
+		mUnk0x190 = (float)(anAngle - ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\SlotMachineDialog.cpp777,315", 0.0f));
+	}
+	else {
+		mUnk0x190 -= mUnk0x194;
+	}
+
+	CalcCurLight();
+	if (mUnk0x190 > 6.2831854820251465) {
+		mUnk0x190 = (float)(mUnk0x190 - 6.2831854820251465);
+	}
+	else if (mUnk0x190 < 0.0f) {
+		mUnk0x190 = (float)(mUnk0x190 + 6.2831854820251465);
+	}
+
+	if (aStopping) {
+		return;
+	}
+	if (mUnk0x244 > 0) {
+		mUnk0x244--;
+	}
+
+	if ((mUnk0x198 - 5) % 10 != 0) {
+		if ((mUnk0x198 + 4) % 10 == 0 && anOldLight != mUnk0x198) {
+			mBoard->mSoundMgr->AddSound(SOUND_DING, 0.0f, 1);
+			mUnk0x23c = (mUnk0x23c + 1) % 4;
+			if (mUnk0x244 == 0) {
+				mUnk0x194 = (float)((double)mUnk0x194 - ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\SlotMachineDialog.cpp778,346", 0.0016f));
+			}
+		}
+		else if (mUnk0x244 == 0) {
+			mUnk0x194 = (float)((double)mUnk0x194 - ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\SlotMachineDialog.cpp779,349", 0.0008f));
+		}
+	}
+
+	if (mUnk0x194 <= 0.0f) {
+		int aResults[4] = {2, 1, 0, 3};
+		mBoard->mLogicMgr->DoSlotMachineResult(aResults[mUnk0x180], mBall.get());
+		mUnk0x194 = 0.0f;
+		mUnk0x184 = 1;
+	}
 }
 
 // STUB: POPCAPGAME1 0x0049d2c0

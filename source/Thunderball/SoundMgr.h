@@ -41,6 +41,7 @@ public:
 	void SyncState(DataSync& param_1);
 	void PlaySample(SoundDesc* param_1);
 	void AddSound(int param_1, int param_2);
+	void AddSound(int param_1, float param_2, int param_3);
 	void AddSound(int param_1, float param_2, int param_3, int param_4, int param_5, float param_6);
 	void AddFadeSound(SoundInstance* param_1);
 	void UpdateSounds();

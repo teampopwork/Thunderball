@@ -134,6 +134,12 @@ void SoundMgr::AddSound(int param_1, int param_2)
 	AddSound(param_1, 0.0f, 0,0, param_2, -1.0f);
 }
 
+// FUNCTION: POPCAPGAME1 0x0045afa0
+void SoundMgr::AddSound(int param_1, float param_2, int param_3)
+{
+	AddSound(param_1, param_2, 0, 0, param_3, -1.0f);
+}
+
 // FUNCTION: POPCAPGAME1 0x00458f30
 void SoundMgr::AddSound(int param_1, float param_2, int param_3, int param_4, int param_5, float param_6)
 {
