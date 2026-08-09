@@ -46,7 +46,7 @@ public:
 	void Translate(float param_1, float param_2);
 	void SetPos(float param_1, float param_2);
 	float GetTimeTillPhase(int param_1, float param_2);
-	int GetMovePos(int param_1);
+	float GetMovePos(int param_1);
 	void CalcPos(int param_1, float param_2);
 	void DrawMovement(Graphics* g);
 	void InitDefaults();

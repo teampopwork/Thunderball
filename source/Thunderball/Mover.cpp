@@ -54,14 +54,13 @@ float Mover::GetTimeTillPhase(int param_1, float param_2)
 }
 
 // FUNCTION: POPCAPGAME1 0x004764f0
-int Mover::GetMovePos(int param_1)
+float Mover::GetMovePos(int param_1)
 {
 	int local_8;
-	int local_c;
 
 	if (0 < mPause1) {
 		local_8 = mTime + mPause2 + mPause1;
-		param_1 += mType;
+		param_1 += mOffset;
 		if (0 < local_8) {
 			int aVal1 = (mTime * mPhase1) / 100;
 			int aVal2 = ((mPhase2 - mPhase1) * mTime) / 100 + mPause1 + aVal1;
@@ -95,14 +94,12 @@ int Mover::GetMovePos(int param_1)
 		param_1 += (int) (mPhase * local_8);
 	}
 	else {
-		local_c = mTime;
-		param_1 += mType;
+		param_1 += mOffset;
 		local_8 = mTime;
-		param_1 += (int) (mPhase * local_c);
+		param_1 += (int) (mPhase * local_8);
 	}
 
-	param_1 %= local_8;
-	return param_1;
+	return (float) (param_1 % local_8) / local_8;
 }
 
 // STUB: POPCAPGAME1 0x00478ea0
