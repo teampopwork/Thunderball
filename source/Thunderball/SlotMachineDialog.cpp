@@ -3,7 +3,12 @@
 #include "Ball.h"
 #include "Board.h"
 #include "DataSync.h"
+#include "LogicMgr.h"
 #include "PhysObj.h"
+#include "ThunderballApp.h"
+
+#include <SexyAppFramework/Common.h>
+#include <SexyAppFramework/ModVal.h>
 
 using namespace Sexy;
 
@@ -60,9 +65,41 @@ void SlotMachineDialog::MouseDown(int param_1, int param_2, int param_3)
 {
 }
 
-// STUB: POPCAPGAME1 0x0049cd40
+// FUNCTION: POPCAPGAME1 0x0049cd40
 void SlotMachineDialog::Init(Ball* param_1, PhysObj* param_2)
 {
+	mClip = true;
+	mBall = param_1;
+	mPhysObj = param_2;
+	mUnk0x184 = 0;
+	mWidth = gSexyApp->mWidth;
+	mHeight = gSexyApp->mHeight;
+	mUnk0x198 = 0;
+	mUnk0x180 = 0;
+	mUnk0x240 = 0;
+
+	switch (mBoard->mLogicMgr->GetSlotMachinePowerup())
+	{
+	case 1: mUnk0x240 = 0; break;
+	case 2: mUnk0x240 = 4; break;
+	case 3: mUnk0x240 = 1; break;
+	case 4: mUnk0x240 = 2; break;
+	case 5: mUnk0x240 = 3; break;
+	case 6: mUnk0x240 = 5; break;
+	case 7: mUnk0x240 = 8; break;
+	case 9: mUnk0x240 = 6; break;
+	case 12: mUnk0x240 = 7; break;
+	}
+
+	mUnk0x190 = (float)((Rand() % 360) * 3.14159274101257 / 180.0);
+	mUnk0x194 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\SlotMachineDialog.cpp748,62", 0.15f);
+	mUnk0x244 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\SlotMachineDialog.cpp749,63", 0) +
+		Rand() % ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\SlotMachineDialog.cpp750,63", 100);
+	for (int i = 0; i < 40; ++i)
+		mUnk0x19c[i] = 0;
+	mUnk0x23c = 0;
+	mUnk0x248 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\SlotMachineDialog.cpp751,69", 40);
+	CalcCurLight();
 }
 
 // FUNCTION: POPCAPGAME1 0x0049cfe0

@@ -1,6 +1,7 @@
 #include "LogicMgr.h"
 
 #include "Board.h"
+#include "CharacterMgr.h"
 #include "SoundMgr.h"
 
 #include <SexyAppFramework/Common.h>
@@ -365,23 +366,38 @@ void LogicMgr::ClearFlipperSpace()
 	// TODO
 }
 
-// STUB: POPCAPGAME1 0x00437290
+// FUNCTION: POPCAPGAME1 0x00437290
 void LogicMgr::SetSlotMachineResult(int param_1)
 {
-	// TODO
+	if (mUnk0x50 == 1)
+		mUnk0x14c = param_1;
+	else
+		mUnk0x150 = param_1;
 }
 
-// STUB: POPCAPGAME1 0x00437270
+// FUNCTION: POPCAPGAME1 0x00437270
 int LogicMgr::GetSlotMachineResult()
 {
-	// TODO
-	return 0;
+	if (mUnk0x50 == 1)
+		return mUnk0x14c;
+	return mUnk0x150;
 }
 
+// FUNCTION: POPCAPGAME1 0x00451ac0
 int LogicMgr::GetSlotMachinePowerup()
 {
-	// TODO
-	return 0;
+	std::vector<int> aPowerups;
+	for (int i = 0; i <= mUnk0x15c; ++i)
+	{
+		CharacterInfo* aCharacter = mBoard->mCharacterMgr->GetCharacterInfo(i);
+		if (aCharacter != NULL && aCharacter->mUnk0x6C != 13)
+			aPowerups.push_back(aCharacter->mUnk0x6C);
+	}
+	if (aPowerups.empty())
+		aPowerups.push_back(1);
+
+	int aSelector = mUnk0x50 == 1 ? mUnk0x30 : mUnk0x2c;
+	return aPowerups[aSelector % aPowerups.size()];
 }
 
 // STUB: POPCAPGAME1 0x0049d2c0
