@@ -254,9 +254,83 @@ void Poly::EditGetDragMode(float param_1, float param_2)
 {
 }
 
-// STUB: POPCAPGAME1 0x00486fe0
+// FUNCTION: POPCAPGAME1 0x00486fe0
 void Poly::EditDoPointDrag(float param_1, float param_2)
 {
+	if (mUnk0xd8 == 0) {
+		return;
+	}
+	if (mUnk0xd8 == -1) {
+		MoveCenterTo(param_1, param_2);
+		return;
+	}
+
+	FRect rect;
+	if (!GetStandardRectF(&rect)) {
+		if (mUnk0xd8 < 1 || mUnk0xd8 > (int)mUnk0xe8.size()) {
+			return;
+		}
+
+		bool moveClosingPoint = false;
+		if (mUnk0xd8 == 1) {
+			moveClosingPoint = mUnk0xe8.front() == mUnk0xe8.back();
+		}
+		if (mUnk0x11c != 0.0f) {
+			RotateXY(&param_1, &param_2, mUnk0x114, mUnk0x118, -mUnk0x11c);
+		}
+
+		SexyVector2& point = mUnk0xe8[mUnk0xd8 - 1];
+		point.x = param_1 - mUnk0x114;
+		point.y = param_2 - mUnk0x118;
+		if (moveClosingPoint) {
+			mUnk0xe8.back() = mUnk0xe8.front();
+		}
+		InitFromPoints();
+		return;
+	}
+
+	float left = rect.mX;
+	float top = rect.mY;
+	float right = rect.mX + rect.mWidth;
+	float bottom = rect.mY + rect.mHeight;
+	switch (mUnk0xd8) {
+	case 1:
+		left = param_1;
+	case 2:
+		top = param_2;
+		break;
+	case 3:
+		right = param_1;
+		top = param_2;
+		break;
+	case 4:
+		left = param_1;
+		break;
+	case 5:
+		right = param_1;
+		break;
+	case 6:
+		left = param_1;
+	case 7:
+		bottom = param_2;
+		break;
+	case 8:
+		right = param_1;
+		bottom = param_2;
+		break;
+	default:
+		return;
+	}
+
+	if (right < left) {
+		std::swap(left, right);
+	}
+	if (bottom < top) {
+		std::swap(top, bottom);
+	}
+	float height = max((bottom - top) + 1.0f, 1.0f);
+	float width = max((right - left) + 1.0f, 1.0f);
+	InitFromRect(left, top, width, height);
 }
 
 // FUNCTION: POPCAPGAME1 0x0052a680
@@ -264,9 +338,24 @@ void Poly::EditFinishDrag()
 {
 }
 
-// STUB: POPCAPGAME1 0x00485540
+// FUNCTION: POPCAPGAME1 0x00485540
 void Poly::EditReflect(float param_1, float param_2, bool param_3, bool param_4)
 {
+	PhysObj::EditReflect(param_1, param_2, param_3, param_4);
+	if (!param_4) {
+		return;
+	}
+
+	for (int i = 0; i < (int)mUnk0xe8.size(); i++) {
+		if (param_3) {
+			mUnk0xe8[i].x = -mUnk0xe8[i].x;
+		}
+		else {
+			mUnk0xe8[i].y = -mUnk0xe8[i].y;
+		}
+	}
+	std::reverse(mUnk0xe8.begin(), mUnk0xe8.end());
+	InitFromPoints();
 }
 
 // FUNCTION: POPCAPGAME1 0x00476d70
