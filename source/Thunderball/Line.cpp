@@ -302,20 +302,63 @@ bool Line::EditIntersects(Rect* theRect)
 	return IsPartlyInsideRect(theRect);
 }
 
-// STUB: POPCAPGAME1 0x00475660
+// FUNCTION: POPCAPGAME1 0x00475660
 void Line::CalcEdgeHitVelocity(SexyVector2* param_1, SexyVector2* param_2)
 {
+	SexyVector2 aVelocity(mUnk0xfc, mUnk0x100);
+	*param_2 = *param_1 * param_1->Dot(aVelocity);
 }
 
-// STUB: POPCAPGAME1 0x00475660
 void Line::CalcVertexHitVelocity(SexyVector2* param_1, SexyVector2* param_2)
 {
 }
 
-// STUB: POPCAPGAME1 0x00475bd0
-bool Line::CircleIntersect(float param_1, float param_2, float param_3, SexyVector2* param_4, SexyVector2* param_5)
+// FUNCTION: POPCAPGAME1 0x00475bd0
+int Line::CircleIntersect(float param_1, float param_2, float param_3, SexyVector2* param_4, SexyVector2* param_5)
 {
-	return false;
+	SexyVector2 aStart(mUnk0xec - param_1, mUnk0xf4 - param_2);
+	SexyVector2 aDelta(mUnk0xf0 - mUnk0xec, mUnk0xf8 - mUnk0xf4);
+	float a = aDelta.Dot(aDelta);
+	float b = 2.0f * aStart.Dot(aDelta);
+	float c = aStart.Dot(aStart) - param_3 * param_3;
+	param_3 = b * b - 4.0f * a * c;
+	if (param_3 < 0.0f)
+		return 0;
+
+	param_3 = sqrtf(param_3);
+	float aFirstTime = (-b + param_3) / (2.0f * a);
+	float aSecondTime = (-b - param_3) / (2.0f * a);
+	aStart += SexyVector2(param_1, param_2);
+
+	int aResult = 0;
+	if (aFirstTime >= 0.0f)
+	{
+		if (aFirstTime <= 1.0f)
+		{
+			if (param_4 != NULL)
+				*param_4 = aStart + aDelta * aFirstTime;
+			aResult++;
+		}
+	}
+
+	if (aSecondTime >= 0.0f)
+	{
+		if (aSecondTime <= 1.0f)
+		{
+			if (aResult == 0)
+			{
+				if (param_4 != NULL)
+					*param_4 = aStart + aDelta * aSecondTime;
+			}
+			else if (param_5 != NULL)
+			{
+				*param_5 = aStart + aDelta * aSecondTime;
+			}
+			aResult++;
+		}
+	}
+
+	return aResult;
 }
 
 // STUB: POPCAPGAME1 0x00475890

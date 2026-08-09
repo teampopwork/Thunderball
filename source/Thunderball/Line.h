@@ -51,7 +51,7 @@ public:
 	bool EditIntersects(Rect* theRect);
 	void CalcEdgeHitVelocity(SexyVector2* param_1, SexyVector2* param_2);
 	void CalcVertexHitVelocity(SexyVector2* param_1, SexyVector2* param_2);
-	bool CircleIntersect(float param_1, float param_2, float param_3, SexyVector2* param_4, SexyVector2* param_5);
+	int CircleIntersect(float param_1, float param_2, float param_3, SexyVector2* param_4, SexyVector2* param_5);
 	bool CheckEdgeTimeCollision(
 		SexyVector2* param_1,
 		SexyVector2* param_2,
