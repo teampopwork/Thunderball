@@ -326,8 +326,39 @@ void Gun::UpdateBouncyGuide()
 }
 
 // STUB: POPCAPGAME1 0x00484530
-void Gun::Fire(bool param_1)
+SmartPtr<Ball> Gun::Fire(bool param_1)
 {
+	if (mBall.get() == NULL)
+		return NULL;
+
+	float anOldAngle = mAngle;
+	if (param_1 && mUpdateCount - mSettledUpdate < 10)
+	{
+		mAngle = mSettledAngle;
+		CalcPoints();
+		if (mUnk0x194)
+			UpdateBouncyGuide();
+	}
+
+	SmartPtr<Ball> aBall = mBall;
+	mBall = NULL;
+	mUnk0x1b0 = mAngle;
+	mUnk0x1b4 = mUnk0x158;
+	mUnk0x1b8 = mUnk0x15c;
+	mUnk0x1bc = mUnk0x160;
+
+	aBall->mUnk0x140 = false;
+	aBall->SetVelocity(
+		mUnk0x160 * (float) cos(mAngle),
+		-mUnk0x160 * (float) sin(mAngle));
+
+	if (anOldAngle != mAngle)
+	{
+		mAngle = anOldAngle;
+		CalcPoints();
+	}
+
+	return aBall;
 }
 
 // FUNCTION: POPCAPGAME1 0x00484120
