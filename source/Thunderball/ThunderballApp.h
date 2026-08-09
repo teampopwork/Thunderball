@@ -45,6 +45,8 @@ public:
 	char mPadding0x11[0x1b]; // +0x11
 	UINT mQueryMessage;      // +0x2c
 
+	int GetTrialAge();
+	int GetTrialDuration();
 	bool IsRegistered();
 	bool IsWindowValid();
 };
@@ -184,9 +186,9 @@ public:
 	int GetMaxUnlockedCharacter();
 	int GetMusicOrder(int theId);
 	void IncLevel(int);
-	bool IsExpired();
+	int IsExpired();
 	bool IsLevelDemoLocked(int, int);
-	bool IsLevelLockedTrial();
+	int IsLevelLockedTrial();
 	bool IsRegistered();
 	bool IsTrialOver();
 	void LoadLevelMusic();

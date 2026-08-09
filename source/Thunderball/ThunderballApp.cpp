@@ -37,6 +37,26 @@
 
 using namespace Sexy;
 
+// FUNCTION: POPCAPGAME1 0x004316f0
+int RegistrationControl::GetTrialAge()
+{
+	if (::IsWindow(mWindow)) {
+		return (int) ::SendMessageA(mWindow, mQueryMessage, 0, 0);
+	}
+	mWindowValid = false;
+	return 0;
+}
+
+// FUNCTION: POPCAPGAME1 0x004316c0
+int RegistrationControl::GetTrialDuration()
+{
+	if (::IsWindow(mWindow)) {
+		return (int) ::SendMessageA(mWindow, mQueryMessage, 2, 0);
+	}
+	mWindowValid = false;
+	return 0;
+}
+
 // FUNCTION: POPCAPGAME1 0x00405490
 static void MakeGrayscale(MemoryImage* theImage)
 {
@@ -863,21 +883,50 @@ void ThunderballApp::IncLevel(int param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x004057f0
-bool ThunderballApp::IsExpired()
+// FUNCTION: POPCAPGAME1 0x004057f0
+int ThunderballApp::IsExpired()
 {
+	if (mUnk0x834 == 0 && mRegistrationControl != NULL) {
+		int trialAge = mRegistrationControl->GetTrialAge();
+		int trialDuration = mRegistrationControl->GetTrialDuration();
+		if (trialAge >= trialDuration && !mRegistrationControl->IsRegistered()) {
+			return true;
+		}
+	}
+
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x00405c60
+// FUNCTION: POPCAPGAME1 0x00405c60
 bool ThunderballApp::IsLevelDemoLocked(int param_1, int param_2)
 {
+	if (IsRegistered()) {
+		return false;
+	}
+
+	int trialType = mUnk0x834;
+	if (mCurProfile == NULL ||
+		(trialType == 1 && param_1 == 0 && param_2 >= 4) ||
+		(trialType == 2 && param_1 == 1 && param_2 >= 1) ||
+		(trialType == 1 && param_1 >= 1) ||
+		(trialType == 2 && param_1 >= 2) ||
+		(trialType == 3 && param_1 >= 3) ||
+		(trialType == 5 && param_1 >= 4) ||
+		(trialType == 4 && param_1 == 3 && param_2 >= 1) ||
+		(trialType == 4 && param_1 >= 4)) {
+		return true;
+	}
+
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x00405860
-bool ThunderballApp::IsLevelLockedTrial()
+// FUNCTION: POPCAPGAME1 0x00405860
+int ThunderballApp::IsLevelLockedTrial()
 {
+	if (mUnk0x834 == 1 || mUnk0x834 == 2 || mUnk0x834 == 3 || mUnk0x834 == 4 || mUnk0x834 == 5) {
+		return true;
+	}
+
 	return false;
 }
 
@@ -890,9 +939,28 @@ bool ThunderballApp::IsRegistered()
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x00405d90
+// FUNCTION: POPCAPGAME1 0x00405d90
 bool ThunderballApp::IsTrialOver()
 {
+	if (IsRegistered()) {
+		return false;
+	}
+	if ((unsigned char) IsExpired()) {
+		return true;
+	}
+
+	if (mCurProfile == NULL ||
+		(mUnk0x834 == 1 && mCurProfile->mUnk0x30 == 0 && mCurProfile->mUnk0x34 >= 4) ||
+		(mUnk0x834 == 2 && mCurProfile->mUnk0x30 == 1 && mCurProfile->mUnk0x34 >= 1) ||
+		(mUnk0x834 == 1 && mCurProfile->mUnk0x30 >= 1) ||
+		(mUnk0x834 == 2 && mCurProfile->mUnk0x30 >= 2) ||
+		(mUnk0x834 == 3 && mCurProfile->mUnk0x30 >= 3) ||
+		(mUnk0x834 == 5 && mCurProfile->mUnk0x30 >= 4) ||
+		(mUnk0x834 == 4 && mCurProfile->mUnk0x30 == 3 && mCurProfile->mUnk0x34 >= 1) ||
+		(mUnk0x834 == 4 && mCurProfile->mUnk0x30 >= 4)) {
+		return true;
+	}
+
 	return false;
 }
 
