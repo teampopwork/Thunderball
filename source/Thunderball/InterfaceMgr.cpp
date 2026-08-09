@@ -1,6 +1,7 @@
 #include "InterfaceMgr.h"
 
 #include "Board.h"
+#include "CharacterMgr.h"
 #include "HighScoreMgr.h"
 #include "LogicMgr.h"
 #include "PlayerInfo.h"
@@ -732,9 +733,35 @@ void InterfaceMgr::SyncStageNum()
 {
 }
 
-// STUB: POPCAPGAME1 0x00447360
-void InterfaceMgr::DrawBallsLeftDetail(Graphics* param_1, int param_2, bool param_3)
+// FUNCTION: POPCAPGAME1 0x00447360
+void InterfaceMgr::DrawBallsLeftDetail(Graphics* theGraphics, int theNumBalls, bool isLeftSide)
 {
+	Board* aBoard = mBoard;
+	LogicMgr* aLogicMgr = aBoard->mLogicMgr;
+	int aCurrentPlayer = aLogicMgr->mUnk0x128;
+	bool isCurrentPlayerLeft = aCurrentPlayer == 0;
+	if (isLeftSide != isCurrentPlayerLeft) {
+		int aPlayer = 1 - aCurrentPlayer;
+		if (aLogicMgr->mUnk0x248[aPlayer].mUnk0x0 == 0) {
+			DrawDetail(
+				theGraphics,
+				aBoard->mApp->mCharacterMgr->GetCharacterName((&aLogicMgr->mUnk0x184)[aPlayer]),
+				isLeftSide,
+				0);
+			return;
+		}
+	}
+
+	if (((theNumBalls == 1 && aLogicMgr->mUnk0x4 == 1) ||
+		 (theNumBalls == 0 && aLogicMgr->mUnk0x4 == 2)) &&
+		isLeftSide == isCurrentPlayerLeft) {
+		// STRING: POPCAPGAME1 0x005e18c0
+		DrawDetail(theGraphics, &std::string("Last Ball"), isLeftSide, 0);
+		return;
+	}
+
+	// STRING: POPCAPGAME1 0x005e18cc
+	DrawDetail(theGraphics, &StrFormat("Balls %d", theNumBalls), isLeftSide, 0);
 }
 
 // STUB: POPCAPGAME1 0x004474b0
