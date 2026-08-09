@@ -83,9 +83,13 @@ StoryScreen::~StoryScreen()
 	RemoveAllWidgets(true, false);
 }
 
-// STUB: POPCAPGAME1 0x00489ec0
+// FUNCTION: POPCAPGAME1 0x00489ec0
 void StoryScreen::ButtonDepress(int theId)
 {
+	if (mUnk0xa8 != 0)
+		mApp->ShowMainMenu();
+	else
+		mApp->ShowBoard(true, true);
 }
 
 // FUNCTION: POPCAPGAME1 0x00489ee0
