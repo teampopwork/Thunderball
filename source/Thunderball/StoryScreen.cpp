@@ -1068,8 +1068,20 @@ void StoryScreen::UpdateWin()
 		--mUnk0xcc;
 		mParticleX += mParticleVX;
 		mParticleY += mParticleVY;
-		UpdateParticles();
 	}
+	if (mUnk0xcc < 1) {
+		mParticleY = (float) mApp->mHeight;
+		float aLaunchSide = rand() % 2 == 0 ? 0.5f : 1.0f;
+		mParticleX = (float) (
+			((double) (rand() % 500) / 1000.0 + aLaunchSide) *
+			mApp->mWidth * 0.5);
+		mParticleVX = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp47,404", 0.12f) *
+			(10 - rand() % 20);
+		mParticleVY = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp48,405", -4.0f);
+		mUnk0xcc = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp49,407", 40) +
+			rand() % ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp50,407", 80);
+	}
+	UpdateParticles();
 
 	mUnk0x104 += ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp51,413", 0.25f);
 	if (mUnk0x104 > ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp52,415", 4100.0f))
