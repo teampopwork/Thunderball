@@ -1,6 +1,14 @@
 #include "PegInfo.h"
 
+#include "Ball.h"
+#include "BlendedImage.h"
 #include "DataSync.h"
+#include "Res.h"
+#include "ThunderballApp.h"
+
+#include <SexyAppFramework/Color.h>
+#include <SexyAppFramework/Graphics.h>
+#include <SexyAppFramework/Image.h>
 
 using namespace Sexy;
 
@@ -10,6 +18,21 @@ __declspec(noinline) void DataSync_SyncPegType(DataSync& param_1, PegType& param
 	int value = param_2;
 	param_1.SyncByte(value);
 	param_2 = (PegType)value;
+}
+
+// FUNCTION: POPCAPGAME1 0x004bc420
+__declspec(noinline) float GetPulsePercent(int param_1, int param_2, int param_3)
+{
+	param_1 %= param_2 * 2 + param_3;
+	if (param_1 < param_3) {
+		return 0.0f;
+	}
+
+	param_1 -= param_3;
+	if (param_1 > param_2) {
+		param_1 = param_2 * 2 - param_1;
+	}
+	return (float)param_1 / (float)param_2;
 }
 
 // FUNCTION: POPCAPGAME1 0x004765f0
@@ -109,9 +132,65 @@ void PegInfo::Update(PhysObj* param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x0047ad10
+// FUNCTION: POPCAPGAME1 0x0047ad10
 void PegInfo::DrawBall(Ball* param_1, Graphics* param_2)
 {
+	Image* image = mColorblind ? IMAGE_BALLPEGCB : IMAGE_BALLPEG;
+	int cel = mPegType - 1;
+	if (mUnk0x14) {
+		cel += 4;
+	}
+
+	float x = param_1->mUnk0xec - param_1->mUnk0x13c;
+	float y = param_1->mUnk0xf0 - param_1->mUnk0x13c;
+
+	if (!param_2->mIs3D) {
+		if (param_1->mMover != NULL) {
+			gBallPegImage[cel]->Draw(param_2, x - 1.0f, y - 1.0f);
+		}
+		else {
+			Rect srcRect = image->GetCelRect(0, cel);
+			srcRect.mWidth -= 2;
+			srcRect.mHeight -= 2;
+			srcRect.mX++;
+			srcRect.mY++;
+			param_2->DrawImage(image, (int)x, (int)y, srcRect);
+		}
+	}
+	else {
+		Rect srcRect = image->GetCelRect(0, cel);
+		if (param_1->mMover != NULL) {
+			param_2->DrawImageF(image, x - 1.0f, y - 1.0f, srcRect);
+		}
+		else {
+			srcRect.mWidth -= 2;
+			srcRect.mHeight -= 2;
+			srcRect.mX++;
+			srcRect.mY++;
+			param_2->DrawImage(image, (int)x, (int)y, srcRect);
+		}
+	}
+
+	if (mUnk0x24 == 10 && mUnk0x20 != 0 && !mUnk0x14) {
+		mUnk0x14 = true;
+		param_2->SetColorizeImages(true);
+		float pulse = GetPulsePercent(
+			mUnk0x20,
+			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp66,258", 20),
+			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp67,258", 10)
+		);
+		int alpha = (int)(
+			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp68,259", 0) +
+			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp69,259", 200) * pulse
+		);
+		param_2->SetColor(Color(0xffffff, alpha));
+		param_2->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+		param_2->SetColorizeImages(true);
+		DrawBall(param_1, param_2);
+		param_2->SetColorizeImages(false);
+		param_2->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+		mUnk0x14 = false;
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0047b800

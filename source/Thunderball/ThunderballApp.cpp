@@ -40,6 +40,9 @@
 
 using namespace Sexy;
 
+bool mColorblind;
+BlendedImage* Sexy::gBallPegImage[9];
+
 // FUNCTION: POPCAPGAME1 0x004316f0
 int RegistrationControl::GetTrialAge()
 {

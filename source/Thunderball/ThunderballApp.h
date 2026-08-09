@@ -8,7 +8,7 @@
 #include <SexyAppFramework/Image.h>
 
 // GLOBAL: POPCAPGAME1 0x00650a55
-static bool mColorblind;
+extern bool mColorblind;
 
 
 namespace Sexy
@@ -51,7 +51,8 @@ public:
 	bool IsWindowValid();
 };
 
-static BlendedImage* gBallPegImage[9];
+// GLOBAL: POPCAPGAME1 0x0065057c
+extern BlendedImage* gBallPegImage[9];
 
 // VTABLE: POPCAPGAME1 0x005d7cb8
 class ThunderballApp : public SexyApp {
