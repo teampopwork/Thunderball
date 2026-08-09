@@ -23,6 +23,7 @@
 #include "ThunderDialog.h"
 #include "TrophyScreen.h"
 #include "UpsellScreen.h"
+#include "UserDialog.h"
 #include "WidgetMover.h"
 #include "BlendedImage.h"
 
@@ -696,9 +697,16 @@ void ThunderballApp::DoOptionsDialog()
 	AddDialog(0x13, aDialog);
 }
 
-// STUB: POPCAPGAME1 0x0040c4d0
+// FUNCTION: POPCAPGAME1 0x0040c4d0
 void ThunderballApp::DoRenameUserDialog(std::string& param_1)
 {
+	KillDialog(20);
+	NewUserDialog* aDialog = new NewUserDialog(this, true, false, true);
+	aDialog->GetPreferredHeight(aDialog->mWidth);
+	PositionDialog(aDialog, aDialog->mWidth, false, -1);
+	aDialog->SetName(param_1);
+	aDialog->DoScroll(true);
+	AddDialog(20, aDialog);
 }
 
 // STUB: POPCAPGAME1 0x0041ce00
@@ -903,9 +911,49 @@ void ThunderballApp::FinishOptionsDialog(bool param_1, bool param_2)
 	}
 }
 
-// STUB: POPCAPGAME1 0x00427b90
+// FUNCTION: POPCAPGAME1 0x00427b90
 void ThunderballApp::FinishRenameUserDialog(bool param_1)
 {
+	if (!param_1) {
+		DoScrollOff(20);
+		return;
+	}
+
+	UserDialog* aUserDialog = static_cast<UserDialog*>(GetDialog(24));
+	NewUserDialog* aRenameDialog = static_cast<NewUserDialog*>(GetDialog(20));
+	if (aUserDialog == NULL || aRenameDialog == NULL) {
+		return;
+	}
+
+	std::string anOldName = aUserDialog->GetSelName();
+	std::string aNewName = aRenameDialog->GetName();
+	if (!aNewName.empty()) {
+		mCurProfile->SaveIfDirty();
+		bool isCurProfile = mProfileMgr->GetProfile(anOldName) == mCurProfile;
+		if (!mProfileMgr->RenameProfile(anOldName, aNewName)) {
+			DoDialogScroll(
+				21,
+				true,
+				// STRING: POPCAPGAME1 0x005d7e70
+				"Name Conflict",
+				// STRING: POPCAPGAME1 0x005d7e80
+				"The name you entered is already being used.  Please enter a unique player name.",
+				// STRING: POPCAPGAME1 0x005d7f44
+				"OK",
+				3
+			);
+		}
+		else {
+			mProfileMgr->Save();
+			if (isCurProfile) {
+				mCurProfile = mProfileMgr->GetProfile(aNewName);
+			}
+
+			aUserDialog->FinishRenameUser(&aNewName);
+			mWidgetManager->MarkAllDirty();
+			DoScrollOff(20);
+		}
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x004084e0
