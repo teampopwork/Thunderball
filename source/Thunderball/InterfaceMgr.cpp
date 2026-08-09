@@ -43,15 +43,35 @@ InterfaceMgr::~InterfaceMgr()
 	}
 }
 
-// STUB: POPCAPGAME1 0x004366a0
+// FUNCTION: POPCAPGAME1 0x004366a0
 int InterfaceMgr::GetBallBottom()
 {
-	return 0;
+	// STRING: POPCAPGAME1 0x005dc490
+	int aBallSpacing = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp933,28", 3);
+	int aSpacingOffset = aBallSpacing * mUnk0xec;
+	// STRING: POPCAPGAME1 0x005dc448
+	int aBallBottom = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp932,28", 410) + mUnk0x5c + aSpacingOffset;
+
+	if (mUnk0x58 != 0) {
+		if (mUnk0x58 <= 20) {
+			return aBallBottom + mUnk0x58 * 2;
+		}
+
+		if (mUnk0x58 < 30) {
+			int aBounceOffset = 30 - mUnk0x58;
+			aBallBottom += aBounceOffset * 2;
+		}
+	}
+
+	return aBallBottom;
 }
 
-// STUB: POPCAPGAME1 0x00436870
-void InterfaceMgr::AddScoreUpdateDelay(int param_1)
+// FUNCTION: POPCAPGAME1 0x00436870
+void InterfaceMgr::AddScoreUpdateDelay(int theDelay)
 {
+	if (mUnk0x9c < theDelay) {
+		mUnk0x9c = theDelay;
+	}
 }
 
 // STUB: POPCAPGAME1 0x00436890
@@ -80,10 +100,11 @@ void InterfaceMgr::DrawScoreBlink(Graphics* param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x00436bb0
+// FUNCTION: POPCAPGAME1 0x00436bb0
 int InterfaceMgr::GetBallX()
 {
-	return 0;
+	// STRING: POPCAPGAME1 0x005dcc28
+	return ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp1017,1093", 30);
 }
 
 // FUNCTION: POPCAPGAME1 0x00497dc0
@@ -91,19 +112,27 @@ void InterfaceMgr::DrawSuperFront(Graphics* param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x00436c40
+// FUNCTION: POPCAPGAME1 0x00436c40
 void InterfaceMgr::EndShot()
 {
+	mUnk0x30 = -1;
+	mUnk0x38 = -1;
+	mUnk0x4c = 0;
 }
 
-// STUB: POPCAPGAME1 0x00436c60
+// FUNCTION: POPCAPGAME1 0x00436c60
 void InterfaceMgr::DoShotMeterBlink()
 {
+	mUnk0x54 = 1;
 }
 
-// STUB: POPCAPGAME1 0x00436c70
+// FUNCTION: POPCAPGAME1 0x00436c70
 void InterfaceMgr::DoFeverBlink()
 {
+	if (mUnk0x30 != -1) {
+		mUnk0x34 = 1;
+		mUnk0x40 = mUnk0x30;
+	}
 }
 
 // STUB: POPCAPGAME1 0x00436c90
@@ -117,9 +146,10 @@ bool InterfaceMgr::IsScoreAccurate()
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x00436e60
+// FUNCTION: POPCAPGAME1 0x00436e60
 void InterfaceMgr::DoFeverMultBlink()
 {
+	mUnk0xf8 = 1;
 }
 
 // STUB: POPCAPGAME1 0x00436e70
