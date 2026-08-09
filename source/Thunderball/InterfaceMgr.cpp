@@ -1,20 +1,46 @@
 #include "InterfaceMgr.h"
 
 #include "Board.h"
+#include "ThunderballApp.h"
+
+#include <SexyAppFramework/MemoryImage.h>
 
 using namespace Sexy;
 
-// STUB: POPCAPGAME1 0x004515a0
-InterfaceMgr::InterfaceMgr(Board* param_1)
+// FUNCTION: POPCAPGAME1 0x004515a0
+InterfaceMgr::InterfaceMgr(Board* theBoard)
 {
+	mApp = theBoard->mApp;
+	mBoard = theBoard;
+	mUnk0xf0 = 10;
+
+	for (int i = 0; i < 9; ++i) {
+		mImages[i] = new MemoryImage();
+	}
+
+	mImages[0]->Create(88, 600);
+	mImages[2]->Create(624, 74);
+	mImages[3]->Create(110, 70);
+	mImages[1]->Create(88, 600);
+	mImages[4]->Create(624, 14);
+
+	for (int i = 5; i < 9; ++i) {
+		mImages[i]->SetImageMode(true, true);
+	}
+
+	mUnk0xf4 = -1;
+	Clear();
 }
 
 // SYNTHETIC: POPCAPGAME1 0x00447230
 // Sexy::InterfaceMgr::`scalar deleting destructor'
 
-// STUB: POPCAPGAME1 0x00443880
+// FUNCTION: POPCAPGAME1 0x00443880
 InterfaceMgr::~InterfaceMgr()
 {
+	for (int i = 0; i < 9; ++i) {
+		delete mImages[i];
+	}
 }
 
 // STUB: POPCAPGAME1 0x004366a0

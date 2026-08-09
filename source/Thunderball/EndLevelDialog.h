@@ -17,8 +17,11 @@ class Graphics;
 
 class EndLevelDialog : public ThunderDialog, public ButtonListener {
 public:
-    int mUnk0x180; // +0x180
+	int mUnk0x17c; // +0x17c
+	int mUnk0x180; // +0x180
+	char mPadding0x184[0xd4]; // +0x184
 	int mUnk0x258; // +0x258
+	int mUnk0x25c; // +0x25c
 
 	EndLevelDialog(Board* param_1);
 	virtual ~EndLevelDialog();

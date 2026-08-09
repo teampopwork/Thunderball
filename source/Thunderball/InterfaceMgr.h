@@ -2,6 +2,7 @@
 #define __INTERFACE_MGR_H__
 
 #include <string>
+#include <vector>
 
 namespace Sexy
 {
@@ -9,9 +10,22 @@ class Board;
 class DataSync;
 class Graphics;
 class Image;
+class MemoryImage;
+class ThunderballApp;
 
 class InterfaceMgr {
 public:
+	ThunderballApp* mApp; // +0x4
+	Board* mBoard; // +0x8
+	MemoryImage* mImages[9]; // +0xc
+	char mPadding0x30[0x44]; // +0x30
+	std::string mUnk0x74; // +0x74
+	char mPadding0x90[0x60]; // +0x90
+	int mUnk0xf0; // +0xf0
+	int mUnk0xf4; // +0xf4
+	char mPadding0xf8[0x70]; // +0xf8
+	std::vector<int> mUnk0x168; // +0x168
+
 	InterfaceMgr(Board* param_1);
 	virtual ~InterfaceMgr();
 
