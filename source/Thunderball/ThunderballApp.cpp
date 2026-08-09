@@ -577,9 +577,51 @@ void ThunderballApp::DoConfirmQuitDialog()
 	aDialog->mUnk0x163 = false;
 }
 
-// STUB: POPCAPGAME1 0x0041cc40
+// FUNCTION: POPCAPGAME1 0x0041cc40
 void ThunderballApp::DoConfirmRestartAdventureDialog()
 {
+	// STRING: POPCAPGAME1 0x005d6d78
+	SexyString aHeader = "Restart Adventure?";
+	SexyString aLines = ModVal(
+		0,
+		// STRING: POPCAPGAME1 0x005d6c98
+		"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp196,2886",
+		// STRING: POPCAPGAME1 0x005d6ce0
+		"Are you sure that you want to ^00FF00^RESTART ADVENTURE?^oldclr^\n\nThis will put you all the way back to the first level and reset your score to zero."
+	);
+	ThunderDialog* aDialog = static_cast<ThunderDialog*>(DoDialog(
+		8,
+		true,
+		aHeader,
+		aLines,
+		"",
+		2
+	));
+	aDialog->mTextAlign = ModVal(
+		0,
+		// STRING: POPCAPGAME1 0x005d6c50
+		"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp197,2889",
+		-1
+	);
+	aDialog->mYesButton->mLabel = ModVal(
+		0,
+		// STRING: POPCAPGAME1 0x005d6bf0
+		"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp198,2890",
+		// STRING: POPCAPGAME1 0x005d6c38
+		"Restart Adventure"
+	);
+	PositionDialog(
+		aDialog,
+		ModVal(
+			0,
+			// STRING: POPCAPGAME1 0x005d6ba8
+			"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp199,2891",
+			0x1cc
+		),
+		false,
+		-1
+	);
+	aDialog->DoScroll(true);
 }
 
 // STUB: POPCAPGAME1 0x004310e0
