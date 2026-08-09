@@ -87,8 +87,8 @@ public:
 	int GetCharacterIdByName(std::string* param_1);
 	CharacterInfo* GetCharacterInfo(int param_1);
 	CharacterInfo* GetCharacterInfoSafe(int param_1);
-	int GetCharacterName(int param_1);
-	int GetCharacterTip(int param_1, unsigned long param_2);
+	std::string* GetCharacterName(int param_1);
+	std::string* GetCharacterTip(int param_1, unsigned long param_2);
 	int GetCurCharFrame(CharacterInfo* param_1);
 	void InitDefault();
 	void Load();

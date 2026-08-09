@@ -106,10 +106,16 @@ void CharacterMgr::DrawFront(Graphics* g1, Graphics* g2, Board* theBoard)
 {
 }
 
-// STUB: POPCAPGAME1 0x00442c90
+// FUNCTION: POPCAPGAME1 0x00442c90
 std::string* CharacterMgr::GetCharacterDesc(int param_1)
 {
-	return NULL;
+	CharacterInfo* aCharacter = GetCharacterInfo(param_1);
+	if (aCharacter != NULL)
+		return &aCharacter->mDescription;
+
+	// GLOBAL: POPCAPGAME1 0x006509d8
+	static std::string anEmptyString;
+	return &anEmptyString;
 }
 
 // STUB: POPCAPGAME1 0x0043e3b0
@@ -141,16 +147,28 @@ CharacterInfo* CharacterMgr::GetCharacterInfoSafe(int param_1)
 	return &mCharacters[anIndex];
 }
 
-// STUB: POPCAPGAME1 0x00442c30
-int CharacterMgr::GetCharacterName(int param_1)
+// FUNCTION: POPCAPGAME1 0x00442c30
+std::string* CharacterMgr::GetCharacterName(int param_1)
 {
-	return 0;
+	CharacterInfo* aCharacter = GetCharacterInfo(param_1);
+	if (aCharacter != NULL)
+		return &aCharacter->mName;
+
+	// GLOBAL: POPCAPGAME1 0x006509b8
+	static std::string anEmptyString;
+	return &anEmptyString;
 }
 
-// STUB: POPCAPGAME1 0x00442cf0
-int CharacterMgr::GetCharacterTip(int param_1, unsigned long param_2)
+// FUNCTION: POPCAPGAME1 0x00442cf0
+std::string* CharacterMgr::GetCharacterTip(int param_1, unsigned long param_2)
 {
-	return 0;
+	CharacterInfo* aCharacter = GetCharacterInfo(param_1);
+	if (aCharacter != NULL && !aCharacter->mTips.empty())
+		return &aCharacter->mTips[param_2 % aCharacter->mTips.size()];
+
+	// GLOBAL: POPCAPGAME1 0x006509f8
+	static std::string anEmptyString;
+	return &anEmptyString;
 }
 
 // STUB: POPCAPGAME1 0x00442bd0
