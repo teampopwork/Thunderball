@@ -9,6 +9,7 @@ class TypingCheck
 {
 public:
     std::string mPhrase; // +0x0
+	int mProgress; // +0x1c
 
     TypingCheck(const std::string& param_1);
     void SetPhrase(const std::string& param_1);
