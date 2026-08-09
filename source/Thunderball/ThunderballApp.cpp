@@ -1463,7 +1463,7 @@ void ThunderballApp::ShowLoadingScreen()
 	mWidgetManager->SetFocus(mLoadingScreen);
 }
 
-// STUB: POPCAPGAME1 0x0042d480
+// FUNCTION: POPCAPGAME1 0x0042d480
 void ThunderballApp::ShowMainMenu()
 {
 	mSoundManager->StopAllSounds();
@@ -1474,7 +1474,8 @@ void ThunderballApp::ShowMainMenu()
 	if (aMainMenu != 0) {
 		mMainMenu = NULL;
 		CleanupScreens(true);
-		mWidgetManager->SetFocus(mMainMenu);
+		mMainMenu = aMainMenu;
+		mWidgetManager->SetFocus(aMainMenu);
 		return;
 	}
 
