@@ -1025,9 +1025,34 @@ void ThunderballApp::FinishTipDialog(bool param_1)
 	}
 }
 
-// STUB: POPCAPGAME1 0x00427720
-void ThunderballApp::FinishUserDialog(bool param_1)
+// FUNCTION: POPCAPGAME1 0x00427720
+void ThunderballApp::FinishUserDialog(bool accepted)
 {
+	UserDialog* aDialog = static_cast<UserDialog*>(GetDialog(24));
+	if (aDialog == NULL) {
+		return;
+	}
+
+	if (accepted) {
+		if (mCurProfile != NULL) {
+			mCurProfile->SaveIfDirty();
+		}
+
+		PlayerInfo* aProfile = mProfileMgr->GetProfile(aDialog->GetSelName());
+		if (aProfile != NULL) {
+			mCurProfile = aProfile;
+			mWidgetManager->MarkAllDirty();
+			if (mMainMenu != NULL) {
+				mMainMenu->SyncPlayerInfo();
+			}
+			CheckMaxStage();
+		}
+	}
+
+	if (mMainMenu != NULL) {
+		mWidgetManager->SetFocus(mMainMenu);
+	}
+	DoScrollOff(24);
 }
 
 // FUNCTION: POPCAPGAME1 0x00405bf0
