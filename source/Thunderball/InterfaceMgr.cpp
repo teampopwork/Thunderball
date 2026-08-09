@@ -235,9 +235,89 @@ void InterfaceMgr::DoFeverBlink()
 	}
 }
 
-// STUB: POPCAPGAME1 0x00436c90
+// FUNCTION: POPCAPGAME1 0x00436c90
 void InterfaceMgr::UpdateShotMeter()
 {
+	LogicMgr* aLogicMgr = mBoard->mLogicMgr;
+	if (aLogicMgr->mUnk0x4 == 2 && !aLogicMgr->mUnk0xf6) {
+		if (aLogicMgr->mUnk0x108 >= 125000 && mUnk0x48 < 125000) {
+			mUnk0x48 = 125000;
+			mUnk0x4c = 125000;
+			mUnk0x161 = true;
+		} else if (aLogicMgr->mUnk0x108 >= 75000 && mUnk0x48 < 75000) {
+			mUnk0x48 = 75000;
+			mUnk0x4c = 75000;
+			mUnk0x161 = true;
+		} else if (aLogicMgr->mUnk0x108 >= 25000 && mUnk0x48 < 25000) {
+			mUnk0x48 = 25000;
+			mUnk0x4c = 25000;
+			mUnk0x161 = true;
+		} else {
+			mUnk0x4c = aLogicMgr->mUnk0x108;
+		}
+
+		if (aLogicMgr->mUnk0x108 > mUnk0x50) {
+			mUnk0x50 = aLogicMgr->mUnk0x108;
+		}
+	}
+
+	if (mUnk0x54 != 0) {
+		mUnk0x54++;
+		// STRING: POPCAPGAME1 0x005dcc70
+		if (mUnk0x54 >= ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp1046,1497", 400)) {
+			if (mUnk0x48 == 0) {
+				mUnk0x50 = 0;
+			}
+			mUnk0x54 = 0;
+		}
+	}
+
+	if (mUnk0x48 == mUnk0x4c) {
+		return;
+	}
+
+	int aMeterValue = mUnk0x48;
+	if (aMeterValue < mUnk0x4c) {
+		int aDifference = mUnk0x4c - aMeterValue;
+		if (aDifference > 100000) {
+			aMeterValue += 5000;
+		} else if (aDifference > 25000) {
+			aMeterValue += 1000;
+		} else if (aDifference > 1000) {
+			aMeterValue += 200;
+		} else if (aDifference > 100) {
+			aMeterValue += 100;
+		} else {
+			aMeterValue += 10;
+		}
+		mUnk0x48 = aMeterValue;
+		if (mUnk0x48 > mUnk0x4c) {
+			mUnk0x48 = mUnk0x4c;
+		}
+	} else if (aMeterValue > mUnk0x4c) {
+		int aDifference = aMeterValue - mUnk0x4c;
+		if (aDifference > 100000) {
+			aMeterValue -= 5000;
+			mUnk0x48 = aMeterValue;
+		}
+		if (aDifference > 25000) {
+			mUnk0x48 -= 1000;
+		} else {
+			mUnk0x48 -= 200;
+		}
+		if (mUnk0x48 < mUnk0x4c) {
+			mUnk0x48 = mUnk0x4c;
+		}
+	}
+
+	if (mUnk0x48 == 0) {
+		if (mUnk0x54 == 0) {
+			mUnk0x50 = 0;
+		}
+		mUnk0x161 = false;
+	} else if (mUnk0x48 >= 25000) {
+		mUnk0x161 = true;
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x00436e20
