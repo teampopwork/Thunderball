@@ -1,6 +1,7 @@
 #include "EndLevelDialog.h"
 
 #include <SexyAppFramework/DialogButton.h>
+#include <SexyAppFramework/SexyApp.h>
 
 using namespace Sexy;
 
@@ -62,9 +63,11 @@ void EndLevelDialog::MouseDown(int param_1, int param_2, int param_3)
 {
 }
 
-// STUB: POPCAPGAME1 0x004931f0
+// FUNCTION: POPCAPGAME1 0x004931f0
 void EndLevelDialog::MouseLeave()
 {
+	gSexyApp->SetCursor(CURSOR_POINTER);
+	Widget::MouseLeave();
 }
 
 // STUB: POPCAPGAME1 0x00499520
