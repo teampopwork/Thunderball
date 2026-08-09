@@ -1,6 +1,7 @@
 #include "UserDialog.h"
 
 #include "ProfileMgr.h"
+#include "Res.h"
 #include "ThunderButton.h"
 #include "ThunderCommon.h"
 #include "ThunderFrame.h"
@@ -9,6 +10,7 @@
 #include <SexyAppFramework/ListWidget.h>
 #include <SexyAppFramework/ModVal.h>
 #include <SexyAppFramework/ScrollbarWidget.h>
+#include <SexyAppFramework/WidgetManager.h>
 
 using namespace Sexy;
 
@@ -61,16 +63,22 @@ UserDialog::UserDialog(ThunderballApp* theApp) : ThunderDialog(0x18, true, "WHO 
 	AddWidget(mFrame);
 }
 
+// FUNCTION: POPCAPGAME1 0x00497dd0
 UserDialog::~UserDialog()
 {
+	RemoveAllWidgets(true);
 }
 
+// FUNCTION: POPCAPGAME1 0x00498120
 void UserDialog::AddedToManager(WidgetManager* theWidgetManager)
 {
+	Dialog::AddedToManager(theWidgetManager);
+	theWidgetManager->SetFocus(mUserList);
 }
 
 void UserDialog::RemovedFromManager(WidgetManager* theWidgetManager)
 {
+	Dialog::RemovedFromManager(theWidgetManager);
 }
 
 // FUNCTION: POPCAPGAME1 0x004acec0
@@ -95,13 +103,17 @@ void UserDialog::ButtonDepress(int theId)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004981f0
 void UserDialog::Draw(Graphics* g)
 {
+	ThunderDialog::Draw(g);
 }
 
+// FUNCTION: POPCAPGAME1 0x004980a0
 int UserDialog::GetPreferredHeight(int theWidth)
 {
-	return 0;
+	return Dialog::GetPreferredHeight(theWidth) +
+		   ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\UserDialog.cpp947,115", 0xff);
 }
 
 void UserDialog::Resize(int theX, int theY, int theWidth, int theHeight)
@@ -153,6 +165,17 @@ std::string UserDialog::GetSelName()
 	return "";
 }
 
-void UserDialog::ListClicked(int param_1, int param_2, int param_3)
+// FUNCTION: POPCAPGAME1 0x00498200
+void UserDialog::ListClicked(int theId, int theIdx, int theClickCount)
 {
+	if (theIdx == 0 && mHasCreateEntry) {
+		mApp->PlaySample(SOUND_BUTTON1);
+		mApp->DoCreateUserDialog();
+		return;
+	}
+
+	mUserList->SetSelect(theIdx);
+	if (theClickCount == 2) {
+		mApp->FinishUserDialog(true);
+	}
 }
