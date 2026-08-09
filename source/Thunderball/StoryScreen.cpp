@@ -536,9 +536,86 @@ void StoryScreen::DoDrawText(Graphics* g, Rect& param_2, std::vector<StoryData> 
 {
 }
 
-// STUB: POPCAPGAME1 0x0048ee20
+// FUNCTION: POPCAPGAME1 0x0048ee20
 void StoryScreen::DoUpdate()
 {
+	if (mUnk0xa8) {
+		UpdateWin();
+		return;
+	}
+	if (mUnk0xf0)
+		return;
+
+	if (mUnk0x100 != 0) {
+		if (--mUnk0x100 == 0) {
+			++mUnk0x10c;
+			mUnk0x108 = 1;
+			mUnk0xfc = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp70,554", 20);
+			MarkDirty();
+		}
+		return;
+	}
+
+	if (mUnk0x108 != 0) {
+		MarkDirty();
+		if (++mUnk0x108 == 20)
+			mUnk0x108 = 0;
+	}
+	if (mUnk0xfc != 0) {
+		--mUnk0xfc;
+		return;
+	}
+
+	if (mUnk0xf4 < 1000000) {
+		++mUnk0xf4;
+		MarkDirty();
+		mApp->PlaySample(SOUND_TYPING);
+	}
+	if (mUnk0x98 == NULL) {
+		mUnk0xf0 = true;
+		return;
+	}
+
+	std::vector<StoryData>& aStory = mUnk0x98->mUnk0x8[mUnk0xac];
+	if (!aStory.empty()) {
+		std::string& aText = aStory[0].mUnk0x0;
+		int anOffset = mUnk0xf4 - 1;
+		if (anOffset >= 0 && anOffset < (int) aText.length()) {
+			switch (aText[anOffset]) {
+			case '!':
+				mUnk0xfc = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp71,607", 20);
+				break;
+			case '.':
+				mUnk0xfc = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp72,608", 10);
+				break;
+			case '?':
+				mUnk0xfc = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp73,609", 20);
+				break;
+			case ',':
+				mUnk0xfc = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp74,610", 10);
+				break;
+			default:
+				mUnk0xfc = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp75,613", 2);
+				break;
+			}
+
+			if (anOffset == aText.length() - 1) {
+				if (aStory.size() - 1 == 0)
+					mUnk0x100 = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp76,620", 50);
+				else
+					mUnk0xfc = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp77,622", 20);
+			}
+		}
+
+		if (mUnk0xfc == 0) {
+			mUnk0xf0 = true;
+			mUnk0x90->SetVisible(true);
+			mUnk0x90->mUnk0x154 = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp78,638", 120);
+			mUnk0x90->mUnk0x151 = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp79,639", 1) != 0;
+			mUnk0x90->Blink(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp80,640", 1000), true);
+			mApp->PlaySample(SOUND_TEXT_WOOSH);
+		}
+	}
 }
 
 // STUB: POPCAPGAME1 0x0048d520
