@@ -5,11 +5,18 @@
 #include "CharacterMgr.h"
 #include "Gun.h"
 #include "SoundMgr.h"
+#include "ThunderCommon.h"
 
 #include <SexyAppFramework/Common.h>
 #include <SexyAppFramework/SoundInstance.h>
 
 using namespace Sexy;
+
+// FUNCTION: POPCAPGAME1 0x00436f10
+static float GetMouseAngleStep()
+{
+	return ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LogicMgr.cpp1053,67", 0.1f);
+}
 
 // FUNCTION: POPCAPGAME1 0x004610d0
 LogicMgr::LogicMgr(Board* param_1)
@@ -78,16 +85,31 @@ void LogicMgr::MouseLeave()
 {
 }
 
-// STUB: POPCAPGAME1 0x0043d5d0
-void LogicMgr::MouseMove(int param_1, int param_2)
+// FUNCTION: POPCAPGAME1 0x0043d5d0
+bool LogicMgr::MouseMove(int param_1, int param_2)
 {
-	// TODO
+	if (mUnk0xe8 == 0 && !mUnk0x244[mUnk0x128])
+	{
+		mUnk0x70 = GetMouseAngleStep();
+		mBoard->mGun->mAngularVelocity = 1000.0f;
+		mUnk0x1f = true;
+	}
+	return true;
 }
 
-// STUB: POPCAPGAME1 0x0043d620
-void LogicMgr::MouseDrag(int param_1, int param_2)
+// FUNCTION: POPCAPGAME1 0x0043d620
+bool LogicMgr::MouseDrag(int param_1, int param_2)
 {
-	// TODO
+	if (mUnk0xe8 == 0 && !mUnk0x244[mUnk0x128] &&
+		(param_1 != mUnk0x98 || param_2 != mUnk0x9c))
+	{
+		mUnk0x98 = -10000;
+		mUnk0x9c = -10000;
+		mUnk0x70 = GetMouseAngleStep();
+		mBoard->mGun->mAngularVelocity = 1000.0f;
+		mUnk0x1f = true;
+	}
+	return true;
 }
 
 // STUB: POPCAPGAME1 0x00472810

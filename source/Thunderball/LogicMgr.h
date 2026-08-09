@@ -72,7 +72,7 @@ public:
 	int mUnk0x74;                           // +0x74
 	int mUnk0x78;                           // +0x78
 	std::string mUnk0x80;                   // +0x80
-	char mUnk0x98[4];                       // +0x98
+	int mUnk0x98;                           // +0x98
 	int mUnk0x9c;                           // +0x9c
 	int mUnk0xa0;                           // +0xa0
 	bool mUnk0xa4;                          // +0xa4
@@ -148,8 +148,7 @@ public:
 	char mUnk0x1e0[4];                      // +0x1e0
 	int mUnk0x1e4[14];                      // +0x1e4
 	char mUnk0x21c[0x28];                   // +0x21c
-	bool mUnk0x244;                         // +0x244
-	bool mUnk0x245;                         // +0x245
+	bool mUnk0x244[2];                      // +0x244
 	GameStats mUnk0x248[2];                 // +0x248
 	int mUnk0x320;                          // +0x320
 	int mUnk0x324;                          // +0x324
@@ -173,8 +172,8 @@ public:
 	void DrawBack(Graphics* g);
 	void MouseEnter();
 	void MouseLeave();
-	void MouseMove(int param_1, int param_2);
-	void MouseDrag(int param_1, int param_2);
+	bool MouseMove(int param_1, int param_2);
+	bool MouseDrag(int param_1, int param_2);
 	void MouseDown(int param_1, int param_2, int param_3, bool param_4, bool param_5);
 	void MouseUp(int param_1, int param_2, int param_3, bool param_4);
 	void MouseWheel(int param_1);
