@@ -11,22 +11,22 @@
 
 using namespace Sexy;
 
-// STUB: POPCAPGAME1 0x00475310
+// FUNCTION: POPCAPGAME1 0x00475310
 static float GetAngleDelta(float param_1, float param_2)
 {
-	const float aFullTurn = 6.28318530717958647692f;
+	const double aFullTurn = 6.28318530717958647692;
 	while (param_2 > aFullTurn)
 		param_2 -= aFullTurn;
 	while (param_1 > param_2)
 		param_1 -= aFullTurn;
 
 	float aDelta = param_2 - param_1;
-	if (aDelta > 3.14159265358979323846f)
-		aDelta -= aFullTurn;
+	if (aDelta > 3.14159265358979323846)
+		aDelta = -(aFullTurn - aDelta);
 	return aDelta;
 }
 
-// STUB: POPCAPGAME1 0x00475390
+// FUNCTION: POPCAPGAME1 0x00475390
 static int GetFloatSign(float param_1)
 {
 	if (param_1 > 0.0f)
@@ -233,7 +233,7 @@ void Gun::CalcPoints()
 	CalcBoundingBox();
 }
 
-// STUB: POPCAPGAME1 0x00484500
+// FUNCTION: POPCAPGAME1 0x00484500
 void Gun::SetFireball(bool param_1)
 {
 	if (mBall.get() != NULL)
@@ -244,7 +244,7 @@ void Gun::SetFireball(bool param_1)
 	}
 }
 
-// STUB: POPCAPGAME1 0x004844c0
+// FUNCTION: POPCAPGAME1 0x004844c0
 void Gun::Reload(Ball* param_1)
 {
 	mBall = param_1;
@@ -253,10 +253,10 @@ void Gun::Reload(Ball* param_1)
 	CalcPoints();
 }
 
-// STUB: POPCAPGAME1 0x004843a0
+// FUNCTION: POPCAPGAME1 0x004843a0
 bool Gun::SetAngle(float param_1, bool param_2)
 {
-	if (mAngle == param_1)
+	if (param_1 == mAngle)
 		return false;
 
 	if (param_2)
@@ -269,15 +269,15 @@ bool Gun::SetAngle(float param_1, bool param_2)
 		return true;
 	}
 
-	if (mTargetAngle != param_1)
-	{
-		float anAngleDelta = GetAngleDelta(mAngle, param_1);
-		if (!mAngleHistory.empty() && GetFloatSign(anAngleDelta) == GetFloatSign(mAngleHistory.back().first))
-			mAngleHistory.clear();
+	if (param_1 == mTargetAngle)
+		return true;
 
-		mAngleHistory.push_back(std::make_pair(anAngleDelta, mUpdateCount));
-		mTargetAngle = param_1;
-	}
+	float anAngleDelta = GetAngleDelta(mAngle, param_1);
+	if (!mAngleHistory.empty() && GetFloatSign(mAngleHistory.back().first) == GetFloatSign(anAngleDelta))
+		mAngleHistory.clear();
+
+	mAngleHistory.push_back(std::make_pair(anAngleDelta, mUpdateCount));
+	mTargetAngle = param_1;
 
 	return true;
 }
