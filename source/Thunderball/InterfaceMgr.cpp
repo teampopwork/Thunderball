@@ -6,7 +6,19 @@
 
 #include <SexyAppFramework/MemoryImage.h>
 
+#include <algorithm>
+
 using namespace Sexy;
+
+// FUNCTION: POPCAPGAME1 0x00436740
+static int GetMaxVisibleBalls()
+{
+	// STRING: POPCAPGAME1 0x005dc568
+	return ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp936,65", 25);
+}
+
+// TEMPLATE: POPCAPGAME1 0x00442320
+// std::vector<Sexy::SexyVector2,std::allocator<Sexy::SexyVector2> >::back
 
 // FUNCTION: POPCAPGAME1 0x004515a0
 InterfaceMgr::InterfaceMgr(Board* theBoard)
@@ -254,16 +266,22 @@ void InterfaceMgr::InitLevel()
 {
 }
 
-// STUB: POPCAPGAME1 0x00442db0
+// FUNCTION: POPCAPGAME1 0x00442db0
 int InterfaceMgr::GetTopBallY()
 {
-	return 0;
+	if (mUnk0x164.size() != 0 && (int) mUnk0x164.size() <= GetMaxVisibleBalls()) {
+		return (int) mUnk0x164.back().x;
+	}
+
+	return -1;
 }
 
-// STUB: POPCAPGAME1 0x0043c770
+// FUNCTION: POPCAPGAME1 0x0043c770
 int InterfaceMgr::GetNumVisibleBalls()
 {
-	return 0;
+	int aMaxVisibleBalls = GetMaxVisibleBalls();
+	int aNumBalls = (int) mUnk0x164.size();
+	return (std::min)(aMaxVisibleBalls, aNumBalls);
 }
 
 // STUB: POPCAPGAME1 0x0043d310
@@ -281,9 +299,41 @@ void InterfaceMgr::SetNumBalls(int param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x00447260
+// FUNCTION: POPCAPGAME1 0x00447260
 void InterfaceMgr::Clear()
 {
+	mUnk0x30 = -1;
+	mUnk0x34 = 0;
+	mUnk0x38 = -1;
+	mUnk0x3c = 0;
+	mUnk0x40 = -1;
+	mUnk0x48 = 0;
+	mUnk0x4c = 0;
+	mUnk0x50 = 0;
+	mUnk0x54 = 0;
+	mUnk0x58 = 0;
+	mUnk0x5c = 0;
+	mUnk0x60 = 0;
+	mUnk0x64 = 0;
+	// STRING: POPCAPGAME1 0x005d2b00
+	mUnk0x70 = "";
+	mUnk0x160 = true;
+	mUnk0x161 = false;
+	mUnk0x98 = 0;
+	mUnk0x94 = 0;
+	mUnk0x9c = 0;
+	mUnk0xa0 = mUnk0xbc = "";
+	mUnk0xdc = 0;
+	mUnk0xd8 = 0;
+	mUnk0xec = 0;
+	mUnk0xe8 = 0;
+	mUnk0x6c = 0;
+	mUnk0x44 = 0;
+	mUnk0x68 = 0;
+	mUnk0xf8 = 0;
+	mUnk0xe4 = 0;
+	mUnk0xe0 = 0;
+	mUnk0x164.clear();
 }
 
 // STUB: POPCAPGAME1 0x004517c0

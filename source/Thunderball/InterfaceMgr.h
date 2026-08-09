@@ -1,6 +1,8 @@
 #ifndef __INTERFACE_MGR_H__
 #define __INTERFACE_MGR_H__
 
+#include <SexyAppFramework/SexyVector.h>
+
 #include <string>
 #include <vector>
 
@@ -39,7 +41,8 @@ public:
 	int mUnk0x94; // +0x94
 	int mUnk0x98; // +0x98
 	int mUnk0x9c; // +0x9c
-	char mPadding0xa0[0x38]; // +0xa0
+	std::string mUnk0xa0; // +0xa0
+	std::string mUnk0xbc; // +0xbc
 	int mUnk0xd8; // +0xd8
 	int mUnk0xdc; // +0xdc
 	int mUnk0xe0; // +0xe0
@@ -52,8 +55,8 @@ public:
 	int mUnk0xfc[25]; // +0xfc
 	bool mUnk0x160; // +0x160
 	bool mUnk0x161; // +0x161
-	char mPadding0x162[0x6]; // +0x162
-	std::vector<int> mUnk0x168; // +0x168
+	char mPadding0x162[0x2]; // +0x162
+	std::vector<SexyVector2> mUnk0x164; // +0x164
 
 	InterfaceMgr(Board* param_1);
 	virtual ~InterfaceMgr();
