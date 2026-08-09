@@ -15,6 +15,23 @@ class HyperlinkWidget;
 class StoryData;
 class StageInfo;
 
+class StoryValueList {
+public:
+	int* mBegin;
+	int* mEnd;
+	int* mCapacity;
+
+	StoryValueList() : mBegin(NULL), mEnd(NULL), mCapacity(NULL) {}
+	~StoryValueList()
+	{
+		if (mBegin != NULL)
+			operator delete(mBegin);
+		mBegin = NULL;
+		mEnd = NULL;
+		mCapacity = NULL;
+	}
+};
+
 class StoryScreen : public Widget, public ButtonListener {
 public:
 	ThunderballApp* mApp; // +0x8c
@@ -24,7 +41,8 @@ public:
     int mUnk0x9c; // +0x9c
 	int mUnk0xa0; // +0xa0
 	int mUnk0xa4; // +0xa4
-    int mUnk0xa8; // +0xa8
+	bool mUnk0xa8; // +0xa8
+	char mPadding0xa9[3]; // +0xa9
     int mUnk0xac; // +0xac
 	int mUnk0xb0; // +0xb0
 	int mUnk0xb4; // +0xb4
@@ -32,10 +50,10 @@ public:
 	char mPadding0xbc[0x10]; // +0xbc
 	int mUnk0xcc; // +0xcc
 	int mUnk0xd0; // +0xd0
-	std::vector<int> mUnk0xd4; // +0xd4
+	StoryValueList mUnk0xd4; // +0xd4
 	int mUnk0xe0; // +0xe0
-	std::vector<int> mUnk0xe4; // +0xe4
-	char mPadding0xf0; // +0xf0
+	StoryValueList mUnk0xe4; // +0xe4
+	bool mUnk0xf0; // +0xf0
 	bool mUnk0xf1; // +0xf1
 	bool mUnk0xf2; // +0xf2
 	char mPadding0xf3; // +0xf3
@@ -43,7 +61,7 @@ public:
     int mUnk0xf8; // +0xf8
 	int mUnk0xfc; // +0xfc
 	int mUnk0x100; // +0x100
-	int mUnk0x104; // +0x104
+	float mUnk0x104; // +0x104
 	int mUnk0x108; // +0x108
 	int mUnk0x10c; // +0x10c
 

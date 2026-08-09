@@ -10,6 +10,7 @@
 #include <SexyAppFramework/HyperlinkWidget.h>
 #include <SexyAppFramework/ModVal.h>
 #include <SexyAppFramework/Font.h>
+#include <SexyAppFramework/ResourceManager.h>
 #include <SexyAppFramework/SoundManager.h>
 #include <SexyAppFramework/SoundInstance.h>
 
@@ -451,9 +452,53 @@ void StoryScreen::Update()
     DoUpdate();
 }
 
-// STUB: POPCAPGAME1 0x0048b5f0
+// FUNCTION: POPCAPGAME1 0x0048b5f0
 void StoryScreen::InitText()
 {
+	int aStage = mUnk0x9c;
+	if (mUnk0xf1 || aStage > 10)
+		aStage = 10;
+	else if (aStage < 0)
+		aStage = 0;
+
+	mUnk0x98 = mApp->mStageMgr->GetStageInfo(aStage);
+	mUnk0xa8 = mUnk0x9c == 11 || mUnk0xf1;
+	if (mUnk0xa8) {
+		if (!mApp->mResourceManager->LoadResources("Story"))
+			mApp->ShowResourceError(true);
+		if (!ExtractStoryResources(mApp->mResourceManager))
+			mApp->ShowResourceError(true);
+		if (mApp->mCurProfile != NULL && !mUnk0xf1)
+			mApp->mCurProfile->RestartAdventure();
+		if (mUnk0xb0 == 0)
+			mApp->PlayMusic(2000, true);
+	}
+	else {
+		mApp->PlayMusic(49, true);
+	}
+
+	mUnk0xf0 = false;
+	mUnk0xf4 = 0;
+	mUnk0x108 = 0;
+	mUnk0x10c = 0;
+	mUnk0xfc = 0;
+	mUnk0x100 = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp11,144", 20);
+	mUnk0x90->SetVisible(false);
+	mUnk0x90->mX = -(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp12,146", 100) + mUnk0x90->mWidth);
+	mUnk0x104 = 0.0f;
+	mUnk0xac = 0;
+	if (!mUnk0xa8) {
+		mUnk0xac = 1;
+		if (mApp->mCurProfile != NULL) {
+			if (mApp->mCurProfile->mUnk0x48 < 4)
+				mUnk0xac = mApp->mCurProfile->mUnk0x48 + 1;
+			else
+				mUnk0xac += rand() % 3 + 1;
+		}
+		if (mUnk0x98->mUnk0x8[mUnk0xac].empty())
+			mUnk0xac = 1;
+	}
+	mUnk0x94->SetVisible(mUnk0xa8);
 }
 
 // FUNCTION: POPCAPGAME1 0x00489d40
