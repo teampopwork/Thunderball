@@ -973,14 +973,24 @@ void ThunderballApp::SetExpired()
 void ThunderballApp::SetFeverVolume(double param_1)
 {
 	mFeverVolume = param_1;
-	if (mMainMenu == 0) {
+	if (mUnk0x77c == 0) {
 		SyncOdeVolume();
 	}
 }
 
-// STUB: POPCAPGAME1 0x004059c0
+// FUNCTION: POPCAPGAME1 0x004059c0
 void ThunderballApp::SetMusicIntensityIncreasePending(int param_1)
 {
+	if (param_1 <= 6) {
+		int currentOffset = mUnk0x77c - 1;
+		mUnk0x77c += (currentOffset / 6) * 6 - currentOffset - 2 + param_1;
+
+		int musicOrder = GetMusicOrder(1);
+		if (musicOrder != -1) {
+			mMusicIntensityIncreasePending = true;
+			mPendingMusicOrder = musicOrder;
+		}
+	}
 }
 
 // STUB: POPCAPGAME1 0x0040d2c0
@@ -991,7 +1001,7 @@ void ThunderballApp::SetMusicSpeed(float param_1)
 // FUNCTION: POPCAPGAME1 0x00405900
 void ThunderballApp::SetMusicVolume(double theVolume)
 {
-	if (mMainMenu != 0) {
+	if (mUnk0x77c != 0) {
 		SexyApp::SetMusicVolume(theVolume);
 	}
 }
@@ -1191,9 +1201,12 @@ void ThunderballApp::StartAdventureGame()
     }
 }
 
-// STUB: POPCAPGAME1 0x004058b0
+// FUNCTION: POPCAPGAME1 0x004058b0
 void ThunderballApp::SyncOdeVolume()
 {
+	if (mMusicInterface != NULL) {
+		mMusicInterface->SetVolume(mMuteCount > 0 ? 0.0 : mFeverVolume);
+	}
 }
 
 // STUB: POPCAPGAME1 0x0042d270
@@ -1233,7 +1246,11 @@ void ThunderballApp::GotFocus()
 // FUNCTION: POPCAPGAME1 0x00405890
 bool ThunderballApp::DebugKeyDown(int theKey)
 {
-	return !!SexyApp::DebugKeyDown(theKey);
+	if (SexyApp::DebugKeyDown(theKey)) {
+		return true;
+	}
+
+	return false;
 }
 
 // STUB: POPCAPGAME1 0x

@@ -69,7 +69,9 @@ public:
     int mUnk0x77c;                     // +0x77C
 	int mUnk0x780;                     // +0x780
 	int mUnk0x784;                     // +0x784
-	char mPadding0x788[0x8];            // +0x788
+	int mPendingMusicOrder;             // +0x788
+	bool mMusicIntensityIncreasePending; // +0x78c
+	char mPadding0x78d[0x3];            // +0x78d
 	double mFeverVolume;               // +0x790
 	bool mShouldShowUpsellButton;      // +0x798
 	bool mUnk0x799;                     // +0x799
