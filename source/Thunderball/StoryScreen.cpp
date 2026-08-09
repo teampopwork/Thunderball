@@ -584,9 +584,96 @@ void StoryScreen::PlayOdeNote(int noteId)
     }
 }
 
-// STUB: POPCAPGAME1 0x0048a090
+// FUNCTION: POPCAPGAME1 0x0048a090
 void StoryScreen::DrawFireworks(Graphics* g)
 {
+	g->SetColorizeImages(true);
+	for (unsigned int i = 0; i < mParticles.Size(); ++i) {
+		if (mParticles[i]->mType == 1) {
+			int aCel = (int) (((double) mParticles[i]->mAge / mParticles[i]->mDuration) * 30.0);
+			g->SetColor(Color(
+				0,
+				0,
+				0,
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp161,908", 40) -
+					ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp162,908", 1) * aCel));
+			g->DrawImageCel(
+				IMAGE_FIREBALLFIRE,
+				Rect(
+					(int) (mParticles[i]->mX - ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp163,909", 4)),
+					(int) (mParticles[i]->mY - ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp164,909", 4)),
+					ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp165,909", 9),
+					ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp166,909", 9)),
+				aCel);
+		} else if (mParticles[i]->mType == 0) {
+			g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+			g->SetColor(Color(
+				mParticles[i]->mUnk0x1c,
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp167,914", 120)));
+			int aCel = (int) (((double) mParticles[i]->mAge / mParticles[i]->mDuration) * 14.0);
+			g->DrawImageCel(
+				IMAGE_STORY_BIGSPARKLE,
+				Rect(
+					(int) (mParticles[i]->mX - ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp168,916", 15)),
+					(int) (mParticles[i]->mY - ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp169,916", 15)),
+					ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp170,916", 30),
+					ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp171,916", 30)),
+				aCel);
+			g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+		} else if (mParticles[i]->mType == 2 || mParticles[i]->mType == 4) {
+			g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+			int anAlpha = (int) (255.0 -
+				((double) mParticles[i]->mAge / mParticles[i]->mDuration) * 255.0);
+			g->SetColor(Color(mParticles[i]->mUnk0x1c, anAlpha));
+			const bool isNukeStreak = mParticles[i]->mType == 4;
+			g->DrawImage(
+				IMAGE_NUKESTREAK,
+				(int) (mParticles[i]->mX - ModVal(
+					0,
+					isNukeStreak ? "SEXY_SEXYMODVAL.\\StoryScreen.cpp177,947" : "SEXY_SEXYMODVAL.\\StoryScreen.cpp172,925",
+					6)),
+				(int) (mParticles[i]->mY - ModVal(
+					0,
+					isNukeStreak ? "SEXY_SEXYMODVAL.\\StoryScreen.cpp178,947" : "SEXY_SEXYMODVAL.\\StoryScreen.cpp173,925",
+					6)),
+				ModVal(
+					0,
+					isNukeStreak ? "SEXY_SEXYMODVAL.\\StoryScreen.cpp179,947" : "SEXY_SEXYMODVAL.\\StoryScreen.cpp174,925",
+					13),
+				ModVal(
+					0,
+					isNukeStreak ? "SEXY_SEXYMODVAL.\\StoryScreen.cpp180,947" : "SEXY_SEXYMODVAL.\\StoryScreen.cpp175,925",
+					13));
+			g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+		} else if (mParticles[i]->mType == 3) {
+			g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+			int anAlpha = (int) (255.0 -
+				((double) mParticles[i]->mAge / mParticles[i]->mDuration) * 255.0);
+			g->SetColor(Color(mParticles[i]->mUnk0x1c, anAlpha));
+			Transform aTransform;
+			aTransform.Scale(
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp176,935", 0.75f),
+				1.0f);
+			aTransform.RotateRad((float) std::atan2(mParticles[i]->mVY, mParticles[i]->mVX) + 3.1415f);
+			g->DrawImageTransform(
+				IMAGE_STREAK,
+				aTransform,
+				mParticles[i]->mX,
+				mParticles[i]->mY);
+			g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+		}
+	}
+
+	if (mUnk0xcc >= 0) {
+		g->SetColor(Color(0xffffff));
+		Transform aTransform;
+		aTransform.Scale(
+			ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp181,958", 0.75f),
+			ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp182,958", 0.5f));
+		aTransform.RotateRad((float) std::atan2(mParticleVY, mParticleVX) + 3.1415f);
+		g->DrawImageTransform(IMAGE_STORY_ROCKET, aTransform, mParticleX, mParticleY);
+	}
+	g->SetColorizeImages(false);
 }
 
 // FUNCTION: POPCAPGAME1 0x0048ab40
@@ -651,6 +738,10 @@ void StoryScreen::DrawStars(Graphics* g)
 // STUB: POPCAPGAME1 0x0048af20
 void StoryScreen::DrawWin(Graphics* g)
 {
+	bool colorizeImages = g->mColorizeImages;
+	mUnk0xb8 = colorizeImages;
+	if (colorizeImages)
+		DrawFireworks(g);
 }
 
 // FUNCTION: POPCAPGAME1 0x00489fd0
