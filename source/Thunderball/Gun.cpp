@@ -1,7 +1,50 @@
 #include "Gun.h"
 #include "Ball.h"
+#include "Board.h"
+#include "LogicMgr.h"
+#include "ThunderCommon.h"
+
+#include <SexyAppFramework/Common.h>
+
+#include <math.h>
 
 using namespace Sexy;
+
+// STUB: POPCAPGAME1 0x00475310
+static float GetAngleDelta(float param_1, float param_2)
+{
+	const float aFullTurn = 6.28318530717958647692f;
+	while (param_2 > aFullTurn)
+		param_2 -= aFullTurn;
+	while (param_1 > param_2)
+		param_1 -= aFullTurn;
+
+	float aDelta = param_2 - param_1;
+	if (aDelta > 3.14159265358979323846f)
+		aDelta -= aFullTurn;
+	return aDelta;
+}
+
+// STUB: POPCAPGAME1 0x00475390
+static int GetFloatSign(float param_1)
+{
+	if (param_1 > 0.0f)
+		return 1;
+	if (param_1 < 0.0f)
+		return -1;
+	return 0;
+}
+
+// FUNCTION: POPCAPGAME1 0x004bc3b0
+static float NormalizeAngle(float param_1)
+{
+	const float aFullTurn = SEXY_PI * 2.0f;
+	if (param_1 >= 0.0f && param_1 < aFullTurn)
+		return param_1;
+	if (param_1 < 0.0f)
+		return aFullTurn - fmodf(-param_1, aFullTurn);
+	return fmodf(param_1, aFullTurn);
+}
 
 // FUNCTION: POPCAPGAME1 0x00486a90
 Gun::Gun(Board* param_1)
@@ -113,7 +156,7 @@ void Gun::DrawGuide(Graphics* param_1, bool param_2)
 {
 }
 
-// STUB: POPCAPGAME1 0x0047bf30
+// FUNCTION: POPCAPGAME1 0x0047bf30
 float Gun::CalcAngularVelocity()
 {
 	if (mAngleHistory.empty())
@@ -130,7 +173,7 @@ float Gun::CalcAngularVelocity()
 		aTotal += anItr->first;
 
 	int anElapsed = mUpdateCount - mAngleHistory.front().second;
-	if (anElapsed < 1)
+	if (anElapsed <= 0)
 		anElapsed = 1;
 
 	return aTotal / anElapsed;
@@ -162,8 +205,32 @@ void Gun::Reload(Ball* param_1)
 }
 
 // STUB: POPCAPGAME1 0x004843a0
-void Gun::SetAngle(float param_1, bool param_2)
+bool Gun::SetAngle(float param_1, bool param_2)
 {
+	if (mAngle == param_1)
+		return false;
+
+	if (param_2)
+	{
+		mAngleHistory.clear();
+		mAngle = param_1;
+		mTargetAngle = param_1;
+		mSettledUpdate = mUpdateCount - 1000;
+		CalcPoints();
+		return true;
+	}
+
+	if (mTargetAngle != param_1)
+	{
+		float anAngleDelta = GetAngleDelta(mAngle, param_1);
+		if (!mAngleHistory.empty() && GetFloatSign(anAngleDelta) == GetFloatSign(mAngleHistory.back().first))
+			mAngleHistory.clear();
+
+		mAngleHistory.push_back(std::make_pair(anAngleDelta, mUpdateCount));
+		mTargetAngle = param_1;
+	}
+
+	return true;
 }
 
 // STUB: POPCAPGAME1 0x004882c0
@@ -181,9 +248,64 @@ void Gun::Fire(bool param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x00484120
+// FUNCTION: POPCAPGAME1 0x00484120
 void Gun::Update()
 {
+	Poly::Update();
+	mUpdateCount++;
+
+	float anX = 0.0f;
+	float aY = 0.0f;
+	if (!mUnk0x108.empty())
+	{
+		anX = mUnk0x108.front()->mUnk0xfc;
+		aY = mUnk0x108.front()->mUnk0x100;
+	}
+
+	float anAngularVelocity = CalcAngularVelocity();
+	if (mBall.get() != NULL)
+	{
+		float anOffset = anAngularVelocity * 10.0f;
+		float anAngle = mAngle + SEXY_PI / 2.0f;
+		mBall->SetPos(
+			anX + (float) cos(anAngle) * anOffset,
+			aY - (float) sin(anAngle) * anOffset);
+	}
+	mUnk0x120 = anAngularVelocity;
+
+	UpdateCommon();
+
+	if (mTargetAngle != mAngle)
+	{
+		float aTargetAngle = mTargetAngle;
+		float aCurrentAngle = mAngle;
+		if (aTargetAngle < SEXY_PI / 2.0f)
+			aTargetAngle += SEXY_PI * 2.0f;
+		if (aCurrentAngle < SEXY_PI / 2.0f)
+			aCurrentAngle += SEXY_PI * 2.0f;
+
+		float anAngleStep = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Gun.cpp24,385", 0.2f);
+		if (aTargetAngle <= aCurrentAngle)
+		{
+			mAngle -= anAngleStep;
+			if (aCurrentAngle - anAngleStep <= aTargetAngle)
+				mAngle = mTargetAngle = NormalizeAngle(mTargetAngle);
+		}
+		else
+		{
+			mAngle += anAngleStep;
+			if (aTargetAngle <= aCurrentAngle + anAngleStep)
+				mAngle = mTargetAngle = NormalizeAngle(mTargetAngle);
+		}
+		CalcPoints();
+	}
+
+	if (mBoard->mLogicMgr->mUnk0x4 == 1)
+		UpdateBouncyGuide();
+
+	if (mUnk0x1bc != 0.0f &&
+		(mBoard->mLogicMgr->mUnk0x4 != 2 || mBoard->mLogicMgr->mUnk0x8 > 150))
+		mUnk0x1bc = 0.0f;
 }
 
 // FUNCTION: POPCAPGAME1 0x00486c10

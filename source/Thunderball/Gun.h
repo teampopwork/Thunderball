@@ -79,8 +79,8 @@ public:
 	__declspec(noinline) void CalcPoints();
 	void SetFireball(bool param_1);
 	void Reload(Ball* param_1);
-	void SetAngle(float param_1, bool param_2);
-	void UpdateBouncyGuide();
+	bool SetAngle(float param_1, bool param_2);
+	__declspec(noinline) void UpdateBouncyGuide();
 	void Fire(bool param_1);
 	void Clear();
 	void SetDoBouncyGuide(bool param_1);
