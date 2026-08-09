@@ -116,8 +116,68 @@ int UserDialog::GetPreferredHeight(int theWidth)
 		   ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\UserDialog.cpp947,115", 0xff);
 }
 
+// FUNCTION: POPCAPGAME1 0x00497e50
 void UserDialog::Resize(int theX, int theY, int theWidth, int theHeight)
 {
+	Dialog::Resize(theX, theY, theWidth, theHeight);
+
+	int aListX = GetLeft() - mX +
+				   ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\UserDialog.cpp937,86", 10);
+	int aListY = GetTop() - mY;
+	int aListWidth = GetWidth() -
+					 ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\UserDialog.cpp938,88", 0x14);
+	int aListHeight =
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\UserDialog.cpp939,89", 0x9b);
+
+	mUserList->Resize(aListX, aListY, aListWidth, aListHeight);
+	mScrollbar->SetVisible(mScrollbar->GetThumbSize() != 0);
+	if (mScrollbar->mVisible) {
+		mUserList->Resize(aListX, aListY, aListWidth - 0x10, aListHeight);
+	}
+	mScrollbar->ResizeScrollbar(aListX + aListWidth - 0x10, aListY, 0x10, aListHeight);
+
+	mFrame->Layout(
+		LAY_SameLeft | LAY_SameTop | LAY_SameHeight,
+		mUserList,
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\UserDialog.cpp940,100", -8),
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\UserDialog.cpp941,100", -8),
+		0,
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\UserDialog.cpp942,100", 0x10)
+	);
+	mFrame->Layout(
+		LAY_GrowToRight,
+		mScrollbar,
+		0,
+		0,
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\UserDialog.cpp943,101", 8),
+		0
+	);
+
+	mRenameButton->Layout(
+		LAY_SameLeft | LAY_Above | LAY_SameSize,
+		mYesButton,
+		-mX,
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\UserDialog.cpp944,103", -5) - mY,
+		0,
+		0
+	);
+	mDeleteButton->Layout(
+		LAY_SameLeft | LAY_Above | LAY_SameSize,
+		mNoButton,
+		-mX,
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\UserDialog.cpp945,104", -5) - mY,
+		0,
+		0
+	);
+	mCreateButton->Layout(
+		LAY_SameLeft | LAY_Above | LAY_SameHeight,
+		mRenameButton,
+		0,
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\UserDialog.cpp946,106", -5),
+		0,
+		0
+	);
+	mCreateButton->Layout(LAY_GrowToRight, mDeleteButton, 0, 0, 0, 0);
 }
 
 // FUNCTION: POPCAPGAME1 0x004980d0
