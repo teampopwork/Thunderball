@@ -1759,12 +1759,12 @@ void Sexy::DrawCircle(Graphics *g ,float param_2, float param_3, float param_4, 
 // FUNCTION: POPCAPGAME1 0x00489f20
 void Sexy::DrawCharacterPlusFrame(Graphics *g, int param_2, int param_3, int param_4)
 {
-    if (param_2 < 0 || param_2 > 11) {
-        param_2 = 0;
+    if (param_4 < 0 || param_4 >= 10) {
+        param_4 = 0;
     }
 
-    Image* aImage = GetImageById(param_2 + 0x16a);
-    g->DrawImage(aImage, param_3, param_4);
+    Image* aImage = GetImageById(param_4 + 0x16a);
+    g->DrawImage(aImage, param_2, param_3);
 
 
     g->DrawImageBox(Rect(
