@@ -1,6 +1,7 @@
 #include "InterfaceMgr.h"
 
 #include "Board.h"
+#include "LogicMgr.h"
 #include "ThunderballApp.h"
 
 #include <SexyAppFramework/MemoryImage.h>
@@ -140,10 +141,16 @@ void InterfaceMgr::UpdateShotMeter()
 {
 }
 
-// STUB: POPCAPGAME1 0x00436e20
+// FUNCTION: POPCAPGAME1 0x00436e20
 bool InterfaceMgr::IsScoreAccurate()
 {
-	return false;
+	for (int i = 0; i < 2; ++i) {
+		if ((&mUnk0x94)[i] != (&mBoard->mLogicMgr->mUnk0x174)[i]) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 // FUNCTION: POPCAPGAME1 0x00436e60
@@ -152,9 +159,35 @@ void InterfaceMgr::DoFeverMultBlink()
 	mUnk0xf8 = 1;
 }
 
-// STUB: POPCAPGAME1 0x00436e70
+// FUNCTION: POPCAPGAME1 0x00436e70
 void InterfaceMgr::DoFever()
 {
+	mUnk0x44 = 1;
+	mUnk0xfc[0] = 0;
+	mUnk0xfc[1] = 0;
+	mUnk0xfc[2] = 0;
+	mUnk0xfc[3] = 0;
+	mUnk0xfc[4] = 0;
+	mUnk0xfc[5] = 0;
+	mUnk0xfc[6] = 0;
+	mUnk0xfc[7] = 0;
+	mUnk0xfc[8] = 0;
+	mUnk0xfc[9] = 0;
+	mUnk0xfc[10] = 0;
+	mUnk0xfc[11] = 0;
+	mUnk0xfc[12] = 0;
+	mUnk0xfc[13] = 0;
+	mUnk0xfc[14] = 0;
+	mUnk0xfc[15] = 0;
+	mUnk0xfc[16] = 0;
+	mUnk0xfc[17] = 0;
+	mUnk0xfc[18] = 0;
+	mUnk0xfc[19] = 0;
+	mUnk0xfc[20] = 0;
+	mUnk0xfc[21] = 0;
+	mUnk0xfc[22] = 0;
+	mUnk0xfc[23] = 0;
+	mUnk0xfc[24] = 0;
 }
 
 // FUNCTION: POPCAPGAME1 0x0043ca00
@@ -202,9 +235,13 @@ void InterfaceMgr::DrawFeverLights(Graphics* param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x0043d400
+// FUNCTION: POPCAPGAME1 0x0043d400
 void InterfaceMgr::BeginShot()
 {
+	mUnk0x38 = -1;
+	mUnk0x30 = 25 - (int) mBoard->mLogicMgr->mUnk0x358.size();
+	mUnk0x54 = 0;
+	mUnk0x161 = false;
 }
 
 // STUB: POPCAPGAME1 0x004724e0
