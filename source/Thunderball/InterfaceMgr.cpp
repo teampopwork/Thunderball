@@ -3,6 +3,7 @@
 #include "Board.h"
 #include "LogicMgr.h"
 #include "Res.h"
+#include "SoundMgr.h"
 #include "ThunderballApp.h"
 
 #include <SexyAppFramework/MemoryImage.h>
@@ -429,9 +430,33 @@ void InterfaceMgr::Update()
 {
 }
 
-// STUB: POPCAPGAME1 0x0045c860
-void InterfaceMgr::AddTopBalls(int param_1)
+// FUNCTION: POPCAPGAME1 0x0045c860
+void InterfaceMgr::AddTopBalls(int theNumBalls)
 {
+	mUnk0x160 = false;
+	int aCurrentNumBalls = (int) mUnk0x164.size();
+	// STRING: POPCAPGAME1 0x005eaec0
+	// STRING: POPCAPGAME1 0x005eae78
+	// STRING: POPCAPGAME1 0x005eae30
+	int aSoundOffset =
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp951,449", 20) +
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp950,449", 4) *
+		(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp949,449", 9) + theNumBalls - aCurrentNumBalls);
+	if (aSoundOffset >= 0 && theNumBalls <= 2) {
+		mBoard->mSoundMgr->AddSound(SOUND_ADD_BALL, 0.0f, 0, aSoundOffset, 1, -1.0f);
+	}
+
+	int aBallSpacing = GetBallSpacing();
+	// STRING: POPCAPGAME1 0x005eade8
+	int aBallY = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp952,454", 100);
+	for (int i = 0; i < theNumBalls; ++i) {
+		SexyVector2 aNewBall;
+		mUnk0x164.push_back(aNewBall);
+		SexyVector2& aBall = mUnk0x164.back();
+		aBall.x = (float) aBallY;
+		aBallY -= aBallSpacing;
+		aBall.y = 0.0f;
+	}
 }
 
 // STUB: POPCAPGAME1 0x0045c5a0
