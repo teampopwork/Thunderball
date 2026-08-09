@@ -21,12 +21,15 @@ class DialogButton;
 class ThunderCheckbox;
 class ImageMgr;
 class Board;
+class ListListener;
+class ListWidget;
 enum StyleShot;
 
 void SetButtonFontColor(int color);
 void SwapRect(TRect<int>& rect1, TRect<int>& rect2);
 ButtonWidget* MakeWinButton(Image* theImage, int theType);
 void DrawScreenFrame(Graphics* g);
+ListWidget* MakeListWidget(int theId, ListListener* theListener);
 void PositionDialog(Dialog* param_1, int param_2, bool param_3, int param_4);
 long double GetLoadTime(int param_1);
 bool SolveLinearSystem(float a, float b, float e, float c, float d, float f, float* outX, float* outY);

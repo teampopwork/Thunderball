@@ -1,15 +1,64 @@
 #include "UserDialog.h"
 
+#include "ProfileMgr.h"
+#include "ThunderButton.h"
+#include "ThunderCommon.h"
+#include "ThunderFrame.h"
 #include "ThunderballApp.h"
 
 #include <SexyAppFramework/ListWidget.h>
+#include <SexyAppFramework/ModVal.h>
 #include <SexyAppFramework/ScrollbarWidget.h>
 
 using namespace Sexy;
 
+// FUNCTION: POPCAPGAME1 0x004ac970
 UserDialog::UserDialog(ThunderballApp* theApp) : ThunderDialog(0x18, true, "WHO ARE YOU?", "", "", 2)
 {
 	mApp = theApp;
+	mUnk0x163 = true;
+	mHasCreateEntry =
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\UserDialog.cpp935,37", 0) != 0;
+
+	mUserList = MakeListWidget(0, this);
+	mUserList->mJustify = ListWidget::JUSTIFY_CENTER;
+	mFrame = new ThunderFrame();
+	mScrollbar = new ScrollbarWidget(0, mUserList);
+	mRenameButton = MakeButton(0, this, "Rename", NULL);
+	mDeleteButton = MakeButton(1, this, "Delete", NULL);
+	mCreateButton = MakeButton(
+		2,
+		this,
+		ModVal(
+			0,
+			"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\UserDialog.cpp936,47",
+			"Create New User"
+		),
+		NULL
+	);
+	mUserList->mScrollbar = mScrollbar;
+
+	if (mHasCreateEntry) {
+		mUserList->AddLine("(Create a New User)", false);
+	}
+
+	if (mApp->mCurProfile != NULL) {
+		mUserList->SetSelect(mUserList->AddLine(mApp->mCurProfile->mName, false));
+	}
+
+	const ProfileMap& aProfileMap = mApp->mProfileMgr->GetProfileMap();
+	for (ProfileMap::const_iterator anItr = aProfileMap.begin(); anItr != aProfileMap.end(); ++anItr) {
+		if (mApp->mCurProfile == NULL || mApp->mCurProfile->mName != anItr->second.mName) {
+			mUserList->AddLine(anItr->second.mName, false);
+		}
+	}
+
+	AddWidget(mUserList);
+	AddWidget(mScrollbar);
+	AddWidget(mRenameButton);
+	AddWidget(mDeleteButton);
+	AddWidget(mCreateButton);
+	AddWidget(mFrame);
 }
 
 UserDialog::~UserDialog()
@@ -73,7 +122,7 @@ void UserDialog::FinishDeleteUser()
 {
 	int anIndex = mUserList->mSelectIdx;
 	mUserList->RemoveLine(anIndex);
-	int aMinIndex = mUnk0x198 != false;
+	int aMinIndex = mHasCreateEntry != false;
 	anIndex--;
 	if (anIndex < aMinIndex) {
 		anIndex = aMinIndex;
@@ -89,7 +138,7 @@ void UserDialog::FinishDeleteUser()
 void UserDialog::FinishRenameUser(std::string* name)
 {
 	int anIndex = mUserList->mSelectIdx;
-	if (anIndex >= (mUnk0x198 != false)) {
+	if (anIndex >= (mHasCreateEntry != false)) {
 		mUserList->SetLine(anIndex, *name);
 	}
 }

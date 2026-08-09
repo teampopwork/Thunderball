@@ -15,6 +15,7 @@
 #include <SexyAppFramework/Font.h>
 #include <SexyAppFramework/Graphics.h>
 #include <SexyAppFramework/Insets.h>
+#include <SexyAppFramework/ListWidget.h>
 #include <SexyAppFramework/Rect.h>
 #include <SexyAppFramework/WidgetManager.h>
 
@@ -60,6 +61,41 @@ void Sexy::DrawScreenFrame(Graphics* g)
 	);
 
 	g->DrawImage(IMAGE_SCREENFRAMERIGHT, IMAGE_SCREENFRAMELEFT->mWidth + IMAGE_SCREENFRAMETOP->mWidth, 0);
+}
+
+// FUNCTION: POPCAPGAME1 0x004050a0
+ListWidget* Sexy::MakeListWidget(int theId, ListListener* theListener)
+{
+	ListWidget* aList = new ListWidget(
+		theId,
+		GetFontById(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp124,390", 0x1d)),
+		theListener
+	);
+
+	aList->SetColor(
+		ListWidget::COLOR_BKG,
+		Color(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp125,391", 0x50))
+	);
+	aList->SetColor(
+		ListWidget::COLOR_OUTLINE,
+		Color(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp126,392", 0x800000))
+	);
+	aList->SetColor(
+		ListWidget::COLOR_TEXT,
+		Color(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp127,393", 0xffff50))
+	);
+	aList->SetColor(
+		ListWidget::COLOR_HILITE,
+		Color(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp128,394", 0xffffff))
+	);
+	aList->SetColor(
+		ListWidget::COLOR_SELECT,
+		Color(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp129,395", 0xf45d02))
+	);
+	aList->mDrawOutline = false;
+	aList->mItemHeight =
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp130,397", 0x10);
+	return aList;
 }
 
 // FUNCTION: POPCAPGAME1 0x0040bc20

@@ -3,6 +3,8 @@
 
 #include "ThunderDialog.h"
 
+#include <SexyAppFramework/ListListener.h>
+
 #include <string>
 
 namespace Sexy
@@ -12,18 +14,19 @@ class WidgetManager;
 class Graphics;
 class ListWidget;
 class ScrollbarWidget;
+class ThunderButton;
+class ThunderFrame;
 
-class UserDialog : public ThunderDialog {
+class UserDialog : public ThunderDialog, public ListListener {
 public:
-	int mUnk0x178;
 	ThunderballApp* mApp; // +0x17C
 	ListWidget* mUserList; // +0x180
 	ScrollbarWidget* mScrollbar; // +0x184
-	int mUnk0x188;
-	int mUnk0x18C;
-	int mUnk0x190;
-	int mUnk0x194;
-	bool mUnk0x198;
+	ThunderButton* mRenameButton; // +0x188
+	ThunderButton* mDeleteButton; // +0x18C
+	ThunderButton* mCreateButton; // +0x190
+	ThunderFrame* mFrame; // +0x194
+	bool mHasCreateEntry; // +0x198
 
 	UserDialog(ThunderballApp* theApp);
 	virtual ~UserDialog();
@@ -39,7 +42,7 @@ public:
 	void FinishDeleteUser();
 	void FinishRenameUser(std::string* name);
 	std::string GetSelName();
-	void ListClicked(int param_1, int param_2, int param_3);
+	virtual void ListClicked(int theId, int theIdx, int theClickCount);
 };
 } // namespace Sexy
 
