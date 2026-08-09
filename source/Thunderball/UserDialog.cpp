@@ -1,5 +1,7 @@
 #include "UserDialog.h"
 
+#include "ThunderballApp.h"
+
 #include <SexyAppFramework/ListWidget.h>
 
 using namespace Sexy;
@@ -21,8 +23,26 @@ void UserDialog::RemovedFromManager(WidgetManager* theWidgetManager)
 {
 }
 
+// FUNCTION: POPCAPGAME1 0x004acec0
 void UserDialog::ButtonDepress(int theId)
 {
+	Dialog::ButtonDepress(theId);
+	std::string aName = GetSelName();
+	switch (theId) {
+	case 0:
+		if (!aName.empty()) {
+			mApp->DoRenameUserDialog(aName);
+		}
+		break;
+	case 1:
+		if (!aName.empty()) {
+			mApp->DoConfirmDeleteUserDialog(aName);
+		}
+		break;
+	case 2:
+		mApp->DoCreateUserDialog();
+		break;
+	}
 }
 
 void UserDialog::Draw(Graphics* g)

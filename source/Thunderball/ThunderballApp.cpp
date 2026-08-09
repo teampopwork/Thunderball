@@ -736,9 +736,18 @@ void ThunderballApp::DoToMenu()
 	ShowMainMenu();
 }
 
-// STUB: POPCAPGAME1 0x0040c2e0
+// FUNCTION: POPCAPGAME1 0x0040c2e0
 void ThunderballApp::DoUserDialog()
 {
+	KillDialog(24);
+	UserDialog* aDialog = new UserDialog(this);
+	PositionDialog(aDialog, 400, false, -1);
+	// STRING: POPCAPGAME1 0x005d5cc8
+	aDialog->mX = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp200,2916", 0x96);
+	// STRING: POPCAPGAME1 0x005d5c80
+	aDialog->mY = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp201,2917", 0x3c);
+	aDialog->DoScroll(true);
+	AddDialog(24, aDialog);
 }
 
 // STUB: POPCAPGAME1 0x0042fe30
