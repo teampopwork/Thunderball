@@ -11,7 +11,7 @@ Gun::Gun(Board* param_1)
 // SYNTHETIC: POPCAPGAME1 0x00486cd0
 // Sexy::Gun::`scalar deleting destructor'
 
-// STUB: POPCAPGAME1 0x00486c20
+// FUNCTION: POPCAPGAME1 0x00486c20
 Gun::~Gun()
 {
 }

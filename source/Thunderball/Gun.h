@@ -3,7 +3,11 @@
 
 #include "Poly.h"
 
+#include <list>
 #include <string>
+#include <utility>
+#include <vector>
+#include <SexyAppFramework/SexyVector.h>
 
 namespace Sexy
 {
@@ -22,7 +26,8 @@ public:
 	int mUnk0x198;                // +0x198
 	char mPad0x19c[0x24];         // +0x19c
 	SmartPtr<Ball> mBall;         // +0x1c0
-	char mPad0x1c4[0x1c];         // +0x1c4
+	std::vector<SexyVector2> mGuidePoints; // +0x1c4
+	std::list<std::pair<float, int> > mAngleHistory; // +0x1d4
 
 	Gun(Board* param_1);
 	virtual ~Gun();
