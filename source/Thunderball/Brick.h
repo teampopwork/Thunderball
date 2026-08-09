@@ -31,8 +31,7 @@ public:
 	bool mUnk0x181; // +0x181
 	bool mUnk0x182; // +0x182
 	BlendedImage mUnk0x184[10]; // +0x184
-	Image* mUnk0x4f4[9]; // +0x4f4
-	MemoryImage* mUnk0x518; // +0x518
+	Image* mUnk0x4f4[10]; // +0x4f4
 
 	Brick();
 	virtual ~Brick();

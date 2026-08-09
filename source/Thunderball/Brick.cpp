@@ -1,6 +1,9 @@
 #include "Brick.h"
 #include "PegInfo.h"
+#include "Res.h"
 
+#include <SexyAppFramework/Graphics.h>
+#include <SexyAppFramework/MemoryImage.h>
 #include <SexyAppFramework/SexyVector.h>
 
 using namespace Sexy;
@@ -25,18 +28,20 @@ Brick::Brick()
 	mUnk0x174 = 0;
 	mUnk0x178 = 0;
 	mUnk0x17c = 0;
-	for (int i = 0; i < 9; i++) {
+	for (int i = 0; i < 10; i++) {
 		mUnk0x4f4[i] = NULL;
 	}
-	mUnk0x518 = NULL;
 }
 
 // SYNTHETIC: POPCAPGAME1 0x00483af0
 // Sexy::Brick::`scalar deleting destructor'
 
-// STUB: POPCAPGAME1 0x00481d10
+// FUNCTION: POPCAPGAME1 0x00481d10
 Brick::~Brick()
 {
+	for (int i = 0; i < 10; i++) {
+		delete mUnk0x4f4[i];
+	}
 }
 
 // STUB: POPCAPGAME1 0x00487970
@@ -92,20 +97,27 @@ void Brick::PegChangedHook(bool param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x00477ba0
+// FUNCTION: POPCAPGAME1 0x00477ba0
 void Brick::DeleteImage()
 {
+	PhysObj::DeleteImage();
+	for (int i = 0; i < 10; i++) {
+		delete mUnk0x4f4[i];
+		mUnk0x4f4[i] = NULL;
+		mUnk0x184[i].DeleteImages();
+	}
 }
 
-// STUB: POPCAPGAME1 0x00482800
+// FUNCTION: POPCAPGAME1 0x00482800
 void Brick::EditReloadImage()
 {
+	CreateImage();
 }
 
-// STUB: POPCAPGAME1 0x00477b80
+// FUNCTION: POPCAPGAME1 0x00477b80
 Image* Brick::GetTextureImage()
 {
-	return NULL;
+	return mPegInfo != NULL ? IMAGE_BRICK : NULL;
 }
 
 // STUB: POPCAPGAME1 0x0047db90
@@ -118,14 +130,39 @@ void Brick::CreateImage(int param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x004827d0
+// FUNCTION: POPCAPGAME1 0x004827d0
 void Brick::CreateImage()
 {
+	if (mPegInfo == NULL) {
+		LoadImage();
+		return;
+	}
+
+	int image = mPegInfo->mPegType - 1;
+	if (image < 0 || image >= 4) {
+		image = 0;
+	}
+	if (mPegInfo->mUnk0x14) {
+		image += 4;
+	}
+	CreateImage(image);
 }
 
-// STUB: POPCAPGAME1 0x00482810
+// FUNCTION: POPCAPGAME1 0x00482810
 void Brick::DrawBrick(Graphics* g, int param_2)
 {
+	CreateImage(param_2);
+	MemoryImage* image = static_cast<MemoryImage*>(mUnk0x4f4[param_2]);
+	if (!g->mIs3D && mUnk0x11c == 0.0f && !mUnk0x2e &&
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Brick.cpp13,997", true)) {
+		mUnk0x184[param_2].Draw(
+			g,
+			mUnk0x114 + mUnk0xb8 - image->mWidth / 2,
+			mUnk0x118 + mUnk0xbc - image->mHeight / 2);
+		return;
+	}
+
+	DrawImage(g, image, mUnk0x114, mUnk0x118, mUnk0x128, g->mIs3D || mUnk0x2e, false);
 }
 
 // STUB: POPCAPGAME1 0x00485670
