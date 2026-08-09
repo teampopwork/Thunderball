@@ -520,9 +520,26 @@ void Poly::ActualSetPos(float param_1, float param_2)
 	}
 }
 
-// STUB: POPCAPGAME1 0x0047bab0
+// FUNCTION: POPCAPGAME1 0x0047bab0
 void Poly::CalcBoundingBox()
 {
+	mUnk0x14 = 1.0e12f;
+	mUnk0x18 = 1.0e12f;
+	mUnk0x1c = -1.0e12f;
+	mUnk0x20 = -1.0e12f;
+
+	for (std::vector<SmartPtr<Line>>::iterator it = mUnk0x108.begin(); it != mUnk0x108.end(); ++it)
+	{
+		Line* aLine = *it;
+		if (aLine->mUnk0x14 < mUnk0x14)
+			mUnk0x14 = aLine->mUnk0x14;
+		if (mUnk0x1c < aLine->mUnk0x1c)
+			mUnk0x1c = aLine->mUnk0x1c;
+		if (aLine->mUnk0x18 < mUnk0x18)
+			mUnk0x18 = aLine->mUnk0x18;
+		if (mUnk0x20 < aLine->mUnk0x20)
+			mUnk0x20 = aLine->mUnk0x20;
+	}
 }
 
 // STUB: POPCAPGAME1 0x0047d3a0
