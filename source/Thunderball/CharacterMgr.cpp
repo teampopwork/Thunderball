@@ -203,9 +203,10 @@ int CharacterMgr::ReadPowerupType(ConfigParser* param_1, std::string* param_2)
 	return 0;
 }
 
-// STUB: POPCAPGAME1 0x000043e460
+// FUNCTION: POPCAPGAME1 0x0043e460
 void CharacterMgr::Resync()
 {
+	CalcEyePos(true);
 }
 
 // STUB: POPCAPGAME1 0x0043e320
