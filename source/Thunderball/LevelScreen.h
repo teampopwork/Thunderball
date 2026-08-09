@@ -10,6 +10,9 @@ class ThunderballApp;
 class Graphics;
 class PlayerInfo;
 class LevelInfo;
+class ImageMgr;
+class HighScoreMgr;
+class StageMgr;
 
 class LevelScreenEntry {
 public:
@@ -21,10 +24,10 @@ public:
 class LevelScreen : public Widget, public ButtonListener {
 public:
     ThunderballApp* mApp;          // +0x8c
-    void* mUnk0x90;                // +0x90
-    int mUnk0x94;                  // +0x94
+    ImageMgr* mImageMgr;            // +0x90
+    HighScoreMgr* mHighScoreMgr;    // +0x94
     int mUnk0x98;                  // +0x98
-    int mUnk0x9c;                  // +0x9c
+    StageMgr* mStageMgr;            // +0x9c
     PlayerInfo* mPlayerInfo;        // +0xa0
     int mUnk0xa4;                  // +0xa4
     int mStage;                     // +0xa8

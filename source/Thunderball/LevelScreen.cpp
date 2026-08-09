@@ -1,5 +1,6 @@
 #include "LevelScreen.h"
 
+#include "ImageMgr.h"
 #include "PlayerInfo.h"
 #include "StageMgr.h"
 #include "ThunderCommon.h"
@@ -16,9 +17,11 @@ LevelScreen::LevelScreen(ThunderballApp* theApp)
 // SYNTHETIC: POPCAPGAME1 0x00499890
 // Sexy::LevelScreen::`scalar deleting destructor'
 
-// STUB: POPCAPGAME1 0x00493410
+// FUNCTION: POPCAPGAME1 0x00493410
 LevelScreen::~LevelScreen()
 {
+	RemoveAllWidgets(true, false);
+	delete mImageMgr;
 }
 
 // FUNCTION: POPCAPGAME1 0x00493490
