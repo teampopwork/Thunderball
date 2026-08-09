@@ -19,6 +19,9 @@ using namespace Sexy;
 // GLOBAL: POPCAPGAME1 0x00649d78
 float Sexy::Ball::mDefRadius = 6.0f;
 
+// GLOBAL: POPCAPGAME1 0x00649d80
+float Sexy::gBallGravity = 0.05f;
+
 // FUNCTION: POPCAPGAME1 0x00480de0
 Ball::Ball(bool param_1)
 {
@@ -271,9 +274,118 @@ void Ball::SetVelocity(float param_1, float param_2)
     mUnk0x100 = param_2;
 }
 
-// STUB: POPCAPGAME1 0x0047a450
+// FUNCTION: POPCAPGAME1 0x0047a450
 void Ball::Update()
 {
+	if (mUnk0x18c)
+	{
+		mUnk0x4c++;
+		return;
+	}
+
+	if (mUnk0x140)
+	{
+		mUnk0xf4 = mUnk0xec;
+		mUnk0xf8 = mUnk0xf0;
+		PhysObj::Update();
+		mUnk0x141 = true;
+		return;
+	}
+
+	PhysObj::Update();
+	mUnk0x148++;
+	if (mUnk0x150 != 0 && --mUnk0x150 == 0)
+		mUnk0x154 = 0;
+
+	mUnk0xe4++;
+	if (mUnk0xe4 % 10 == 0)
+	{
+		int aHistoryCount = mUnk0xe4 / 10;
+		if (aHistoryCount < 1)
+			aHistoryCount = 1;
+		else if (aHistoryCount > 6)
+			aHistoryCount = 6;
+
+		SexyVector2* aHistory = mUnk0x10c;
+		aHistory[aHistoryCount - 1].x = mUnk0xec;
+		aHistory[aHistoryCount - 1].y = mUnk0xf0;
+		bool aWasSlow = mUnk0x164;
+		mUnk0x164 = false;
+		for (int i = 0; i < aHistoryCount - 1; i++)
+		{
+			float aDx = aHistory[i].x - mUnk0xec;
+			float aDy = aHistory[i].y - mUnk0xf0;
+			float aDistanceSquared = aDx * aDx + aDy * aDy;
+			if (aDistanceSquared >= 4.0f)
+			{
+				mUnk0xe4 = 0;
+				break;
+			}
+			if (aDistanceSquared >= 0.040000003f && !aWasSlow)
+			{
+				mUnk0xe4 -= 5;
+				aWasSlow = true;
+				mUnk0x164 = true;
+			}
+		}
+	}
+
+	mUnk0xf4 = mUnk0xec;
+	mUnk0xf8 = mUnk0xf0;
+	if (mUnk0x14c > 0)
+	{
+		mUnk0xe4 = 0;
+		if (--mUnk0x14c != 0)
+		{
+			mUnk0x141 = true;
+			return;
+		}
+
+		SetActive(true);
+		if (mUnk0x15c != NULL)
+		{
+			SetAbsPos(mUnk0x15c->GetXPos(), mUnk0x15c->GetYPos());
+			mUnk0x15c = NULL;
+		}
+	}
+
+	mUnk0x100 += gBallGravity;
+	if (mUnk0x18d)
+	{
+		float aMaxHatY = mUnk0xf0 + 2.0;
+		if (aMaxHatY < mUnk0x108)
+			mUnk0x108 = aMaxHatY;
+
+		mUnk0x104 += (mUnk0xec - mUnk0x104) * 0.25;
+		mUnk0x108 += (mUnk0xf0 - mUnk0x108) * 0.25;
+		if (mUnk0x188 != NULL)
+		{
+			float aHatX = mUnk0x104 + ModVal(
+				0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Ball.cpp4,1048", 0);
+			float aHatY = mUnk0x108 - ModVal(
+				0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Ball.cpp5,1049", 21);
+			mUnk0x188->SetPos(aHatX, aHatY);
+		}
+	}
+
+	float aMaxSpeed = ModVal(
+		0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Ball.cpp6,1055", 15.0f);
+	SexyVector2 aVelocity(mUnk0xfc, mUnk0x100);
+	if (aVelocity.MagnitudeSquared() > aMaxSpeed * aMaxSpeed)
+	{
+		aVelocity = aVelocity.Normalize() * aMaxSpeed;
+		mUnk0xfc = aVelocity.x;
+		mUnk0x100 = aVelocity.y;
+	}
+
+	mUnk0x14 = mUnk0xec - mUnk0x13c + (mUnk0xfc < 0.0f ? mUnk0xfc : 0.0f);
+	mUnk0x1c = mUnk0xec + mUnk0x13c + (mUnk0xfc > 0.0f ? mUnk0xfc : 0.0f);
+	mUnk0x18 = mUnk0xf0 - mUnk0x13c + (mUnk0x100 < 0.0f ? mUnk0x100 : 0.0f);
+	mUnk0x20 = mUnk0xf0 + mUnk0x13c + (mUnk0x100 > 0.0f ? mUnk0x100 : 0.0f);
+	mUnk0x141 = false;
+	mUnk0x142 = false;
+	mUnk0x134 = mUnk0xec;
+	mUnk0x138 = mUnk0xf0;
 }
 
 // FUNCTION: POPCAPGAME1 0x0047a8d0
