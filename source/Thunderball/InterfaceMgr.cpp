@@ -7,6 +7,7 @@
 #include "SoundMgr.h"
 #include "ThunderballApp.h"
 
+#include <SexyAppFramework/Graphics.h>
 #include <SexyAppFramework/MemoryImage.h>
 
 #include <algorithm>
@@ -318,14 +319,33 @@ void InterfaceMgr::DrawShotMeter(Graphics* param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x0043c7b0
-void InterfaceMgr::DrawImageToInterface(Image* param_1, int param_2, int param_3, int param_4)
+// FUNCTION: POPCAPGAME1 0x0043c7b0
+void InterfaceMgr::DrawImageToInterface(Image* theImage, int theX, int theY, int theCel)
 {
+	Graphics aLeftGraphics(mImages[0]);
+	Graphics aRightGraphics(mImages[1]);
+	Graphics aTopGraphics(mImages[2]);
+	Graphics aBottomGraphics(mImages[3]);
+	Graphics aCenterGraphics(mImages[4]);
+
+	Rect aSrcRect;
+	if (theCel >= 0) {
+		aSrcRect = theImage->GetCelRect(theCel);
+	} else {
+		aSrcRect = Rect(0, 0, theImage->mWidth, theImage->mHeight);
+	}
+
+	aLeftGraphics.DrawImage(theImage, theX, theY, aSrcRect);
+	aRightGraphics.DrawImage(theImage, mImages[1]->mWidth - 800 + theX, theY, aSrcRect);
+	aTopGraphics.DrawImage(theImage, theX - mImages[0]->mWidth, theY, aSrcRect);
+	aBottomGraphics.DrawImage(theImage, theX - 345, theY - mImages[2]->mHeight, aSrcRect);
+	aCenterGraphics.DrawImage(theImage, theX - mImages[0]->mWidth, mImages[4]->mHeight - 600 + theY, aSrcRect);
 }
 
-// STUB: POPCAPGAME1 0x0043c990
-void InterfaceMgr::DrawImageCelToInterface(Image* param_1, int param_2, int param_3)
+// FUNCTION: POPCAPGAME1 0x0043c990
+void InterfaceMgr::DrawImageCelToInterface(Image* theImage, int theX, int theY)
 {
+	DrawImageToInterface(theImage, theX, theY, mUnk0xf4);
 }
 
 // FUNCTION: POPCAPGAME1 0x0043c9b0
