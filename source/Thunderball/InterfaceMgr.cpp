@@ -542,9 +542,12 @@ void InterfaceMgr::UpdateHighScore(bool param_1)
 	}
 }
 
-// STUB: POPCAPGAME1 0x004725f0
+// FUNCTION: POPCAPGAME1 0x004725f0
 void InterfaceMgr::InitLevel()
 {
+	UpdateHighScore(false);
+	mUnk0x8c = mBoard->mApp->mUnk0x764 + 1;
+	mUnk0x90 = mBoard->mApp->mUnk0x768 + 1;
 }
 
 // FUNCTION: POPCAPGAME1 0x00442db0
