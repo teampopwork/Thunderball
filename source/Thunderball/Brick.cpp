@@ -1,4 +1,5 @@
 #include "Brick.h"
+#include "PegInfo.h"
 
 #include <SexyAppFramework/SexyVector.h>
 
@@ -49,9 +50,15 @@ void Brick::EditReflect(float param_1, float param_2, bool param_3, bool param_4
 {
 }
 
-// STUB: POPCAPGAME1 0x00483d70
+// FUNCTION: POPCAPGAME1 0x00483d70
 void Brick::Draw(Graphics* g)
 {
+	if (mPegInfo != NULL) {
+		mPegInfo->DrawBrick(this, g);
+	}
+	else {
+		Poly::Draw(g);
+	}
 }
 
 // STUB: POPCAPGAME1 0x00483b30

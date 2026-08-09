@@ -2,6 +2,7 @@
 
 #include "Ball.h"
 #include "BlendedImage.h"
+#include "Brick.h"
 #include "DataSync.h"
 #include "PhysObj.h"
 #include "Res.h"
@@ -171,8 +172,44 @@ void PegInfo::DrawBigPulse(Graphics* param_1, int param_2, float param_3, float 
 	param_1->SetColorizeImages(false);
 }
 
+// FUNCTION: POPCAPGAME1 0x00482e40
 void PegInfo::DrawBrick(Brick* param_1, Graphics* param_2)
 {
+	int cel = mPegType - 1;
+	if (cel < 0 || cel >= 4) {
+		return;
+	}
+	if (mUnk0x14) {
+		cel += 4;
+	}
+
+	if (PhysObj::mOutlineMode != 2) {
+		param_1->DrawBrick(param_2, cel);
+		if (mUnk0x24 == 10 && mUnk0x20 != 0 && !mUnk0x14) {
+			mUnk0x14 = true;
+			param_2->SetColorizeImages(true);
+			float pulse = GetPulsePercent(
+				mUnk0x20,
+				ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp70,289", 20),
+				ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp71,289", 10)
+			);
+			int alpha = (int)(
+				ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp72,290", 0) +
+				ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp73,290", 200) * pulse
+			);
+			param_2->SetColor(Color(0xffffff, alpha));
+			param_2->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+			param_2->SetColorizeImages(true);
+			DrawBrick(param_1, param_2);
+			param_2->SetColorizeImages(false);
+			param_2->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+			mUnk0x14 = false;
+		}
+	}
+
+	if (PhysObj::mOutlineMode == 1) {
+		param_1->DrawPoly(param_2, 0, 0xffffff);
+	}
 }
 
 void PegInfo::DrawGlow(PhysObj* param_1, Graphics* param_2)

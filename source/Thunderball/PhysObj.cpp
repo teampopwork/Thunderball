@@ -26,6 +26,7 @@ using namespace Sexy;
 int Sexy::PhysObj::gCurSortId = 0;
 int Sexy::PhysObj::mSyncType = 0;
 bool Sexy::PhysObj::mFastLoad = true;
+// GLOBAL: POPCAPGAME1 0x00650a58
 int Sexy::PhysObj::mOutlineMode = 0;
 void (*Sexy::PhysObj::mNotifyCollisionFunc)(PhysObj* param_1, PhysObj* param_2) = NULL;
 
