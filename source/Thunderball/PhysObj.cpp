@@ -549,19 +549,18 @@ bool PhysObj::EditIntersects(Rect param_1)
 }
 
 // FUNCTION: POPCAPGAME1 0x00476a90
-void PhysObj::EditReflect(float param_1, float param_2, bool param_3)
+void PhysObj::EditReflect(float param_1, float param_2, bool param_3, bool param_4)
 {
 	float xPos = GetXPos();
 	float yPos = GetYPos();
+	float dx = 0.0f;
+	float dy = 0.0f;
 	if (param_3) {
-		xPos = 0;
-		yPos = (yPos - param_2) + (yPos - param_2);
+		dx = (param_1 - xPos) + (param_1 - xPos);
 	} else {
-		yPos = 0;
-		xPos = (xPos - param_1) + (xPos - param_1);
+		dy = (param_2 - yPos) + (param_2 - yPos);
 	}
-
-	EditTranslate(xPos, yPos);
+	EditTranslate(dx, dy);
 }
 
 // FUNCTION: POPCAPGAME1 0x00479b90

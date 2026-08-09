@@ -49,7 +49,7 @@ public:
 	virtual void EditGetDragMode(float param_1, float param_2);
 	virtual void EditDoPointDrag(float param_1, float param_2);
 	virtual void EditFinishDrag();
-	virtual void EditReflect(float param_1, float param_2, bool param_3);
+	virtual void EditReflect(float param_1, float param_2, bool param_3, bool param_4);
 	virtual void SetPos(float param_1, float param_2);
 	virtual void Translate(float param_1, float param_2);
 	virtual void SetVelocity(float param_1, float param_2);

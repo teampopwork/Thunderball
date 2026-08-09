@@ -87,25 +87,50 @@ void Line::EditDrawPoints(Graphics* g)
 {
 }
 
-// STUB: POPCAPGAME1 0x00478db0
+// FUNCTION: POPCAPGAME1 0x00478db0
 bool Line::EditContains(float param_1, float param_2, bool param_3)
 {
-	return false;
+	return GetDistanceFromPoint(param_1, param_2) < (param_3 ? 20.0f : 5.0f);
 }
 
-// STUB: POPCAPGAME1 0x00478be0
+// FUNCTION: POPCAPGAME1 0x00478be0
 void Line::EditGetDragMode(float param_1, float param_2)
 {
+	float aDx1 = mUnk0xec - param_1;
+	float aDy1 = mUnk0xf4 - param_2;
+	float aDx2 = mUnk0xf0 - param_1;
+	float aDy2 = mUnk0xf8 - param_2;
+	if (aDx1 * aDx1 + aDy1 * aDy1 < aDx2 * aDx2 + aDy2 * aDy2) {
+		mUnk0xd8 = 1;
+	} else {
+		mUnk0xd8 = 2;
+	}
 }
 
-// STUB: POPCAPGAME1 0x00478ca0
+// FUNCTION: POPCAPGAME1 0x00478ca0
 void Line::EditDoPointDrag(float param_1, float param_2)
 {
+	if (mUnk0xd8 == 1) {
+		mUnk0xec = param_1;
+		mUnk0xf4 = param_2;
+	} else {
+		mUnk0xf0 = param_1;
+		mUnk0xf8 = param_2;
+	}
+	Init(mUnk0xec, mUnk0xf4, mUnk0xf0, mUnk0xf8);
 }
 
-// STUB: POPCAPGAME1 0x00478d10
-void Line::EditReflect(float param_1, float param_2, bool param_3)
+// FUNCTION: POPCAPGAME1 0x00478d10
+void Line::EditReflect(float param_1, float param_2, bool param_3, bool param_4)
 {
+	PhysObj::EditReflect(param_1, param_2, param_3, param_4);
+	if (param_4) {
+		if (param_3) {
+			Init(mUnk0xf0, mUnk0xf4, mUnk0xec, mUnk0xf8);
+		} else {
+			Init(mUnk0xec, mUnk0xf8, mUnk0xf0, mUnk0xf4);
+		}
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x00478440

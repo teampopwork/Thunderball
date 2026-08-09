@@ -99,7 +99,7 @@ public:
 	virtual void EditDoPointDrag(float param_1, float param_2);
 	virtual void EditFinishDrag();
 	virtual void EditReloadImage();
-	virtual void EditReflect(float param_1, float param_2, bool param_3);
+	virtual void EditReflect(float param_1, float param_2, bool param_3, bool param_4);
 	virtual void SetPos(float theX, float theY);
 	virtual void Translate(float theDx, float theDy);
 	virtual void SetVelocity(float theVx, float theVy);

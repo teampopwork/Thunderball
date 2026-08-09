@@ -264,7 +264,7 @@ void Poly::EditFinishDrag()
 }
 
 // STUB: POPCAPGAME1 0x00485540
-void Poly::EditReflect(float param_1, float param_2, bool param_3)
+void Poly::EditReflect(float param_1, float param_2, bool param_3, bool param_4)
 {
 }
 
