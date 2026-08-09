@@ -67,8 +67,26 @@ void Gun::DrawGuide(Graphics* param_1, bool param_2)
 }
 
 // STUB: POPCAPGAME1 0x0047bf30
-void Gun::CalcAngularVelocity()
+float Gun::CalcAngularVelocity()
 {
+	if (mAngleHistory.empty())
+		return 0.0f;
+
+	while (!mAngleHistory.empty() && mUpdateCount - mAngleHistory.front().second > 20)
+		mAngleHistory.pop_front();
+
+	if (mAngleHistory.empty())
+		return 0.0f;
+
+	float aTotal = 0.0f;
+	for (std::list<std::pair<float, int> >::iterator anItr = mAngleHistory.begin(); anItr != mAngleHistory.end(); ++anItr)
+		aTotal += anItr->first;
+
+	int anElapsed = mUpdateCount - mAngleHistory.front().second;
+	if (anElapsed < 1)
+		anElapsed = 1;
+
+	return aTotal / anElapsed;
 }
 
 // STUB: POPCAPGAME1 0x00483da0
@@ -117,12 +135,23 @@ int Gun::GetClass()
 	return 7;
 }
 
-// STUB: POPCAPGAME1 0x0047f5f0
+// FUNCTION: POPCAPGAME1 0x0047f5f0
 void Gun::Clear()
 {
+	mBall = NULL;
+	mGuidePoints.clear();
+	mAngleHistory.clear();
+	mUpdateCount = 0;
+	mAngularVelocity = 1000.0f;
+	mUnk0x194 = false;
+	mUnk0x1a1 = false;
+	mUnk0x1a2 = false;
+	mUnk0x180 = true;
 }
 
 // STUB: POPCAPGAME1 0x0047f6e0
 void Gun::SetDoBouncyGuide(bool param_1)
 {
+	mUnk0x194 = param_1;
+	mGuidePoints.clear();
 }
