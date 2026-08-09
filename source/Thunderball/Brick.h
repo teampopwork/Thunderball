@@ -49,7 +49,7 @@ public:
 	virtual void DeleteImage();
 
 	Image* GetTextureImage();
-	void GetCorners(SexyVector2* param_1);
+	bool GetCorners(SexyVector2* param_1);
 	void CreateImage(int param_1);
 	void CreateImage();
 	void DrawBrick(Graphics* g, int param_2);

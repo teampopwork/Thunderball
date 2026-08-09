@@ -1,12 +1,21 @@
 #include "Brick.h"
 #include "PegInfo.h"
 #include "Res.h"
+#include "ThunderCommon.h"
 
 #include <SexyAppFramework/Graphics.h>
 #include <SexyAppFramework/MemoryImage.h>
 #include <SexyAppFramework/SexyVector.h>
 
 using namespace Sexy;
+
+// FUNCTION: POPCAPGAME1 0x00408db0
+static __declspec(noinline) float GetDistanceSquared(float x1, float y1, float x2, float y2)
+{
+	float dx = x2 - x1;
+	float dy = y2 - y1;
+	return dx * dx + dy * dy;
+}
 
 // FUNCTION: POPCAPGAME1 0x00481bd0
 Brick::Brick()
@@ -61,19 +70,54 @@ int Brick::GetClass()
 	return 6;
 }
 
-// STUB: POPCAPGAME1 0x0047dea0
+// FUNCTION: POPCAPGAME1 0x0047dea0
 void Brick::EditGetDragMode(float param_1, float param_2)
 {
+	SexyVector2 corners[4];
+	if (!GetCorners(corners)) {
+		return;
+	}
+
+	if (mUnk0x181 && mUnk0x182) {
+		return;
+	}
+	if (mUnk0x181 || mUnk0x182) {
+		mUnk0xd8 = -2;
+	}
+	else {
+		mUnk0xd8 = GetDistanceSquared(param_1, param_2, mUnk0x114, mUnk0x118) <= 100.0 ? -1 : 0;
+	}
 }
 
-// STUB: POPCAPGAME1 0x004878c0
+// FUNCTION: POPCAPGAME1 0x004878c0
 void Brick::EditDoPointDrag(float param_1, float param_2)
 {
+	if (mUnk0xd8 == -2) {
+		bool stretchX = mUnk0x16c != 5;
+		AnchoredStretch((int)param_1, (int)param_2, stretchX, !stretchX);
+		return;
+	}
+
+	float oldX = mUnk0x114;
+	float oldY = mUnk0x118;
+	Poly::EditDoPointDrag(param_1, param_2);
+	mUnk0x160 += mUnk0x114 - oldX;
+	mUnk0x164 += mUnk0x118 - oldY;
 }
 
-// STUB: POPCAPGAME1 0x00486a10
+// FUNCTION: POPCAPGAME1 0x00486a10
 void Brick::EditReflect(float param_1, float param_2, bool param_3, bool param_4)
 {
+	PhysObj::EditReflect(param_1, param_2, param_3, param_4);
+	if (param_4) {
+		if (param_3) {
+			mUnk0x15c = NormalizeAngle(180.0f - mUnk0x15c);
+		}
+		else {
+			mUnk0x15c = 360.0f - mUnk0x15c;
+		}
+		InitFromParams();
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x00483d70
@@ -170,9 +214,19 @@ Image* Brick::GetTextureImage()
 	return mPegInfo != NULL ? IMAGE_BRICK : NULL;
 }
 
-// STUB: POPCAPGAME1 0x0047db90
-void Brick::GetCorners(SexyVector2* param_1)
+// FUNCTION: POPCAPGAME1 0x0047db90
+bool Brick::GetCorners(SexyVector2* param_1)
 {
+	EnsureLines();
+	int* cornerIndices = &mUnk0x170;
+	for (int i = 0; i < 4; i++) {
+		if (cornerIndices[i] >= (int)mUnk0x108.size()) {
+			return false;
+		}
+		Line* line = mUnk0x108[cornerIndices[i]];
+		param_1[i] = SexyVector2(line->mUnk0xec, line->mUnk0xf4);
+	}
+	return true;
 }
 
 // STUB: POPCAPGAME1 0x00481db0
