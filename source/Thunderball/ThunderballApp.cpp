@@ -506,9 +506,28 @@ void ThunderballApp::DialogButtonDepress(int theDialogId, int theButtonId)
 	}
 }
 
-// STUB: POPCAPGAME1 0x0041d260
+// FUNCTION: POPCAPGAME1 0x0041d260
 void ThunderballApp::DoConfirmDeleteUserDialog(const std::string& param_1)
 {
+	KillDialog(2);
+	ThunderDialog* aDialog = static_cast<ThunderDialog*>(DoDialog(
+		2,
+		true,
+		// STRING: POPCAPGAME1 0x005d70f4
+		"Delete User?",
+		StrFormat(
+			// STRING: POPCAPGAME1 0x005d70b8
+			"This will permanently remove '%s' from the player roster!",
+			param_1.c_str()
+		),
+		"",
+		1
+	));
+	aDialog->DoScroll(true);
+	// STRING: POPCAPGAME1 0x005d70b0
+	aDialog->mYesButton->mLabel = "Delete";
+	// STRING: POPCAPGAME1 0x005d70a8
+	aDialog->mNoButton->mLabel = "Cancel";
 }
 
 // STUB: POPCAPGAME1 0x0042d7c0
