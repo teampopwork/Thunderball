@@ -177,9 +177,27 @@ void InterfaceMgr::DrawDetail(Graphics* theGraphics, std::string* theText, bool 
 	theGraphics->DrawString(*theText, anX + theOffset, ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp967,584", 35));
 }
 
-// STUB: POPCAPGAME1 0x00436ae0
-void InterfaceMgr::DrawScoreBlink(Graphics* param_1)
+// FUNCTION: POPCAPGAME1 0x00436ae0
+void InterfaceMgr::DrawScoreBlink(Graphics* theGraphics)
 {
+	// STRING: POPCAPGAME1 0x005dcbe0
+	int aBlinkRate = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp968,613", 15);
+	if (mUnk0xe0 > 0 && (mUnk0xe0 / aBlinkRate) % 2 == 0) {
+		// STRING: POPCAPGAME1 0x005dcb98
+		// STRING: POPCAPGAME1 0x005dcb50
+		theGraphics->DrawImage(
+			IMAGE_INT_SCOREHILIGHT,
+			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp969,615", 113),
+			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp970,615", 2));
+	}
+	if (mUnk0xe4 > 0 && (mUnk0xe4 / aBlinkRate) % 2 == 0) {
+		// STRING: POPCAPGAME1 0x005dcb08
+		// STRING: POPCAPGAME1 0x005dcac0
+		theGraphics->DrawImage(
+			IMAGE_INT_SCOREHILIGHT,
+			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp971,618", 492),
+			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp972,618", 2));
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x00436bb0
