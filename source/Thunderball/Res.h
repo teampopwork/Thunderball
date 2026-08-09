@@ -309,7 +309,9 @@ bool ExtractInterfaceResources(ResourceManager* theMgr);
 extern Image* IMAGE_INT_BACKSHADOW;
 // GLOBAL: POPCAPGAME1 0x0064ffe8
 extern Image* IMAGE_INT_BALL;
+// GLOBAL: POPCAPGAME1 0x006500f8
 extern Image* IMAGE_INT_BALLBACK;
+// GLOBAL: POPCAPGAME1 0x0065016c
 extern Image* IMAGE_INT_BALLGLASS;
 extern Image* IMAGE_INT_BALLOMASKBL;
 extern Image* IMAGE_INT_BALLOMASKBR;

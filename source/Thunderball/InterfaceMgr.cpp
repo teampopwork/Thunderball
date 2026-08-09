@@ -304,9 +304,29 @@ int InterfaceMgr::GetNumVisibleBalls()
 	return (std::min)(aMaxVisibleBalls, aNumBalls);
 }
 
-// STUB: POPCAPGAME1 0x0043d310
-void InterfaceMgr::DrawBalls(Graphics* param_1)
+// FUNCTION: POPCAPGAME1 0x0043d310
+void InterfaceMgr::DrawBalls(Graphics* theGraphics)
 {
+	Image* aBallImage = GetBallImage();
+	int aBallX = GetBallX();
+	// STRING: POPCAPGAME1 0x005df9d8
+	// STRING: POPCAPGAME1 0x005df990
+	theGraphics->DrawImage(
+		IMAGE_INT_BALLBACK,
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp1018,1103", -2) + aBallX,
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp1019,1103", 17) + GetBallBottom());
+
+	int aNumVisibleBalls = GetNumVisibleBalls();
+	for (int i = 0; i < aNumVisibleBalls; ++i) {
+		theGraphics->DrawImage(aBallImage, aBallX, (int) mUnk0x164[i].x);
+	}
+
+	// STRING: POPCAPGAME1 0x005df948
+	// STRING: POPCAPGAME1 0x005df900
+	theGraphics->DrawImage(
+		IMAGE_INT_BALLGLASS,
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp1020,1110", 3),
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp1021,1110", 92));
 }
 
 // STUB: POPCAPGAME1 0x00443cf0
