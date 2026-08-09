@@ -1,8 +1,13 @@
 #include "DebugMgr.h"
 
 #include "Ball.h"
+#include "Board.h"
+#include "LogicMgr.h"
 #include "ThunderCommon.h"
 #include "../SexyAppFramework/SexyApp.h"
+#include "../SexyAppFramework/WidgetManager.h"
+
+#include <math.h>
 
 using namespace Sexy;
 
@@ -76,9 +81,27 @@ bool DebugMgr::MouseWheel(int theDelta)
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x00439ab0
+// FUNCTION: POPCAPGAME1 0x00439ab0
 void DebugMgr::UpdateMouseBall()
 {
+	if (mMouseBall != NULL) {
+		float targetX = (float)(gSexyApp->mWidgetManager->mLastMouseX - mBoard->mUnk0x1a8) +
+			mMouseOffsetX;
+		float targetY = (float)(gSexyApp->mWidgetManager->mLastMouseY - mBoard->mUnk0x1ac) +
+			mMouseOffsetY;
+		float velocityX = targetX - mMouseBall->mUnk0xec;
+		float velocityY = targetY - mMouseBall->mUnk0xf0;
+		float magnitude = sqrtf(velocityX * velocityX + velocityY * velocityY);
+		float maxVelocity = ModVal(
+			0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\DebugMgr.cpp82,148", 10.0f);
+		if (magnitude > maxVelocity) {
+			velocityX = velocityX * maxVelocity / magnitude;
+			velocityY = velocityY * maxVelocity / magnitude;
+		}
+		mMouseBall->SetAbsPos(targetX, targetY);
+		mMouseBall->SetVelocity(velocityX, velocityY);
+		mBoard->MarkDirtyFull();
+	}
 }
 
 // STUB: POPCAPGAME1 0x004414e0
@@ -86,10 +109,29 @@ void DebugMgr::SyncFeverState()
 {
 }
 
-// STUB: POPCAPGAME1 0x00440010
+// FUNCTION: POPCAPGAME1 0x00440010
 Ball* DebugMgr::GetBallAt(float param_1, float param_2)
 {
-	return NULL;
+	float closestDistance = 1.0e8f;
+	Ball* closestBall = NULL;
+	for (std::list<SmartPtr<Ball>>::iterator it = mBoard->mUnk0x19c.begin();
+		 it != mBoard->mUnk0x19c.end(); ++it) {
+		Ball* ball = *it;
+		if (!ball->mUnk0x140) {
+			float dx = param_1 - ball->mUnk0xec;
+			float dy = param_2 - ball->mUnk0xf0;
+			float distance = dx * dx + dy * dy;
+			int radius = (int)(ball->mUnk0x13c + 0.5);
+			if (radius < 20) {
+				radius = 20;
+			}
+			if (distance < closestDistance && distance <= (float)(radius * radius)) {
+				closestBall = ball;
+				closestDistance = distance;
+			}
+		}
+	}
+	return closestBall;
 }
 
 // STUB: POPCAPGAME1 0x00446670
@@ -132,9 +174,22 @@ bool DebugMgr::MouseUp(int theX, int theY, int theClickCount)
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x00044b4a0
+// FUNCTION: POPCAPGAME1 0x0044b4a0
 bool DebugMgr::MouseDown(int theX, int theY, int theClickCount)
 {
+	theX -= mBoard->mUnk0x1a8;
+	theY -= mBoard->mUnk0x1ac;
+	LogicMgr* logicMgr = mBoard->mLogicMgr;
+	bool currentPlayerFlag = *(&logicMgr->mUnk0x244 + logicMgr->mUnk0x128);
+	if ((theClickCount >= 0 || logicMgr->mUnk0x4 != 1 || currentPlayerFlag) &&
+		theClickCount > 0 && mUnk0x4) {
+		SetMouseBall(GetBallAt((float)theX, (float)theY));
+		if (mMouseBall != NULL) {
+			mMouseOffsetX = mMouseBall->mUnk0xec - (float)theX;
+			mMouseOffsetY = mMouseBall->mUnk0xf0 - (float)theY;
+		}
+		return true;
+	}
 	return false;
 }
 
@@ -143,7 +198,22 @@ void DebugMgr::DeleteBalls(bool param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x0044dcd0
+// FUNCTION: POPCAPGAME1 0x0044dcd0
 void DebugMgr::Update()
 {
+	if (mBoard->mUnk0xc2) {
+		return;
+	}
+	if (mUnk0x1C != 0) {
+		--mUnk0x1C;
+		if (mUnk0x1C == 5) {
+			DeleteBalls(true);
+			UpdateMouseBall();
+			return;
+		}
+		if (mUnk0x1C == 3 || mUnk0x1C == 1) {
+			mBoard->mLogicMgr->mUnk0x8 = 100;
+		}
+	}
+	UpdateMouseBall();
 }
