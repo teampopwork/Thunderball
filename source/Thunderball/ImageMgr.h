@@ -1,6 +1,8 @@
 #ifndef __IMAGE_MGR_H__
 #define __IMAGE_MGR_H__
 
+#include <map>
+#include <set>
 #include <string>
 
 namespace Sexy
@@ -10,6 +12,9 @@ class MemoryImage;
 
 class ImageMgr {
 public:
+	std::map<std::string, MemoryImage*> mImages;
+	std::set<Image*> mDeleteImages;
+
     ImageMgr();
     virtual ~ImageMgr();
 

@@ -5,16 +5,16 @@ using namespace Sexy;
 // SYNTHETIC: POPCAPGAME1 0x004737f0
 // Sexy::TrophyMgr::`scalar deleting destructor'
 
-// STUB: POPCAPGAME1 0x00473760
+// FUNCTION: POPCAPGAME1 0x00473760
 TrophyMgr::TrophyMgr(ThunderballApp* theApp)
 {
-	// TODO
+	mApp = theApp;
+	Clear();
 }
 
-// STUB: POPCAPGAME1 0x004718d0
+// FUNCTION: POPCAPGAME1 0x004718d0
 TrophyMgr::~TrophyMgr()
 {
-	// TODO
 }
 
 // STUB: POPCAPGAME1 0x00471960
@@ -54,13 +54,14 @@ bool TrophyMgr::ReadTrophyConfig(ConfigParser* theParser, TrophyInfo* theInfo)
 // STUB: POPCAPGAME1 0x004430b0
 TrophyInfo* TrophyMgr::GetTrophyInfoById(int theId)
 {
-	// TODO
-	return NULL;
+	std::map<int, TrophyInfo*>::iterator anItr = mTrophyInfos.find(theId);
+	return anItr == mTrophyInfos.end() ? NULL : anItr->second;
 }
 
 // STUB: POPCAPGAME1 0x0043d970
 TrophyPage* TrophyMgr::GetTrophyPage(int theId)
 {
-	// TODO
+	if (theId >= 0 && theId < (int)mPages.size())
+		return &mPages[theId];
 	return NULL;
 }

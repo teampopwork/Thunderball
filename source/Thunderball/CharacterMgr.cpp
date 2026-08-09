@@ -1,18 +1,49 @@
 #include "CharacterMgr.h"
+#include "ImageMgr.h"
+#include "../SexyAppFramework/Image.h"
 
 using namespace Sexy;
 
-// STUB: POPCAPGAME1 0x00473c30
+// FUNCTION: POPCAPGAME1 0x00473c30
 CharacterMgr::CharacterMgr()
 {
+	mUnk0x4C = 0.0f;
+	mUnk0x50 = 0.0f;
+	mUnk0x54 = 0.0f;
+	mUnk0x58 = 0.0f;
+	mUnk0x5C = 0.0f;
+	mUnk0x60 = 0.0f;
+	mUnk0x64 = 0.0f;
+	mUnk0x68 = 0.0f;
+	mUnk0x6C = 0.0f;
+	mUnk0x70 = 0.0f;
+	mUnk0x80 = 0.0f;
+	mUnk0x84 = 0.0f;
+	mImageMgr = new ImageMgr();
+	mUnk0x48 = 0.0f;
+	mImage2 = NULL;
+	mCurCharacter = 0;
+	mUnk0x78 = 400;
+	mUnk0x7C = 70;
+	mUnk0x2C = 0;
+	mImage1 = NULL;
+	mUnk0x90 = 0;
+	mUnk0x34 = 0;
+	mUnk0x30 = 0;
+	mUnk0x40 = 0;
+	mUnk0x74 = true;
+	mUnk0x45 = false;
 }
 
 // SYNTHETIC: POPCAPGAME1 0x004746d0
 // Sexy::CharacterMgr::`scalar deleting destructor'
 
-// STUB: POPCAPGAME1 0x00473d10
+// FUNCTION: POPCAPGAME1 0x00473d10
 CharacterMgr::~CharacterMgr()
 {
+	delete mImageMgr;
+	delete mImage1;
+	delete mImage2;
 }
 
 // STUB: POPCAPGAME1 0x00438a10
@@ -87,16 +118,27 @@ int CharacterMgr::GetCharacterIdByName(std::string* param_1)
 	return 0;
 }
 
-// STUB: POPCAPGAME1 0x004386e0
-int CharacterMgr::GetCharacterInfo(int param_1)
+// FUNCTION: POPCAPGAME1 0x004386e0
+CharacterInfo* CharacterMgr::GetCharacterInfo(int param_1)
 {
-	return 0;
+	if (param_1 >= 0 && param_1 < (int)mCharacters.size())
+		return &mCharacters[param_1 % mCharacters.size()];
+	return NULL;
 }
 
-// STUB: POPCAPGAME1 0x00438760
-int CharacterMgr::GetCharacterInfoSafe(int param_1)
+// FUNCTION: POPCAPGAME1 0x00438760
+CharacterInfo* CharacterMgr::GetCharacterInfoSafe(int param_1)
 {
-	return 0;
+	int aCount = mCharacters.size();
+	unsigned int anIndex;
+	if (param_1 < 0)
+	{
+		int aRemainder = -param_1 % aCount;
+		anIndex = aRemainder == 0 ? 0 : aCount - aRemainder;
+	}
+	else
+		anIndex = param_1 % aCount;
+	return &mCharacters[anIndex];
 }
 
 // STUB: POPCAPGAME1 0x00442c30

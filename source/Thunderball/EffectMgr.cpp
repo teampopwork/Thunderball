@@ -1,10 +1,19 @@
 #include "EffectMgr.h"
 
+#include <SexyAppFramework/Image.h>
+
 #include "ThunderCommon.h"
 
 using namespace Sexy;
 
-// STUB: POPCAPGAME1 0x004471e0
+// FUNCTION: POPCAPGAME1 0x00439bd0
+Effect::~Effect()
+{
+	delete mUnk0x44;
+	delete mUnk0x48;
+}
+
+// FUNCTION: POPCAPGAME1 0x004471e0
 EffectMgr::EffectMgr()
 {
 }
@@ -12,14 +21,17 @@ EffectMgr::EffectMgr()
 // SYNTHETIC: POPCAPGAME1 0x0044b550
 // Sexy::EffectMgr::`scalar deleting destructor'
 
-// STUB: POPCAPGAME1 0x00447210
+// FUNCTION: POPCAPGAME1 0x00447210
 EffectMgr::~EffectMgr()
 {
 }
 
-// STUB: POPCAPGAME1 0x00443720
+// FUNCTION: POPCAPGAME1 0x00443720
 void EffectMgr::Clear()
 {
+	for (int i = 0; i < 5; ++i) {
+		mEffects[i].clear();
+	}
 }
 
 // STUB: POPCAPGAME1 0x0044de40
@@ -175,9 +187,16 @@ void EffectMgr::SyncState(DataSync& param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x00441650
+// FUNCTION: POPCAPGAME1 0x00441650
 Effect* EffectMgr::GetEffectByType(EffectType param_1)
 {
+	for (int i = 0; i < 5; ++i) {
+		for (std::list<Effect>::iterator it = mEffects[i].begin(); it != mEffects[i].end(); ++it) {
+			if (it->mType == param_1) {
+				return &*it;
+			}
+		}
+	}
 	return NULL;
 }
 
@@ -201,16 +220,22 @@ void EffectMgr::FinishFeverRainbow()
 {
 }
 
-// STUB: POPCAPGAME1 0x0043bc60
+// FUNCTION: POPCAPGAME1 0x0043bc60
 int EffectMgr::ClampPriority(int param_1)
 {
-	return 0;
+	if (param_1 < -1) {
+		return -1;
+	}
+	if (param_1 > 3) {
+		return 3;
+	}
+	return param_1;
 }
 
-// STUB: POPCAPGAME1 0x004363c0
+// FUNCTION: POPCAPGAME1 0x004363c0
 int EffectMgr::PriorityToList(int param_1)
 {
-	return 0;
+	return param_1 + 1;
 }
 
 // STUB: POPCAPGAME1 0x00433850

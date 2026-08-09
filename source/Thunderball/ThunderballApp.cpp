@@ -1176,10 +1176,10 @@ void ThunderballApp::GotFocus()
 	SexyApp::GotFocus();
 }
 
-// STUB: POPCAPGAME1 0x00405890
+// FUNCTION: POPCAPGAME1 0x00405890
 bool ThunderballApp::DebugKeyDown(int theKey)
 {
-	return SexyApp::DebugKeyDown(theKey);
+	return !!SexyApp::DebugKeyDown(theKey);
 }
 
 // STUB: POPCAPGAME1 0x

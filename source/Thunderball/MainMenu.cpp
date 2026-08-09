@@ -750,7 +750,7 @@ void MainMenu::SyncPlayerInfo()
 		if (aPlayerInfo->mUnk0x48 > 0) {
 			mUnk0xC8 = 1;
 
-			if ((int) aPlayerInfo->mUnk0xfc.size() >= mApp->mTrophyMgr->mUnk0x20) {
+			if ((int) aPlayerInfo->mUnk0xfc.size() >= (int)mApp->mTrophyMgr->mTrophyInfos.size()) {
 				mUnk0xC8 = 2;
 
 				if (aPlayerInfo->mUnk0x118.size() >= mApp->mStageMgr->mUnk0x1c.size()) {

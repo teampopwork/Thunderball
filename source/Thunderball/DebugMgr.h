@@ -2,6 +2,7 @@
 #define __DEBUG_MGR_H__
 
 #include <SexyAppFramework/Common.h>
+#include <SexyAppFramework/SmartPtr.h>
 
 namespace Sexy
 {
@@ -10,12 +11,21 @@ class Ball;
 
 class DebugMgr {
 public:
-	int mUnk0x4;
+	bool mUnk0x4;
+	bool mUnk0x5;
+	bool mUnk0x6;
+	SmartPtr<Ball> mMouseBall;
+	float mMouseOffsetX;
+	float mMouseOffsetY;
+	int mUnk0x14;
+	int mUnk0x18;
+	int mUnk0x1C;
 	bool mUnk0x20;
-    bool mUnk0x21;
+	bool mUnk0x21;
+	Board* mBoard;
 
 	DebugMgr(Board* param_1);
-	~DebugMgr();
+	virtual ~DebugMgr();
 
 	void MarkCheat();
 	void SyncFlipperState();

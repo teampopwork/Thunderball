@@ -1,21 +1,39 @@
 #ifndef __EFFECT_MGR_H__
 #define __EFFECT_MGR_H__
 
+#include <SexyAppFramework/SmartPtr.h>
+
+#include <list>
+
 namespace Sexy
 {
 class PhysObj;
 class Graphics;
+class Image;
 class DataSync;
 class SexyVector2;
 enum EffectType;
 
 class Effect {
 public:
+	int mUnk0x4;
+	EffectType mType;
 	int mUnk0xc;
+	int mUnk0x10;
+	char mUnk0x14[0x30];
+	Image* mUnk0x44;
+	Image* mUnk0x48;
+	RefCountPtr mUnk0x4c;
+	RefCountPtr mUnk0x50;
+	RefCountPtr mUnk0x54;
+
+	virtual ~Effect();
 };
 
 class EffectMgr {
 public:
+	std::list<Effect> mEffects[5];
+
 	EffectMgr();
 	virtual ~EffectMgr();
 
