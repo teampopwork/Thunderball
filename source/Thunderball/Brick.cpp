@@ -87,14 +87,64 @@ void Brick::Draw(Graphics* g)
 	}
 }
 
-// STUB: POPCAPGAME1 0x00483b30
+// FUNCTION: POPCAPGAME1 0x00483b30
 void Brick::DrawShadow(Graphics* g)
 {
+	if (mOutlineMode == 2) {
+		return;
+	}
+	if (mPegInfo == NULL || mPegInfo->mPegType == NONE) {
+		Poly::DrawShadow(g);
+		return;
+	}
+
+	if (g->mIs3D || (mUnk0x11c == 0.0f && !mUnk0x2e)) {
+		int image = mPegInfo->mPegType - 1;
+		if (g->mIs3D) {
+			g->SetColorizeImages(true);
+			g->SetColor(Color(
+				0,
+				ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Brick.cpp14,1025", 0x90)));
+		}
+		else if (ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Brick.cpp15,1027", true)) {
+			g->SetColorizeImages(true);
+			g->SetColor(Color(
+				0,
+				ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Brick.cpp16,1030", 0x90)));
+		}
+		else {
+			if (mUnk0x4f4[9] == NULL) {
+				CreateImage(image);
+				Image* source = mUnk0x4f4[image];
+				MemoryImage* shadow = new MemoryImage();
+				shadow->Create(source->mWidth, source->mHeight);
+				shadow->SetImageMode(true, true);
+
+				Graphics imageGraphics(shadow);
+				imageGraphics.SetColor(Color(0));
+				imageGraphics.SetColorizeImages(true);
+				imageGraphics.DrawImage(source, 0, 0);
+				g->SetColor(Color(0xffffff));
+
+				mUnk0x4f4[9] = shadow;
+				mUnk0x184[9].Create(shadow);
+			}
+			image = 9;
+		}
+
+		g->Translate(-3, 3);
+		DrawBrick(g, image);
+		g->Translate(3, -3);
+		g->SetColorizeImages(false);
+	}
+
+	mPegInfo->DrawGlow(this, g);
 }
 
-// STUB: POPCAPGAME1 0x00483b20
+// FUNCTION: POPCAPGAME1 0x00483b20
 void Brick::PegChangedHook(bool param_1)
 {
+	CreateImage();
 }
 
 // FUNCTION: POPCAPGAME1 0x00477ba0
