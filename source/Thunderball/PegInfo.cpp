@@ -3,12 +3,14 @@
 #include "Ball.h"
 #include "BlendedImage.h"
 #include "DataSync.h"
+#include "PhysObj.h"
 #include "Res.h"
 #include "ThunderballApp.h"
 
 #include <SexyAppFramework/Color.h>
 #include <SexyAppFramework/Graphics.h>
 #include <SexyAppFramework/Image.h>
+#include <SexyAppFramework/SexyMatrix.h>
 
 using namespace Sexy;
 
@@ -122,8 +124,51 @@ void PegInfo::DoFlashBlink(int param_1)
 	mUnk0x24 = 10;
 }
 
+// FUNCTION: POPCAPGAME1 0x004766c0
 void PegInfo::DrawBigPulse(Graphics* param_1, int param_2, float param_3, float param_4, int param_5, int param_6)
 {
+	int imageOffset = 0;
+	if (param_6 > 0 && (param_2 == 2 || param_2 == 3)) {
+		imageOffset = 2;
+	}
+
+	Image* image = GetImageById(IMAGE_PULSE_NORMAL_ID + param_2 + imageOffset);
+	int colors[4] = {
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp62,167", 0xffffff),
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp63,167", 0xffffff),
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp64,167", 0xffffff),
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp65,167", 0xffffff)
+	};
+
+	if (image->mAnimInfo != NULL) {
+		if (param_5 > image->mAnimInfo->mTotalAnimTime) {
+			return;
+		}
+		param_5 = image->GetAnimCel(param_5);
+	}
+	else {
+		param_5 /= 2;
+		if (param_5 >= image->mNumRows) {
+			return;
+		}
+	}
+
+	if (param_6 == 2) {
+		param_5 = image->mNumRows - param_5 - 1;
+	}
+
+	param_1->SetColorizeImages(true);
+	param_1->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+	Color color(colors[param_2]);
+	param_1->SetColor(color);
+	param_1->DrawImageCel(
+		image,
+		(int)(param_3 - image->mWidth / 2),
+		(int)(param_4 - image->GetCelHeight() / 2),
+		param_5
+	);
+	param_1->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+	param_1->SetColorizeImages(false);
 }
 
 void PegInfo::DrawBrick(Brick* param_1, Graphics* param_2)
@@ -134,8 +179,44 @@ void PegInfo::DrawGlow(PhysObj* param_1, Graphics* param_2)
 {
 }
 
+// FUNCTION: POPCAPGAME1 0x00476820
 void PegInfo::DrawLight(PhysObj* param_1, Graphics* param_2)
 {
+	if (mUnk0x18 != 0) {
+		SexyVector2 center = param_1->GetCenter();
+		if (mUnk0x17) {
+			int solidTime = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp90,392", 80);
+			int fadeTime = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp91,393", 20);
+			int totalTime = solidTime + fadeTime;
+			Transform transform;
+			if (mUnk0x18 < totalTime) {
+				float scale = 1.0f;
+				if (mUnk0x18 < 10) {
+					scale = (float)(mUnk0x18 * 1.5 / 10.0 + 0.5);
+				}
+				else if (mUnk0x18 < 20) {
+					scale = (float)((20 - mUnk0x18) / 10.0 + 1.0);
+				}
+
+				if (mUnk0x18 > solidTime) {
+					int alpha = ((totalTime - mUnk0x18) * 255) / (totalTime - solidTime);
+					param_2->SetColorizeImages(true);
+					param_2->SetColor(Color(255, 255, 255, alpha));
+				}
+				if (scale != 1.0f) {
+					transform.Scale(scale, scale);
+				}
+				param_2->DrawImageTransform(IMAGE_PEGGLOW, transform, center.x, center.y);
+				param_2->SetColorizeImages(false);
+			}
+		}
+	}
+
+	int pulseTime = mUnk0x20;
+	if (pulseTime != 0 && mUnk0x24 < 10) {
+		SexyVector2 center = param_1->GetCenter();
+		DrawBigPulse(param_2, mPegType - 1, center.x, center.y, pulseTime, mUnk0x24);
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x004769b0
