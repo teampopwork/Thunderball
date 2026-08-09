@@ -1,5 +1,7 @@
 #include "EndLevelDialog.h"
 
+#include <SexyAppFramework/DialogButton.h>
+
 using namespace Sexy;
 
 // STUB: POPCAPGAME1 0x004a1a10
@@ -21,9 +23,18 @@ void EndLevelDialog::Resize(int param_1, int param_2, int param_3, int param_4)
 {
 }
 
-// STUB: POPCAPGAME1 0x00492e30
+// FUNCTION: POPCAPGAME1 0x00492e30
 void EndLevelDialog::SetVisible(bool param_1)
 {
+	if (mVisible != param_1) {
+		Widget::SetVisible(param_1);
+		if (!param_1 || mShowYesButton) {
+			mYesButton->SetVisible(param_1);
+		}
+		if (!param_1 || mShowNoButton) {
+			mNoButton->SetVisible(param_1);
+		}
+	}
 }
 
 // STUB: POPCAPGAME1 0x00492ea0
