@@ -151,6 +151,7 @@ extern Image* IMAGE_DLG_TIP;
 // Game Resources
 bool ExtractGameResources(ResourceManager* theMgr);
 extern Image* IMAGE_ALPHABALL;
+// GLOBAL: POPCAPGAME1 0x0065023c
 extern Image* IMAGE_BALL;
 extern Image* IMAGE_BALLPEG;
 extern Image* IMAGE_BALLPEGCB;
@@ -306,6 +307,7 @@ extern int SOUND_MORNING;
 // Interface Resources
 bool ExtractInterfaceResources(ResourceManager* theMgr);
 extern Image* IMAGE_INT_BACKSHADOW;
+// GLOBAL: POPCAPGAME1 0x0064ffe8
 extern Image* IMAGE_INT_BALL;
 extern Image* IMAGE_INT_BALLBACK;
 extern Image* IMAGE_INT_BALLGLASS;

@@ -2,6 +2,7 @@
 
 #include "Board.h"
 #include "LogicMgr.h"
+#include "Res.h"
 #include "ThunderballApp.h"
 
 #include <SexyAppFramework/MemoryImage.h>
@@ -9,6 +10,21 @@
 #include <algorithm>
 
 using namespace Sexy;
+
+// FUNCTION: POPCAPGAME1 0x00436700
+static Image* GetBallImage()
+{
+	// STRING: POPCAPGAME1 0x005dc4d8
+	return ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp934,47", 0) ? IMAGE_BALL : IMAGE_INT_BALL;
+}
+
+// FUNCTION: POPCAPGAME1 0x00436720
+static int GetBallSpacing()
+{
+	Image* aBallImage = GetBallImage();
+	// STRING: POPCAPGAME1 0x005dc520
+	return ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp935,58", 0) + aBallImage->mHeight;
+}
 
 // FUNCTION: POPCAPGAME1 0x00436740
 static int GetMaxVisibleBalls()
@@ -294,9 +310,28 @@ void InterfaceMgr::UpdateBalls()
 {
 }
 
-// STUB: POPCAPGAME1 0x00457870
-void InterfaceMgr::SetNumBalls(int param_1)
+// FUNCTION: POPCAPGAME1 0x00457870
+void InterfaceMgr::SetNumBalls(int theNumBalls)
 {
+	mUnk0x164.resize(theNumBalls, SexyVector2(0, 0));
+	int aDisplayedNumBalls = theNumBalls;
+	if (theNumBalls > 15) {
+		aDisplayedNumBalls = 15;
+	}
+	mUnk0xec = aDisplayedNumBalls;
+	mUnk0xe8 = aDisplayedNumBalls;
+	mUnk0x5c = 0;
+
+	int aBallY = GetBallBottom();
+	int aBallSpacing = GetBallSpacing();
+	for (int i = 0; i < (int) mUnk0x164.size(); ++i) {
+		SexyVector2& aBallPos = mUnk0x164[i];
+		aBallPos.x = (float) aBallY;
+		aBallY -= aBallSpacing;
+		aBallPos.y = 0.0f;
+	}
+
+	mUnk0x160 = true;
 }
 
 // FUNCTION: POPCAPGAME1 0x00447260
