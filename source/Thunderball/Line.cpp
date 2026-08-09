@@ -1,6 +1,7 @@
 #include "Line.h"
 #include "DataSync.h"
 
+#include <SexyAppFramework/Graphics.h>
 #include <SexyAppFramework/SexyVector.h>
 
 #include <math.h>
@@ -113,14 +114,38 @@ int Line::GetClass()
 	return 2;
 }
 
-// STUB: POPCAPGAME1 0x00476190
+// FUNCTION: POPCAPGAME1 0x00476190
 void Line::EditDrawOutline(Graphics* g)
 {
+	if (mUnk0xd8 == 0) {
+		float x1 = mUnk0xec;
+		float y1 = mUnk0xf4;
+		float x2 = mUnk0xf0;
+		float y2 = mUnk0xf8;
+		SexyVector2 direction = SexyVector2(x2 - x1, y2 - y1).Normalize();
+		float offsetX = direction.y * 3.0f;
+		float offsetY = -direction.x * 3.0f;
+
+		g->DrawLine(
+			(int)(x1 + offsetX), (int)(y1 + offsetY),
+			(int)(x2 + offsetX), (int)(y2 + offsetY));
+		g->DrawLine(
+			(int)(x2 + offsetX), (int)(y2 + offsetY),
+			(int)(x2 - offsetX), (int)(y2 - offsetY));
+		g->DrawLine(
+			(int)(x2 - offsetX), (int)(y2 - offsetY),
+			(int)(x1 - offsetX), (int)(y1 - offsetY));
+		g->DrawLine(
+			(int)(x1 - offsetX), (int)(y1 - offsetY),
+			(int)(x1 + offsetX), (int)(y1 + offsetY));
+	}
 }
 
-// STUB: POPCAPGAME1 0x000476310
+// FUNCTION: POPCAPGAME1 0x00476310
 void Line::EditDrawPoints(Graphics* g)
 {
+	g->FillRect((int)(mUnk0xec - 1.0f), (int)(mUnk0xf4 - 1.0f), 3, 3);
+	g->FillRect((int)(mUnk0xf0 - 1.0f), (int)(mUnk0xf8 - 1.0f), 3, 3);
 }
 
 // FUNCTION: POPCAPGAME1 0x00478db0
@@ -206,9 +231,12 @@ void Line::SetVelocity(float theVx, float theVy)
 	mUnk0x100 = theVy;
 }
 
-// STUB: POPCAPGAME1 0x00476390
+// FUNCTION: POPCAPGAME1 0x00476390
 void Line::Draw(Graphics* g)
 {
+	Color color(mUnk0x44);
+	g->SetColor(color);
+	g->DrawLine((int)mUnk0xec, (int)mUnk0xf4, (int)mUnk0xf0, (int)mUnk0xf8);
 }
 
 // FUNCTION: POPCAPGAME1 0x0047df90
