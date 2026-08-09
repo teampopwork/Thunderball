@@ -16,6 +16,8 @@ class StoryData;
 class StageInfo;
 class StoryParticle;
 
+extern "C" void __cdecl _invalid_parameter_noinfo();
+
 class StoryParticleList {
 public:
 	int mProxy;
@@ -34,6 +36,18 @@ public:
 	}
 
 	void PushBack(StoryParticle* const& theParticle);
+
+	unsigned int Size() const
+	{
+		return mBegin == NULL ? 0 : (unsigned int) (mEnd - mBegin);
+	}
+
+	StoryParticle*& operator[](unsigned int theIndex)
+	{
+		if (mBegin == NULL || theIndex >= (unsigned int) (mEnd - mBegin))
+			_invalid_parameter_noinfo();
+		return mBegin[theIndex];
+	}
 
 	void PushBackInline(StoryParticle* theParticle)
 	{

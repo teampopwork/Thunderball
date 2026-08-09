@@ -11,6 +11,7 @@
 #include <SexyAppFramework/ModVal.h>
 #include <SexyAppFramework/Font.h>
 #include <SexyAppFramework/ResourceManager.h>
+#include <SexyAppFramework/SexyMatrix.h>
 #include <SexyAppFramework/SoundManager.h>
 #include <SexyAppFramework/SoundInstance.h>
 
@@ -488,6 +489,11 @@ void StoryScreen::Draw(Graphics* g)
 // STUB: POPCAPGAME1 0x0048b860
 void StoryScreen::DrawOverlay(Graphics* g)
 {
+	g->SetColor(Color(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp122,812", 0)));
+	if (mUnk0xb4 < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp123,816", 500)) {
+		g->FillRect(0, 0, mWidth, mHeight);
+		DrawStars(g);
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0048f0e0
@@ -583,9 +589,63 @@ void StoryScreen::DrawFireworks(Graphics* g)
 {
 }
 
-// STUB: POPCAPGAME1 0x0048ab40
+// FUNCTION: POPCAPGAME1 0x0048ab40
 void StoryScreen::DrawStars(Graphics* g)
 {
+	g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+	g->SetColorizeImages(true);
+	g->SetColor(Color(0xffffff));
+
+	for (unsigned int i = 0; i < mStars.Size(); ++i) {
+		if (mStars[i]->mType == 0) {
+			Rect aDestRect(
+				(int) (mStars[i]->mX - ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp183,975", 4)),
+				(int) (mStars[i]->mY - ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp184,975", 4)),
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp185,975", 9),
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp186,975", 9));
+			g->DrawImageCel(
+				IMAGE_STORY_BIGSPARKLE,
+				aDestRect,
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp187,975", 7));
+			continue;
+		}
+
+		g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+		g->SetColorizeImages(false);
+		Image* anImage = IMAGE_FLOWER;
+		if (mStars[i]->mType < 5) {
+			anImage = GetImageById(mStars[i]->mType + 0x1a0);
+		} else {
+			switch (mStars[i]->mType) {
+			case 6:
+				anImage = IMAGE_MAGICHAT;
+				break;
+			case 7:
+				anImage = IMAGE_FEVERSTAR_RED;
+				break;
+			case 8:
+				anImage = IMAGE_FEVERSTAR_GREEN;
+				break;
+			case 9:
+				anImage = IMAGE_FEVERSTAR_BLUE;
+				break;
+			}
+		}
+
+		Transform aTransform;
+		if (mStars[i]->mType != 1 && mStars[i]->mType != 6) {
+			aTransform.RotateRad((float) (ModVal(
+				0,
+				"SEXY_SEXYMODVAL.\\StoryScreen.cpp188,1009",
+				-0.05) * mStars[i]->mAge));
+		}
+		g->DrawImageTransform(anImage, aTransform, mStars[i]->mX, mStars[i]->mY);
+		g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+		g->SetColorizeImages(true);
+	}
+
+	g->SetColorizeImages(false);
+	g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
 }
 
 // STUB: POPCAPGAME1 0x0048af20
