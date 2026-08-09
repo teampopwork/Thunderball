@@ -53,12 +53,20 @@ PegInfo::~PegInfo()
 {
 }
 
+// FUNCTION: POPCAPGAME1 0x00476640
 void PegInfo::Reset()
 {
+	mUnk0x18 = 0;
+	mUnk0x20 = 0;
+	mUnk0x24 = 0;
+	mUnk0x1c = 0;
 }
 
+// FUNCTION: POPCAPGAME1 0x00476650
 void PegInfo::SetHit(bool param_1)
 {
+	mUnk0x14 = param_1;
+	mUnk0x18 = param_1 != false;
 }
 
 // FUNCTION: POPCAPGAME1 0x00479560
@@ -100,12 +108,18 @@ void PegInfo::SyncState(DataSync& param_1)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x00476670
 void PegInfo::DoFlash(int param_1)
 {
+	mUnk0x20 = 1;
+	mUnk0x24 = param_1;
 }
 
+// FUNCTION: POPCAPGAME1 0x00476690
 void PegInfo::DoFlashBlink(int param_1)
 {
+	mUnk0x20 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp61,152", 50) * param_1 - 1;
+	mUnk0x24 = 10;
 }
 
 void PegInfo::DrawBigPulse(Graphics* param_1, int param_2, float param_3, float param_4, int param_5, int param_6)
@@ -124,12 +138,38 @@ void PegInfo::DrawLight(PhysObj* param_1, Graphics* param_2)
 {
 }
 
+// FUNCTION: POPCAPGAME1 0x004769b0
 void PegInfo::IncCrumble()
 {
+	if (mUnk0x1c < 3) {
+		mUnk0x1c++;
+	}
 }
 
+// FUNCTION: POPCAPGAME1 0x00479680
 void PegInfo::Update(PhysObj* param_1)
 {
+	if (mUnk0x18 != 0) {
+		mUnk0x18++;
+		if (mUnk0x16 && mUnk0x1c >= 3 && mUnk0x1c < 100 && ++mUnk0x1c == 100) {
+			param_1->SetActive(false);
+		}
+	}
+
+	if (mUnk0x20 != 0) {
+		if (mUnk0x24 == 10) {
+			if (--mUnk0x20 <= 0) {
+				mUnk0x24 = 0;
+				mUnk0x20 = 0;
+			}
+		}
+		else {
+			mUnk0x20++;
+			if (mUnk0x20 > 100) {
+				mUnk0x20 = 0;
+			}
+		}
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0047ad10
