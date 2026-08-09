@@ -597,8 +597,8 @@ void Board::UpdateTwoPlayerStats()
         mApp->mUnk0x898 = 1;
     }
 
-    mApp->mUnk0x89c->Add(mLogicMgr->mUnk0x248[0]);
-    mApp->mUnk0x908->Add(mLogicMgr->mUnk0x248[1]);
+    mApp->mTwoPlayerStats[0].Add(mLogicMgr->mUnk0x248[0]);
+    mApp->mTwoPlayerStats[1].Add(mLogicMgr->mUnk0x248[1]);
 
     if (999999999 < mApp->mUnk0x88c || 999999999 < mApp->mUnk0x890) {
         mApp->mUnk0x88c = 0;

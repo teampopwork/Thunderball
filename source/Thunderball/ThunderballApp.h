@@ -2,6 +2,7 @@
 #define __THUNDERBALLAPP_H__
 
 #include "ConstEnums.h"
+#include "GameStats.h"
 
 #include <SexyAppFramework/SexyApp.h>
 #include <SexyAppFramework/Image.h>
@@ -34,7 +35,6 @@ class HighScoreMgr;
 class ImageMgr;
 class Board;
 class BlendedImage;
-class GameStats;
 
 class RegistrationControl {
 public:
@@ -112,16 +112,15 @@ public:
 	ButtonWidget* mWinMinimizeButton;  // +0x870
 	ButtonWidget* mWinUnmaxButton;     // +0x874
 	PlayerInfo* mCurProfile;           // +0x878
-    int mUnk0x87c;                     // +0x87C
-    int mUnk0x880;                     // +0x880
-	char mPadding0x884[0x8];            // +0x884
-    int mUnk0x88c;                     // +0x88c
-    int mUnk0x890;                     // +0x890
-    int mUnk0x894;                     // +0x894
-    int mUnk0x898;                     // +0x898
-    GameStats* mUnk0x89c;                     // +0x89C
-	char mPadding0x8a0[0x68];           // +0x8a0
-    GameStats* mUnk0x908;                     // +0x908
+	int mUnk0x87c;                     // +0x87c
+	int mUnk0x880;                     // +0x880
+	int mUnk0x884;                     // +0x884
+	int mUnk0x888;                     // +0x888
+	int mUnk0x88c;                     // +0x88c
+	int mUnk0x890;                     // +0x890
+	int mUnk0x894;                     // +0x894
+	int mUnk0x898;                     // +0x898
+	GameStats mTwoPlayerStats[2];       // +0x89c
 
 	ThunderballApp();
 	virtual ~ThunderballApp();

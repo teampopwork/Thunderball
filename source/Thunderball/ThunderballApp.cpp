@@ -1032,9 +1032,19 @@ void ThunderballApp::RemoveBoard()
 {
 }
 
-// STUB: POPCAPGAME1 0x00405b50
+// FUNCTION: POPCAPGAME1 0x00405b50
 void ThunderballApp::ResetTwoPlayerStats()
 {
+	mUnk0x880 = 0;
+	mUnk0x87c = 0;
+	mUnk0x888 = 0;
+	mUnk0x884 = 0;
+	mUnk0x890 = 0;
+	mUnk0x88c = 0;
+	mUnk0x894 = -1;
+	mUnk0x898 = 0;
+	mTwoPlayerStats[0].Reset();
+	mTwoPlayerStats[1].Reset();
 }
 
 // FUNCTION: POPCAPGAME1 0x004234c0
