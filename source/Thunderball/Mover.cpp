@@ -1,5 +1,6 @@
 #include "Mover.h"
 
+#include "DataSync.h"
 #include "PhysObj.h"
 #include "ThunderCommon.h"
 
@@ -369,7 +370,89 @@ void Mover::InitDefaults()
 	mPhysObj = NULL;
 }
 
-// STUB: POPCAPGAME1 0x0047a9f0
-void Mover::SyncState(DataSync& param_1)
+// FUNCTION: POPCAPGAME1 0x0047a9f0
+void Mover::SyncState(DataSync& theSync)
 {
+	if (theSync.mReader != NULL)
+		InitDefaults();
+
+	theSync.SyncSByte(mType);
+	theSync.SyncFloat(mUnk0x5c);
+	theSync.SyncFloat(mUnk0x60);
+	theSync.SyncShort(mTime);
+
+	bool hasOffset = mOffset != 0;
+	bool hasRadius = mRadius != 0;
+	bool hasPhase = mPhase != 0.0f;
+	bool hasMoveRotation = mMoveRotation != 0.0f;
+	bool hasRadius2 = mRadius2 != 0;
+	bool hasPause1 = mPause1 != 0;
+	bool hasPause2 = mPause2 != 0;
+	bool hasPhase1 = mPhase1 != 0;
+	bool hasPhase2 = mPhase2 != 0;
+	bool hasPostDelayPhase = mPostDelayPhase != 0.0f;
+	bool hasMaxAngle = mMaxAngle != 0.0f;
+	bool hasCurrentRotation = mUnk0x64 != 0.0f;
+	bool hasParent = mPhysObj != NULL;
+	bool hasCurrentPos = mUnk0x54 != mUnk0x5c || mUnk0x58 != mUnk0x60;
+	bool hasRotation = mRotation != 0.0f;
+
+	theSync.SyncBoolBit(hasOffset);
+	theSync.SyncBoolBit(hasRadius);
+	theSync.SyncBoolBit(hasPhase);
+	theSync.SyncBoolBit(hasMoveRotation);
+	theSync.SyncBoolBit(hasRadius2);
+	theSync.SyncBoolBit(hasPause1);
+	theSync.SyncBoolBit(hasPause2);
+	theSync.SyncBoolBit(hasPhase1);
+	theSync.EndBit();
+
+	theSync.SyncBoolBit(hasPhase2);
+	theSync.SyncBoolBit(hasPostDelayPhase);
+	theSync.SyncBoolBit(hasMaxAngle);
+	theSync.SyncBoolBit(hasCurrentRotation);
+	theSync.SyncBoolBit(hasParent);
+	theSync.SyncBoolBit(hasCurrentPos);
+	theSync.SyncBoolBit(hasRotation);
+	theSync.EndBit();
+
+	if (hasOffset)
+		theSync.SyncSShort(mOffset);
+	if (hasRadius)
+		theSync.SyncSShort(mRadius);
+	if (hasPhase)
+		theSync.SyncFloat(mPhase);
+	if (hasMoveRotation)
+		theSync.SyncFloat(mMoveRotation);
+	if (hasRadius2)
+		theSync.SyncSShort(mRadius2);
+	if (hasPause1)
+		theSync.SyncShort(mPause1);
+	if (hasPause2)
+		theSync.SyncShort(mPause2);
+	if (hasPhase1)
+		theSync.SyncSByte(mPhase1);
+	if (hasPhase2)
+		theSync.SyncSByte(mPhase2);
+	if (hasPostDelayPhase)
+		theSync.SyncFloat(mPostDelayPhase);
+	if (hasMaxAngle)
+		theSync.SyncFloat(mMaxAngle);
+	if (hasCurrentRotation)
+		theSync.SyncFloat(mUnk0x64);
+	if (hasRotation)
+		theSync.SyncFloat(mRotation);
+	if (hasParent) {
+		theSync.SyncFloat(mUnk0x4c);
+		theSync.SyncFloat(mUnk0x50);
+		DataSync_SyncSmartPtr<Mover>(theSync, mPhysObj);
+	}
+	if (hasCurrentPos) {
+		theSync.SyncFloat(mUnk0x54);
+		theSync.SyncFloat(mUnk0x58);
+	}
+	else {
+		mUnk0x54 = mUnk0x5c;
+		mUnk0x58 = mUnk0x60;
+	}
 }
