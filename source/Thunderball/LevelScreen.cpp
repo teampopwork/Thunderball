@@ -1,5 +1,7 @@
 #include "LevelScreen.h"
 
+#include "ThunderCommon.h"
+
 using namespace Sexy;
 
 // STUB: POPCAPGAME1 0x004af150
@@ -20,19 +22,32 @@ void LevelScreen::SyncPlayerInfo()
 {
 }
 
-// STUB: POPCAPGAME1 0x004934b0
+// FUNCTION: POPCAPGAME1 0x004934b0
 void LevelScreen::Update()
 {
+	Widget::Update();
+	if (mHoverTicks != 0 && --mHoverTicks == 0)
+		mHoveredLevel = -1;
 }
 
-// STUB: POPCAPGAME1 0x004934e0
+// FUNCTION: POPCAPGAME1 0x004934e0
 void LevelScreen::ButtonMouseEnter(int theId)
 {
+	if ((unsigned int) theId < 5)
+	{
+		mHoveredLevel = theId;
+		mHoverTicks = 0;
+	}
 }
 
-// STUB: POPCAPGAME1 0x00493500
+// FUNCTION: POPCAPGAME1 0x00493500
 void LevelScreen::ButtonMouseLeave(int theId)
 {
+	if ((unsigned int) theId < 5)
+	{
+		mHoveredLevel = theId;
+		mHoverTicks = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LevelScreen.cpp366,347", 10);
+	}
 }
 
 // STUB: POPCAPGAME1 0x00493530

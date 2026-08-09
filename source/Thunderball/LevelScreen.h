@@ -11,6 +11,22 @@ class Graphics;
 
 class LevelScreen : public Widget, public ButtonListener {
 public:
+    ThunderballApp* mApp;          // +0x8c
+    void* mUnk0x90;                // +0x90
+    int mUnk0x94;                  // +0x94
+    int mUnk0x98;                  // +0x98
+    int mUnk0x9c;                  // +0x9c
+    void* mUnk0xa0;                // +0xa0
+    int mUnk0xa4;                  // +0xa4
+    int mUnk0xa8;                  // +0xa8
+    int mHoveredLevel;             // +0xac
+    int mHoverTicks;               // +0xb0
+    char mUnk0xb4[0x78];           // +0xb4
+    void* mUnk0x12c;               // +0x12c
+    void* mUnk0x130;               // +0x130
+    void* mUnk0x134;               // +0x134
+    void* mUnk0x138;               // +0x138
+
     LevelScreen(ThunderballApp* theApp);
     virtual ~LevelScreen();
 
