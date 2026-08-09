@@ -14,19 +14,25 @@ class PhysObj;
 class Brick;
 class Ball;
 
+// VTABLE: POPCAPGAME1 0x005f0910
 class PegInfo : public EditValObj {
 public:
 	PegType mPegType; // +0x10
 	bool mUnk0x14; // +0x14
 	bool mUnk0x15; // +0x15
 	bool mUnk0x16; // +0x16
+	bool mUnk0x17; // +0x17
+	int mUnk0x18; // +0x18
+	int mUnk0x1c; // +0x1c
+	int mUnk0x20; // +0x20
+	int mUnk0x24; // +0x24
 
 	PegInfo();
 	virtual ~PegInfo();
 
 	virtual bool EditGetSetValHook(const std::string& param_1, bool param_2);
 	virtual void SyncState(DataSync& param_1);
-	virtual void Update(PhysObj* param_1);
+	void Update(PhysObj* param_1);
 
 	void Reset();
 	void SetHit(bool param_1);
