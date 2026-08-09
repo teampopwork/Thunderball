@@ -118,10 +118,15 @@ std::string* CharacterMgr::GetCharacterDesc(int param_1)
 	return &anEmptyString;
 }
 
-// STUB: POPCAPGAME1 0x0043e3b0
+// FUNCTION: POPCAPGAME1 0x0043e3b0
 int CharacterMgr::GetCharacterIdByName(std::string* param_1)
 {
-	return 0;
+	for (int i = 0; i < (int)mCharacters.size(); i++) {
+		if (_stricmp(mCharacters[i].mName.c_str(), param_1->c_str()) == 0)
+			return i;
+	}
+
+	return -1;
 }
 
 // FUNCTION: POPCAPGAME1 0x004386e0
