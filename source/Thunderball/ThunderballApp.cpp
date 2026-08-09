@@ -519,9 +519,25 @@ void ThunderballApp::DoConfirmNewChallengeDialog()
 {
 }
 
-// STUB: POPCAPGAME1 0x0041c960
+// FUNCTION: POPCAPGAME1 0x0041c960
 void ThunderballApp::DoConfirmQuitDialog()
 {
+	ThunderDialog* aDialog = DoDialogScroll(
+		5,
+		true,
+		// STRING: POPCAPGAME1 0x005d6a10
+		"Quit Peggle?",
+		// STRING: POPCAPGAME1 0x005d6a20
+		"Are you sure you want to\nquit the game?",
+		"",
+		1
+	);
+	// STRING: POPCAPGAME1 0x005d69c8
+	aDialog->mWidth = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp191,2516", 0xeb);
+	// STRING: POPCAPGAME1 0x005d6980
+	aDialog->mHeight = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp192,2517", 0x118);
+	aDialog->DoScroll(-1);
+	aDialog->mUnk0x163 = false;
 }
 
 // STUB: POPCAPGAME1 0x0041cc40
@@ -571,8 +587,14 @@ ThunderDialog* ThunderballApp::DoDialogScroll(
 	int theButtonMode
 )
 {
-	ThunderDialog* aDialog =
-		new ThunderDialog(theId, isModal, theDialogHeader, theDialogLines, theDialogFooter, theButtonMode);
+	ThunderDialog* aDialog = static_cast<ThunderDialog*>(SexyApp::DoDialog(
+		theId,
+		isModal,
+		theDialogHeader,
+		theDialogLines,
+		theDialogFooter,
+		theButtonMode
+	));
 	aDialog->DoScroll(true);
 	return aDialog;
 }
