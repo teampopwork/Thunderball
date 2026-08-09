@@ -717,9 +717,53 @@ void Ball::DoBallBallCollision(Ball* param_1)
     }
 }
 
-// STUB: POPCAPGAME1 0x00477340
+// FUNCTION: POPCAPGAME1 0x00477340
 void Ball::DoBallPegCollision(Ball* param_1)
 {
+	float aDx = mUnk0xec - param_1->mUnk0xec;
+	float aDy = mUnk0xf0 - param_1->mUnk0xf0;
+	float aDistanceSquared = aDx * aDx + aDy * aDy;
+	float aThisRadius = mUnk0x13c;
+	float anOtherRadius = param_1->mUnk0x13c;
+	SexyVector2 aNormal = SexyVector2(
+		param_1->mUnk0xec - mUnk0xec,
+		param_1->mUnk0xf0 - mUnk0xf0).Normalize();
+
+	float aThisVX = mUnk0xfc;
+	float aThisVY = mUnk0x100;
+	float anOtherVX = param_1->mUnk0xfc;
+	float anOtherVY = param_1->mUnk0x100;
+	mUnk0x168 = -aNormal;
+
+	float aBounce = param_1->mUnk0x34;
+	float aSlideThreshold = param_1->mUnk0x38;
+	if (aBounce == 0.0f)
+		aBounce = 0.9f;
+	if (aSlideThreshold == 0.0f)
+		aSlideThreshold = ModVal(
+			0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Ball.cpp1,533", 1.0f);
+
+	float anImpulse = ((aThisVX - anOtherVX) * aNormal.x +
+		(aThisVY - anOtherVY) * aNormal.y) * aBounce;
+	if (fabs(anImpulse) <= aSlideThreshold)
+		mUnk0x148 = 0;
+	else
+		anImpulse += anImpulse;
+	mUnk0x170 = fabs(anImpulse);
+
+	if (!mUnk0x161 || param_1->mPegInfo.get() == NULL)
+	{
+		float aResponse = -(anImpulse / 999999995905.0) * 999999995904.0;
+		mUnk0xfc = aThisVX + aResponse * aNormal.x;
+		mUnk0x100 = aThisVY + aResponse * aNormal.y;
+		float anOverlap = aThisRadius + anOtherRadius - sqrtf(aDistanceSquared);
+		Translate(-anOverlap * aNormal.x, -anOverlap * aNormal.y);
+		if (param_1->mUnk0x2b)
+			mUnk0xe4 = 0;
+	}
+
+	if (mNotifyCollisionFunc != NULL)
+		mNotifyCollisionFunc(this, param_1);
 }
 
 // FUNCTION: POPCAPGAME1 0x004775b0
@@ -831,7 +875,7 @@ void Ball::DoLineCollision(
 
 		SexyVector2 anAddedVelocity = (*param_5 + *param_6) * (aBounce + 1.0);
 		if (anAddedVelocity.Dot(*param_3) > 0.0f)
-			SetVelocity(anAddedVelocity.x, anAddedVelocity.y);
+			Translate(anAddedVelocity.x, anAddedVelocity.y);
 		*param_1 += anAddedVelocity;
 		mUnk0xfc = param_1->x;
 		mUnk0x100 = param_1->y;
