@@ -194,9 +194,33 @@ void Poly::EditDrawOutline(Graphics* g)
 	}
 }
 
-// STUB: POPCAPGAME1 0x0047eb70
+// FUNCTION: POPCAPGAME1 0x0047eb70
 void Poly::EditDrawPoints(Graphics* g)
 {
+	EnsureLines();
+	float centerX = (mUnk0x1c + mUnk0x14) * 0.5f;
+	float centerY = (mUnk0x20 + mUnk0x18) * 0.5f;
+	if ((mUnk0x114 < centerX - 10.0f || mUnk0x114 > centerX + 10.0f ||
+		 mUnk0x118 < centerY - 10.0f || mUnk0x118 > centerY + 10.0f) &&
+		!PointInside(mUnk0x114, mUnk0x118)) {
+		int pointCount = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Poly.cpp103,1055", 5);
+		for (int i = 0; i < pointCount; i++) {
+			float amount = (i + 0.5f) / pointCount;
+			float inverse = 1.0f - amount;
+			g->FillRect(
+				(int)(mUnk0x114 * inverse + centerX * amount),
+				(int)(mUnk0x118 * inverse + centerY * amount),
+				1,
+				1);
+		}
+		g->FillRect((int)mUnk0x114, (int)mUnk0x118, 1, 1);
+	}
+
+	g->FillRect((int)(mUnk0x114 - 1.0f), (int)(mUnk0x118 - 1.0f), 3, 3);
+	for (int i = 0; i < (int)mUnk0x108.size(); i++) {
+		Line* line = mUnk0x108[i];
+		g->FillRect((int)(line->mUnk0xec - 1.0f), (int)(line->mUnk0xf4 - 1.0f), 3, 3);
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0047edb0
