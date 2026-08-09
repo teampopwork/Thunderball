@@ -66,9 +66,19 @@ void CharacterMgr::CheckCrossEyeFix()
 {
 }
 
-// STUB: POPCAPGAME1 0x00473d90
+// FUNCTION: POPCAPGAME1 0x00473d90
 void CharacterMgr::Clear(bool param_1)
 {
+	mUnk0x48 = 0.0f;
+	mUnk0x34 = 0;
+	mUnk0x30 = 0;
+	mUnk0x3C = -2;
+	mUnk0x38 = -2;
+	mUnk0x45 = false;
+	if (param_1) {
+		mImageMgr->Clear();
+		mCharacters.clear();
+	}
 }
 
 // STUB: POPCAPGAME1 0x00432920
