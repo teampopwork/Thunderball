@@ -45,9 +45,61 @@ void SlotMachineDialog::Draw(Graphics* param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x00496730
+// FUNCTION: POPCAPGAME1 0x00496730
 void SlotMachineDialog::CalcCurLight()
 {
+	float anAngles[4];
+	anAngles[0] = (float)(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\SlotMachineDialog.cpp768,230", 45) * 3.14159274101257 / 180.0);
+	anAngles[1] = (float)(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\SlotMachineDialog.cpp769,231", 135) * 3.14159274101257 / 180.0);
+	anAngles[2] = (float)(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\SlotMachineDialog.cpp770,232", 225) * 3.14159274101257 / 180.0);
+	anAngles[3] = (float)(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\SlotMachineDialog.cpp771,233", 315) * 3.14159274101257 / 180.0);
+
+	int aLight = 0;
+	for (; aLight < 4; aLight++) {
+		if (mUnk0x190 < anAngles[aLight]) {
+			break;
+		}
+	}
+	mUnk0x180 = aLight % 4;
+
+	int aBrightness = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\SlotMachineDialog.cpp772,244", 30);
+	if (mUnk0x184 != 0) {
+		for (int i = 0; i < 40; i++) {
+			mUnk0x19c[i] = 0;
+		}
+
+		if ((mUnk0x184 / 20) % 2 != 1) {
+			return;
+		}
+		if (mUnk0x180 > 0) {
+			int aStart = mUnk0x180 * 10 - 5;
+			int anEnd = aStart + 10;
+			for (int i = aStart; i <= anEnd; i++) {
+				mUnk0x19c[i] = aBrightness;
+			}
+		}
+		else {
+			for (int i = 0; i <= 5; i++) {
+				mUnk0x19c[i] = aBrightness;
+			}
+			for (int i = 35; i < 40; i++) {
+				mUnk0x19c[i] = aBrightness;
+			}
+		}
+		return;
+	}
+
+	float anOffsetAngle = (float)ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\SlotMachineDialog.cpp773,272", -5);
+	anOffsetAngle = (float)(anOffsetAngle * 3.14159274101257 / 180.0);
+	int anOffset = (int)((mUnk0x190 - anOffsetAngle) * 20.0 / 3.14159274101257);
+	if (anOffset < 0) {
+		int aRemainder = -anOffset % 40;
+		mUnk0x198 = aRemainder == 0 ? 0 : 40 - aRemainder;
+	}
+	else {
+		mUnk0x198 = anOffset % 40;
+	}
+	mUnk0x19c[mUnk0x198] = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\SlotMachineDialog.cpp774,273", 30);
 }
 
 // STUB: POPCAPGAME1 0x0049b3d0
