@@ -249,9 +249,68 @@ void InterfaceMgr::SettleDown()
 	CheckHighScoreSync();
 }
 
-// STUB: POPCAPGAME1 0x004481d0
+// FUNCTION: POPCAPGAME1 0x004481d0
 void InterfaceMgr::UpdateScoreDisp()
 {
+	if (mUnk0x9c != 0) {
+		--mUnk0x9c;
+		return;
+	}
+
+	for (int i = 0; i < 2; ++i) {
+		LogicMgr* aLogicMgr = mBoard->mLogicMgr;
+		int aDisplayedScore = (&mUnk0x94)[i];
+		int aScore = (&aLogicMgr->mUnk0x174)[i];
+		if (aDisplayedScore == aScore) {
+			continue;
+		}
+
+		if (aDisplayedScore < aScore) {
+			if (aLogicMgr->mUnk0x4 == 5) {
+				aDisplayedScore += 5000;
+			} else {
+				int aDifference = aScore - aDisplayedScore;
+				if (aDifference > 100000) {
+					aDisplayedScore += 5000;
+				} else if (aDifference > 10000) {
+					aDisplayedScore += 1000;
+				} else if (aDifference > 1000) {
+					aDisplayedScore += 200;
+				} else if (aDifference > 100) {
+					aDisplayedScore += 100;
+				} else {
+					aDisplayedScore += 10;
+				}
+			}
+
+			if (aDisplayedScore > aScore) {
+				aDisplayedScore = aScore;
+			}
+		} else if (aDisplayedScore > aScore) {
+			int aDifference = aDisplayedScore - aScore;
+			if (aDifference > 100000) {
+				aDisplayedScore -= 5000;
+			}
+			if (aDifference > 10000) {
+				aDisplayedScore -= 1000;
+			} else if (aDifference > 1000) {
+				aDisplayedScore -= 200;
+			} else if (aDifference > 100) {
+				aDisplayedScore -= 100;
+			} else {
+				aDisplayedScore -= 10;
+			}
+
+			if (aDisplayedScore < aScore) {
+				aDisplayedScore = aScore;
+			}
+		}
+
+		(&mUnk0x94)[i] = aDisplayedScore;
+		if (i == 0) {
+			CheckHighScoreSync();
+		}
+	}
 }
 
 // STUB: POPCAPGAME1 0x0043cfd0
