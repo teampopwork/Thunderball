@@ -3,9 +3,41 @@
 
 using namespace Sexy;
 
-// STUB: POPCAPGAME1 0x00486a90
+// FUNCTION: POPCAPGAME1 0x00486a90
 Gun::Gun(Board* param_1)
+	: mUnk0x174(0.0f),
+	  mUnk0x178(0.0f),
+	  mUnk0x1a4(0.0f),
+	  mUnk0x1a8(0.0f)
 {
+	mUnk0x114 = 0.0f;
+	mUnk0x118 = 0.0f;
+	mBoard = param_1;
+	mUpdateCount = 0;
+	mUnk0x160 = 4.0f;
+	mUnk0x134 = 1;
+	mUnk0x180 = true;
+	mLastTrackedAngle = 0.0f;
+	mSettledAngle = 0.0f;
+	mAngle = 0.0f;
+	mUnk0x1b0 = 0.0f;
+	mUnk0x198 = -1;
+	mUnk0x1b4 = 0.0f;
+	mUnk0x19c = -1;
+	mUnk0x1b8 = 0.0f;
+	mSettledUpdate = 0;
+	mUnk0x1bc = 0.0f;
+	mAngleStableTicks = 0;
+	mUnk0x194 = false;
+	mUnk0x164 = 30.0f;
+	mUnk0x195 = false;
+	mUnk0x1a1 = false;
+	mUnk0x168 = 10.0f;
+	mUnk0x16c = 60.0f;
+	mUnk0x170 = 26.0f;
+	mAngularVelocity = 1000.0f;
+	mUnk0x1ac = 1000.0f;
+	CalcPoints();
 }
 
 // SYNTHETIC: POPCAPGAME1 0x00486cd0
