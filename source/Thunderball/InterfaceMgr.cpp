@@ -258,9 +258,16 @@ void InterfaceMgr::DrawImageCelToInterface(Image* param_1, int param_2, int para
 {
 }
 
-// STUB: POPCAPGAME1 0x0043c9b0
+// FUNCTION: POPCAPGAME1 0x0043c9b0
 void InterfaceMgr::LoadGun()
 {
+	if (mUnk0x164.size() == 0) {
+		mBoard->mLogicMgr->mUnk0x138 = 2;
+		return;
+	}
+
+	mUnk0x160 = false;
+	mUnk0x58 = 1;
 }
 
 // STUB: POPCAPGAME1 0x0043ca10
