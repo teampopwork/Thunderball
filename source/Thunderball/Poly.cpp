@@ -9,6 +9,7 @@
 #include "ThunderCommon.h"
 
 #include <SexyAppFramework/SexyVector.h>
+#include <algorithm>
 #include <vector>
 
 using namespace Sexy;
@@ -78,10 +79,10 @@ bool Poly::EditGetSetValHook(const std::string& param_1, bool param_2)
 	else if (param_1 == "poly_width" || param_1 == "poly_height") {
 		if (mUnk0x12c) {
 			if (mUnk0xe8.size() == 5) {
-				SexyVector2* aPoint0 = mUnk0xe8[0];
-				SexyVector2* aPoint2 = mUnk0xe8[2];
-				float width = abs(aPoint0->x - aPoint2->x) + 1.0f;
-				float height = abs(aPoint0->y - aPoint2->y) + 1.0f;
+				SexyVector2& aPoint0 = mUnk0xe8[0];
+				SexyVector2& aPoint2 = mUnk0xe8[2];
+				float width = abs(aPoint0.x - aPoint2.x) + 1.0f;
+				float height = abs(aPoint0.y - aPoint2.y) + 1.0f;
 				if (param_1 == "poly_width") {
 					EditValSyncNum(width, 1.0f, 100000.0f);
 				}
@@ -556,15 +557,15 @@ void Poly::InitRotatedFromPoints(float param_1)
 		float fVar1 = cos(param_1);
 		float fVar2 = sin(param_1);
 
-		SexyVector2* aPoint0 = mUnk0xe8[0];
-		float fVar3 = fVar2 * aPoint0->y - fVar1 * aPoint0->x;
-		float fVar4 = fVar1 * aPoint0->y + fVar2 * aPoint0->x;
+		SexyVector2& aPoint0 = mUnk0xe8[0];
+		float fVar3 = fVar2 * aPoint0.y - fVar1 * aPoint0.x;
+		float fVar4 = fVar1 * aPoint0.y + fVar2 * aPoint0.x;
 
 		int i = 0;
-		for (std::vector<SexyVector2*>::iterator it = mUnk0xe8.begin(); it != mUnk0xe8.end(); ++it, i++) {
-			SexyVector2* aPoint = *it;
-			float fVar5 = aPoint->x;
-			float fVar6 = aPoint->y;
+		for (std::vector<SexyVector2>::iterator it = mUnk0xe8.begin(); it != mUnk0xe8.end(); ++it, i++) {
+			SexyVector2& aPoint = *it;
+			float fVar5 = aPoint.x;
+			float fVar6 = aPoint.y;
 			float fVar7 = fVar1 * fVar5 + fVar2 * fVar6;
 			float fVar8 = fVar6 * fVar1 - fVar2 * fVar5;
 			Line* aLine = mUnk0x108[i];
@@ -596,8 +597,8 @@ void Poly::DelayedInitRotatedFromPoints(float param_1)
 	float fVar2 = sin(param_1);
 
 	for (int i = 0; i < mUnk0xe8.size(); i++) {
-		float x = mUnk0xe8[i]->x;
-		float y = mUnk0xe8[i]->y;
+		float x = mUnk0xe8[i].x;
+		float y = mUnk0xe8[i].y;
 		float fVar3 = fVar2 * y + fVar1 * x + mUnk0x114;
 		float fVar4 = (y * fVar1 - fVar2 * x) + mUnk0x118;
 
@@ -684,15 +685,22 @@ bool Poly::CheckCollision(
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x0047d810
+// FUNCTION: POPCAPGAME1 0x0047d810
 void Poly::SetRotation(float param_1)
 {
+	if (param_1 == mUnk0x11c)
+		return;
+
+	mUnk0x128 = mUnk0x11c = NormalizeAngle(param_1);
+	if (mMover.get() != NULL)
+		mMover->mRotation = mUnk0x11c;
+	InitRotatedFromPoints(mUnk0x11c);
 }
 
 // FUNCTION: POPCAPGAME1 0x00483330
 void Poly::AddPoint(float param_1, float param_2)
 {
-	mUnk0xe8.push_back(new SexyVector2(param_1, param_2));
+	mUnk0xe8.push_back(SexyVector2(param_1, param_2));
 }
 
 // STUB: POPCAPGAME1 0x00484730
@@ -700,9 +708,11 @@ void Poly::InitFromPoints()
 {
 }
 
-// STUB: POPCAPGAME1 0x00484e80
+// FUNCTION: POPCAPGAME1 0x00484e80
 void Poly::ReverseLines()
 {
+	std::reverse(mUnk0xe8.begin(), mUnk0xe8.end());
+	InitFromPoints();
 }
 
 // STUB: POPCAPGAME1 0x00486e20
@@ -710,9 +720,21 @@ void Poly::SetNormalDir(int param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x00484dc0
+// FUNCTION: POPCAPGAME1 0x00484dc0
 void Poly::Close()
 {
+	if (mUnk0xe8.size() > 1)
+	{
+		SexyVector2& aFirst = mUnk0xe8.front();
+		SexyVector2& aLast = mUnk0xe8.back();
+		float aDx = aLast.x - aFirst.x;
+		float aDy = aLast.y - aFirst.y;
+		if (aDx * aDx + aDy * aDy < 100.0f)
+			aLast = aFirst;
+		else
+			mUnk0xe8.push_back(aFirst);
+		InitFromPoints();
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x00484b30
@@ -721,9 +743,9 @@ void Poly::MoveCenterTo(float param_1, float param_2)
 	float fVar1 = param_1 - mUnk0x114;
 	float fVar2 = param_2 - mUnk0x118;
 	for (int i = 0; i < (int)mUnk0xe8.size(); i++) {
-		SexyVector2* aPoint = mUnk0xe8[i];
-		aPoint->x -= fVar1;
-		aPoint->y -= fVar2;
+		SexyVector2& aPoint = mUnk0xe8[i];
+		aPoint.x -= fVar1;
+		aPoint.y -= fVar2;
 	}
 
 	mUnk0x114 += fVar1;
@@ -745,9 +767,9 @@ void Poly::SetScale(float param_1)
 	if (param_1 > 0) {
 		float aScale = param_1 / mUnk0x124;
 		for (int i = 0; i < (int)mUnk0xe8.size(); i++) {
-			SexyVector2* aPoint = mUnk0xe8[i];
-			aPoint->x *= aScale;
-			aPoint->y *= aScale;
+			SexyVector2& aPoint = mUnk0xe8[i];
+			aPoint.x *= aScale;
+			aPoint.y *= aScale;
 		}
 
 		mUnk0x124 = param_1;

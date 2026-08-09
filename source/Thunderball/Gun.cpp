@@ -37,7 +37,7 @@ static int GetFloatSign(float param_1)
 }
 
 // FUNCTION: POPCAPGAME1 0x004bc3b0
-static float NormalizeAngle(float param_1)
+float NormalizeAngle(float param_1)
 {
 	const float aFullTurn = SEXY_PI * 2.0f;
 	if (param_1 >= 0.0f && param_1 < aFullTurn)

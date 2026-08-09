@@ -5,6 +5,8 @@
 
 #define SEXY_PI 3.1415927f
 
+float NormalizeAngle(float param_1);
+
 namespace Sexy
 {
 class ButtonWidget;
