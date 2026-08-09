@@ -28,15 +28,16 @@ SlotMachineDialog::~SlotMachineDialog()
 	RemoveAllWidgets(true, false);
 }
 
-// STUB: POPCAPGAME1 0x00496120
+// FUNCTION: POPCAPGAME1 0x00496120
 void SlotMachineDialog::Resize(int param_1, int param_2, int param_3, int param_4)
 {
+	Dialog::Resize(param_1, param_2, param_3, param_4);
 }
 
-// STUB: POPCAPGAME1 0x00496130
+// FUNCTION: POPCAPGAME1 0x00496130
 int SlotMachineDialog::GetPreferredHeight(int param_1)
 {
-    return 0;
+	return ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\SlotMachineDialog.cpp752,120", 300);
 }
 
 // STUB: POPCAPGAME1 0x00496150
