@@ -6,17 +6,16 @@
 
 #include <string>
 #include <vector>
+#include <SexyAppFramework/SexyVector.h>
 
 namespace Sexy
 {
-
-class SexyVector2;
 
 // VTABLE: POPCAPGAME1 0x005f1f4c
 class Poly : public PhysObj {
 public:
 	std::vector<SexyVector2*> mUnk0xe8;    // +0xe4
-	std::vector<SexyVector2*> mUnk0xf8;    // +0xf8
+	std::vector<SexyVector2> mUnk0xf8;     // +0xf4
 	std::vector<SmartPtr<Line>> mUnk0x108; // +0x108
 	float mUnk0x114;                       // +0x114
 	float mUnk0x118;                       // +0x118

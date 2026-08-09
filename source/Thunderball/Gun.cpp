@@ -180,9 +180,57 @@ float Gun::CalcAngularVelocity()
 	return aTotal / anElapsed;
 }
 
-// STUB: POPCAPGAME1 0x00483da0
+// FUNCTION: POPCAPGAME1 0x00483da0
 void Gun::CalcPoints()
 {
+	mUnk0x12d = true;
+	mUnk0x12e = true;
+
+	if (mUnk0x108.size() != 3)
+	{
+		mUnk0x108.clear();
+		SexyVector2 aPoint(0.0f, 0.0f);
+		for (int i = 0; i < 3; i++)
+		{
+			mUnk0x108.push_back(new Line(0.0f, 0.0f, 0.0f, 0.0f));
+			mUnk0x108.back()->mUnk0x111 = true;
+			mUnk0xf8.push_back(aPoint);
+		}
+	}
+
+	float aRadius = Ball::mDefRadius;
+	if (mBall.get() != NULL)
+		aRadius = mBall->mUnk0x13c;
+
+	SexyVector2 aPoints[4];
+	aPoints[0] = SexyVector2(mUnk0x114 + mUnk0x164, mUnk0x118);
+	aPoints[1] = SexyVector2(mUnk0x114, mUnk0x118 - mUnk0x168);
+	aPoints[2] = SexyVector2(mUnk0x114, mUnk0x118 + mUnk0x168);
+	aPoints[3] = SexyVector2(
+		mUnk0x114 + mUnk0x170 + aRadius,
+		mUnk0x118 + (float) ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Gun.cpp17,151", 1));
+
+	for (int i = 0; i < 4; i++)
+	{
+		aPoints[i].x += mUnk0x16c;
+		RotateXY(&aPoints[i].x, &aPoints[i].y, mUnk0x114, mUnk0x118, mAngle);
+	}
+
+	for (int i = 0; i < 3; i++)
+	{
+		Line* aLine = mUnk0x108[i];
+		const SexyVector2& aStart = aPoints[i];
+		const SexyVector2& anEnd = aPoints[(i + 1) % 3];
+		aLine->Init(aStart.x, aStart.y, anEnd.x, anEnd.y);
+		mUnk0xf8[i] = SexyVector2(aLine->mUnk0xec - mUnk0x114, aLine->mUnk0xf4 - mUnk0x118);
+	}
+
+	if (mBall.get() != NULL)
+		mBall->SetAbsPos(aPoints[3].x, aPoints[3].y);
+
+	mUnk0x158 = aPoints[3].x;
+	mUnk0x15c = aPoints[3].y;
+	CalcBoundingBox();
 }
 
 // STUB: POPCAPGAME1 0x00484500

@@ -515,8 +515,8 @@ void Poly::ActualSetPos(float param_1, float param_2)
 	int i = 0;
 	for (std::vector<SmartPtr<Line>>::iterator it = mUnk0x108.begin(); it != mUnk0x108.end(); ++it, i++) {
 		Line* aLine = *it;
-		SexyVector2* aLineStart = mUnk0xf8[i];
-		aLine->SetPos(mUnk0x114 + aLineStart->x, mUnk0x118 + aLineStart->y);
+		SexyVector2& aLineStart = mUnk0xf8[i];
+		aLine->SetPos(mUnk0x114 + aLineStart.x, mUnk0x118 + aLineStart.y);
 	}
 }
 
@@ -558,9 +558,9 @@ void Poly::InitRotatedFromPoints(float param_1)
 				mUnk0x118 + fVar8
 			);
 
-			SexyVector2* aLineStart = mUnk0xf8[i];
-			aLineStart->x = aLine->mUnk0xec - mUnk0x114;
-			aLineStart->y = aLine->mUnk0xf4 - mUnk0x118;
+			SexyVector2& aLineStart = mUnk0xf8[i];
+			aLineStart.x = aLine->mUnk0xec - mUnk0x114;
+			aLineStart.y = aLine->mUnk0xf4 - mUnk0x118;
 		}
 
 		CalcBoundingBox();
