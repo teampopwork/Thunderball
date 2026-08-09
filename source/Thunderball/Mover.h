@@ -11,7 +11,6 @@ namespace Sexy
 
 class Graphics;
 class DataSync;
-class PhysObj;
 
 class Mover : public EditValObj {
 public:
@@ -32,7 +31,7 @@ public:
 	float mMaxAngle; // +0x3C
 	float mPostDelayPhase; // +0x40
 	float mRotation; // +0x44
-	SmartPtr<PhysObj> mPhysObj; // +0x48
+	SmartPtr<Mover> mPhysObj; // +0x48
 	float mUnk0x4c; // +0x4c
 	float mUnk0x50; // +0x50
 	float mUnk0x54; // +0x54

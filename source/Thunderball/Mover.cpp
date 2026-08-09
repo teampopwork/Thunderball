@@ -102,9 +102,112 @@ float Mover::GetMovePos(int param_1)
 	return (float) (param_1 % local_8) / local_8;
 }
 
-// STUB: POPCAPGAME1 0x00478ea0
+// FUNCTION: POPCAPGAME1 0x00478ea0
 void Mover::CalcPos(int param_1, float param_2)
 {
+	if (mPhysObj != NULL) {
+		Translate(mPhysObj->mUnk0x54 - mUnk0x4c, mPhysObj->mUnk0x58 - mUnk0x50);
+		mUnk0x4c = mPhysObj->mUnk0x54;
+		mUnk0x50 = mPhysObj->mUnk0x58;
+	}
+
+	if (mType == 0 || mTime < 1) {
+		mUnk0x54 = mUnk0x5c;
+		mUnk0x58 = mUnk0x60;
+		mUnk0x64 = mRotation;
+		return;
+	}
+
+	int aMoveType = mType < 0 ? -mType : mType;
+	int aDirection = mType < 0 ? -1 : 1;
+	float aPhase = GetMovePos(param_1) + param_2 / mTime;
+	float anAngle = (float) (aPhase * (SEXY_PI * 2.0) * aDirection);
+	float aRadiusX = (float) mRadius;
+	float aRadiusY = mRadius2 == 0 ? aRadiusX : (float) mRadius2;
+
+	switch (aMoveType) {
+	case 1:
+		mUnk0x54 = mUnk0x5c;
+		mUnk0x58 = mUnk0x60 - (float) sin(anAngle) * aRadiusY;
+		mUnk0x64 = mRotation;
+		break;
+	case 2:
+		mUnk0x54 = mUnk0x5c + (float) cos(anAngle) * aRadiusX;
+		mUnk0x58 = mUnk0x60;
+		mUnk0x64 = mRotation;
+		break;
+	case 3:
+		mUnk0x54 = mUnk0x5c + (float) cos(anAngle) * aRadiusX;
+		mUnk0x58 = mUnk0x60 - (float) sin(anAngle) * aRadiusY;
+		mUnk0x64 = mRotation;
+		break;
+	case 4:
+		mUnk0x54 = mUnk0x5c + (float) cos(anAngle) * aRadiusX;
+		mUnk0x58 = mUnk0x60 - (float) sin(anAngle * 2.0f) * aRadiusY * 0.5f;
+		mUnk0x64 = mRotation;
+		break;
+	case 5:
+		mUnk0x54 = mUnk0x5c + (float) sin(anAngle * 2.0f) * aRadiusX;
+		mUnk0x58 = mUnk0x60 - (float) sin(anAngle) * aRadiusY;
+		mUnk0x64 = mRotation;
+		break;
+	case 6:
+	case 7: {
+		float aMaxAngle = mMaxAngle == 0.0f ? SEXY_PI : mMaxAngle;
+		float aSwingAngle = (float) ((sin(aPhase * (SEXY_PI * 2.0) - SEXY_PI / 2.0) + 1.0) * aMaxAngle * 0.5);
+		mUnk0x54 = mUnk0x5c + (float) cos(aSwingAngle) * aRadiusX;
+		if (aMoveType == 6)
+			mUnk0x58 = mUnk0x60 - (float) sin(aSwingAngle) * aRadiusY;
+		else
+			mUnk0x58 = mUnk0x60 - (float) cos(aSwingAngle) * aRadiusY;
+		mUnk0x64 = mRotation;
+		break;
+	}
+	case 8:
+		mUnk0x54 = mUnk0x5c;
+		mUnk0x58 = mUnk0x60;
+		mUnk0x64 = mRotation + (mMaxAngle == 0.0f ? anAngle : mMaxAngle * aDirection);
+		break;
+	case 9: {
+		float aMaxAngle = mMaxAngle == 0.0f ? SEXY_PI : mMaxAngle;
+		mUnk0x54 = mUnk0x5c;
+		mUnk0x58 = mUnk0x60;
+		mUnk0x64 = mRotation + ((float) sin(aPhase * (SEXY_PI * 2.0)) * aMaxAngle + mMoveRotation) * aDirection;
+		break;
+	}
+	case 11: {
+		float aFraction = aPhase - (int) aPhase;
+		mUnk0x54 = mUnk0x5c;
+		mUnk0x58 = mUnk0x60 - aFraction * aRadiusY * aDirection;
+		mUnk0x64 = mRotation;
+		break;
+	}
+	case 12: {
+		float aFraction = aPhase - (int) aPhase;
+		mUnk0x54 = mUnk0x5c + aFraction * aRadiusX * aDirection;
+		mUnk0x58 = mUnk0x60;
+		mUnk0x64 = mRotation;
+		break;
+	}
+	case 13:
+		mUnk0x54 = mUnk0x5c + (float) cos(anAngle) * aRadiusX;
+		mUnk0x58 = mUnk0x60 - (float) sin(anAngle) * aRadiusY;
+		if (mRadius == 0 || mRadius2 == 0) {
+			mUnk0x64 = mRotation + anAngle;
+		}
+		else {
+			float aTangentAngle = anAngle + SEXY_PI / 2.0f;
+			float aTangentX = (float) cos(aTangentAngle) * aRadiusX;
+			float aTangentY = -(float) sin(aTangentAngle) * aRadiusY;
+			mUnk0x64 = mRotation + (float) atan2(aTangentY, aTangentX);
+		}
+		break;
+	default:
+		break;
+	}
+
+	if (mMoveRotation != 0.0f)
+		RotateXY(&mUnk0x54, &mUnk0x58, mUnk0x5c, mUnk0x60, mMoveRotation);
 }
 
 // FUNCTION: POPCAPGAME1 0x00479450

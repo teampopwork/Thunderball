@@ -19,6 +19,8 @@
 #include <SexyAppFramework/Rect.h>
 #include <SexyAppFramework/WidgetManager.h>
 
+#include <math.h>
+
 using namespace Sexy;
 
 // STUB: POPCAPGAME1 0x0040b570
@@ -1745,9 +1747,15 @@ void Sexy::DrawAdventureFrame(Graphics* g, int param_1, int param_2, int param_3
 	}
 }
 
-// STUB: POPCAPGAME1 0x004bc2d0
+// FUNCTION: POPCAPGAME1 0x004bc2d0
 void Sexy::RotateXY(float* param_1, float* param_2, float param_3, float param_4, float param_5)
 {
+	float anX = *param_1 - param_3;
+	float aY = *param_2 - param_4;
+	float aCos = (float) cos(param_5);
+	float aSin = (float) sin(param_5);
+	*param_1 = param_3 + anX * aCos + aY * aSin;
+	*param_2 = param_4 + aY * aCos - anX * aSin;
 }
 
 // STUB: POPCAPGAME1 0x00407a60
