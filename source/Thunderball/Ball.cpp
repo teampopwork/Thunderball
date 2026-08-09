@@ -20,7 +20,7 @@ using namespace Sexy;
 float Sexy::Ball::mDefRadius = 6.0f;
 
 // FUNCTION: POPCAPGAME1 0x00480de0
-Ball::Ball(bool param_1 = false)
+Ball::Ball(bool param_1)
 {
     mUnk0xe8 = mCurSortId;
     mUnk0x140 = param_1;

@@ -64,7 +64,7 @@ public:
     bool mUnk0x18c; // +0x18c
     bool mUnk0x18d; // +0x18d
 
-	Ball(bool param_1);
+	Ball(bool param_1 = false);
 	virtual ~Ball();
 
 	virtual bool EditGetSetValHook(std::string& param_1, bool param_2);
