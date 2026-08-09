@@ -1,4 +1,5 @@
 #include "Gun.h"
+#include "Ball.h"
 
 using namespace Sexy;
 
@@ -20,27 +21,29 @@ void Gun::UpdateCommon()
 {
 }
 
-// STUB: POPCAPGAME1 0x0047df50
+// FUNCTION: POPCAPGAME1 0x0047df50
 void Gun::UpdateSlowMo(float param_1)
 {
+	Poly::UpdateSlowMo(param_1);
+	UpdateCommon();
 }
 
 // FUNCTION: POPCAPGAME1 0x00477bf0
 bool Gun::CanFire()
 {
-	return mUnk0x10c != 0;
+	return mBall.get() != NULL;
 }
 
-// STUB: POPCAPGAME1 0x004754a0
-float Gun::GetMaxGuideLength()
+// FUNCTION: POPCAPGAME1 0x004754a0
+int Gun::GetMaxGuideLength()
 {
-	return 0.0f;
+	return mUnk0x194 ? 80 : 40;
 }
 
-// STUB: POPCAPGAME1 0x004754c0
+// FUNCTION: POPCAPGAME1 0x004754c0
 bool Gun::NeedDrawMouseClick()
 {
-	return false;
+	return (!mUnk0x194 && mUnk0x198 < 0) || mUnk0x198 > GetMaxGuideLength();
 }
 
 // STUB: POPCAPGAME1 0x0047f590

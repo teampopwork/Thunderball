@@ -12,10 +12,17 @@ class Graphics;
 class DataSync;
 class Ball;
 
-// VTABLE: POPCAPGAME1 0x005f1234
+// VTABLE: POPCAPGAME1 0x005f286c
 class Gun : public Poly {
 public:
-	int mUnk0x10c;
+	Board* mBoard;                // +0x148
+	char mPad0x14c[0x48];         // +0x14c
+	bool mUnk0x194;               // +0x194
+	char mPad0x195[3];            // +0x195
+	int mUnk0x198;                // +0x198
+	char mPad0x19c[0x24];         // +0x19c
+	SmartPtr<Ball> mBall;         // +0x1c0
+	char mPad0x1c4[0x1c];         // +0x1c4
 
 	Gun(Board* param_1);
 	virtual ~Gun();
@@ -28,7 +35,7 @@ public:
 
 	void UpdateCommon();
 	bool CanFire();
-	float GetMaxGuideLength();
+	int GetMaxGuideLength();
 	bool NeedDrawMouseClick();
 	void DrawBouncyGuide(Graphics* param_1);
 	void DoDrawGuide(Graphics* param_1, float param_2, float param_3, float param_4, float param_5, int param_6, int param_7, int param_8, bool param_9);
