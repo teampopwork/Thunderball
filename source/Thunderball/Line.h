@@ -12,11 +12,19 @@ namespace Sexy
 // VTABLE: POPCAPGAME1 0x005f1a44
 class Line : public PhysObj {
 public:
+	float mUnk0xe4; // +0xe4
+	float mUnk0xe8; // +0xe8
 	float mUnk0xec; // +0xec
 	float mUnk0xf0; // +0xf0
 	float mUnk0xf4; // +0xf4
 	float mUnk0xf8; // +0xf8
-    bool mUnk0x18c; // +0x18c
+	float mUnk0xfc; // +0xfc
+	float mUnk0x100; // +0x100
+	float mUnk0x104; // +0x104
+	float mUnk0x108; // +0x108
+	float mUnk0x10c; // +0x10c
+	bool mUnk0x110; // +0x110
+	bool mUnk0x111; // +0x111
 
 	Line();
 	Line(float param_1, float param_2, float param_3, float param_4);

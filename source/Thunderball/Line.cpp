@@ -1,4 +1,5 @@
 #include "Line.h"
+#include "DataSync.h"
 
 #include <SexyAppFramework/SexyVector.h>
 
@@ -6,27 +7,68 @@
 
 using namespace Sexy;
 
-// STUB: POPCAPGAME1 0x00481440
+// FUNCTION: POPCAPGAME1 0x00481440
 Line::Line()
 {
+	mUnk0x104 = 0.0f;
+	mUnk0x108 = 0.0f;
+	mUnk0xfc = 0.0f;
+	mUnk0x100 = 0.0f;
+	mUnk0x10 = 4;
+	mUnk0x111 = false;
 }
 
-// STUB: POPCAPGAME1 0x00481480
+// FUNCTION: POPCAPGAME1 0x00481480
 Line::Line(float param_1, float param_2, float param_3, float param_4)
 {
+	mUnk0x104 = 0.0f;
+	mUnk0x108 = 0.0f;
+	mUnk0xfc = 0.0f;
+	mUnk0x100 = 0.0f;
+	mUnk0x10 = 4;
+	mUnk0x111 = false;
+	Init(param_1, param_2, param_3, param_4);
 }
 
 // SYNTHETIC: POPCAPGAME1 0x0047f5a0
 // Sexy::Line::`scalar destroying destructor'
 
-// STUB: POPCAPGAME1 0x0047df70
+// FUNCTION: POPCAPGAME1 0x0047df70
 Line::~Line()
 {
 }
 
-// STUB: POPCAPGAME1 0x004814f0
+// FUNCTION: POPCAPGAME1 0x004814f0
 void Line::SyncState(DataSync& sync)
 {
+	PhysObj::SyncState(sync);
+	bool syncVx = mUnk0xfc != 0.0f;
+	bool syncVy = mUnk0x100 != 0.0f;
+	sync.SyncBoolBit(syncVx);
+	sync.SyncBoolBit(syncVy);
+	sync.SyncBoolBit(mUnk0x111);
+	sync.EndBit();
+	sync.SyncFloat(mUnk0xec);
+	sync.SyncFloat(mUnk0xf4);
+	sync.SyncFloat(mUnk0xf0);
+	sync.SyncFloat(mUnk0xf8);
+	if (syncVx) {
+		sync.SyncFloat(mUnk0xfc);
+	}
+	if (syncVy) {
+		sync.SyncFloat(mUnk0x100);
+	}
+	if (mSyncType == 3) {
+		sync.SyncFloat(mUnk0xe4);
+		sync.SyncFloat(mUnk0xe8);
+		sync.SyncFloat(mUnk0x104);
+		sync.SyncFloat(mUnk0x108);
+		sync.SyncBoolBit(mUnk0x110);
+		sync.EndBit();
+		SetPos(mUnk0xec, mUnk0xf4);
+	} else if (sync.mReader != NULL) {
+		Init(mUnk0xec, mUnk0xf4, mUnk0xf0, mUnk0xf8);
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0047df80
@@ -66,19 +108,41 @@ void Line::EditReflect(float param_1, float param_2, bool param_3)
 {
 }
 
-// STUB: POPCAPGAME1 0x00478440
+// FUNCTION: POPCAPGAME1 0x00478440
 void Line::SetPos(float theX, float theY)
 {
+	mUnk0xec = theX;
+	mUnk0xf4 = theY;
+	mUnk0xf0 = mUnk0xe4 + theX;
+	mUnk0xf8 = mUnk0xe8 + theY;
+	mUnk0x10c = -(mUnk0x104 * theX + mUnk0x108 * theY);
+	mUnk0x14 = theX;
+	mUnk0x1c = mUnk0xf0;
+	mUnk0x18 = theY;
+	mUnk0x20 = mUnk0xf8;
+	if (mUnk0xf0 < theX) {
+		float aTemp = mUnk0x14;
+		mUnk0x14 = mUnk0x1c;
+		mUnk0x1c = aTemp;
+	}
+	if (mUnk0x20 < mUnk0x18) {
+		float aTemp = mUnk0x18;
+		mUnk0x18 = mUnk0x20;
+		mUnk0x20 = aTemp;
+	}
 }
 
-// STUB: POPCAPGAME1 0x00475620
+// FUNCTION: POPCAPGAME1 0x00475620
 void Line::Translate(float theDx, float theDy)
 {
+	SetPos(mUnk0xec + theDx, mUnk0xf4 + theDy);
 }
 
-// STUB: POPCAPGAME1 0x00475600
+// FUNCTION: POPCAPGAME1 0x00475600
 void Line::SetVelocity(float theVx, float theVy)
 {
+	mUnk0xfc = theVx;
+	mUnk0x100 = theVy;
 }
 
 // STUB: POPCAPGAME1 0x00476390
@@ -86,21 +150,50 @@ void Line::Draw(Graphics* g)
 {
 }
 
-// STUB: POPCAPGAME1 0x005f1abc
+// FUNCTION: POPCAPGAME1 0x0047df90
 float Line::GetXPos()
 {
-	return 0.0f;
+	return mUnk0xec;
 }
 
-// STUB: POPCAPGAME1 0x0047dfa0
+// FUNCTION: POPCAPGAME1 0x0047dfa0
 float Line::GetYPos()
 {
-	return 0.0f;
+	return mUnk0xf4;
 }
 
-// STUB: POPCAPGAME1 0x004782f0
+// FUNCTION: POPCAPGAME1 0x004782f0
 void Line::Init(float param_1, float param_2, float param_3, float param_4)
 {
+	mUnk0xec = param_1;
+	mUnk0xf0 = param_3;
+	mUnk0xf4 = param_2;
+	mUnk0xf8 = param_4;
+	mUnk0xe4 = mUnk0xf0 - mUnk0xec;
+	mUnk0xe8 = mUnk0xf8 - mUnk0xf4;
+	mUnk0x14 = mUnk0xec;
+	mUnk0x1c = mUnk0xf0;
+	mUnk0x18 = mUnk0xf4;
+	mUnk0x20 = mUnk0xf8;
+	if (mUnk0xf0 < mUnk0xec) {
+		float aTemp = mUnk0x14;
+		mUnk0x14 = mUnk0x1c;
+		mUnk0x1c = aTemp;
+	}
+	if (mUnk0x20 < mUnk0x18) {
+		float aTemp = mUnk0x18;
+		mUnk0x18 = mUnk0x20;
+		mUnk0x20 = aTemp;
+	}
+	if (fabs(mUnk0xf4 - mUnk0xf8) > fabs(mUnk0xec - mUnk0xf0)) {
+		mUnk0x110 = true;
+	} else {
+		mUnk0x110 = false;
+	}
+	SexyVector2 aNormal = SexyVector2(mUnk0xf4 - mUnk0xf8, mUnk0xf0 - mUnk0xec).Normalize();
+	mUnk0x104 = aNormal.x;
+	mUnk0x108 = aNormal.y;
+	mUnk0x10c = -(mUnk0x104 * mUnk0xec + mUnk0x108 * mUnk0xf4);
 }
 
 // STUB: POPCAPGAME1 0x00476010
@@ -188,9 +281,23 @@ bool Line::CheckCollision(
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x00478ac0
+// FUNCTION: POPCAPGAME1 0x00478ac0
 float Line::GetDistanceFromPoint(float param_1, float param_2)
 {
-	return 0.0f;
+	if ((mUnk0x110 && mUnk0x18 <= param_2 && param_2 <= mUnk0x20) ||
+		(!mUnk0x110 && mUnk0x14 <= param_1 && param_1 <= mUnk0x1c)) {
+		return fabs(param_2 * mUnk0x108 + mUnk0x104 * param_1 + mUnk0x10c);
+	}
+
+	float aDx1 = mUnk0xec - param_1;
+	float aDy1 = mUnk0xf4 - param_2;
+	float aDist1 = aDx1 * aDx1 + aDy1 * aDy1;
+	float aDx2 = mUnk0xf0 - param_1;
+	float aDy2 = mUnk0xf8 - param_2;
+	float aDist2 = aDx2 * aDx2 + aDy2 * aDy2;
+	if (aDist1 < aDist2) {
+		return sqrtf(aDist1);
+	}
+	return sqrtf(aDist2);
 }
 
