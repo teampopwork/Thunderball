@@ -767,10 +767,19 @@ void LogicMgr::ActivateFreeBall(bool param_1)
 	}
 }
 
-// STUB: POPCAPGAME1 0x00440700
+// FUNCTION: POPCAPGAME1 0x00440700
 void LogicMgr::ActivateFreeBallCover(bool param_1)
 {
-	// TODO
+	if (!mUnk0xf6 || !param_1)
+	{
+		for (std::list<SmartPtr<PhysObj> >::iterator anItr = mBoard->mUnk0x190.begin();
+			anItr != mBoard->mUnk0x190.end(); ++anItr)
+		{
+			PhysObj* anObj = anItr->get();
+			if (anObj->mUnk0x5c == "freeballcover")
+				anObj->SetActiveWithGrowAnim(param_1);
+		}
+	}
 }
 
 // STUB: POPCAPGAME1 0x0046ce00
