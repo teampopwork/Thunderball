@@ -1,6 +1,7 @@
 #include "AIMgr.h"
 #include "CollisionMgr.h"
 #include "PhysObj.h"
+#include "ThunderCommon.h"
 
 using namespace Sexy;
 
@@ -26,10 +27,22 @@ AIMgr::~AIMgr()
 	delete mCollisionMgr;
 }
 
-// STUB: POPCAPGAME1 0x004327d0
+// FUNCTION: POPCAPGAME1 0x004327d0
 float AIMgr::KeepAngleInRange(float param_1)
 {
-	return param_1;
+	float anAngle = NormalizeAngle(param_1);
+	if (anAngle <= SEXY_PI / 2 || anAngle >= SEXY_PI * 1.5f) {
+		if (anAngle > SEXY_PI / 2) {
+			anAngle -= SEXY_PI * 2;
+		}
+		if (anAngle > mUnk0x78) {
+			anAngle = mUnk0x78;
+		}
+	}
+	else if (anAngle < mUnk0x7C) {
+		anAngle = mUnk0x7C;
+	}
+	return anAngle;
 }
 
 // FUNCTION: POPCAPGAME1 0x00432860
