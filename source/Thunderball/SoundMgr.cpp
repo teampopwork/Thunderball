@@ -139,9 +139,10 @@ void SoundMgr::AddSound(int param_1, float param_2, int param_3, int param_4, in
 	}
 }
 
-// STUB: POPCAPGAME1 0x00452810
+// FUNCTION: POPCAPGAME1 0x00452810
 void SoundMgr::AddFadeSound(SoundInstance* param_1)
 {
+	mUnk0x48.push_back(param_1);
 }
 
 // STUB: POPCAPGAME1 0x00441d50

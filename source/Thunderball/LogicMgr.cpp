@@ -1,6 +1,10 @@
 #include "LogicMgr.h"
 
+#include "Board.h"
+#include "SoundMgr.h"
+
 #include <SexyAppFramework/Common.h>
+#include <SexyAppFramework/SoundInstance.h>
 
 using namespace Sexy;
 
@@ -17,10 +21,29 @@ LogicMgr::LogicMgr(Board* param_1)
 	Clear(true, false);
 }
 
-// STUB: POPCAPGAME1 0x0045c990
+// FUNCTION: POPCAPGAME1 0x0045c990
 LogicMgr::~LogicMgr()
 {
-	// TODO
+	KillSlowMoSound();
+	KillSighSound();
+}
+
+// FUNCTION: POPCAPGAME1 0x004372c0
+void LogicMgr::KillSlowMoSound()
+{
+	if (mUnk0xac != NULL) {
+		mUnk0xac->Release();
+		mUnk0xac = NULL;
+	}
+}
+
+// FUNCTION: POPCAPGAME1 0x00458ab0
+void LogicMgr::KillSighSound()
+{
+	if (mUnk0xb0 != NULL) {
+		mBoard->mSoundMgr->AddFadeSound(mUnk0xb0);
+		mUnk0xb0 = NULL;
+	}
 }
 
 // STUB: POPCAPGAME1 0x004730d0
@@ -505,16 +528,6 @@ int LogicMgr::GetAdventureLevelReplayBonus()
 {
 	// TODO
 	return 0;
-}
-
-void LogicMgr::KillSlowMoSound()
-{
-	// TODO
-}
-
-void LogicMgr::KillSighSound()
-{
-	// TODO
 }
 
 void LogicMgr::SpeedTransition()

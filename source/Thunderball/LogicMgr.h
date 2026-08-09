@@ -19,6 +19,7 @@ class Hole;
 class DataSync;
 class FloatingText;
 class LevelStats;
+class SoundInstance;
 enum KeyCode;
 enum LogicState;
 enum StyleShot;
@@ -62,26 +63,30 @@ public:
 	int mUnk0x4c;                           // +0x4c
 	int mUnk0x50;                           // +0x50
 	int mUnk0x54;                           // +0x54
+	char mUnk0x58[0x10];                    // +0x58
 	bool mUnk0x68;                          // +0x68
 	bool mUnk0x69;                          // +0x69
+	char mUnk0x6a[6];                       // +0x6a
 	float mUnk0x70;                         // +0x70
 	int mUnk0x74;                           // +0x74
 	int mUnk0x78;                           // +0x78
 	std::string mUnk0x80;                   // +0x80
-	std::string mUnk0x9c;                   // +0x9c
+	char mUnk0x98[4];                       // +0x98
+	int mUnk0x9c;                           // +0x9c
 	int mUnk0xa0;                           // +0xa0
-	int mUnk0xa4;                           // +0xa4
-	bool mUnk0xa8;                          // +0xa8
-	bool mUnk0xa9;                          // +0xa9
-	bool mUnk0xaa;                          // +0xaa
-	int mUnk0xac;                           // +0xac
-	int mUnk0xb0;                           // +0xb0
+	bool mUnk0xa4;                          // +0xa4
+	bool mUnk0xa5;                          // +0xa5
+	bool mUnk0xa6;                          // +0xa6
+	char mUnk0xa7[5];                       // +0xa7
+	SoundInstance* mUnk0xac;                // +0xac
+	SoundInstance* mUnk0xb0;                // +0xb0
 	std::vector<PegHitInfo> mUnk0xb4;       // +0xb4
 	std::list<ClickInfo> mUnk0xc4;          // +0xc4
 	std::vector<BallPosInfo> mUnk0xd0;      // +0xd0
 	int mUnk0xe0;                           // +0xe0
 	float mUnk0xe4;                         // +0xe4
 	int mUnk0xe8;                           // +0xe8
+	bool mUnk0xec;                          // +0xec
 	bool mUnk0xed;                          // +0xed
 	int mUnk0xf0;                           // +0xf0
 	bool mUnk0xf4;                          // +0xf4
@@ -125,7 +130,7 @@ public:
 	int mUnk0x164;                          // +0x164
 	int mUnk0x168;                          // +0x168
 	int mUnk0x16c;                          // +0x16c
-	int mUnk0x170;                          // +0x170
+	SmartPtr<PhysObj> mUnk0x170;            // +0x170
 	int mUnk0x174;                          // +0x174
 	int mUnk0x178;                          // +0x178
 	int mUnk0x17c;                          // +0x17c
@@ -139,10 +144,12 @@ public:
 	int mUnk0x1d4;                          // +0x1d4
 	int mUnk0x1d8;                          // +0x1d8
 	int mUnk0x1dc;                          // +0x1dc
-	int mUnk0x1e4[14];                       // +0x1e4
+	char mUnk0x1e0[4];                      // +0x1e0
+	int mUnk0x1e4[14];                      // +0x1e4
+	char mUnk0x21c[0x28];                   // +0x21c
 	bool mUnk0x244;                         // +0x244
 	bool mUnk0x245;                         // +0x245
-	GameStats mUnk0x248[2];                   // +0x248
+	GameStats mUnk0x248[2];                 // +0x248
 	int mUnk0x320;                          // +0x320
 	int mUnk0x324;                          // +0x324
 	int mUnk0x328;                          // +0x328
