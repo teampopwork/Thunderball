@@ -264,10 +264,28 @@ void ThunderballApp::ButtonDepress(int param_1)
 	}
 }
 
-// STUB: POPCAPGAME1 0x00405a50
-int ThunderballApp::CheckCanExpire()
+// FUNCTION: POPCAPGAME1 0x00405a20
+bool ThunderballApp::CanExpire()
 {
-	return 0;
+	if ((!mLoadingFailed || mCursorThreadRunning) && !mProcessInTimer && !mExpirationDisabled) {
+		return true;
+	}
+
+	return false;
+}
+
+// FUNCTION: POPCAPGAME1 0x00405a50
+bool ThunderballApp::CheckCanExpire()
+{
+	if (!IsRegistered() && mUnk0x834 == 0) {
+		int trialAge = mRegistrationControl->GetTrialAge();
+		int trialDuration = mRegistrationControl->GetTrialDuration();
+		if (trialAge >= trialDuration && CanExpire()) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 // FUNCTION: POPCAPGAME1 0x00405aa0
@@ -774,9 +792,12 @@ void ThunderballApp::FinishRenameUserDialog(bool param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x004084e0
+// FUNCTION: POPCAPGAME1 0x004084e0
 void ThunderballApp::FinishTipDialog(bool param_1)
 {
+	if (GetDialog(14) != NULL) {
+		DoScrollOff(14);
+	}
 }
 
 // STUB: POPCAPGAME1 0x00427720
@@ -1263,8 +1284,9 @@ void ThunderballApp::ShowTrophyScreen()
 }
 
 // STUB: POPCAPGAME1 0x004294f0
-void ThunderballApp::ShowUpsellScreen()
+bool ThunderballApp::ShowUpsellScreen(bool param_1, bool param_2)
 {
+	return false;
 }
 
 // FUNCTION: POPCAPGAME1 0x0042ff70
@@ -1315,10 +1337,22 @@ void ThunderballApp::SyncOdeVolume()
 	}
 }
 
-// STUB: POPCAPGAME1 0x0042d270
+// FUNCTION: POPCAPGAME1 0x0042d270
 bool ThunderballApp::TryExpire(bool param_1)
 {
-	return false;
+	if (CheckCanExpire()) {
+		mUnk0x83A = true;
+		if (GetDialog(14) != NULL) {
+			FinishTipDialog(true);
+			return false;
+		}
+
+		return ShowUpsellScreen(param_1, false);
+	}
+	else {
+		mUnk0x83A = false;
+		return false;
+	}
 }
 
 // STUB: POPCAPGAME1 0x0042d320

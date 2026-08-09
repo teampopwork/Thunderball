@@ -92,7 +92,7 @@ public:
 	char mPadding0x7dc[0x54];           // +0x7DC
 	RegistrationControl* mRegistrationControl; // +0x830
 	int mUnk0x834;                     // +0x834
-	char mPadding0x838;                 // +0x838
+	bool mExpirationDisabled;           // +0x838
 	bool mUnk0x839;                    // +0x839
 	bool mUnk0x83A;                    // +0x83A
 	bool mUnk0x83b;                     // +0x83b
@@ -127,7 +127,8 @@ public:
 
 	void BringDialogsToFront();
 	void ButtonDepress(int);
-	int CheckCanExpire();
+	bool CanExpire();
+	bool CheckCanExpire();
 	void CheckMaxStage();
 	void CheckPlayMusic(bool);
 	bool CheckSaveGame(bool);
@@ -214,7 +215,7 @@ public:
 	void ShowReplay(bool);
 	void ShowStoryScreen(bool, bool);
 	void ShowTrophyScreen();
-	void ShowUpsellScreen();
+	bool ShowUpsellScreen(bool param_1 = false, bool param_2 = false);
 	void StartAdventureGame();
 	void SyncOdeVolume();
 	bool TryExpire(bool);
