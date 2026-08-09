@@ -92,9 +92,10 @@ bool Gun::NeedDrawMouseClick()
 	return (!mUnk0x194 && mUnk0x198 < 0) || mUnk0x198 > GetMaxGuideLength();
 }
 
-// STUB: POPCAPGAME1 0x0047f590
+// FUNCTION: POPCAPGAME1 0x0047f590
 void Gun::Draw(Graphics* param_1)
 {
+	Poly::Draw(param_1);
 }
 
 // STUB: POPCAPGAME1 0x0047c030
