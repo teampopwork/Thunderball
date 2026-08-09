@@ -194,16 +194,36 @@ Effect* EffectMgr::AddFeverBlast(float param_1, float param_2)
 	return NULL;
 }
 
-// STUB: POPCAPGAME1 0x0044e7f0
+// FUNCTION: POPCAPGAME1 0x0044e7f0
 Effect* EffectMgr::AddFeverScoreText()
 {
-	return NULL;
+	Effect* effect = AddEffect(
+		(EffectType)0x15,
+		(float)ModVal(
+			0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp637,3818", 400),
+		(float)ModVal(
+			0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp638,3818", 300),
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp639,3818", 0),
+		false);
+	effect->mUnk0x10 = ModVal(
+		0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp640,3819", 100000);
+	effect->mUnk0x38 = ModVal(
+		0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp641,3820", 3);
+	return effect;
 }
 
-// STUB: POPCAPGAME1 0x0044e740
+// FUNCTION: POPCAPGAME1 0x0044e740
 Effect* EffectMgr::AddBubble(float param_1, float param_2)
 {
-	return NULL;
+	Effect* effect = AddEffect((EffectType)9, param_1, param_2, 0, false);
+	float speeds[6] = {0.67f, 0.83f, 1.0f, 1.07f, 0.76f, 0.93f};
+	effect->mUnk0x20 = -speeds[Rand() % 6];
+	effect->mUnk0x30 = Rand() % 4;
+	if (effect->mUnk0x30 == 3) {
+		effect->mUnk0x30 = Rand() % 4;
+	}
+	effect->mUnk0x10 = 0;
+	return effect;
 }
 
 // STUB: POPCAPGAME1 0x0044e010
