@@ -779,9 +779,42 @@ void ThunderballApp::EndUpsellScreen()
 {
 }
 
-// STUB: POPCAPGAME1 0x0041d3d0
+// FUNCTION: POPCAPGAME1 0x0041d3d0
 void ThunderballApp::FinishConfirmDeleteUserDialog(bool param_1)
 {
+	DoScrollOff(2);
+	if (!param_1) {
+		return;
+	}
+
+	UserDialog* aDialog = static_cast<UserDialog*>(GetDialog(24));
+	if (aDialog == NULL) {
+		return;
+	}
+
+	std::string aCurName = mCurProfile == NULL ? "" : mCurProfile->mName;
+	std::string aName = aDialog->GetSelName();
+	if (aName.compare(0, aName.length(), aCurName.c_str(), aCurName.length()) == 0) {
+		mCurProfile = NULL;
+	}
+
+	mProfileMgr->DeleteProfile(aName);
+	aDialog->FinishDeleteUser();
+	if (mCurProfile == NULL) {
+		mCurProfile = mProfileMgr->GetProfile(aDialog->GetSelName());
+		if (mCurProfile == NULL) {
+			mCurProfile = mProfileMgr->GetAnyProfile();
+		}
+	}
+
+	mProfileMgr->Save();
+	if (mCurProfile == NULL) {
+		DoCreateUserDialog();
+	}
+	mWidgetManager->MarkAllDirty();
+	if (mMainMenu != NULL) {
+		mMainMenu->SyncPlayerInfo();
+	}
 }
 
 // STUB: POPCAPGAME1 0x0042d980

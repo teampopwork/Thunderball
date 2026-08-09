@@ -11,13 +11,14 @@ class ThunderballApp;
 class WidgetManager;
 class Graphics;
 class ListWidget;
+class ScrollbarWidget;
 
 class UserDialog : public ThunderDialog {
 public:
 	int mUnk0x178;
 	ThunderballApp* mApp; // +0x17C
 	ListWidget* mUserList; // +0x180
-	int mUnk0x184;
+	ScrollbarWidget* mScrollbar; // +0x184
 	int mUnk0x188;
 	int mUnk0x18C;
 	int mUnk0x190;

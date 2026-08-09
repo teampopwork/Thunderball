@@ -3,6 +3,7 @@
 #include "ThunderballApp.h"
 
 #include <SexyAppFramework/ListWidget.h>
+#include <SexyAppFramework/ScrollbarWidget.h>
 
 using namespace Sexy;
 
@@ -58,12 +59,30 @@ void UserDialog::Resize(int theX, int theY, int theWidth, int theHeight)
 {
 }
 
+// FUNCTION: POPCAPGAME1 0x004980d0
 void UserDialog::CheckShowScrollbar()
 {
+	bool shouldShow = mScrollbar->GetThumbSize() != 0;
+	if (shouldShow != mScrollbar->mVisible) {
+		Resize(mX, mY, mWidth, mHeight);
+	}
 }
 
+// FUNCTION: POPCAPGAME1 0x00498150
 void UserDialog::FinishDeleteUser()
 {
+	int anIndex = mUserList->mSelectIdx;
+	mUserList->RemoveLine(anIndex);
+	int aMinIndex = mUnk0x198 != false;
+	anIndex--;
+	if (anIndex < aMinIndex) {
+		anIndex = aMinIndex;
+	}
+
+	if (mUserList->GetLineCount() > aMinIndex) {
+		mUserList->SetSelect(anIndex);
+	}
+	CheckShowScrollbar();
 }
 
 // FUNCTION: POPCAPGAME1 0x004981b0
