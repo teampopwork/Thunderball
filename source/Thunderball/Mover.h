@@ -3,6 +3,7 @@
 
 #include "LevelEditor.h"
 
+#include <SexyAppFramework/SmartPtr.h>
 #include <string>
 
 namespace Sexy
@@ -31,14 +32,14 @@ public:
 	float mMaxAngle; // +0x3C
 	float mPostDelayPhase; // +0x40
 	float mRotation; // +0x44
-	PhysObj* mPhysObj; // +0x48
-	
-
-	float mUnk0x54;
-	float mUnk0x58;
-	float mUnk0x5c;
-	float mUnk0x60;
-	float mUnk0x64;
+	SmartPtr<PhysObj> mPhysObj; // +0x48
+	float mUnk0x4c; // +0x4c
+	float mUnk0x50; // +0x50
+	float mUnk0x54; // +0x54
+	float mUnk0x58; // +0x58
+	float mUnk0x5c; // +0x5c
+	float mUnk0x60; // +0x60
+	float mUnk0x64; // +0x64
 
     virtual bool EditGetSetValHook(const std::string& param_1, bool param_2);
 

@@ -21,8 +21,6 @@ Mover::Mover()
 // FUNCTION: POPCAPGAME1 0x00478df0
 Mover::~Mover()
 {
-	if (mPhysObj != NULL)
-		mPhysObj->Release();
 }
 
 // FUNCTION: POPCAPGAME1 0x00476420
@@ -262,7 +260,7 @@ void Mover::InitDefaults()
 	mPause2 = 0;
 	mPhase2 = 0;
 
-	mPhysObj->Release();
+	mPhysObj = NULL;
 }
 
 // STUB: POPCAPGAME1 0x0047a9f0
