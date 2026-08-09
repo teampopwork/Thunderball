@@ -1345,10 +1345,65 @@ float Sexy::InterpValF(
 	return endVal;
 }
 
-// STUB: POPCAPGAME1 0x00404b70
-int Sexy::GetStyleShotScore(Sexy::StyleShot, bool, int)
+// FUNCTION: POPCAPGAME1 0x00404b70
+int Sexy::GetStyleShotScore(Sexy::StyleShot theStyleShot, bool theAlternateScore, int)
 {
-	return 0;
+	if (!theAlternateScore) {
+		switch ((int) theStyleShot) {
+		case 0:
+		case 1:
+		case 5:
+		case 7:
+		case 10:
+		case 11:
+		case 12:
+		case 13:
+			return 25000;
+		case 2:
+		case 3:
+		case 4:
+		case 15:
+			return 50000;
+		case 6:
+		case 16:
+			return 10000;
+		case 8:
+		case 14:
+			return 100000;
+		case 9:
+			return 5000;
+		default:
+			return 0;
+		}
+	}
+
+	switch ((int) theStyleShot) {
+	case 0:
+	case 1:
+	case 2:
+	case 3:
+	case 4:
+	case 5:
+	case 7:
+	case 11:
+	case 13:
+	case 16:
+		return 5000;
+	case 6:
+	case 9:
+	case 10:
+	case 12:
+	case 17:
+	case 18:
+	case 19:
+		return 2500;
+	case 8:
+	case 14:
+	case 15:
+		return 10000;
+	default:
+		return 0;
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x00407d90
