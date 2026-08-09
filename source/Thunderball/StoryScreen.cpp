@@ -1044,7 +1044,7 @@ void StoryScreen::UpdateStars()
 	}
 }
 
-// STUB: POPCAPGAME1 0x0048dea0
+// FUNCTION: POPCAPGAME1 0x0048dea0
 void StoryScreen::UpdateWin()
 {
 	if (!mApp->mLoaded)
@@ -1070,6 +1070,144 @@ void StoryScreen::UpdateWin()
 		mParticleY += mParticleVY;
 	}
 	if (mUnk0xcc < 1) {
+		if (mParticleY < 500.0f) {
+			int aColor = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp14,227", 0xff5511);
+			int aColorChoice = rand();
+			if (aColorChoice % 3 == 0)
+				aColor = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp15,231", 0x55ff22);
+			else if (aColorChoice % 3 == 1)
+				aColor = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp16,234", 0x3355ff);
+
+			for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp17,240", 60); ++i) {
+				StoryParticle* aParticle = new StoryParticle();
+				aParticle->mX = mParticleX + rand() % 10 - 5.0f;
+				aParticle->mY = mParticleY + rand() % 10 - 5.0f;
+				float anAngle = (float) ((rand() % 100) * 6.283 / 100.0);
+				float aSpeed = (rand() % 8 + 2) *
+					ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp18,248", 0.2f);
+				aParticle->mVX = (float) sin(anAngle) * aSpeed;
+				aParticle->mVY = (float) cos(anAngle) * aSpeed;
+				aParticle->mType = 0;
+				aParticle->mUnk0x1c = aColor;
+				aParticle->mDuration = rand() % 30 + 70;
+				mParticles.PushBack(aParticle);
+			}
+
+			for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp19,259", 120); ++i) {
+				StoryParticle* aParticle = new StoryParticle();
+				aParticle->mX = mParticleX + rand() % 10 - 5.0f;
+				aParticle->mY = mParticleY + rand() % 10 - 5.0f;
+				float anAngle = (float) ((rand() % 100) * 6.283 / 100.0);
+				float aSpeed = (rand() % 8 + 2) *
+					ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp20,267", 0.2f);
+				aParticle->mVX = (float) sin(anAngle) * aSpeed;
+				aParticle->mVY = (float) cos(anAngle) * aSpeed;
+				aParticle->mType = 2;
+				aParticle->mUnk0x1c = aColor;
+				aParticle->mDuration = rand() % 30 + 70;
+				mParticles.PushBack(aParticle);
+			}
+
+			for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp21,278", 60); ++i) {
+				StoryParticle* aParticle = new StoryParticle();
+				aParticle->mX = mParticleX + rand() % 8 - 4.0f;
+				aParticle->mY = mParticleY + rand() % 8 - 4.0f;
+				float anAngle = (float) ((rand() % 100) * 6.283 / 100.0);
+				float aSpeed =
+					(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp23,286", 10) + rand() % 10) *
+					ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp22,286", 0.1f);
+				aParticle->mVX = (float) sin(anAngle) * aSpeed;
+				aParticle->mVY = (float) cos(anAngle) * aSpeed;
+				aParticle->mType = 3;
+				aParticle->mUnk0x1c = aColor;
+				aParticle->mDuration = rand() % 30 + 70;
+				mParticles.PushBackInline(aParticle);
+			}
+
+			if (rand() % 2 == 0) {
+				for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp24,303", 30); ++i) {
+					StoryParticle* aParticle = new StoryParticle();
+					aParticle->mX = mParticleX + rand() % 8 - 4.0f;
+					aParticle->mY = mParticleY + rand() % 8 - 4.0f;
+					float anAngle = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp25,310", 2.2f) +
+						(rand() % 100) *
+							ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp26,310", 0.4f) / 100.0f;
+					float aSpeed =
+						(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp28,311", 4) +
+							rand() % ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp29,311", 2)) *
+						ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp27,311", 0.2f);
+					aParticle->mVX = (float) sin(anAngle) * aSpeed;
+					aParticle->mVY = (float) cos(anAngle) * aSpeed;
+					aParticle->mType = 4;
+					aParticle->mUnk0x1c = aColor;
+					aParticle->mDuration = rand() % 30 + 70;
+					mParticles.PushBackInline(aParticle);
+				}
+
+				for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp30,323", 60); ++i) {
+					StoryParticle* aParticle = new StoryParticle();
+					aParticle->mX = mParticleX + rand() % 8 - 4.0f;
+					aParticle->mY = mParticleY + rand() % 8 - 4.0f;
+					float anAngle = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp31,330", -2.2f) -
+						(rand() % 100) *
+							ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp32,330", 0.4f) / 100.0f;
+					float aSpeed =
+						(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp34,331", 4) +
+							rand() % ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp35,331", 2)) *
+						ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp33,331", 0.2f);
+					aParticle->mVX = (float) sin(anAngle) * aSpeed;
+					aParticle->mVY = (float) cos(anAngle) * aSpeed;
+					aParticle->mType = 4;
+					aParticle->mUnk0x1c = aColor;
+					aParticle->mDuration = rand() % 30 + 70;
+					mParticles.PushBackInline(aParticle);
+				}
+
+				for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp36,346", 90); ++i) {
+					StoryParticle* aParticle = new StoryParticle();
+					aParticle->mX = mParticleX + rand() % 10 - 5.0f;
+					aParticle->mY = mParticleY + rand() % 10 - 5.0f;
+					float anAngle = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp37,353", -1.0f) +
+						(rand() % 100) *
+							ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp38,353", 2.0f) / 100.0f;
+					(void) rand();
+					float aSpeed = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp40,354", 5) *
+						ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp39,354", 0.2f);
+					aParticle->mVX = (float) sin(anAngle) * aSpeed;
+					aParticle->mVY = (float) cos(anAngle) * aSpeed;
+					aParticle->mType = 4;
+					aParticle->mUnk0x1c = aColor;
+					aParticle->mDuration = rand() % 30 + 70;
+					mParticles.PushBackInline(aParticle);
+				}
+			} else {
+				for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp41,371", 190); ++i) {
+					StoryParticle* aParticle = new StoryParticle();
+					aParticle->mX = mParticleX + rand() % 6 - 3.0f;
+					aParticle->mY = mParticleY + rand() % 6 - 3.0f;
+					float anAngle = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp42,378", 0.0f) +
+						(rand() % 100) *
+							ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp43,378", 6.283f) / 100.0f;
+					float aCosine = (float) cos(anAngle);
+					float aSpeed = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp44,379", 0.95f) *
+						(aCosine + ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp45,379", 1.0f));
+					aParticle->mVX = (float) sin(anAngle) * aSpeed;
+					aParticle->mVY = aCosine * aSpeed;
+					if (aParticle->mVY > 0.0f)
+						aParticle->mVX = (1.0f - aCosine) * aParticle->mVX;
+					aParticle->mVY -=
+						ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp46,386", 0.75f);
+					aParticle->mType = 4;
+					aParticle->mUnk0x1c = aColor;
+					aParticle->mDuration = rand() % 30 + 70;
+					mParticles.PushBackInline(aParticle);
+				}
+			}
+
+			if (mUpdateCnt > 20 && mUnk0xb8)
+				mApp->PlaySample(SOUND_FIREWORKPOP);
+		}
+
 		mParticleY = (float) mApp->mHeight;
 		float aLaunchSide = rand() % 2 == 0 ? 0.5f : 1.0f;
 		mParticleX = (float) (
