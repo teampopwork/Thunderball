@@ -79,7 +79,7 @@ public:
 	void DrawFireworks(Graphics* g);
 	void DrawStars(Graphics* g);
 	void DrawWin(Graphics* g);
-	void DoDrawText(Graphics* g, Rect& param_2, std::vector<StoryData> param_3, int param_4);
+	void DoDrawText(Graphics* g, Rect& param_2, std::vector<StoryData>& param_3, int param_4);
 	void DoUpdate();
 	void UpdateParticles();
 	void UpdateStars();

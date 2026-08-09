@@ -531,9 +531,29 @@ void StoryScreen::DrawWin(Graphics* g)
 {
 }
 
-// STUB: POPCAPGAME1 0x00489fd0
-void StoryScreen::DoDrawText(Graphics* g, Rect& param_2, std::vector<StoryData> param_3, int param_4)
+// FUNCTION: POPCAPGAME1 0x00489fd0
+void StoryScreen::DoDrawText(Graphics* g, Rect& param_2, std::vector<StoryData>& param_3, int param_4)
 {
+	Rect aRect = param_2;
+	StoryData& aStory = param_3[0];
+	int aMaxChars = mUnk0xf4 - mUnk0xf8;
+	if (aMaxChars > 0) {
+		if (!aStory.mUnk0x0.empty()) {
+			aRect.mY += g->WriteWordWrapped(
+				aRect,
+				aStory.mUnk0x0,
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp87,708", -1),
+				param_4,
+				NULL,
+				aMaxChars,
+				NULL
+			);
+			mUnk0xf8 += aStory.mUnk0x0.length();
+			return;
+		}
+		aRect.mY += g->GetFont()->GetLineSpacing();
+		mUnk0xf8 += aStory.mUnk0x0.length();
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0048ee20
