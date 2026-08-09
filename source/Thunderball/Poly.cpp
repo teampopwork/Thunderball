@@ -854,9 +854,42 @@ bool Poly::EditIntersects(Rect* param_1)
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x0047e5b0
+// FUNCTION: POPCAPGAME1 0x0047e5b0
 void Poly::DrawPoly(Graphics* g, int param_2, int param_3)
 {
+	if (ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Poly.cpp96,809", true)) {
+		EnsureLines();
+	}
+
+	if (param_2 != 0) {
+		g->SetColor(Color(param_2));
+		Rect rect;
+		if (GetStandardRect(&rect)) {
+			g->FillRect(rect);
+		}
+		else if (mUnk0x108.size() >= 2) {
+			Point points[100];
+			int pointCount = min((int)mUnk0x108.size(), 100);
+			for (int i = 0; i < (int)mUnk0x108.size(); i++) {
+				Line* line = mUnk0x108[i];
+				points[i].mX = (int)line->mUnk0xec;
+				points[i].mY = (int)line->mUnk0xf4;
+			}
+			g->PolyFill(points, pointCount, mUnk0x12d);
+		}
+	}
+
+	if (param_3 != 0) {
+		g->SetColor(Color(param_3));
+		for (int i = 0; i < (int)mUnk0x108.size(); i++) {
+			Line* line = mUnk0x108[i];
+			g->DrawLine(
+				(int)line->mUnk0xec,
+				(int)line->mUnk0xf4,
+				(int)line->mUnk0xf0,
+				(int)line->mUnk0xf8);
+		}
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0047dfe0
