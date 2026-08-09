@@ -475,7 +475,7 @@ bool Line::CheckVertexTimeCollision(
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x00478500
+// FUNCTION: POPCAPGAME1 0x00478500
 bool Line::CheckPenetration(
 	SexyVector2* param_1,
 	float param_2,
@@ -484,10 +484,76 @@ bool Line::CheckPenetration(
 	SexyVector2* param_5
 )
 {
-	return false;
+	float anAdjustedRadius = param_2 - 0.01;
+	float aPlaneDistance = param_1->Dot(SexyVector2(mUnk0x104, mUnk0x108)) + mUnk0x10c;
+	float anAbsDistance = fabs(aPlaneDistance);
+	if (anAdjustedRadius < anAbsDistance)
+		return false;
+
+	SexyVector2 anIntersection(0.0f, 0.0f);
+	if (!mUnk0x110)
+	{
+		if (param_1->x + param_2 < mUnk0x14)
+			return false;
+		if (mUnk0x1c < param_1->x - param_2)
+			return false;
+	}
+	else
+	{
+		if (param_2 + param_1->y < mUnk0x18)
+			return false;
+		if (mUnk0x20 < param_1->y - param_2)
+			return false;
+	}
+
+	int anIntersectionCount = CircleIntersect(
+		param_1->x, param_1->y, anAdjustedRadius, &anIntersection, NULL);
+	if (anIntersectionCount == 0)
+		return false;
+
+	if (anIntersectionCount == 1)
+	{
+		float aStartDx = mUnk0xec - param_1->x;
+		float aStartDy = mUnk0xf4 - param_1->y;
+		float anEndDx = mUnk0xf0 - param_1->x;
+		float anEndDy = mUnk0xf8 - param_1->y;
+		SexyVector2 aVertex;
+		SexyVector2 aPush;
+		if (anEndDx * anEndDx + anEndDy * anEndDy <=
+			aStartDx * aStartDx + aStartDy * aStartDy)
+		{
+			aVertex = SexyVector2(mUnk0xf0, mUnk0xf8);
+			aPush = aVertex - anIntersection;
+			if (aPush.x == 0.0f && aPush.y == 0.0f)
+				aPush = SexyVector2(mUnk0xf0 - mUnk0xec, mUnk0xf8 - mUnk0xf4).Normalize() * 0.01f;
+		}
+		else
+		{
+			aVertex = SexyVector2(mUnk0xec, mUnk0xf4);
+			aPush = aVertex - anIntersection;
+			if (aPush.x == 0.0f && aPush.y == 0.0f)
+				aPush = SexyVector2(mUnk0xec - mUnk0xf0, mUnk0xf4 - mUnk0xf8).Normalize() * 0.01f;
+		}
+
+		*param_3 = *param_1 + aPush;
+		*param_4 = (*param_3 - aVertex).Normalize();
+		*param_3 += *param_4 * 0.01f;
+		CalcEdgeHitVelocity(param_4, param_5);
+		return true;
+	}
+
+	*param_4 = SexyVector2(mUnk0x104, mUnk0x108);
+	if (!mUnk0x111 && aPlaneDistance < 0.0f)
+	{
+		*param_4 *= -1.0f;
+		aPlaneDistance *= -1.0f;
+	}
+	*param_3 = *param_1 + *param_4 * (param_2 - aPlaneDistance);
+	CalcEdgeHitVelocity(param_4, param_5);
+	return true;
 }
 
-// STUB: POPCAPGAME1 0x00478940
+// FUNCTION: POPCAPGAME1 0x00478940
 bool Line::CheckCollision(
 	SexyVector2* param_1,
 	SexyVector2* param_2,
@@ -499,6 +565,33 @@ bool Line::CheckCollision(
 	bool param_8
 )
 {
+	if (mUnk0x14 - 20.0f <= param_1->x + param_3 &&
+		param_1->x - param_3 <= mUnk0x1c + 20.0f &&
+		mUnk0x18 - 20.0f <= param_1->y + param_3 &&
+		param_1->y - param_3 <= mUnk0x20 + 20.0f)
+	{
+		if (CheckPenetration(param_1, param_3, param_5, param_6, param_7))
+		{
+			*param_4 = 0.0f;
+			return true;
+		}
+
+		bool aResult = CheckEdgeTimeCollision(
+			param_1, param_2, param_3, param_5, param_6, param_7, param_4);
+		if (CheckVertexTimeCollision(
+			param_1, param_2, param_3, param_4, param_5,
+			mUnk0xec, mUnk0xf4, param_6, param_7))
+		{
+			aResult = true;
+		}
+		if (param_8 && CheckVertexTimeCollision(
+			param_1, param_2, param_3, param_4, param_5,
+			mUnk0xf0, mUnk0xf8, param_6, param_7))
+		{
+			aResult = true;
+		}
+		return aResult;
+	}
 	return false;
 }
 
