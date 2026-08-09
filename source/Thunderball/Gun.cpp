@@ -16,9 +16,23 @@ Gun::~Gun()
 {
 }
 
-// STUB: POPCAPGAME1 0x004752b0
+// FUNCTION: POPCAPGAME1 0x004752b0
 void Gun::UpdateCommon()
 {
+	if (mAngle == mLastTrackedAngle)
+	{
+		mAngleStableTicks++;
+		if (mAngleStableTicks >= 30)
+		{
+			mSettledAngle = mAngle;
+			mSettledUpdate = mUpdateCount;
+		}
+	}
+	else
+	{
+		mAngleStableTicks = 0;
+		mLastTrackedAngle = mAngle;
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0047df50
@@ -97,11 +111,21 @@ void Gun::CalcPoints()
 // STUB: POPCAPGAME1 0x00484500
 void Gun::SetFireball(bool param_1)
 {
+	if (mBall.get() != NULL)
+	{
+		mBall->SetFireball(param_1);
+		mUnk0x1a1 = param_1;
+		CalcPoints();
+	}
 }
 
 // STUB: POPCAPGAME1 0x004844c0
 void Gun::Reload(Ball* param_1)
 {
+	mBall = param_1;
+	mBall->mUnk0x140 = true;
+	mUnk0x1a1 = false;
+	CalcPoints();
 }
 
 // STUB: POPCAPGAME1 0x004843a0

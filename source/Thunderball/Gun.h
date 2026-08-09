@@ -21,10 +21,16 @@ class Gun : public Poly {
 public:
 	Board* mBoard;                // +0x148
 	int mUpdateCount;             // +0x14c
-	char mPad0x150[0x2c];         // +0x150
+	float mAngle;                 // +0x150
+	float mTargetAngle;           // +0x154
+	char mPad0x158[0x24];         // +0x158
 	float mAngularVelocity;       // +0x17c
 	bool mUnk0x180;               // +0x180
-	char mPad0x181[0x13];         // +0x181
+	char mPad0x181[3];            // +0x181
+	float mLastTrackedAngle;      // +0x184
+	float mSettledAngle;          // +0x188
+	int mSettledUpdate;           // +0x18c
+	int mAngleStableTicks;        // +0x190
 	bool mUnk0x194;               // +0x194
 	char mPad0x195[3];            // +0x195
 	int mUnk0x198;                // +0x198
