@@ -493,6 +493,68 @@ void StoryScreen::DrawOverlay(Graphics* g)
 	if (mUnk0xb4 < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp123,816", 500)) {
 		g->FillRect(0, 0, mWidth, mHeight);
 		DrawStars(g);
+
+		int anAlpha = 255;
+		if (mUnk0xb4 > 450) {
+			float aFade = (float) (500 - mUnk0xb4);
+			anAlpha = (int) (aFade / 50.0 * 255.0);
+		}
+
+		g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+		g->SetColor(Color(0xffffff, anAlpha));
+		Transform aTransform;
+		aTransform.RotateRad(
+			ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp124,830", 9.28f) *
+			(float) std::sin(
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp125,830", 0.007f) *
+				mUnk0xb4));
+		g->DrawImageTransform(
+			IMAGE_UPSELL_ZEN,
+			aTransform,
+			(float) ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp126,831", 400),
+			(float) ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp127,831", 300));
+		g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+	}
+
+	int anOffset = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp138,867", -600);
+	if (mUnk0xb4 >= ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp139,868", 50)) {
+		if (mUnk0xb4 < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp140,873", 100)) {
+			anOffset += ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp141,874", 12) *
+				(mUnk0xb4 - 50);
+		} else if (mUnk0xb4 < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp142,875", 400)) {
+			anOffset = 0;
+		} else if (mUnk0xb4 >= ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp143,877", 400)) {
+			anOffset = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp144,878", 12) *
+				(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp145,878", 400) - mUnk0xb4);
+		}
+
+		g->DrawImage(
+			IMAGE_MM_BJORN,
+			ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp146,881", 0) + anOffset,
+			ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp147,881", 200));
+		if (mUnk0xb4 > ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp148,883", 160) &&
+			mUnk0xb4 < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp149,883", 340)) {
+			g->DrawImage(
+				IMAGE_MM_SPEECHBUBBLE,
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp150,885", 280) + anOffset,
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp151,885", 180));
+			g->SetFont(GetFontById(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp152,887", 50)));
+			g->SetColor(Color(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp153,888", 100)));
+			Rect aTextRect(
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp154,890", 280) +
+					ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp155,890", 12) + anOffset,
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp156,890", 180) +
+					ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp157,890", 15),
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp158,890", 235),
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp159,890", 80));
+			std::string aText = ModVal(
+				0,
+				"SEXY_SEXYMODVAL.\\StoryScreen.cpp160,891",
+				"HANG ON FOLKS!!");
+			aTextRect.mY +=
+				(aTextRect.mHeight - GetWordWrappedHeight(g, aTextRect.mWidth, aText, 20)) / 2;
+			WriteWordWrapped(g, aTextRect, aText, 20, 0);
+		}
 	}
 }
 
