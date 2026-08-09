@@ -1,7 +1,9 @@
 #include "LogicMgr.h"
 
+#include "Ball.h"
 #include "Board.h"
 #include "CharacterMgr.h"
+#include "Gun.h"
 #include "SoundMgr.h"
 
 #include <SexyAppFramework/Common.h>
@@ -571,10 +573,17 @@ void LogicMgr::SetCharacters(int param_1, int param_2)
 	// TODO
 }
 
-// STUB: POPCAPGAME1 0x0043d4d0
+// FUNCTION: POPCAPGAME1 0x0043d4d0
 void LogicMgr::SetWearHat(bool param_1)
 {
-	// TODO
+	mUnk0x54 = param_1;
+	Ball* aBall = mBoard->mGun->mBall.get();
+	if (aBall != NULL)
+	{
+		aBall->SetHat(param_1, false);
+		if (param_1)
+			aBall->SetAbsPos(aBall->mUnk0xec, aBall->mUnk0xf0);
+	}
 }
 
 void LogicMgr::RecordStats()

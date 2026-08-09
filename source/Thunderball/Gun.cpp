@@ -441,7 +441,7 @@ void Gun::Clear()
 	mUnk0x180 = true;
 }
 
-// STUB: POPCAPGAME1 0x0047f6e0
+// FUNCTION: POPCAPGAME1 0x0047f6e0
 void Gun::SetDoBouncyGuide(bool param_1)
 {
 	mUnk0x194 = param_1;

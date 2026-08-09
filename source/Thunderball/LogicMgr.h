@@ -62,7 +62,8 @@ public:
 	int mUnk0x48;                           // +0x48
 	int mUnk0x4c;                           // +0x4c
 	int mUnk0x50;                           // +0x50
-	int mUnk0x54;                           // +0x54
+	bool mUnk0x54;                          // +0x54
+	char mUnk0x55[3];                       // +0x55
 	char mUnk0x58[0x10];                    // +0x58
 	bool mUnk0x68;                          // +0x68
 	bool mUnk0x69;                          // +0x69
