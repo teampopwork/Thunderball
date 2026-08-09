@@ -1838,9 +1838,12 @@ void ThunderballApp::WriteToRegistry()
 	}
 }
 
-// STUB: POPCAPGAME1 0x0042d180
+// FUNCTION: POPCAPGAME1 0x0042d180
 void ThunderballApp::Shutdown()
 {
+	if (mShutdown)
+		return;
+
 	SexyApp::Shutdown();
 
 	CleanupScreens(true);
