@@ -1,9 +1,13 @@
 #include "LogicMgr.h"
 
+#include "AIMgr.h"
 #include "Ball.h"
 #include "Board.h"
 #include "CharacterMgr.h"
+#include "DebugMgr.h"
 #include "Gun.h"
+#include "InterfaceMgr.h"
+#include "Poly.h"
 #include "SoundMgr.h"
 #include "ThunderCommon.h"
 #include "ThunderButton.h"
@@ -154,10 +158,41 @@ void LogicMgr::BeginTurn(bool param_1)
 	// TODO
 }
 
-// STUB: POPCAPGAME1 0x0044b5b0
+// FUNCTION: POPCAPGAME1 0x0044b5b0
 void LogicMgr::BeginTurn2()
 {
-	// TODO
+	if (mUnk0xf5)
+	{
+		SetState((LogicState) 0);
+		return;
+	}
+
+	mBoard->mAIMgr->Clear();
+	SetState((LogicState) 1);
+	if (!mBoard->mDebugMgr->mUnk0x5)
+		ActivateFreeBall(true);
+
+	mUnk0x158 = 0;
+	mUnk0x154 = 0;
+	mUnk0x3c = 0;
+	mUnk0x40 = 0;
+	mUnk0x38 = 0;
+	mUnk0x44 = 0;
+	mUnk0x48 = 0;
+	mUnk0x4c = 0;
+	mUnk0x138 = 1;
+	mUnk0x144 = -1;
+	mUnk0xf7 = false;
+	mUnk0x1d = false;
+	mUnk0x1e = false;
+	mUnk0xf9 = true;
+	mBoard->Reload();
+	mBoard->mInterfaceMgr->LoadGun();
+
+	if (mFireballCount[mUnk0x128] > 0)
+		mBoard->mGun->SetFireball(true);
+	if (mUnk0x54)
+		SetWearHat(true);
 }
 
 void LogicMgr::BeginShot(bool param_1)
@@ -244,10 +279,11 @@ void LogicMgr::UpdateFreeBallRadius()
 	// TODO
 }
 
-// STUB: POPCAPGAME1 0x0044b690
+// FUNCTION: POPCAPGAME1 0x0044b690
 void LogicMgr::UpdateShotExtender()
 {
-	// TODO
+	if (mBoard->mInterfaceMgr->mUnk0x160)
+		BeginTurn2();
 }
 
 void LogicMgr::IncScore(int param_1, bool param_2)
@@ -688,10 +724,47 @@ void LogicMgr::DoHelperShot(bool param_1)
 	// TODO
 }
 
-// STUB: POPCAPGAME1 0x00440580
+// FUNCTION: POPCAPGAME1 0x00440580
 void LogicMgr::ActivateFreeBall(bool param_1)
 {
-	// TODO
+	if (!mUnk0xf6 || !param_1)
+	{
+		std::list<SmartPtr<PhysObj> >& anObjList = mBoard->mUnk0x190;
+		bool anActive = param_1 && mFreeBallCount[mUnk0x128] > 0;
+		for (std::list<SmartPtr<PhysObj> >::iterator anItr = anObjList.begin();
+			anItr != anObjList.end(); ++anItr)
+		{
+			PhysObj* anObj = anItr->get();
+			if (anObj->mUnk0x5c == "bumperhole")
+			{
+				anObj->SetActiveWithGrowAnim(anActive);
+				if (anObj->mUnk0x10 == 5 && anObj->mUnk0xb0 == 1 && mUnk0x4 == 2)
+				{
+					static_cast<Poly*>(anObj)->mUnk0x140 = ModVal(
+						0,
+						"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LogicMgr.cpp1078,1463",
+						300
+					);
+				}
+
+				if (anObj->mUnk0xb0 == 1)
+					anObj->mUnk0x24 = false;
+				else
+					anObj->mUnk0x25 = false;
+			}
+			else if (anObj->mUnk0x5c == "freeball")
+			{
+				anObj->SetActive(param_1);
+				if (anObj->mUnk0x10 != 1)
+				{
+					if (anObj->mUnk0x28)
+						anObj->mUnk0x24 = false;
+					else
+						anObj->mUnk0x25 = false;
+				}
+			}
+		}
+	}
 }
 
 // STUB: POPCAPGAME1 0x00440700

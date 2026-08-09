@@ -146,7 +146,9 @@ public:
 	int mUnk0x1d8;                          // +0x1d8
 	int mUnk0x1dc;                          // +0x1dc
 	char mUnk0x1e0[4];                      // +0x1e0
-	int mUnk0x1e4[10];                      // +0x1e4
+	int mUnk0x1e4[4];                       // +0x1e4
+	int mFreeBallCount[2];                   // +0x1f4
+	int mUnk0x1fc[4];                       // +0x1fc
 	int mZenBallCount[2];                    // +0x20c
 	int mUnk0x214[2];                       // +0x214
 	char mUnk0x21c[0x18];                   // +0x21c
