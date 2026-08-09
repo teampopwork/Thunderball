@@ -81,9 +81,10 @@ void CharacterMgr::DoCharMove(int param_1, int param_2, bool param_3)
 {
 }
 
-// STUB: POPCAPGAME1 0x00432d70
+// FUNCTION: POPCAPGAME1 0x00432d70
 void CharacterMgr::DoPowerupBlink(int param_1)
 {
+	mUnk0x34 = param_1 * 40 - 1;
 }
 
 // STUB: POPCAPGAME1 0x00438cf0
@@ -220,9 +221,11 @@ int CharacterMgr::SetCurCharacter(int param_1)
     return 0;
 }
 
-// STUB: POPCAPGAME1 0x00432b30
+// FUNCTION: POPCAPGAME1 0x00432b30
 void CharacterMgr::SetYinYangEye(bool param_1)
 {
+	if (mUnk0x45 != param_1)
+		mUnk0x45 = param_1;
 }
 
 // STUB: POPCAPGAME1 0x0043ff10
@@ -240,7 +243,9 @@ void CharacterMgr::UpdatePaused()
 {
 }
 
-// STUB: POPCAPGAME1 0x00439a60
+// FUNCTION: POPCAPGAME1 0x00439a60
 void CharacterMgr::UpdateSlowMo()
 {
+	if (mUnk0x2C != 0 && --mUnk0x2C == 0)
+		CalcEyePos(false);
 }
