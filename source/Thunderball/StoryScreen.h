@@ -18,6 +18,7 @@ class StoryParticle;
 
 class StoryParticleList {
 public:
+	int mProxy;
 	StoryParticle** mBegin;
 	StoryParticle** mEnd;
 	StoryParticle** mCapacity;
@@ -32,11 +33,13 @@ public:
 		mCapacity = NULL;
 	}
 
-	void PushBack(StoryParticle* theParticle)
+	void PushBack(StoryParticle* const& theParticle);
+
+	void PushBackInline(StoryParticle* theParticle)
 	{
 		if (mEnd == mCapacity) {
-			int anOldSize = mBegin == NULL ? 0 : mEnd - mBegin;
-			int anOldCapacity = mBegin == NULL ? 0 : mCapacity - mBegin;
+			int anOldSize = mBegin == NULL ? 0 : (int) (mEnd - mBegin);
+			int anOldCapacity = mBegin == NULL ? 0 : (int) (mCapacity - mBegin);
 			int aNewCapacity = anOldCapacity == 0 ? 1 : anOldCapacity * 2;
 			StoryParticle** aNewBuffer = (StoryParticle**) operator new(aNewCapacity * sizeof(StoryParticle*));
 			for (int i = 0; i < anOldSize; ++i)
@@ -47,23 +50,6 @@ public:
 			mCapacity = aNewBuffer + aNewCapacity;
 		}
 		*mEnd++ = theParticle;
-	}
-};
-
-class StoryValueList {
-public:
-	int* mBegin;
-	int* mEnd;
-	int* mCapacity;
-
-	StoryValueList() : mBegin(NULL), mEnd(NULL), mCapacity(NULL) {}
-	~StoryValueList()
-	{
-		if (mBegin != NULL)
-			operator delete(mBegin);
-		mBegin = NULL;
-		mEnd = NULL;
-		mCapacity = NULL;
 	}
 };
 
@@ -87,10 +73,8 @@ public:
 	float mParticleVX; // +0xc4
 	float mParticleVY; // +0xc8
 	int mUnk0xcc; // +0xcc
-	int mUnk0xd0; // +0xd0
-	StoryParticleList mUnk0xd4; // +0xd4
-	int mUnk0xe0; // +0xe0
-	StoryValueList mUnk0xe4; // +0xe4
+	StoryParticleList mParticles; // +0xd0
+	StoryParticleList mStars; // +0xe0
 	bool mUnk0xf0; // +0xf0
 	bool mUnk0xf1; // +0xf1
 	bool mUnk0xf2; // +0xf2

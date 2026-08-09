@@ -59,6 +59,27 @@ void StoryParticle::Update()
 	mVY += ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp0,44", 0.01f);
 }
 
+// FUNCTION: POPCAPGAME1 0x004e90e0
+__declspec(noinline) void StoryParticleList::PushBack(StoryParticle* const& theParticle)
+{
+	if (mBegin != NULL && mEnd < mCapacity) {
+		*mEnd++ = theParticle;
+		return;
+	}
+
+	int anOldSize = mBegin == NULL ? 0 : (int) (mEnd - mBegin);
+	int anOldCapacity = mBegin == NULL ? 0 : (int) (mCapacity - mBegin);
+	int aNewCapacity = anOldCapacity == 0 ? 1 : anOldCapacity * 2;
+	StoryParticle** aNewBuffer = (StoryParticle**) operator new(aNewCapacity * sizeof(StoryParticle*));
+	for (int i = 0; i < anOldSize; ++i)
+		aNewBuffer[i] = mBegin[i];
+	operator delete(mBegin);
+	mBegin = aNewBuffer;
+	mEnd = aNewBuffer + anOldSize;
+	mCapacity = aNewBuffer + aNewCapacity;
+	*mEnd++ = theParticle;
+}
+
 // FUNCTION: POPCAPGAME1 0x0048d150
 StoryScreen::StoryScreen(ThunderballApp* theApp, bool param_2, bool param_3)
 {
@@ -693,15 +714,15 @@ void StoryScreen::UpdateParticles()
 		float aSpeed = (float) ((rand() % 10) * (double) ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp55,437", 0.03f));
 		aParticle->mVX = (float) sin(anAngle) * aSpeed;
 		aParticle->mVY = (float) cos(anAngle) * aSpeed;
-		mUnk0xd4.PushBack(aParticle);
+		mParticles.PushBackInline(aParticle);
 	}
 
-	for (int i = 0; i < mUnk0xd4.mEnd - mUnk0xd4.mBegin; ++i) {
-		StoryParticle* aParticle = mUnk0xd4.mBegin[i];
+	for (int i = 0; i < mParticles.mEnd - mParticles.mBegin; ++i) {
+		StoryParticle* aParticle = mParticles.mBegin[i];
 		if (aParticle->mAge >= aParticle->mDuration) {
 			delete aParticle;
-			mUnk0xd4.mBegin[i] = mUnk0xd4.mEnd[-1];
-			--mUnk0xd4.mEnd;
+			mParticles.mBegin[i] = mParticles.mEnd[-1];
+			--mParticles.mEnd;
 			--i;
 		}
 		else {
@@ -710,9 +731,59 @@ void StoryScreen::UpdateParticles()
 	}
 }
 
-// STUB: POPCAPGAME1 0x0048d830
+// FUNCTION: POPCAPGAME1 0x0048d830
 void StoryScreen::UpdateStars()
 {
+	if (mUnk0xb4 < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp56,468", 400)) {
+		for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp57,470", 6); ++i) {
+			StoryParticle* aStar = new StoryParticle();
+			aStar->mX = (float) (ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp58,474", 400) - 5 + rand() % 10);
+			aStar->mY = (float) (ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp59,475", 300) - 5 + rand() % 10);
+
+			float anAngle = (float) ((rand() % 100) * 6.283 / 100.0);
+			float aSpeed = (float) ((rand() % 8 + 2) * (double) ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp60,478", 4.2f));
+			aStar->mVX = (float) sin(anAngle) * aSpeed;
+			aStar->mVY = (float) cos(anAngle) * aSpeed;
+			aStar->mType = 0;
+			aStar->mDuration = rand() % 30 + 70;
+
+			if (rand() % ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp61,486", 30) == 0 &&
+				mUnk0xb4 < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp62,486", 360)) {
+				aStar->mType = rand() % ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp63,488", 9) + 1;
+				float aLength = (float) sqrt(aStar->mVX * aStar->mVX + aStar->mVY * aStar->mVY);
+				if (aLength > 0.0f) {
+					aStar->mVX *= ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp64,492", 5.0f) / aLength;
+					aStar->mVY *= ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp65,493", 5.0f) / aLength;
+				}
+				aStar->mDuration *= 2;
+			}
+
+			mStars.PushBack(aStar);
+		}
+	}
+
+	for (int i = 0; i < mStars.mEnd - mStars.mBegin; ++i) {
+		StoryParticle* aStar = mStars.mBegin[i];
+		if (aStar->mAge >= aStar->mDuration) {
+			delete aStar;
+			mStars.mBegin[i] = mStars.mEnd[-1];
+			--mStars.mEnd;
+			--i;
+			continue;
+		}
+
+		if (aStar->mType != 0) {
+			aStar->mVX += (rand() % 100 - 50) * ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp66,519", 0.005f);
+			aStar->mVY += (rand() % 100 - 50) * ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp67,520", 0.005f);
+			float aLength = (float) sqrt(aStar->mVX * aStar->mVX + aStar->mVY * aStar->mVY);
+			if (aLength > 0.0f) {
+				aStar->mVX *= ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp68,525", 5.0f) / aLength;
+				aStar->mVY *= ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp69,526", 5.0f) / aLength;
+			}
+		}
+
+		aStar->Update();
+	}
 }
 
 // STUB: POPCAPGAME1 0x0048dea0
