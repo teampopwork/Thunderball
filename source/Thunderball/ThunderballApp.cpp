@@ -248,9 +248,20 @@ void ThunderballApp::BringDialogsToFront()
 {
 }
 
-// STUB: POPCAPGAME1 0x00405f90
+// FUNCTION: POPCAPGAME1 0x00405f90
 void ThunderballApp::ButtonDepress(int param_1)
 {
+	switch (param_1) {
+	case 1:
+		Shutdown();
+		break;
+	case 2:
+		::CloseWindow(mHWnd);
+		break;
+	case 3:
+		SwitchScreenMode(true, Is3DAccelerated(), false);
+		break;
+	}
 }
 
 // STUB: POPCAPGAME1 0x00405a50
@@ -259,9 +270,18 @@ int ThunderballApp::CheckCanExpire()
 	return 0;
 }
 
-// STUB: POPCAPGAME1 0x00405aa0
+// FUNCTION: POPCAPGAME1 0x00405aa0
 void ThunderballApp::CheckMaxStage()
 {
+	if (mCurProfile != NULL) {
+		if (mCurProfile->mUnk0x28 > mMaxStage) {
+			mMaxStage = mCurProfile->mUnk0x28;
+			mMaxLevel = mCurProfile->mUnk0x2c;
+		}
+		else if (mCurProfile->mUnk0x28 == mMaxStage && mCurProfile->mUnk0x2c > mMaxLevel) {
+			mMaxLevel = mCurProfile->mUnk0x2c;
+		}
+	}
 }
 
 // STUB: POPCAPGAME1 0x0040d180
@@ -567,9 +587,13 @@ bool ThunderballApp::DoReplaysExist()
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x00405f60
+// FUNCTION: POPCAPGAME1 0x00405f60
 void ThunderballApp::DoScrollOff(int param_1)
 {
+	ThunderDialog* dialog = static_cast<ThunderDialog*>(GetDialog(param_1));
+	if (dialog != NULL) {
+		dialog->DoScrollOff(true);
+	}
 }
 
 // STUB: POPCAPGAME1 0x0041cee0
@@ -977,10 +1001,14 @@ void ThunderballApp::LoadMusic(int param_1, const std::string& param_2)
 {
 }
 
-// STUB: POPCAPGAME1 0x00405c00
+// FUNCTION: POPCAPGAME1 0x00405c00
 bool ThunderballApp::OnMaxLevel()
 {
-	return false;
+	if (mCurProfile == NULL) {
+		return false;
+	}
+
+	return mCurProfile->GetMaxLevel() == GetCurLevel();
 }
 
 // FUNCTION: POPCAPGAME1 0x00405c30
@@ -1326,9 +1354,16 @@ void ThunderballApp::InitHook()
 {
 }
 
-// STUB: POPCAPGAME1 0x00408430
+// FUNCTION: POPCAPGAME1 0x00408430
 bool ThunderballApp::IsAltKeyUsed(WPARAM wParam)
 {
+	if (SexyApp::IsAltKeyUsed(wParam)) {
+		return true;
+	}
+	if (mBoard != NULL) {
+		return mBoard->IsAltKeyUsed(wParam);
+	}
+
 	return false;
 }
 
