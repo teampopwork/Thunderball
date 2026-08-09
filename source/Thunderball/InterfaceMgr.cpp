@@ -2,6 +2,7 @@
 
 #include "Board.h"
 #include "LogicMgr.h"
+#include "PlayerInfo.h"
 #include "Res.h"
 #include "SoundMgr.h"
 #include "ThunderballApp.h"
@@ -228,14 +229,24 @@ void InterfaceMgr::UpdatePaused()
 {
 }
 
-// STUB: POPCAPGAME1 0x00448190
+// FUNCTION: POPCAPGAME1 0x00448190
 void InterfaceMgr::CheckHighScoreSync()
 {
+	if (mUnk0x64 > 0 && mUnk0x64 < mUnk0x94 && mBoard->mUnk0xb4 != DEMO) {
+		mUnk0x64 = mUnk0x94;
+		if (mApp->mCurProfile != NULL) {
+			mUnk0x70.assign(mApp->mCurProfile->mName, 0, (size_t) -1);
+		}
+	}
 }
 
-// STUB: POPCAPGAME1 0x004482d0
+// FUNCTION: POPCAPGAME1 0x004482d0
 void InterfaceMgr::SettleDown()
 {
+	LogicMgr* aLogicMgr = mBoard->mLogicMgr;
+	mUnk0x94 = aLogicMgr->mUnk0x174;
+	mUnk0x98 = aLogicMgr->mUnk0x178;
+	CheckHighScoreSync();
 }
 
 // STUB: POPCAPGAME1 0x004481d0
