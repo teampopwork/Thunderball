@@ -543,9 +543,43 @@ void Poly::CalcBoundingBox()
 	}
 }
 
-// STUB: POPCAPGAME1 0x0047d3a0
+// FUNCTION: POPCAPGAME1 0x0047d3a0
 void Poly::CheckConvex()
 {
+	if (mUnk0xe8.size() <= 2)
+		return;
+
+	SexyVector2& aFirst = mUnk0xe8.front();
+	SexyVector2& aLast = mUnk0xe8.back();
+	mUnk0x12e = aFirst.x == aLast.x && aFirst.y == aLast.y;
+	if (!mUnk0x12e)
+	{
+		mUnk0x12d = false;
+		return;
+	}
+
+	mUnk0x12d = true;
+	float aCrossSign = 0.0f;
+	SexyVector2 aCurrent = aFirst;
+	SexyVector2 aPrevious(
+		aFirst.x - mUnk0xe8[mUnk0xe8.size() - 2].x,
+		aFirst.y - mUnk0xe8[mUnk0xe8.size() - 2].y);
+
+	for (int i = 1; i < (int) mUnk0xe8.size(); i++)
+	{
+		SexyVector2& aPoint = mUnk0xe8[i];
+		SexyVector2 aDelta(aPoint.x - aCurrent.x, aPoint.y - aCurrent.y);
+		float aCross = aDelta.y * aPrevious.x - aDelta.x * aPrevious.y;
+		if ((aCrossSign < 0.0f && aCross > 0.0f) || (aCrossSign > 0.0f && aCross < 0.0f))
+		{
+			mUnk0x12d = false;
+			return;
+		}
+		if (aCrossSign == 0.0f && aCross != 0.0f)
+			aCrossSign = aCross;
+		aCurrent = aPoint;
+		aPrevious = aDelta;
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0047d5b0
@@ -703,9 +737,43 @@ void Poly::AddPoint(float param_1, float param_2)
 	mUnk0xe8.push_back(SexyVector2(param_1, param_2));
 }
 
-// STUB: POPCAPGAME1 0x00484730
+// FUNCTION: POPCAPGAME1 0x00484730
 void Poly::InitFromPoints()
 {
+	int aLineCount = (int) mUnk0xe8.size() - 1;
+	if ((int) mUnk0x108.size() != aLineCount)
+	{
+		mUnk0x108.clear();
+		for (int i = 0; i < aLineCount; i++)
+		{
+			mUnk0x108.push_back(new Line(0.0f, 0.0f, 0.0f, 0.0f));
+			mUnk0x108.back()->mUnk0x111 = mUnk0x134 != 0;
+			mUnk0xf8.push_back(SexyVector2(0.0f, 0.0f));
+		}
+	}
+
+	if (mUnk0x11c == 0.0f)
+	{
+		for (int i = 0; i < aLineCount; i++)
+		{
+			SexyVector2& aStart = mUnk0xe8[i];
+			SexyVector2& anEnd = mUnk0xe8[i + 1];
+			Line* aLine = mUnk0x108[i];
+			aLine->Init(
+				aStart.x + mUnk0x114,
+				aStart.y + mUnk0x118,
+				anEnd.x + mUnk0x114,
+				anEnd.y + mUnk0x118);
+			mUnk0xf8[i] = SexyVector2(aLine->mUnk0xec - mUnk0x114, aLine->mUnk0xf4 - mUnk0x118);
+		}
+		CalcBoundingBox();
+	}
+	else
+	{
+		InitRotatedFromPoints(mUnk0x11c);
+	}
+
+	CheckConvex();
 }
 
 // FUNCTION: POPCAPGAME1 0x00484e80
