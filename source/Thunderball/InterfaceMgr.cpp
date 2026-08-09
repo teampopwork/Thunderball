@@ -8,6 +8,7 @@
 #include <SexyAppFramework/MemoryImage.h>
 
 #include <algorithm>
+#include <cstring>
 
 using namespace Sexy;
 
@@ -35,6 +36,9 @@ static int GetMaxVisibleBalls()
 
 // TEMPLATE: POPCAPGAME1 0x00442320
 // std::vector<Sexy::SexyVector2,std::allocator<Sexy::SexyVector2> >::back
+
+// TEMPLATE: POPCAPGAME1 0x0041ff50
+// std::vector<Sexy::SexyVector2,std::allocator<Sexy::SexyVector2> >::insert
 
 // FUNCTION: POPCAPGAME1 0x004515a0
 InterfaceMgr::InterfaceMgr(Board* theBoard)
@@ -371,9 +375,33 @@ void InterfaceMgr::Clear()
 	mUnk0x164.clear();
 }
 
-// STUB: POPCAPGAME1 0x004517c0
-void InterfaceMgr::AddBottomBall(int param_1)
+// FUNCTION: POPCAPGAME1 0x004517c0
+void InterfaceMgr::AddBottomBall(int theDelay)
 {
+	mUnk0x160 = false;
+	if (mUnk0x60 != 0) {
+		mUnk0x60 = 0;
+		AddBottomBall(0);
+	}
+
+	if (theDelay != 0) {
+		mUnk0x60 = theDelay;
+		return;
+	}
+
+	int aBallSpacing = GetBallSpacing();
+	SexyVector2 aNewBall;
+	memset(&aNewBall, 0, sizeof(aNewBall));
+	mUnk0x164.insert(mUnk0x164.begin(), aNewBall);
+	SexyVector2& aBottomBall = mUnk0x164.front();
+	aBottomBall.y = 0.0f;
+	mUnk0x5c += aBallSpacing;
+	aBottomBall.x = (float) GetBallBottom();
+
+	int aNumVisibleBalls = GetNumVisibleBalls();
+	for (int i = 0; i < aNumVisibleBalls; ++i) {
+		mUnk0x164[i].y = -1.0f;
+	}
 }
 
 // STUB: POPCAPGAME1 0x004518b0
