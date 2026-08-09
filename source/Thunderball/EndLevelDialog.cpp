@@ -10,9 +10,10 @@ EndLevelDialog::EndLevelDialog(Board* param_1) : ThunderDialog(0, false, "", "",
 // SYNTHETIC: POPCAPGAME1 0x0049ec50
 // Sexy::EndLevelDialog::`scalar deleting destructor'
 
-// STUB: POPCAPGAME1 0x0049db50
+// FUNCTION: POPCAPGAME1 0x0049db50
 EndLevelDialog::~EndLevelDialog()
 {
+	RemoveAllWidgets(true, false);
 }
 
 // STUB: POPCAPGAME1 0x00492c90
