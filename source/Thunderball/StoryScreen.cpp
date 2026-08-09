@@ -1054,6 +1054,12 @@ void StoryScreen::UpdateWin()
 		++mUnk0xb4;
 		--mUnk0xb0;
 		UpdateStars();
+		if (mUnk0xb4 == ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp13,199", 50))
+			mApp->PlaySample(SOUND_POWERUP_ZEN);
+		if (mUnk0xb4 >= 500 && mUnk0xb4 < 820 && (mUnk0xb4 - 500) % 40 == 0)
+			PlayOdeNote((mUnk0xb4 - 500) / 40);
+		if (mUnk0xb0 == 0)
+			mApp->PlayMusic(2000, true);
 		MarkDirty();
 		return;
 	}
