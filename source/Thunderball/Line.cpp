@@ -7,6 +7,39 @@
 
 using namespace Sexy;
 
+// FUNCTION: POPCAPGAME1 0x00475e10
+static int GetRectOutCode(Rect* param_1, float param_2, float param_3)
+{
+	int aCode = param_2 < param_1->mX;
+	if (param_3 < param_1->mY)
+		aCode |= 2;
+	if (param_1->mX + param_1->mWidth < param_2)
+		aCode |= 4;
+	if (param_1->mY + param_1->mHeight < param_3)
+		aCode |= 8;
+	return aCode;
+}
+
+// FUNCTION: POPCAPGAME1 0x00475e90
+static void GetProjectionRange(
+	SexyVector2* param_1,
+	int param_2,
+	SexyVector2* param_3,
+	float* param_4,
+	float* param_5)
+{
+	*param_4 = 1.0e10f;
+	*param_5 = -1.0e10f;
+	for (int i = 0; i < param_2; i++)
+	{
+		float aProjection = param_1[i].x * param_3->x + param_1[i].y * param_3->y;
+		if (aProjection < *param_4)
+			*param_4 = aProjection;
+		if (*param_5 < aProjection)
+			*param_5 = aProjection;
+	}
+}
+
 // FUNCTION: POPCAPGAME1 0x00481440
 Line::Line()
 {
@@ -221,10 +254,46 @@ void Line::Init(float param_1, float param_2, float param_3, float param_4)
 	mUnk0x10c = -(mUnk0x104 * mUnk0xec + mUnk0x108 * mUnk0xf4);
 }
 
-// STUB: POPCAPGAME1 0x00476010
+// FUNCTION: POPCAPGAME1 0x00476010
 bool Line::IsPartlyInsideRect(Rect* theRect)
 {
-	return false;
+	SexyVector2 aLinePoints[2] = {
+		SexyVector2(mUnk0xec, mUnk0xf4),
+		SexyVector2(mUnk0xf0, mUnk0xf8)
+	};
+
+	int aStartCode = GetRectOutCode(theRect, aLinePoints[0].x, aLinePoints[0].y);
+	int anEndCode = GetRectOutCode(theRect, aLinePoints[1].x, aLinePoints[1].y);
+	if (aStartCode != 0 && anEndCode != 0)
+	{
+		if ((aStartCode & anEndCode) != 0)
+			return false;
+
+		SexyVector2 aRectPoints[4] = {
+			SexyVector2((float) theRect->mX, (float) theRect->mY),
+			SexyVector2((float) (theRect->mX + theRect->mWidth), (float) theRect->mY),
+			SexyVector2((float) theRect->mX, (float) (theRect->mY + theRect->mHeight)),
+			SexyVector2((float) (theRect->mX + theRect->mWidth), (float) (theRect->mY + theRect->mHeight))
+		};
+		SexyVector2 anAxes[3] = {
+			SexyVector2(1.0f, 0.0f),
+			SexyVector2(0.0f, 1.0f),
+			SexyVector2(aLinePoints[0].y - aLinePoints[1].y, aLinePoints[1].x - aLinePoints[0].x)
+		};
+
+		for (int i = 0; i < 3; i++)
+		{
+			float aRectMin;
+			float aRectMax;
+			float aLineMin;
+			float aLineMax;
+			GetProjectionRange(aRectPoints, 4, &anAxes[i], &aRectMin, &aRectMax);
+			GetProjectionRange(aLinePoints, 2, &anAxes[i], &aLineMin, &aLineMax);
+			if (aLineMax < aRectMin || aRectMax < aLineMin)
+				return false;
+		}
+	}
+	return true;
 }
 
 // FUNCTION: POPCAPGAME1 0x00476380
