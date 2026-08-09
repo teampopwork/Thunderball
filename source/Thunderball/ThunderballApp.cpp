@@ -1298,9 +1298,17 @@ void ThunderballApp::PlayMusic(int param_1, bool param_2)
 {
 }
 
-// STUB: POPCAPGAME1 0x004294a0
+// FUNCTION: POPCAPGAME1 0x004294a0
 void ThunderballApp::RemoveBoard()
 {
+	if (mBoard != NULL) {
+		if (mBoard->NeedSaveGame()) {
+			mBoard->SaveGame();
+		}
+		mBoard->NotifyRemoving();
+	}
+	CleanupScreen(mBoard);
+	mBoard = NULL;
 }
 
 // FUNCTION: POPCAPGAME1 0x00405b50
@@ -1759,10 +1767,38 @@ Dialog* ThunderballApp::NewDialog(
 	return static_cast<Dialog*>(aDialog);
 }
 
-// STUB: POPCAPGAME1 0x0041c400
+// FUNCTION: POPCAPGAME1 0x0041c400
 void ThunderballApp::ReadFromRegistry()
 {
 	SexyApp::ReadFromRegistry();
+
+	int aFeverVolume = 85;
+	// STRING: POPCAPGAME1 0x005d692c
+	RegistryReadInteger("FeverVolume", &aFeverVolume);
+	mFeverVolume = aFeverVolume * 0.01;
+
+	bool shouldShowUpsellButton = false;
+	// STRING: POPCAPGAME1 0x005d6914
+	RegistryReadBoolean("ShouldShowUpsellButton", &shouldShowUpsellButton);
+	if (shouldShowUpsellButton) {
+		mShouldShowUpsellButton = true;
+	}
+
+	int aMaxStage = 0;
+	int aMaxLevel = 0;
+	// STRING: POPCAPGAME1 0x005d6908
+	RegistryReadInteger("MaxStage", &aMaxStage);
+	RegistryReadInteger("MaxStage", &aMaxLevel);
+
+	if (aMaxStage < mMaxStage) {
+		aMaxStage = mMaxStage;
+	}
+	else if (aMaxStage == mMaxStage && aMaxLevel < mMaxLevel) {
+		aMaxLevel = mMaxLevel;
+	}
+
+	mMaxStage = aMaxStage;
+	mMaxLevel = aMaxLevel;
 }
 
 // FUNCTION: POPCAPGAME1 0x0042d2d0
