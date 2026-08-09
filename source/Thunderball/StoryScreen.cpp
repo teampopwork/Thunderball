@@ -20,12 +20,6 @@ using namespace Sexy;
 // FUNCTION: POPCAPGAME1 0x0048d150
 StoryScreen::StoryScreen(ThunderballApp* theApp, bool param_2, bool param_3)
 {
-	mUnk0xd4 = 0;
-	mUnk0xd8 = 0;
-	mUnk0xdc = 0;
-	mUnk0xe4 = 0;
-	mUnk0xe8 = 0;
-	mUnk0xec = 0;
 	mUnk0xf1 = param_2;
 	mApp = theApp;
 	mUnk0xf2 = param_3;
@@ -83,9 +77,10 @@ StoryScreen::StoryScreen(ThunderballApp* theApp, bool param_2, bool param_3)
 // SYNTHETIC: POPCAPGAME1 0x0048b5c0
 // Sexy::StoryScreen::`scalar deleting destructor'
 
-// STUB: POPCAPGAME1 0x0048b500
+// FUNCTION: POPCAPGAME1 0x0048b500
 StoryScreen::~StoryScreen()
 {
+	RemoveAllWidgets(true, false);
 }
 
 // STUB: POPCAPGAME1 0x00489ec0
