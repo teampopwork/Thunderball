@@ -36,6 +36,18 @@ class Board;
 class BlendedImage;
 class GameStats;
 
+class RegistrationControl {
+public:
+	int mUnk0x0;             // +0x0
+	HWND mWindow;            // +0x4
+	char mPadding0x8[8];     // +0x8
+	bool mWindowValid;       // +0x10
+	char mPadding0x11[0x1b]; // +0x11
+	UINT mQueryMessage;      // +0x2c
+
+	bool IsRegistered();
+};
+
 static BlendedImage* gBallPegImage[9];
 
 // VTABLE: POPCAPGAME1 0x005d7cb8
@@ -59,7 +71,8 @@ public:
 	char mPadding0x788[0x8];            // +0x788
 	double mFeverVolume;               // +0x790
 	bool mShouldShowUpsellButton;      // +0x798
-	char mPadding0x799[0x17];           // +0x799
+	bool mUnk0x799;                     // +0x799
+	char mPadding0x79a[0x16];           // +0x79a
 	int mUnk0x7b0;                     // +0x7B0
 	int mUnk0x7b8;                     // +0x7B4
 	Board* mBoard;                     // +0x7B8
@@ -71,12 +84,13 @@ public:
 	TrophyScreen* mTrophyScreen;       // +0x7D0
 	StoryScreen* mStoryScreen;         // +0x7D4
 	AdventureScreen* mAdventureScreen; // +0x7D8
-	char mPadding0x7dc[0x58];           // +0x7DC
+	char mPadding0x7dc[0x54];           // +0x7DC
+	RegistrationControl* mRegistrationControl; // +0x830
 	int mUnk0x834;                     // +0x834
 	char mPadding0x838;                 // +0x838
 	bool mUnk0x839;                    // +0x839
 	bool mUnk0x83A;                    // +0x83A
-	char mPadding0x83b;                 // +0x83b
+	bool mUnk0x83b;                     // +0x83b
 	bool mUnk0x83C;                    // +0x83C
 	char mPadding0x83d[0x7];            // +0x83d
 	CharacterMgr* mCharacterMgr;       // +0x844

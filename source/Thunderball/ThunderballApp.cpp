@@ -36,6 +36,16 @@
 
 using namespace Sexy;
 
+// FUNCTION: POPCAPGAME1 0x00431760
+bool RegistrationControl::IsRegistered()
+{
+	if (::IsWindow(mWindow)) {
+		return ::SendMessageA(mWindow, mQueryMessage, 4, 0) != 0;
+	}
+	mWindowValid = false;
+	return false;
+}
+
 // STUB: POPCAPGAME1 0x00426f10
 ThunderballApp::ThunderballApp()
 {
@@ -836,9 +846,12 @@ bool ThunderballApp::IsLevelLockedTrial()
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x004057d0
+// FUNCTION: POPCAPGAME1 0x004057d0
 bool ThunderballApp::IsRegistered()
 {
+	if (mRegistrationControl != NULL) {
+		return mRegistrationControl->IsRegistered();
+	}
 	return false;
 }
 
@@ -867,9 +880,15 @@ bool ThunderballApp::OnMaxLevel()
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x00405c30
+// FUNCTION: POPCAPGAME1 0x00405c30
 void ThunderballApp::PauseBoard(bool param_1)
 {
+	if (mBoard != NULL) {
+		mBoard->Pause(param_1);
+	}
+	if (mUpsellScreen != NULL) {
+		mUpsellScreen->Pause(param_1);
+	}
 }
 
 // STUB: POPCAPGAME1 0x0040bdd0
@@ -1170,7 +1189,7 @@ void ThunderballApp::ViewReplays()
 {
 }
 
-// STUB: POPCAPGAME1 0x00430680
+// STUB: POPCAPGAME1 0x
 void ThunderballApp::GotFocus()
 {
 	SexyApp::GotFocus();
@@ -1347,10 +1366,25 @@ void ThunderballApp::Shutdown()
 	}
 }
 
-// STUB: POPCAPGAME1 0x
+// FUNCTION: POPCAPGAME1 0x00430680
 void ThunderballApp::ShutdownHook()
 {
 	SexyApp::ShutdownHook();
+	if (mUpsellScreen != NULL && IsRegistered()) {
+		if (mUnk0x83b) {
+			mUnk0x83b = false;
+			StartAdventureGame();
+		}
+		else {
+			ShowMainMenu();
+		}
+		return;
+	}
+
+	mUnk0x799 = true;
+	if (mBoard != NULL && mBoard->mUnk0x130 == 0) {
+		PauseBoard(false);
+	}
 }
 
 // STUB: POPCAPGAME1 0x00405e70
