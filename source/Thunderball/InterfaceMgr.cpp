@@ -2,12 +2,14 @@
 
 #include "Board.h"
 #include "CharacterMgr.h"
+#include "EndLevelDialog.h"
 #include "HighScoreMgr.h"
 #include "LogicMgr.h"
 #include "PlayerInfo.h"
 #include "Res.h"
 #include "SoundMgr.h"
 #include "ThunderballApp.h"
+#include "ThunderButton.h"
 
 #include <SexyAppFramework/Font.h>
 #include <SexyAppFramework/Graphics.h>
@@ -689,9 +691,94 @@ void InterfaceMgr::AddBottomBall(int theDelay)
 	}
 }
 
-// STUB: POPCAPGAME1 0x004518b0
+// FUNCTION: POPCAPGAME1 0x004518b0
 void InterfaceMgr::Update()
 {
+	for (int i = 0; i < 2; ++i) {
+		int& aScoreDelay = (&mUnk0xd8)[i];
+		if (aScoreDelay != 0 && ++aScoreDelay > 300) {
+			aScoreDelay = 0;
+		}
+
+		int& aScoreBlink = (&mUnk0xe0)[i];
+		if (aScoreBlink != 0) {
+			aScoreBlink++;
+			// STRING: POPCAPGAME1 0x005e6ff8
+			if (aScoreBlink > ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp1050,1847", 119)) {
+				aScoreBlink = 0;
+			}
+		}
+	}
+
+	UpdateScoreDisp();
+	if (mUnk0x60 != 0 && --mUnk0x60 == 0) {
+		AddBottomBall(0);
+	}
+	UpdateShotMeter();
+	UpdateBalls();
+
+	if (mUnk0x34 != 0 && ++mUnk0x34 > 179) {
+		mUnk0x34 = 0;
+	}
+	if (mUnk0xf8 != 0 && ++mUnk0xf8 > 120) {
+		mUnk0xf8 = 0;
+	}
+
+	int aShotMeter = mUnk0x30;
+	if (aShotMeter != -1 && ++mUnk0x3c == 10) {
+		LogicMgr* aLogicMgr = mBoard->mLogicMgr;
+		int aTarget = 25;
+		mUnk0x3c = 0;
+		aTarget -= (int) aLogicMgr->mUnk0x358.size();
+		if (aTarget > aShotMeter) {
+			if (mUnk0x38 == -1) {
+				mUnk0x38 = aShotMeter;
+			} else {
+				mUnk0x38++;
+			}
+			if (mUnk0x38 >= aTarget) {
+				mUnk0x3c = -30;
+				mUnk0x38 = aShotMeter;
+			}
+		} else {
+			mUnk0x38 = -1;
+		}
+	}
+
+	int aReplayBlink = mUnk0xf0;
+	if (mBoard->mReplayButton->mDisabled) {
+		if (aReplayBlink < 10) {
+			mUnk0xf0 = aReplayBlink + 1;
+		}
+	} else {
+		if (aReplayBlink > 0 && --mUnk0xf0 == 0) {
+			int aBlinkCount;
+			if (mBoard->mLogicMgr->mUnk0xf6) {
+				aBlinkCount = 8;
+			} else {
+				aBlinkCount = 1;
+			}
+			mBoard->mReplayButton->Blink(aBlinkCount, false);
+		}
+	}
+
+	if (mUnk0x6c != 0) {
+		mUnk0x6c--;
+	}
+
+	if (mUnk0x44 != 0 && mBoard->mEndLevelDialog->mWidgetManager == NULL) {
+		mUnk0x44++;
+		// STRING: POPCAPGAME1 0x005e6fb0
+		int aBlinkIndex = (mUnk0x44 / ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp1051,1930", 10)) % 6;
+		for (int i = 0; i < 25; ++i) {
+			if (aBlinkIndex == i % 6) {
+				// STRING: POPCAPGAME1 0x005e6f68
+				mUnk0xfc[i] = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\InterfaceMgr.cpp1052,1934", 20);
+			} else if (mUnk0xfc[i] > 0) {
+				mUnk0xfc[i]--;
+			}
+		}
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0045c860
