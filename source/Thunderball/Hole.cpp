@@ -4,6 +4,8 @@
 #include "DataSync.h"
 #include "Mover.h"
 
+#include <SexyAppFramework/Graphics.h>
+
 using namespace Sexy;
 
 // FUNCTION: POPCAPGAME1 0x004810e0
@@ -29,10 +31,32 @@ Hole::~Hole()
 {
 }
 
-// STUB: POPCAPGAME1 0x00480530
-bool Hole::EditGetSetValHook(std::string* param_1, bool param_2)
+// FUNCTION: POPCAPGAME1 0x00480530
+bool Hole::EditGetSetValHook(const std::string& theKey, bool isSet)
 {
-	return false;
+	if (PhysObj::EditGetSetValHook(theKey, isSet)) {
+		return true;
+	}
+
+	if (theKey != "poly_width" && theKey != "poly_height") {
+		if (theKey == "hole_circular") {
+			return EditValSyncBool(mUnk0x10c);
+		}
+		if (theKey == "hole_score") {
+			return EditValSyncNum(mUnk0xf0);
+		}
+		if (theKey == "hole_outdelay") {
+			return EditValSyncNum(mUnk0xe8);
+		}
+		return false;
+	}
+
+	int& aDimension = theKey == "poly_width" ? mUnk0x104 : mUnk0x108;
+	EditValSyncNum(aDimension, 1, 100000);
+	if (isSet) {
+		SetSize(mUnk0x104, mUnk0x108);
+	}
+	return true;
 }
 
 // FUNCTION: POPCAPGAME1 0x00481210
@@ -102,9 +126,21 @@ int Hole::GetClass()
 	return 8;
 }
 
-// STUB: POPCAPGAME1 0x00478110
+// FUNCTION: POPCAPGAME1 0x00478110
 void Hole::EditDrawOutline(Graphics* g)
 {
+	g->DrawRect(
+		(int)(mUnk0x14 - 3.0),
+		(int)(mUnk0x18 - 3.0),
+		(int)(mUnk0x1c - mUnk0x14 + 6.0),
+		(int)(mUnk0x20 - mUnk0x18 + 6.0));
+	if (mUnk0xe4 != NULL) {
+		g->DrawLine(
+			(int)mUnk0xf4,
+			(int)mUnk0xf8,
+			(int)mUnk0xe4->GetXPos(),
+			(int)mUnk0xe4->GetYPos());
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x00475540
