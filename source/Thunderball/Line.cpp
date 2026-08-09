@@ -7,6 +7,9 @@
 
 using namespace Sexy;
 
+// GLOBAL: POPCAPGAME1 0x00650a54
+bool Sexy::gCheckLineCollision = false;
+
 // FUNCTION: POPCAPGAME1 0x00475e10
 static int GetRectOutCode(Rect* param_1, float param_2, float param_3)
 {
@@ -361,21 +364,75 @@ int Line::CircleIntersect(float param_1, float param_2, float param_3, SexyVecto
 	return aResult;
 }
 
-// STUB: POPCAPGAME1 0x00475890
+// FUNCTION: POPCAPGAME1 0x00475890
 bool Line::CheckEdgeTimeCollision(
 	SexyVector2* param_1,
 	SexyVector2* param_2,
 	float param_3,
-	SexyVector2* param_4,
-	SexyVector2* param_5,
+	SexyVector2* hitPoint,
 	SexyVector2* hitNormal,
+	SexyVector2* hitVelocity,
 	float* hitTime
 )
 {
-	return false;
+	SexyVector2 aNormal(mUnk0x104, mUnk0x108);
+	float anOffset = mUnk0x10c;
+	if (!mUnk0x111 && aNormal.Dot(*param_1 - SexyVector2(mUnk0xec, mUnk0xf4)) < 0.0f)
+	{
+		aNormal *= -1.0f;
+		anOffset *= -1.0f;
+	}
+
+	float aSpeed = aNormal.Dot(*param_2);
+	if (aSpeed > 0.2f)
+		return false;
+
+	if (aSpeed == 0.0f)
+	{
+		if (!gCheckLineCollision || aNormal.y != 0.0f)
+			return false;
+
+		SexyVector2 anEdgePoint = *param_1 - aNormal * param_3;
+		bool isOnEdge;
+		if (!mUnk0x110)
+			isOnEdge = mUnk0x14 <= anEdgePoint.x && anEdgePoint.x <= mUnk0x1c;
+		else
+			isOnEdge = mUnk0x18 <= anEdgePoint.y && anEdgePoint.y <= mUnk0x20;
+
+		if (!isOnEdge || param_3 < fabs(param_1->Dot(aNormal) + anOffset))
+			return false;
+
+		*hitTime = 0.0f;
+		*hitPoint = *param_1;
+		*hitNormal = aNormal;
+		hitVelocity->x = 0.0f;
+		hitVelocity->y = 0.0f;
+		gCheckLineCollision = false;
+		return true;
+	}
+
+	float aTime = ((param_3 - 0.01f) - anOffset - param_1->Dot(aNormal)) / aSpeed;
+	if (aTime < 0.0f || *hitTime <= aTime)
+		return false;
+
+	SexyVector2 aCenter = *param_1 + *param_2 * aTime;
+	SexyVector2 anEdgePoint = aCenter - aNormal * param_3;
+	bool isOnEdge;
+	if (!mUnk0x110)
+		isOnEdge = mUnk0x14 <= anEdgePoint.x && anEdgePoint.x <= mUnk0x1c;
+	else
+		isOnEdge = mUnk0x18 <= anEdgePoint.y && anEdgePoint.y <= mUnk0x20;
+	if (!isOnEdge)
+		return false;
+
+	*hitTime = aTime;
+	*hitPoint = aCenter + aNormal * 0.01f;
+	*hitNormal = aNormal;
+	CalcEdgeHitVelocity(hitNormal, hitVelocity);
+	return true;
 }
 
-// STUB: POPCAPGAME1 0x004756c0
+// FUNCTION: POPCAPGAME1 0x004756c0
 bool Line::CheckVertexTimeCollision(
 	SexyVector2* param_1,
 	SexyVector2* param_2,
@@ -388,6 +445,33 @@ bool Line::CheckVertexTimeCollision(
 	SexyVector2* param_9
 )
 {
+	SexyVector2 aDelta = *param_1 - SexyVector2(param_6, param_7);
+	param_3 -= 0.01;
+	float a = param_2->Dot(*param_2);
+	float b = 2.0f * aDelta.Dot(*param_2);
+	float c = aDelta.Dot(aDelta) - param_3 * param_3;
+	param_3 = b * b - 4.0f * a * c;
+	if (param_3 < 0.0f)
+		return false;
+
+	param_3 = sqrtf(param_3);
+	param_3 = (-b - param_3) / (2.0f * a);
+	if (0.0f <= param_3)
+	{
+		if (param_3 < *param_4)
+		{
+			param_3 -= 0.01 / param_2->Magnitude();
+			SexyVector2 aHit = *param_1 + *param_2 * param_3;
+			*param_5 = aHit;
+			if (param_3 <= 0.0f)
+				param_3 = 0.0f;
+			*param_4 = param_3;
+			aDelta = *param_5 - SexyVector2(param_6, param_7);
+			*param_8 = aDelta.Normalize();
+			CalcEdgeHitVelocity(param_8, param_9);
+			return true;
+		}
+	}
 	return false;
 }
 

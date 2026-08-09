@@ -9,6 +9,8 @@
 namespace Sexy
 {
 
+extern bool gCheckLineCollision;
+
 // VTABLE: POPCAPGAME1 0x005f1a44
 class Line : public PhysObj {
 public:
@@ -56,9 +58,9 @@ public:
 		SexyVector2* param_1,
 		SexyVector2* param_2,
 		float param_3,
-		SexyVector2* param_4,
-		SexyVector2* param_5,
+		SexyVector2* hitPoint,
 		SexyVector2* hitNormal,
+		SexyVector2* hitVelocity,
 		float* hitTime
 	);
 	bool CheckVertexTimeCollision(
