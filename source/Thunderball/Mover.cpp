@@ -18,10 +18,11 @@ Mover::Mover()
 // SYNTHETIC: POPCAPGAME1 0x0047a950
 // Sexy::Mover::`scalar deleting destructor'
 
-// STUB: POPCAPGAME1 0x00478df0
+// FUNCTION: POPCAPGAME1 0x00478df0
 Mover::~Mover()
 {
-	mPhysObj->Release();
+	if (mPhysObj != NULL)
+		mPhysObj->Release();
 }
 
 // FUNCTION: POPCAPGAME1 0x00476420
