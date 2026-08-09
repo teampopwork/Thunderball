@@ -681,21 +681,63 @@ bool Poly::PointInside(float param_1, float param_2)
 	return uVar1 & 1;
 }
 
-// STUB: POPCAPGAME1 0x0047e4b0
+// FUNCTION: POPCAPGAME1 0x0047e4b0
 bool Poly::GetStandardRectF(FRect* param_1)
 {
-	return false;
+	if (!mUnk0x12c || mUnk0x108.size() != 4 || mUnk0x11c != 0.0f)
+		return false;
+
+	EnsureLines();
+	Line* aStartLine = mUnk0x108.front();
+	Line* anOppositeLine = mUnk0x108[mUnk0x108.size() - 2];
+	param_1->mX = aStartLine->mUnk0xec;
+	param_1->mY = aStartLine->mUnk0xf4;
+	param_1->mWidth = anOppositeLine->mUnk0xec - aStartLine->mUnk0xec;
+	param_1->mHeight = anOppositeLine->mUnk0xf4 - aStartLine->mUnk0xf4;
+	return true;
 }
 
-// STUB: POPCAPGAME1 0x0047e390
+// FUNCTION: POPCAPGAME1 0x0047e390
 bool Poly::GetStandardRect(Rect* param_1)
 {
-	return false;
+	if (!mUnk0x12c || mUnk0x108.size() != 4 || mUnk0x11c != 0.0f)
+		return false;
+
+	EnsureLines();
+	Line* aStartLine = mUnk0x108.front();
+	Line* anOppositeLine = mUnk0x108[mUnk0x108.size() - 2];
+	param_1->mX = (int) aStartLine->mUnk0xec;
+	param_1->mY = (int) aStartLine->mUnk0xf4;
+	param_1->mWidth = (int) (anOppositeLine->mUnk0xec - aStartLine->mUnk0xec);
+	param_1->mHeight = (int) (anOppositeLine->mUnk0xf4 - aStartLine->mUnk0xf4);
+	return true;
 }
 
-// STUB: POPCAPGAME1 0x00w
+// FUNCTION: POPCAPGAME1 0x0047ef90
 bool Poly::EditIntersects(Rect* param_1)
 {
+	EnsureLines();
+
+	Rect aStandardRect;
+	if (mUnk0x134 == -1 && GetStandardRect(&aStandardRect))
+	{
+		Rect aHandleRect(aStandardRect.mX - 5, aStandardRect.mY - 5, 10, 10);
+		return aHandleRect.Intersects(*param_1);
+	}
+
+	Rect aBounds(
+		(int) mUnk0x14,
+		(int) mUnk0x18,
+		(int) (mUnk0x1c - mUnk0x14),
+		(int) (mUnk0x20 - mUnk0x18));
+	if (!aBounds.Intersects(*param_1))
+		return false;
+
+	for (int i = 0; i < (int) mUnk0x108.size(); i++)
+	{
+		if (mUnk0x108[i]->IsPartlyInsideRect(param_1))
+			return true;
+	}
 	return false;
 }
 
@@ -783,9 +825,21 @@ void Poly::ReverseLines()
 	InitFromPoints();
 }
 
-// STUB: POPCAPGAME1 0x00486e20
+// FUNCTION: POPCAPGAME1 0x00486e20
 void Poly::SetNormalDir(int param_1)
 {
+	if (param_1 == -mUnk0x134)
+	{
+		ReverseLines();
+	}
+	else if (param_1 == 0)
+	{
+		for (std::vector<SmartPtr<Line>>::iterator it = mUnk0x108.begin(); it != mUnk0x108.end(); ++it)
+			(*it)->mUnk0x111 = false;
+		mUnk0x134 = 0;
+		return;
+	}
+	mUnk0x134 = param_1;
 }
 
 // FUNCTION: POPCAPGAME1 0x00484dc0

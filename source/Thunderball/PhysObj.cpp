@@ -533,17 +533,17 @@ bool PhysObj::EditContains(float param_1, float param_2, bool param_3)
 }
 
 // FUNCTION: POPCAPGAME1 0x00479740
-bool PhysObj::EditIntersects(Rect param_1)
+bool PhysObj::EditIntersects(Rect* param_1)
 {
 	int var1 = (int) mUnk0x14;
 	int var2 = (int) mUnk0x18;
 	int var3 = (int) (mUnk0x1c - mUnk0x14);
 	int var4 = (int) (mUnk0x20 - mUnk0x18);
 
-	if (param_1.mX > var1 + var3 &&
-		param_1.mY > var2 + var4 &&
-		var1 < param_1.mWidth + param_1.mX &&
-		var2 < param_1.mHeight + param_1.mY) {
+	if (param_1->mX < var1 + var3 &&
+		param_1->mY < var2 + var4 &&
+		var1 < param_1->mWidth + param_1->mX &&
+		var2 < param_1->mHeight + param_1->mY) {
 		return true;
 	}
 	return false;

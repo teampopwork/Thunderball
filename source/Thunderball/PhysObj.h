@@ -92,7 +92,7 @@ public:
 	virtual void EditDrawOutline(Graphics* g);
 	virtual void EditDrawPoints(Graphics* g);
 	virtual bool EditContains(float param_1, float param_2, bool param_3);
-	virtual bool EditIntersects(Rect param_1);
+	virtual bool EditIntersects(Rect* param_1);
 	virtual void EditTranslate(float param_1, float param_2);
 	virtual void EditSetPos(float param_1, float param_2);
 	virtual void EditGetDragMode(float param_1, float param_2);
