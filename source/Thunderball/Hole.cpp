@@ -1,13 +1,14 @@
 #include "Hole.h"
 
 #include "Ball.h"
+#include "DataSync.h"
+#include "Mover.h"
 
 using namespace Sexy;
 
 // FUNCTION: POPCAPGAME1 0x004810e0
 Hole::Hole()
 {
-    mUnk0xe4 = 0;
     mUnk0xf4 = 0.0f;
     mUnk0xf8 = 0.0f;
     mUnk0xfc = 0.0f;
@@ -34,9 +35,65 @@ bool Hole::EditGetSetValHook(std::string* param_1, bool param_2)
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x00481210
-void Hole::SyncState(DataSync& param_1)
+// FUNCTION: POPCAPGAME1 0x00481210
+void Hole::SyncState(DataSync& theSync)
 {
+	PhysObj::SyncState(theSync);
+
+	if (theSync.mReader != NULL) {
+		mUnk0xec = 0;
+		mUnk0xf0 = 0;
+		mUnk0xe8 = 0;
+		mUnk0xe4 = NULL;
+	}
+
+	bool hasMover = mMover != NULL;
+	bool hasFlash = mUnk0xec != 0;
+	bool syncPosition = !hasMover;
+	bool hasScore = mUnk0xf0 != 0;
+	bool hasConnectedHole = mUnk0xe4 != NULL;
+	bool hasOutDelay = mUnk0xe8 != 0;
+	bool hasVelocity = mUnk0xfc != 0.0f || mUnk0x100 != 0.0f;
+
+	theSync.SyncBoolBit(mUnk0x10c);
+	theSync.SyncBoolBit(hasFlash);
+	theSync.SyncBoolBit(syncPosition);
+	theSync.SyncBoolBit(hasScore);
+	theSync.SyncBoolBit(hasConnectedHole);
+	theSync.SyncBoolBit(hasOutDelay);
+	theSync.SyncBoolBit(hasVelocity);
+	theSync.EndBit();
+
+	theSync.SyncLong(mUnk0x104);
+	theSync.SyncLong(mUnk0x108);
+	if (hasFlash) {
+		theSync.SyncShort(mUnk0xec);
+	}
+	if (hasScore) {
+		theSync.SyncLong(mUnk0xf0);
+	}
+	if (hasOutDelay) {
+		theSync.SyncLong(mUnk0xe8);
+	}
+	if (hasConnectedHole) {
+		DataSync_SyncSmartPtrFactory<PhysObj>(theSync, mUnk0xe4, NULL);
+	}
+	if (syncPosition) {
+		theSync.SyncFloat(mUnk0xf4);
+		theSync.SyncFloat(mUnk0xf8);
+	} else if (theSync.mReader != NULL && hasMover) {
+		mUnk0xf4 = mMover->mUnk0x54;
+		mUnk0xf8 = mMover->mUnk0x58;
+	}
+	if (hasVelocity) {
+		theSync.SyncFloat(mUnk0xfc);
+		theSync.SyncFloat(mUnk0x100);
+	} else {
+		mUnk0xfc = 0.0f;
+		mUnk0x100 = 0.0f;
+	}
+
+	SetSize(mUnk0x104, mUnk0x108);
 }
 
 // FUNCTION: POPCAPGAME1 0x00481140

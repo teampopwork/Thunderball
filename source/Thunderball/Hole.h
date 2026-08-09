@@ -13,7 +13,7 @@ class Ball;
 // VTABLE: POPCAPGAME1 0x005f1ebc
 class Hole : public PhysObj {
 public:
-    int mUnk0xe4; // +0xe4
+    SmartPtr<PhysObj> mUnk0xe4; // +0xe4
     int mUnk0xe8; // +0xe8
     int mUnk0xec; // +0xec
     int mUnk0xf0; // +0xf0
