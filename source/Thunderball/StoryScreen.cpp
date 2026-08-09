@@ -845,10 +845,37 @@ void StoryScreen::DrawStars(Graphics* g)
 // STUB: POPCAPGAME1 0x0048af20
 void StoryScreen::DrawWin(Graphics* g)
 {
-	bool colorizeImages = g->mColorizeImages;
-	mUnk0xb8 = colorizeImages;
-	if (colorizeImages)
-		DrawFireworks(g);
+	g->SetColor(Color(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp88,722", 0)));
+	g->FillRect(0, 0, mWidth, mHeight);
+	g->DrawImage(
+		IMAGE_STORY_WIN,
+		(mWidth - IMAGE_STORY_WIN->mWidth) / 2,
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp89,725", 0));
+	g->SetColor(Color(
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp90,727", 107),
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp91,727", 49),
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp92,727", 173)));
+	g->FillRect(
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp93,728", 283),
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp94,728", 118),
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp95,728", 262),
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp96,728", 294));
+	g->FillRect(
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp97,729", 313),
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp98,729", 232),
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp99,729", 412),
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp100,729", 20));
+
+	if (mUnk0x98 != NULL) {
+		g->DrawImage(
+			IMAGE_STORY_CLAWS,
+			ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp120,802", 522),
+			ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp121,802", 386));
+		bool colorizeImages = g->mColorizeImages;
+		mUnk0xb8 = colorizeImages;
+		if (colorizeImages)
+			DrawFireworks(g);
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x00489fd0
