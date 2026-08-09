@@ -6,9 +6,11 @@
 #include "Gun.h"
 #include "SoundMgr.h"
 #include "ThunderCommon.h"
+#include "ThunderButton.h"
 
 #include <SexyAppFramework/Common.h>
 #include <SexyAppFramework/SoundInstance.h>
+#include <SexyAppFramework/WidgetManager.h>
 
 using namespace Sexy;
 
@@ -508,10 +510,38 @@ void LogicMgr::CalcGunAngle(bool param_1)
 	// TODO
 }
 
-// STUB: POPCAPGAME1 0x00448370
+// FUNCTION: POPCAPGAME1 0x00448370
 void LogicMgr::CalcCornerDisplay()
 {
-	// TODO
+	if (mBoard->mWidgetManager->IsMiddleButtonDown() &&
+		!mBoard->mReplayButton->mIsOver && mUnk0x4 != 2)
+	{
+		mUnk0x80.assign("Fast Forward", 12);
+		return;
+	}
+	if (mUnk0x68)
+	{
+		#pragma inline_depth(0)
+		mUnk0x80.assign("Triple Score", 12);
+		#pragma inline_depth(16)
+		return;
+	}
+	if (mZenBallCount[mUnk0x128] > 0)
+	{
+		mUnk0x80.assign("ZenBall", 7);
+		return;
+	}
+	if (mFireballCount[mUnk0x128] > 0)
+	{
+		mUnk0x80.assign("Fireball", 8);
+		return;
+	}
+	if (mUnk0x69)
+	{
+		mUnk0x80 = "Magic Hat";
+		return;
+	}
+	mUnk0x80 = "";
 }
 
 // STUB: POPCAPGAME1 0x0045ea70
