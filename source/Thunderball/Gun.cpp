@@ -1,6 +1,7 @@
 #include "Gun.h"
 #include "Ball.h"
 #include "Board.h"
+#include "DataSync.h"
 #include "LogicMgr.h"
 #include "ThunderCommon.h"
 
@@ -233,9 +234,42 @@ bool Gun::SetAngle(float param_1, bool param_2)
 	return true;
 }
 
-// STUB: POPCAPGAME1 0x004882c0
+// FUNCTION: POPCAPGAME1 0x004882c0
 void Gun::SyncState(DataSync& param_1)
 {
+	SyncCommon(param_1, false);
+
+	if (param_1.mReader != NULL)
+		mUpdateCount = 0;
+
+	bool hasUpdateCount = mUpdateCount != 0;
+	bool hasBouncyGuide = mUnk0x1bc != 0.0f;
+	param_1.SyncBoolBit(hasUpdateCount);
+	param_1.SyncBoolBit(mUnk0x194);
+	param_1.SyncBoolBit(hasBouncyGuide);
+	param_1.SyncBoolBit(mUnk0x195);
+	param_1.SyncBoolBit(mUnk0x1a1);
+	param_1.SyncBoolBit(mUnk0x1a2);
+	param_1.EndBit();
+
+	if (hasUpdateCount)
+		param_1.SyncLong(mUpdateCount);
+	if (hasBouncyGuide)
+	{
+		param_1.SyncFloat(mUnk0x1b0);
+		param_1.SyncFloat(mUnk0x1b4);
+		param_1.SyncFloat(mUnk0x1b8);
+		param_1.SyncFloat(mUnk0x1bc);
+	}
+
+	param_1.SyncFloat(mAngle);
+	DataSync_SyncSmartPtr<Ball>(param_1, mBall);
+
+	if (param_1.mReader != NULL)
+	{
+		CalcPoints();
+		mTargetAngle = mAngle;
+	}
 }
 
 // STUB: POPCAPGAME1 0x00482910
