@@ -619,9 +619,11 @@ void ThunderballApp::DoTipDialog(int param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x0042d7a0
+// FUNCTION: POPCAPGAME1 0x0042d7a0
 void ThunderballApp::DoToMenu()
 {
+	KillDialog(13);
+	ShowMainMenu();
 }
 
 // STUB: POPCAPGAME1 0x0040c2e0
@@ -654,9 +656,16 @@ void ThunderballApp::FinishConfirmNewChallengeDialog(bool param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x004084a0
+// FUNCTION: POPCAPGAME1 0x004084a0
 void ThunderballApp::FinishConfirmQuitDialog(bool param_1)
 {
+	if (param_1) {
+		KillDialog(5);
+		Shutdown();
+	}
+	else {
+		DoScrollOff(5);
+	}
 }
 
 // STUB: POPCAPGAME1 0x0041fc00
@@ -1355,9 +1364,14 @@ bool ThunderballApp::TryExpire(bool param_1)
 	}
 }
 
-// STUB: POPCAPGAME1 0x0042d320
+// FUNCTION: POPCAPGAME1 0x0042d320
 bool ThunderballApp::TryPlayUpsell()
 {
+	if (!IsRegistered() && IsTrialOver()) {
+		ShowUpsellScreen(false, false);
+		return true;
+	}
+
 	return false;
 }
 
