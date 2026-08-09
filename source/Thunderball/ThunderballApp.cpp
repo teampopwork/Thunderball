@@ -28,6 +28,7 @@
 
 #include <SexyAppFramework/BassMusicInterface.h>
 #include <SexyAppFramework/ButtonWidget.h>
+#include <SexyAppFramework/DDImage.h>
 #include <SexyAppFramework/Debug.h>
 #include <SexyAppFramework/ResourceManager.h>
 #include <SexyAppFramework/SWTri.h>
@@ -35,6 +36,24 @@
 #include <SexyAppFramework/WidgetManager.h>
 
 using namespace Sexy;
+
+// FUNCTION: POPCAPGAME1 0x00405490
+static void MakeGrayscale(MemoryImage* theImage)
+{
+	ulong* aBits = theImage->GetBits();
+	int aPixelCount = theImage->GetWidth() * theImage->GetHeight();
+	if (aPixelCount > 0) {
+		do {
+			ulong aColor = *aBits;
+			ulong aGray = (((aColor >> 8) & 0xff) * 0x99) / 0xff
+				+ (((aColor >> 16) & 0xff) * 0x4c) / 0xff
+				+ ((aColor & 0xff) * 0x1a) / 0xff;
+			*aBits = (aColor & 0xff000000) | aGray | (aGray << 8) | (aGray << 16);
+			++aBits;
+		} while (--aPixelCount != 0);
+	}
+	theImage->BitsChanged();
+}
 
 // FUNCTION: POPCAPGAME1 0x00431760
 bool RegistrationControl::IsRegistered()
@@ -738,9 +757,19 @@ long double ThunderballApp::GetFeverVolume()
 	return mFeverVolume;
 }
 
-// STUB: POPCAPGAME1 0x00405ae0
+// FUNCTION: POPCAPGAME1 0x00405ae0
 DDImage* ThunderballApp::GetImage(const std::string& theFileName, bool commitBits = true)
 {
+	if (ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp160,1205", 0) != 0) {
+		DDImage* anImage = SexyApp::GetImage(theFileName, false);
+		if (anImage != NULL) {
+			MakeGrayscale(anImage);
+			if (commitBits) {
+				anImage->CommitBits();
+			}
+		}
+		return anImage;
+	}
 	return SexyApp::GetImage(theFileName, commitBits);
 }
 
@@ -1274,10 +1303,13 @@ void ThunderballApp::LoadingThreadProc()
 	// MakeFeverStars();
 }
 
-// STUB: POPCAPGAME1 0x00408470
+// FUNCTION: POPCAPGAME1 0x00408470
 void ThunderballApp::LostFocus()
 {
 	SexyApp::LostFocus();
+	if (mBoard != NULL && mBoard->mUnk0x130 == 0) {
+		PauseBoard(true);
+	}
 }
 
 // STUB: POPCAPGAME1 0x004057c0

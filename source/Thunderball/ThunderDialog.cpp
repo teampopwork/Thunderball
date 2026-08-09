@@ -72,10 +72,9 @@ ThunderDialog::ThunderDialog(
 	mUnk0x170 = false;
 }
 
-// STUB: POPCAPGAME1 0x00497550
+// FUNCTION: POPCAPGAME1 0x00497550
 ThunderDialog::~ThunderDialog()
 {
-	// TODO
 }
 
 // FUNCTION: POPCAPGAME1 0x00497720
