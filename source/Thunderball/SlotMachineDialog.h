@@ -37,7 +37,7 @@ public:
     virtual int GetPreferredHeight(int param_1);
     virtual void Draw(Graphics* param_1);
     void CalcCurLight();
-    virtual void UpdatePointer(bool param_1);
+    void UpdatePointer(bool param_1);
     virtual void Update();
     virtual void MouseDown(int param_1, int param_2, int param_3);
 

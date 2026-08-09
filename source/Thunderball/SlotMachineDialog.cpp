@@ -160,9 +160,29 @@ void SlotMachineDialog::Update()
 {
 }
 
-// STUB: POPCAPGAME1 0x0049d100
+// FUNCTION: POPCAPGAME1 0x0049d100
 void SlotMachineDialog::MouseDown(int param_1, int param_2, int param_3)
 {
+	if (mBoard->mUnk0x1b8 != 0) {
+		mBoard->Pause(false);
+		return;
+	}
+
+	if (ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\SlotMachineDialog.cpp775,287", 0) != 0) {
+		int aForcedLight = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\SlotMachineDialog.cpp776,289", 2);
+		mUnk0x248 = 0;
+		mUnk0x190 = (float)(aForcedLight * 3.14159274101257 * 0.5);
+		mUnk0x194 = 0.0f;
+	}
+
+	if (mUnk0x184 == 0 && mUnk0x194 > 0.0f) {
+		while (mUnk0x194 > 0.0f) {
+			UpdatePointer(false);
+		}
+		for (int i = 0; i < 40; i++) {
+			mUnk0x19c[i] = 0;
+		}
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0049cd40
