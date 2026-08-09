@@ -486,7 +486,7 @@ void StoryScreen::Draw(Graphics* g)
     } 
 }
 
-// STUB: POPCAPGAME1 0x0048b860
+// FUNCTION: POPCAPGAME1 0x0048b860
 void StoryScreen::DrawOverlay(Graphics* g)
 {
 	g->SetColor(Color(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp122,812", 0)));
@@ -514,6 +514,51 @@ void StoryScreen::DrawOverlay(Graphics* g)
 			(float) ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp126,831", 400),
 			(float) ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp127,831", 300));
 		g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+	} else if (mUnk0xb4 < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp128,835", 850)) {
+		int aCellSize = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp129,837", 40);
+		int aColumnDelay = 0;
+		int aStartDelay = 21;
+		for (int aColumn = 0, aCellX = 0; aCellX < 800;
+			++aColumn, aCellX = aColumn * aCellSize, aColumnDelay += 18, aStartDelay += 7) {
+			int aCellDelay = aStartDelay;
+			int aCellPhase = 0;
+			for (int aRow = 0, aCellY = 0; aCellY < 600;
+				++aRow, aCellY = aRow * aCellSize, aCellPhase += 23,
+				aCellDelay += aColumn + 3) {
+				int aTrigger = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp130,844", 500) +
+					((aColumnDelay + aCellDelay + aCellPhase) % 8) * 40;
+				int anOffsetX = 0;
+				int anOffsetY = 0;
+				float aScale = 1.0f;
+				if (mUnk0xb4 < aTrigger) {
+					g->SetColor(Color(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp131,849", 0)));
+				} else {
+					int aDelta = aTrigger - mUnk0xb4;
+					anOffsetY = (int) (
+						ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp133,852", 0.1) *
+							aDelta * aDelta +
+						ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp132,852", 6.5) *
+							aDelta);
+					int aWobble =
+						(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp135,853", 117) * aColumn +
+							ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp136,853", 37) * aRow) %
+							50 - 25;
+					anOffsetX = (int) (
+						ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp134,853", 0.2) *
+							aDelta * aWobble);
+					aScale = 1.0f -
+						(float) (mUnk0xb4 - aTrigger) /
+						ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp137,854", 80.0f);
+					if (aScale < 0.0f)
+						aScale = 0.0f;
+					int aBrightness = (int) ((1.0f - aScale) * 255.0);
+					g->SetColor(Color(aBrightness, aBrightness, aBrightness));
+				}
+
+				int aDrawSize = (int) ((float) aCellSize * aScale);
+				g->FillRect(aCellX + anOffsetX, aCellY + anOffsetY, aDrawSize, aDrawSize);
+			}
+		}
 	}
 
 	int anOffset = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp138,867", -600);
