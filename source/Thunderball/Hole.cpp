@@ -26,7 +26,7 @@ Hole::Hole()
 // SYNTHETIC: POPCAPGAME1 0x004811e0
 // Sexy::Hole::`scalar deleting destructor'
 
-// STUB: POPCAPGAME1 0x00481160
+// FUNCTION: POPCAPGAME1 0x00481160
 Hole::~Hole()
 {
 }
