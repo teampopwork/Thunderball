@@ -14,9 +14,50 @@
 #include <SexyAppFramework/SoundManager.h>
 #include <SexyAppFramework/SoundInstance.h>
 
+#include <cmath>
 #include <string>
 
 using namespace Sexy;
+
+namespace Sexy
+{
+class StoryParticle {
+public:
+	float mX;
+	float mY;
+	float mVX;
+	float mVY;
+	int mAge;
+	int mDuration;
+	int mType;
+	int mUnk0x1c;
+
+	__declspec(noinline) StoryParticle();
+	__declspec(noinline) void Update();
+};
+}
+
+// FUNCTION: POPCAPGAME1 0x00489ce0
+StoryParticle::StoryParticle()
+{
+	mX = 0.0f;
+	mY = 0.0f;
+	mVX = 0.0f;
+	mVY = 0.0f;
+	mAge = 0;
+	mDuration = 0;
+	mType = 0;
+	mUnk0x1c = 0;
+}
+
+// FUNCTION: POPCAPGAME1 0x00489d00
+void StoryParticle::Update()
+{
+	++mAge;
+	mX += mVX;
+	mY += mVY;
+	mVY += ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp0,44", 0.01f);
+}
 
 // FUNCTION: POPCAPGAME1 0x0048d150
 StoryScreen::StoryScreen(ThunderballApp* theApp, bool param_2, bool param_3)
@@ -638,9 +679,35 @@ void StoryScreen::DoUpdate()
 	}
 }
 
-// STUB: POPCAPGAME1 0x0048d520
+// FUNCTION: POPCAPGAME1 0x0048d520
 void StoryScreen::UpdateParticles()
 {
+	for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp53,426", 3); ++i) {
+		StoryParticle* aParticle = new StoryParticle();
+		aParticle->mX = mParticleX + rand() % 3;
+		aParticle->mY = mParticleY + rand() % 3 - 1.0f;
+		aParticle->mDuration = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp54,433", 30);
+		aParticle->mType = 1;
+
+		float anAngle = (float) ((rand() % 100) * 6.283 / 100.0);
+		float aSpeed = (float) ((rand() % 10) * (double) ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp55,437", 0.03f));
+		aParticle->mVX = (float) sin(anAngle) * aSpeed;
+		aParticle->mVY = (float) cos(anAngle) * aSpeed;
+		mUnk0xd4.PushBack(aParticle);
+	}
+
+	for (int i = 0; i < mUnk0xd4.mEnd - mUnk0xd4.mBegin; ++i) {
+		StoryParticle* aParticle = mUnk0xd4.mBegin[i];
+		if (aParticle->mAge >= aParticle->mDuration) {
+			delete aParticle;
+			mUnk0xd4.mBegin[i] = mUnk0xd4.mEnd[-1];
+			--mUnk0xd4.mEnd;
+			--i;
+		}
+		else {
+			aParticle->Update();
+		}
+	}
 }
 
 // STUB: POPCAPGAME1 0x0048d830
@@ -651,4 +718,27 @@ void StoryScreen::UpdateStars()
 // STUB: POPCAPGAME1 0x0048dea0
 void StoryScreen::UpdateWin()
 {
+	if (!mApp->mLoaded)
+		return;
+
+	if (mUnk0xb0 > 0) {
+		++mUnk0xb4;
+		--mUnk0xb0;
+		UpdateStars();
+		MarkDirty();
+		return;
+	}
+
+	if (mUnk0xcc > 0) {
+		--mUnk0xcc;
+		mParticleX += mParticleVX;
+		mParticleY += mParticleVY;
+		UpdateParticles();
+	}
+
+	mUnk0x104 += ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp51,413", 0.25f);
+	if (mUnk0x104 > ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp52,415", 4100.0f))
+		mUnk0x104 = 0.0f;
+
+	MarkDirty();
 }

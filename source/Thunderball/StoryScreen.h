@@ -14,6 +14,41 @@ class ThunderButton;
 class HyperlinkWidget;
 class StoryData;
 class StageInfo;
+class StoryParticle;
+
+class StoryParticleList {
+public:
+	StoryParticle** mBegin;
+	StoryParticle** mEnd;
+	StoryParticle** mCapacity;
+
+	StoryParticleList() : mBegin(NULL), mEnd(NULL), mCapacity(NULL) {}
+	~StoryParticleList()
+	{
+		if (mBegin != NULL)
+			operator delete(mBegin);
+		mBegin = NULL;
+		mEnd = NULL;
+		mCapacity = NULL;
+	}
+
+	void PushBack(StoryParticle* theParticle)
+	{
+		if (mEnd == mCapacity) {
+			int anOldSize = mBegin == NULL ? 0 : mEnd - mBegin;
+			int anOldCapacity = mBegin == NULL ? 0 : mCapacity - mBegin;
+			int aNewCapacity = anOldCapacity == 0 ? 1 : anOldCapacity * 2;
+			StoryParticle** aNewBuffer = (StoryParticle**) operator new(aNewCapacity * sizeof(StoryParticle*));
+			for (int i = 0; i < anOldSize; ++i)
+				aNewBuffer[i] = mBegin[i];
+			operator delete(mBegin);
+			mBegin = aNewBuffer;
+			mEnd = aNewBuffer + anOldSize;
+			mCapacity = aNewBuffer + aNewCapacity;
+		}
+		*mEnd++ = theParticle;
+	}
+};
 
 class StoryValueList {
 public:
@@ -47,10 +82,13 @@ public:
 	int mUnk0xb0; // +0xb0
 	int mUnk0xb4; // +0xb4
 	int mUnk0xb8; // +0xb8
-	char mPadding0xbc[0x10]; // +0xbc
+	float mParticleX; // +0xbc
+	float mParticleY; // +0xc0
+	float mParticleVX; // +0xc4
+	float mParticleVY; // +0xc8
 	int mUnk0xcc; // +0xcc
 	int mUnk0xd0; // +0xd0
-	StoryValueList mUnk0xd4; // +0xd4
+	StoryParticleList mUnk0xd4; // +0xd4
 	int mUnk0xe0; // +0xe0
 	StoryValueList mUnk0xe4; // +0xe4
 	bool mUnk0xf0; // +0xf0
