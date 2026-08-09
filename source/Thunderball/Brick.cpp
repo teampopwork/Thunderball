@@ -5,9 +5,30 @@
 
 using namespace Sexy;
 
-// STUB: POPCAPGAME1 0x00481bd0
+// FUNCTION: POPCAPGAME1 0x00481bd0
 Brick::Brick()
 {
+	mUnk0x148 = 35.0f;
+	mUnk0x181 = false;
+	mUnk0x14c = 30.0f;
+	mUnk0x182 = false;
+	mUnk0x180 = false;
+	mUnk0x168 = 2;
+	mUnk0x158 = 20.0f;
+	mUnk0x16c = 0;
+	mUnk0x15c = -90.0f;
+	mUnk0x150 = 0.0f;
+	mUnk0x154 = 0.0f;
+	mUnk0x160 = 0.0f;
+	mUnk0x164 = 0.0f;
+	mUnk0x170 = 0;
+	mUnk0x174 = 0;
+	mUnk0x178 = 0;
+	mUnk0x17c = 0;
+	for (int i = 0; i < 9; i++) {
+		mUnk0x4f4[i] = NULL;
+	}
+	mUnk0x518 = NULL;
 }
 
 // SYNTHETIC: POPCAPGAME1 0x00483af0

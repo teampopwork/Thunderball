@@ -212,8 +212,92 @@ void PegInfo::DrawBrick(Brick* param_1, Graphics* param_2)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x00482f80
 void PegInfo::DrawGlow(PhysObj* param_1, Graphics* param_2)
 {
+	if (!param_1->mUnk0x25 || !mUnk0x14) {
+		return;
+	}
+	if (mPegType == NORMAL && !ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp74,313", false)) {
+		return;
+	}
+
+	param_2->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+	param_2->SetColorizeImages(true);
+
+	if (param_1->GetClass() == 6 &&
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp75,319", true)) {
+		switch (mPegType) {
+		case NORMAL:
+			param_2->SetColor(Color(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp76,323", 0xff)));
+			break;
+		case GOAL:
+			param_2->SetColor(Color(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp77,324", 0xff8800)));
+			break;
+		case SCORE:
+			param_2->SetColor(Color(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp78,325", 0xff00ff)));
+			break;
+		case POWERUP:
+			param_2->SetColor(Color(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp79,326", 0xff00)));
+			break;
+		}
+
+		if (ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp80,329", false)) {
+			param_2->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+			param_2->SetColorizeImages(false);
+		}
+
+		Brick* brick = static_cast<Brick*>(param_1);
+		if (brick->mUnk0x4f4[8] == NULL) {
+			brick->CreateImage(8);
+			brick->CreateImage(mPegType);
+		}
+		float scale = (float)(brick->mUnk0x4f4[8]->mWidth - 3) /
+			((float)brick->mUnk0x4f4[mPegType]->mWidth - 3.0f);
+		float oldScaleX = brick->mUnk0xb8;
+		float oldScaleY = brick->mUnk0xbc;
+		brick->mUnk0xb8 *= scale;
+		brick->mUnk0xbc *= scale;
+		brick->DrawBrick(param_2, 8);
+		brick->mUnk0xb8 = oldScaleX;
+		brick->mUnk0xbc = oldScaleY;
+	}
+	else if (ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp81,353", true)) {
+		switch (mPegType) {
+		case NORMAL:
+			param_2->SetColor(Color(
+				ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp82,357", 0xff),
+				ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp83,357", 0x9f)));
+			break;
+		case GOAL:
+			param_2->SetColor(Color(
+				ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp84,358", 0xff8800),
+				ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp85,358", 0x7f)));
+			break;
+		case SCORE:
+			param_2->SetColor(Color(
+				ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp86,359", 0xff55ff),
+				ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp87,359", 0x9f)));
+			break;
+		case POWERUP:
+			param_2->SetColor(Color(
+				ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp88,360", 0xff00),
+				ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\PegInfo.cpp89,360", 0x9f)));
+			break;
+		}
+
+		SexyVector2 center = param_1->GetCenter();
+		Transform transform;
+		if (!param_2->mIs3D && !param_1->mUnk0x2e) {
+			param_2->DrawImageTransform(IMAGE_PEGGLOW, transform, center.x, center.y);
+		}
+		else {
+			param_2->DrawImageTransformF(IMAGE_PEGGLOW, transform, center.x, center.y);
+		}
+	}
+
+	param_2->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+	param_2->SetColorizeImages(false);
 }
 
 // FUNCTION: POPCAPGAME1 0x00476820
@@ -243,7 +327,7 @@ void PegInfo::DrawLight(PhysObj* param_1, Graphics* param_2)
 				if (scale != 1.0f) {
 					transform.Scale(scale, scale);
 				}
-				param_2->DrawImageTransform(IMAGE_PEGGLOW, transform, center.x, center.y);
+				param_2->DrawImageTransform(IMAGE_FLOWER, transform, center.x, center.y);
 				param_2->SetColorizeImages(false);
 			}
 		}
