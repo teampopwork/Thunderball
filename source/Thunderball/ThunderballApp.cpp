@@ -1814,7 +1814,7 @@ void ThunderballApp::UpdateFrames()
 	UpdateMusic();
 }
 
-// STUB: POPCAPGAME1 0x00427380
+// FUNCTION: POPCAPGAME1 0x00427380
 void ThunderballApp::WriteToRegistry()
 {
 	if (!IsScreenSaver()) {
@@ -1831,10 +1831,11 @@ void ThunderballApp::WriteToRegistry()
 		// STRING: POPCAPGAME1 0x005d7e64
 		RegistryWriteInteger("MaxLevel", mMaxLevel);
 
-		/*if (mCurUser != NULL) {
+		if (mCurProfile != NULL) {
 			// STRING: POPCAPGAME1 0x005d7e5c
-			RegistryWriteString("CurUser", mCurUser);
-		}*/
+			RegistryWriteString("CurUser", mCurProfile->mName);
+			mCurProfile->SaveIfDirty();
+		}
 	}
 }
 
