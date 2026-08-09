@@ -6,6 +6,7 @@
 #include "PlayerInfo.h"
 #include "Res.h"
 #include "StageMgr.h"
+#include "TrophyMgr.h"
 
 #include <SexyAppFramework/HyperlinkWidget.h>
 #include <SexyAppFramework/ModVal.h>
@@ -842,7 +843,7 @@ void StoryScreen::DrawStars(Graphics* g)
 	g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
 }
 
-// STUB: POPCAPGAME1 0x0048af20
+// FUNCTION: POPCAPGAME1 0x0048af20
 void StoryScreen::DrawWin(Graphics* g)
 {
 	g->SetColor(Color(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp88,722", 0)));
@@ -867,6 +868,77 @@ void StoryScreen::DrawWin(Graphics* g)
 		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp100,729", 20));
 
 	if (mUnk0x98 != NULL) {
+		if (mUnk0xf2)
+			DeferOverlay(0);
+
+		Graphics aGraphics(*g);
+		Rect aClipRect(
+			ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp101,738", 280),
+			ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp102,738", 117),
+			ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp103,738", 266),
+			ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp104,738", 316));
+		aGraphics.ClipRect(aClipRect);
+
+		int aStoryTier = 0;
+		if (mApp->mCurProfile != NULL &&
+			mApp->mTrophyMgr->mTrophyInfos.size() <= mApp->mCurProfile->mUnk0xfc.size()) {
+			aStoryTier = 1;
+			if (mApp->mStageMgr->mUnk0x1c.size() <= mApp->mCurProfile->mUnk0x118.size())
+				aStoryTier = 2;
+		}
+		if (mUnk0xf2)
+			aStoryTier = 3;
+		if (mUnk0x98->mUnk0x8[aStoryTier].empty())
+			aStoryTier = 0;
+
+		std::vector<StoryData>& aStory = mUnk0x98->mUnk0x8[aStoryTier];
+		int aTextY = (int) (ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp105,759", 455) - mUnk0x104);
+		int aTextX = aClipRect.mX + aClipRect.mWidth / 2;
+		if (aStoryTier < 3) {
+			int aTrophyOffset = 0;
+			if (aStoryTier == 1)
+				aTrophyOffset = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp108,765", 60);
+			else if (aStoryTier == 2)
+				aTrophyOffset = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp109,765", 125);
+
+			aGraphics.DrawImageCel(
+				IMAGE_MM_TROPHIES,
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp106,764", 305),
+				aTextY + ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp107,765", 160) + aTrophyOffset,
+				aStoryTier);
+		}
+
+		for (unsigned int i = 1; i < aStory.size(); ++i) {
+			StoryData& aStoryData = aStory[i];
+			int aSpacing = 0;
+			switch (aStoryData.mUnk0x1c) {
+			case 0:
+				aGraphics.SetFont(GetFontById(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp110,774", 14)));
+				aGraphics.SetColor(Color(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp111,775", 0xffff88)));
+				aSpacing = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp112,776", 0);
+				break;
+			case 1:
+				aGraphics.SetFont(GetFontById(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp113,780", 48)));
+				aGraphics.SetColor(Color(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp114,781", 0xffff00)));
+				aSpacing = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp115,782", 0);
+				break;
+			case 2:
+				aTextY += ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp116,786", 20);
+				continue;
+			default:
+				aGraphics.SetFont(GetFontById(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp117,790", 51)));
+				aGraphics.SetColor(Color(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp118,791", 0xffffaa)));
+				aSpacing = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp119,792", 0);
+				break;
+			}
+
+			aTextY += aGraphics.GetFont()->GetHeight() + aSpacing;
+			aGraphics.DrawString(
+				aStoryData.mUnk0x0,
+				aTextX - aGraphics.GetFont()->StringWidth(aStoryData.mUnk0x0) / 2,
+				aTextY);
+		}
+
 		g->DrawImage(
 			IMAGE_STORY_CLAWS,
 			ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp120,802", 522),
