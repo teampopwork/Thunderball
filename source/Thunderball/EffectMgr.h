@@ -20,13 +20,26 @@ public:
 	EffectType mType;
 	int mUnk0xc;
 	int mUnk0x10;
-	char mUnk0x14[0x30];
+	float mUnk0x14;
+	float mUnk0x18;
+	int mUnk0x1c;
+	int mUnk0x20;
+	int mUnk0x24;
+	int mUnk0x28;
+	int mUnk0x2c;
+	int mUnk0x30;
+	int mUnk0x34;
+	int mUnk0x38;
+	int mUnk0x3c;
+	bool mUnk0x40;
 	Image* mUnk0x44;
 	Image* mUnk0x48;
 	RefCountPtr mUnk0x4c;
 	RefCountPtr mUnk0x50;
 	RefCountPtr mUnk0x54;
 
+	Effect();
+	Effect(const Effect& param_1);
 	virtual ~Effect();
 };
 
@@ -67,15 +80,14 @@ public:
 	void SyncState(DataSync& param_1);
 
 	Effect* GetEffectByType(EffectType param_1);
-	void EraseAllOfType(EffectType param_1);
-	void SetPriority(Effect* param_1, int param_2);
+	int EraseAllOfType(EffectType param_1);
+	Effect* SetPriority(Effect* param_1, int param_2);
 	void Draw(Graphics* param_1, int param_2);
 
 	void FinishFeverRainbow();
 	int ClampPriority(int param_1);
 	int PriorityToList(int param_1);
 	void SetCrackPoint(SexyVector2* param_1, int param_2, int param_3, int param_4);
-	void SetPriority(Effect* param_1, int param_2, int param_3); // overload helper
 };
 
 } // namespace Sexy
