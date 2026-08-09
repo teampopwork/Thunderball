@@ -239,24 +239,39 @@ void LogicMgr::IncShotScore(int param_1)
 	// TODO
 }
 
-// STUB: POPCAPGAME1 0x004370b0
+// FUNCTION: POPCAPGAME1 0x004370b0
 int LogicMgr::CalcScoreMult(int param_1)
 {
-	// TODO
-	return 0;
+	if (param_1 <= 0 && !mUnk0xfb)
+		return 100;
+	if (param_1 <= 3)
+		return 10;
+	if (param_1 <= 6)
+		return 5;
+	if (param_1 <= 10)
+		return 3;
+	return param_1 <= 15 ? 2 : 1;
 }
 
-// STUB: POPCAPGAME1 0x00437110
+// FUNCTION: POPCAPGAME1 0x00437110
 int LogicMgr::CalcMusicIntensity(int param_1)
 {
-	// TODO
-	return 0;
+	if (param_1 <= 3)
+		return 6;
+	if (param_1 <= 6)
+		return 5;
+	if (param_1 <= 10)
+		return 4;
+	if (param_1 <= 15)
+		return 3;
+	return param_1 <= 20 ? 2 : 1;
 }
 
-// STUB: POPCAPGAME1 0x00436fb0
+// FUNCTION: POPCAPGAME1 0x00436fb0
 void LogicMgr::SetState(LogicState param_1)
 {
-	// TODO
+	mUnk0x4 = param_1;
+	mUnk0x8 = 0;
 }
 
 void LogicMgr::SyncClickTimes(DataSync* theSync)
@@ -573,12 +588,14 @@ void LogicMgr::DoLevelDone()
 	// TODO
 }
 
+// FUNCTION: POPCAPGAME1 0x0043d580
 bool LogicMgr::BeatLevel()
 {
-	return false;
+	if (mUnk0xfb)
+		return mUnk0x358.empty() && mUnk0x364.empty();
+	return mUnk0x358.empty();
 }
 
-// STUB: POPCAPGAME1 0x0043d580
 void LogicMgr::ClearedLevel()
 {
 	// TODO
