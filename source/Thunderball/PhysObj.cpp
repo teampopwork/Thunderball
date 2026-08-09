@@ -200,10 +200,10 @@ void PhysObj::SetMovingPercent(float param_1, bool param_2)
 	if (mMover != NULL) {
 		bool bVar2 = param_1 < 0.0f;
 		if (bVar2) {
-			param_1 * -1.0f;
+			param_1 *= -1.0f;
 		}
-		float dVar3 = mMover->GetTimeTillPhase(mUnk0x4c, param_1);
-		if ((int) dVar3 < 1) {
+		int dVar3 = mMover->GetTimeTillPhase(mUnk0x4c, param_1);
+		if (dVar3 < 1) {
 			if (bVar2) {
 				dVar3 += mMover->mPause2 + mMover->mPause1 + mMover->mTime;
 			}
@@ -213,7 +213,8 @@ void PhysObj::SetMovingPercent(float param_1, bool param_2)
 		}
 
 		if (param_2) {
-			SetMoveUpdateCnt(dVar3);
+			SetMoveUpdateCnt(mUnk0x4c + dVar3);
+			return;
 		}
 		mUnk0x26 = true;
 		mUnk0x50 = dVar3;

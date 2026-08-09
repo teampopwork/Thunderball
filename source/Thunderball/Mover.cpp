@@ -39,18 +39,24 @@ void Mover::SetPos(float param_1, float param_2)
 }
 
 // FUNCTION: POPCAPGAME1 0x00476460
-float Mover::GetTimeTillPhase(int param_1, float param_2)
+int Mover::GetTimeTillPhase(int param_1, float param_2)
 {
-	if (mPause1 < 1) {
-		if (0 < mTime) {
-			return MyMod((int) ((float) mTime * param_2) - (param_1 + mOffset), mTime);
-		}
+	if (mPause1 > 0) {
+		int aTotalTime = mTime + mPause2 + mPause1;
+		if (mTime < 1 || aTotalTime < 1)
+			return 0;
+
+		int aTargetTime = (int) (mTime * param_2);
+		if ((float) mPhase1 < param_2)
+			aTargetTime += mPause1;
+		if ((float) mPhase2 < param_2)
+			aTargetTime += mPause2;
+		return MyMod(aTargetTime - (param_1 + mOffset), aTotalTime);
 	}
-	else {
-		if ((0 < mPause1) && (mTime + mPause2 + mPause1 < 1)) {
-			return MyMod((int) (mPause1 - (param_1 + mOffset)), mTime);
-		}
-	}
+
+	if (mTime < 1)
+		return 0;
+	return MyMod((int) (mTime * param_2) - (param_1 + mOffset), mTime);
 }
 
 // FUNCTION: POPCAPGAME1 0x004764f0
