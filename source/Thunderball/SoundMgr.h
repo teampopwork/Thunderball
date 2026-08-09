@@ -21,13 +21,13 @@ class SoundMgr {
 	};
 
 public:
-	std::multimap<int, SoundDesc*> mUnk0x4;  // +0x4
+	std::multimap<int, SoundDesc> mUnk0x4;   // +0x4
 	int mUnk0x10;                            // +0x10
 	float mUnk0x14;                          // +0x14
 	float mUnk0x18;                          // +0x18
 	bool mUnk0x1c;                           // +0x1c
 	int mUnk0x20;                            // +0x20
-	std::multimap<SoundDesc*, int> mUnk0x28; // +0x28
+	std::map<SoundDesc*, int> mUnk0x28;      // +0x24
 	std::list<SoundInstance*> mUnk0x48;      // +0x48
 
 	SoundMgr();
@@ -39,7 +39,7 @@ public:
 	void KillAllSounds();
 	void Clear();
 	void SyncState(DataSync& param_1);
-	SoundInstance* PlaySample(SoundDesc* param_1);
+	void PlaySample(SoundDesc* param_1);
 	void AddSound(int param_1, int param_2);
 	void AddSound(int param_1, float param_2, int param_3, int param_4, int param_5, float param_6);
 	void AddFadeSound(SoundInstance* param_1);
