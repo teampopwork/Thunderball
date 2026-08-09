@@ -11,6 +11,7 @@
 
 #include <SexyAppFramework/Common.h>
 #include <SexyAppFramework/ModVal.h>
+#include <SexyAppFramework/WidgetManager.h>
 
 using namespace Sexy;
 
@@ -155,9 +156,49 @@ void SlotMachineDialog::UpdatePointer(bool param_1)
 	}
 }
 
-// STUB: POPCAPGAME1 0x0049d2c0
+// FUNCTION: POPCAPGAME1 0x0049d2c0
 void SlotMachineDialog::Update()
 {
+	if (mBoard->mUnk0x1b8 != 0) {
+		return;
+	}
+
+	int anUpdateCount = 1;
+	if (mBoard->mUnk0x11e && mWidgetManager->IsRightButtonDown()) {
+		anUpdateCount = 4;
+	}
+
+	for (int anUpdate = 0; anUpdate < anUpdateCount; anUpdate++) {
+		ThunderDialog::Update();
+		MarkDirty();
+		for (int i = 0; i < 40; i++) {
+			if (mUnk0x19c[i] != 0) {
+				mUnk0x19c[i]--;
+			}
+		}
+
+		if (mUnk0x184 > 0) {
+			mUnk0x184++;
+			if (mUnk0x184 == 120) {
+				mUnk0x150 = 600;
+				mUnk0x15C = 1;
+				CalcCurLight();
+			}
+			else if (mUnk0x184 > 140) {
+				mBoard->RemoveSlotMachineDialog();
+				if (mBall != NULL && mPhysObj != NULL) {
+					mBoard->mLogicMgr->FinishSlotMachine(mBall.get(), mPhysObj.get());
+				}
+				return;
+			}
+			else {
+				CalcCurLight();
+			}
+		}
+		else {
+			UpdatePointer(true);
+		}
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0049d100
