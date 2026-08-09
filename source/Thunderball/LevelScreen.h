@@ -8,6 +8,7 @@ namespace Sexy
 {
 class ThunderballApp;
 class Graphics;
+class PlayerInfo;
 
 class LevelScreen : public Widget, public ButtonListener {
 public:
@@ -16,9 +17,9 @@ public:
     int mUnk0x94;                  // +0x94
     int mUnk0x98;                  // +0x98
     int mUnk0x9c;                  // +0x9c
-    void* mUnk0xa0;                // +0xa0
+    PlayerInfo* mPlayerInfo;        // +0xa0
     int mUnk0xa4;                  // +0xa4
-    int mUnk0xa8;                  // +0xa8
+    int mStage;                     // +0xa8
     int mHoveredLevel;             // +0xac
     int mHoverTicks;               // +0xb0
     char mUnk0xb4[0x78];           // +0xb4

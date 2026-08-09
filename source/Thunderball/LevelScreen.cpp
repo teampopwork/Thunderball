@@ -1,6 +1,8 @@
 #include "LevelScreen.h"
 
+#include "PlayerInfo.h"
 #include "ThunderCommon.h"
+#include "ThunderballApp.h"
 
 using namespace Sexy;
 
@@ -17,9 +19,11 @@ LevelScreen::~LevelScreen()
 {
 }
 
-// STUB: POPCAPGAME1 0x00493490
+// FUNCTION: POPCAPGAME1 0x00493490
 void LevelScreen::SyncPlayerInfo()
 {
+	if (mPlayerInfo != NULL)
+		mPlayerInfo->SetLevelSelectStage(mStage);
 }
 
 // FUNCTION: POPCAPGAME1 0x004934b0
@@ -55,10 +59,17 @@ void LevelScreen::DoPlay(int theId)
 {
 }
 
-// STUB: POPCAPGAME1 0x00493600
+// FUNCTION: POPCAPGAME1 0x00493600
 bool LevelScreen::CanSelectLevel(int theId)
 {
-    return false;
+	if ((unsigned int) theId < 5)
+	{
+		if (mApp->mCurProfile == NULL)
+			return true;
+		if (!mApp->IsLevelDemoLocked(mStage, theId))
+			return mApp->mCurProfile->IsLevelUnlocked(mStage, theId);
+	}
+	return false;
 }
 
 // STUB: POPCAPGAME1 0x00493660

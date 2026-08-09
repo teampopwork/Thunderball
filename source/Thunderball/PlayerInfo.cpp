@@ -421,6 +421,15 @@ void PlayerInfo::SetComputerSkill(int theSkill)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x00403790
+void PlayerInfo::SetLevelSelectStage(int theStage)
+{
+	if (mUnk0x3c != theStage) {
+		mUnk0x3c = theStage;
+		mUnk0xec = true;
+	}
+}
+
 // FUNCTION: POPCAPGAME1 0x00403700
 void PlayerInfo::SetSelCharacter(int theId)
 {
