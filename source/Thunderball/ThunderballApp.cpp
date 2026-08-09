@@ -30,6 +30,7 @@
 #include <SexyAppFramework/ButtonWidget.h>
 #include <SexyAppFramework/DDImage.h>
 #include <SexyAppFramework/Debug.h>
+#include <SexyAppFramework/DialogButton.h>
 #include <SexyAppFramework/EditWidget.h>
 #include <SexyAppFramework/ResourceManager.h>
 #include <SexyAppFramework/SWTri.h>
@@ -514,9 +515,45 @@ void ThunderballApp::DoConfirmMainMenuDialog()
 {
 }
 
-// STUB: POPCAPGAME1 0x0041caa0
+// FUNCTION: POPCAPGAME1 0x0041caa0
 void ThunderballApp::DoConfirmNewChallengeDialog()
 {
+	// STRING: POPCAPGAME1 0x005d6b94
+	SexyString aHeader = "New Challenge?";
+	SexyString aLines = ModVal(
+		0,
+		// STRING: POPCAPGAME1 0x005d6ae8
+		"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp193,2860",
+		// STRING: POPCAPGAME1 0x005d6b30
+		"Are you sure that you want to choose a new challenge? Your progress on this challenge will be lost."
+	);
+	ThunderDialog* aDialog = static_cast<ThunderDialog*>(DoDialog(
+		7,
+		true,
+		aHeader,
+		aLines,
+		"",
+		2
+	));
+	aDialog->mYesButton->mLabel = ModVal(
+		0,
+		// STRING: POPCAPGAME1 0x005d6a90
+		"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp194,2864",
+		// STRING: POPCAPGAME1 0x005d6ad8
+		"New Challenge"
+	);
+	PositionDialog(
+		aDialog,
+		ModVal(
+			0,
+			// STRING: POPCAPGAME1 0x005d6a48
+			"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp195,2865",
+			400
+		),
+		false,
+		-1
+	);
+	aDialog->DoScroll(true);
 }
 
 // FUNCTION: POPCAPGAME1 0x0041c960
