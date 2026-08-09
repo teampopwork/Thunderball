@@ -1,6 +1,7 @@
 #include "InterfaceMgr.h"
 
 #include "Board.h"
+#include "HighScoreMgr.h"
 #include "LogicMgr.h"
 #include "PlayerInfo.h"
 #include "Res.h"
@@ -518,9 +519,27 @@ void InterfaceMgr::BeginShot()
 	mUnk0x161 = false;
 }
 
-// STUB: POPCAPGAME1 0x004724e0
+// FUNCTION: POPCAPGAME1 0x004724e0
 void InterfaceMgr::UpdateHighScore(bool param_1)
 {
+	PlayerInfo* aProfile = mBoard->mApp->mCurProfile;
+	if (aProfile != NULL) {
+		mUnk0x68 = aProfile->mUnk0x204;
+	} else {
+		mUnk0x68 = 0;
+	}
+	mUnk0x64 = 0;
+	mUnk0x70 = "";
+
+	std::string aLevelName = GetFileName(mBoard->mUnk0x1d4, true);
+	if (aLevelName.empty()) {
+		return;
+	}
+	std::list<HighScoreEntry>* aScores = mBoard->mApp->mHighScoreMgr->GetScores(&aLevelName, false);
+	if (aScores != NULL) {
+		mUnk0x64 = aScores->front().mScore;
+		mUnk0x70.assign(aScores->front().mName, 0, (size_t) -1);
+	}
 }
 
 // STUB: POPCAPGAME1 0x004725f0
