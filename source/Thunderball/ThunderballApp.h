@@ -46,6 +46,7 @@ public:
 	UINT mQueryMessage;      // +0x2c
 
 	bool IsRegistered();
+	bool IsWindowValid();
 };
 
 static BlendedImage* gBallPegImage[9];

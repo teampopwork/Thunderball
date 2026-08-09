@@ -65,6 +65,12 @@ bool RegistrationControl::IsRegistered()
 	return false;
 }
 
+// FUNCTION: POPCAPGAME1 0x00431960
+bool RegistrationControl::IsWindowValid()
+{
+	return mWindowValid;
+}
+
 // STUB: POPCAPGAME1 0x00426f10
 ThunderballApp::ThunderballApp()
 {
@@ -1425,8 +1431,11 @@ void ThunderballApp::SwitchScreenMode(bool wantWindowed, bool is3d, bool force)
 	SexyApp::SwitchScreenMode(wantWindowed, is3d, force);
 }
 
-// STUB: POPCAPGAME1 0x00405840
+// FUNCTION: POPCAPGAME1 0x00405840
 bool ThunderballApp::meth_0x405840()
 {
+	if (mRegistrationControl != NULL) {
+		return mRegistrationControl->IsWindowValid();
+	}
 	return false;
 }
