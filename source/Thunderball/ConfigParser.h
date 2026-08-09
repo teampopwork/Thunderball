@@ -7,7 +7,11 @@ namespace Sexy
 {
 class ConfigParser {
 public:
-	int mUnk0x9c;
+	char mPadding0x4[0x98]; // +0x4
+	int mUnk0x9c; // +0x9c
+	bool mThrowExceptions; // +0xa0
+	char mPadding0xa1[0x2b]; // +0xa1
+	bool mValParserThrowExceptions; // +0xcc
 
 	ConfigParser(bool throwExceptions);
 	virtual ~ConfigParser();
