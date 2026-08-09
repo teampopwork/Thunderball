@@ -9,6 +9,14 @@ namespace Sexy
 class ThunderballApp;
 class Graphics;
 class PlayerInfo;
+class LevelInfo;
+
+class LevelScreenEntry {
+public:
+    char mUnk0x0[0x10];
+    LevelInfo* mLevelInfo;          // +0x10
+    int mUnk0x14;                  // +0x14
+};
 
 class LevelScreen : public Widget, public ButtonListener {
 public:
@@ -22,7 +30,7 @@ public:
     int mStage;                     // +0xa8
     int mHoveredLevel;             // +0xac
     int mHoverTicks;               // +0xb0
-    char mUnk0xb4[0x78];           // +0xb4
+    LevelScreenEntry mLevels[5];    // +0xb4
     void* mUnk0x12c;               // +0x12c
     void* mUnk0x130;               // +0x130
     void* mUnk0x134;               // +0x134
