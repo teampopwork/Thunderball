@@ -746,7 +746,7 @@ void Poly::DrawPoly(Graphics* g, int param_2, int param_3)
 {
 }
 
-// STUB: POPCAPGAME1 0x0047dfe0
+// FUNCTION: POPCAPGAME1 0x0047dfe0
 bool Poly::CheckCollision(
 	SexyVector2* param_1,
 	SexyVector2* param_2,
@@ -758,6 +758,84 @@ bool Poly::CheckCollision(
 	SexyVector2* param_8
 )
 {
+	if (mUnk0x14 - 20.0f > param_1->x + param_3 ||
+		param_1->x - param_3 > mUnk0x1c + 20.0f ||
+		mUnk0x18 - 20.0f > param_1->y + param_3 ||
+		param_1->y - param_3 > mUnk0x20 + 20.0f)
+	{
+		return false;
+	}
+
+	EnsureLines();
+	bool isConvex = mUnk0x12d;
+	bool checkPenetration = mUnk0x134 == 1 && mUnk0x12e;
+	float aClosestDepth = 1.0e7f;
+	Line* aClosestLine = NULL;
+	Line* aHitLine = NULL;
+	uint aCrossingCount = 0;
+
+	for (std::vector<SmartPtr<Line>>::iterator it = mUnk0x108.begin();
+		it != mUnk0x108.end(); ++it)
+	{
+		Line* aLine = it->get();
+		if (aLine->CheckCollision(
+			param_1, param_2, param_3, param_4,
+			param_5, param_6, param_7, false))
+		{
+			aHitLine = aLine;
+		}
+
+		if (checkPenetration)
+		{
+			SexyVector2 aDelta = *param_1 - SexyVector2(aLine->mUnk0xec, aLine->mUnk0xf4);
+			float aDepth = -SexyVector2(aLine->mUnk0x104, aLine->mUnk0x108).Dot(aDelta);
+			bool isCandidate = isConvex;
+			if (!isConvex)
+			{
+				float aStartY = aLine->mUnk0xf4;
+				float anEndY = aLine->mUnk0xf8;
+				if ((aStartY != anEndY && aStartY <= param_1->y && param_1->y < anEndY) ||
+					(anEndY <= param_1->y && param_1->y < aStartY))
+				{
+					float anIntersectX =
+						((param_1->y - aStartY) * (aLine->mUnk0xf0 - aLine->mUnk0xec)) /
+						(anEndY - aStartY) + aLine->mUnk0xec;
+					if (param_1->x < anIntersectX)
+						aCrossingCount++;
+				}
+				isCandidate = aDepth > 0.0f;
+			}
+
+			if (isCandidate && aDepth < aClosestDepth)
+			{
+				aClosestDepth = aDepth;
+				aClosestLine = aLine;
+			}
+		}
+	}
+
+	if (isConvex && aClosestDepth > 0.0f)
+		aCrossingCount = 1;
+
+	if ((aCrossingCount & 1) != 0 && aClosestLine != NULL && *param_4 != 0.0f)
+	{
+		*param_4 = 0.0f;
+		SexyVector2 aNormal(aClosestLine->mUnk0x104, aClosestLine->mUnk0x108);
+		*param_5 = *param_1 + aNormal * (aClosestDepth + param_3);
+		aClosestLine->CalcEdgeHitVelocity(&aNormal, param_7);
+		*param_6 = aNormal;
+		aHitLine = aClosestLine;
+	}
+
+	if (aHitLine != NULL)
+	{
+		if (mUnk0x120 != 0.0f)
+		{
+			param_8->x += (param_5->y - mUnk0x118) * mUnk0x120;
+			param_8->y -= mUnk0x120 * (param_5->x - mUnk0x114);
+		}
+		return true;
+	}
 	return false;
 }
 
