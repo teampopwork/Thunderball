@@ -108,7 +108,7 @@ public:
 		SexyVector2* param_5,
 		SexyVector2* param_6
 	);
-	void DoCollideUpdate(std::vector<PhysObj*>* param_1, SexyVector2* param_2);
+	bool DoCollideUpdate(std::vector<PhysObj*>* param_1, SexyVector2* param_2);
 };
 
 } // namespace Sexy
