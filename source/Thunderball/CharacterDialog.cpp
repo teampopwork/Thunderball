@@ -89,9 +89,21 @@ int CharacterDialog::GetPreferredHeight(int param_1)
 		0x1e0);
 }
 
-// STUB: POPCAPGAME1 0x004926e0
+// FUNCTION: POPCAPGAME1 0x004926e0
 void CharacterDialog::CheckboxChecked(int param_1, bool param_2)
 {
+	if ((unsigned int)param_1 <= 1) {
+		(*(Checkbox**)((char*)this + 0x19c - param_1 * 4))->mChecked = false;
+		SyncDifficultyVisibility();
+		return;
+	}
+
+	if ((unsigned int)(param_1 - 2) <= 3) {
+		for (int i = 2; i < 6; i++) {
+			if (param_1 != i)
+				(*(Checkbox**)((char*)this + 0x1a0 + (i - 2) * 4))->mChecked = false;
+		}
+	}
 }
 
 // STUB: POPCAPGAME1 0x00498900
