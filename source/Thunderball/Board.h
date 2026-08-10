@@ -220,9 +220,9 @@ class Board : public Widget, public ButtonListener
 	void     SetSyncPoint(DataWriter* param_1, bool param_2);
 	void     EndReplay();
 	bool     NeedSaveGame();
-	void*    GetSyncPoint();
+	DataWriter* GetSyncPoint();
 	void     ShowReplay(int param_1, bool param_2);
-	void*    GetReplayPoint();
+	void     GetReplayPoint();
 	void     LoadGame(Buffer* param_1);
 	void     SaveGame();
 	void     MakeThumbnail();

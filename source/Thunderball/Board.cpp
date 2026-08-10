@@ -1242,10 +1242,15 @@ bool Board::NeedSaveGame()
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x004249c0
-void* Board::GetSyncPoint()
+// FUNCTION: POPCAPGAME1 0x004249c0
+DataWriter* Board::GetSyncPoint()
 {
-	return NULL;
+	DataWriter* aWriter = new DataWriter();
+	aWriter->OpenMemory(32);
+	DataSync aSync(*aWriter);
+	SyncState(aSync);
+	aSync.SyncPointers();
+	return aWriter;
 }
 
 // STUB: POPCAPGAME1 0x00424d40
@@ -1253,10 +1258,15 @@ void Board::ShowReplay(int param_1, bool param_2)
 {
 }
 
-// STUB: POPCAPGAME1 0x00424be0
-void* Board::GetReplayPoint()
+// FUNCTION: POPCAPGAME1 0x00424be0
+void Board::GetReplayPoint()
 {
-	return NULL;
+	DataWriter* aWriter = GetSyncPoint();
+	mUnk0x174.push_back(aWriter);
+	if (mUnk0x174.size() >= 50) {
+		delete mUnk0x174.front();
+		mUnk0x174.pop_front();
+	}
 }
 
 // STUB: POPCAPGAME1 0x00424860
