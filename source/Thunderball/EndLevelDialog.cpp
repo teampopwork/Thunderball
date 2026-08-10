@@ -1,5 +1,8 @@
 #include "EndLevelDialog.h"
 
+#include "Board.h"
+#include "Res.h"
+
 #include <SexyAppFramework/DialogButton.h>
 #include <SexyAppFramework/SexyApp.h>
 
@@ -53,14 +56,28 @@ void EndLevelDialog::DrawAdventureWin(Graphics* param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x004931a0
-void EndLevelDialog::MouseMove(int param_1, int param_2)
+// FUNCTION: POPCAPGAME1 0x004931a0
+void EndLevelDialog::MouseMove(int, int theY)
 {
+	if (*(int*)((char*)this + 0x1f8) != 0 && theY >= mUnk0x198 - 15 && theY < mUnk0x198 + 15) {
+		gSexyApp->SetCursor(CURSOR_HAND);
+		return;
+	}
+
+	gSexyApp->SetCursor(CURSOR_POINTER);
 }
 
-// STUB: POPCAPGAME1 0x00499760
-void EndLevelDialog::MouseDown(int param_1, int param_2, int param_3)
+// FUNCTION: POPCAPGAME1 0x00499760
+void EndLevelDialog::MouseDown(int theX, int theY, int theClickCount)
 {
+	if (*(HighScoreEntry**)((char*)this + 0x1f8) != NULL &&
+		theY >= mUnk0x198 - 15 && theY < mUnk0x198 + 15 && theClickCount == 1) {
+		gSexyApp->PlaySample(SOUND_BUTTON1);
+		mBoard->ChangeHighScore(*(HighScoreEntry**)((char*)this + 0x1f8));
+		return;
+	}
+
+	ThunderDialog::MouseDown(theX, theY, theClickCount);
 }
 
 // FUNCTION: POPCAPGAME1 0x004931f0
