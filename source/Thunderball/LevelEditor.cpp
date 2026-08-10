@@ -2,6 +2,8 @@
 
 #include <SexyAppFramework/Common.h>
 
+#include <ctype.h>
+
 using namespace Sexy;
 
 // FUNCTION: POPCAPGAME1 0x0040b010
@@ -435,9 +437,12 @@ void LevelEditor::ShowKeyboardHelp()
 {
 }
 
-// STUB: POPCAPGAME1 0x004032f0
-bool LevelEditor::IsAltKeyUsed(int param_1)
+// FUNCTION: POPCAPGAME1 0x004032f0
+bool LevelEditor::IsAltKeyUsed(int theKey)
 {
+	if (toupper(theKey) == 'Z') {
+		return true;
+	}
 	return false;
 }
 

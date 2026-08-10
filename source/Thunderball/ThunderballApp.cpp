@@ -820,14 +820,27 @@ void ThunderballApp::FinishConfirmDeleteUserDialog(bool param_1)
 	}
 }
 
-// STUB: POPCAPGAME1 0x0042d980
-void ThunderballApp::FinishConfirmMainMenuDialog(bool param_1)
+// FUNCTION: POPCAPGAME1 0x0042d980
+void ThunderballApp::FinishConfirmMainMenuDialog(bool wasConfirmed)
 {
+	DoScrollOff(4);
+	if (wasConfirmed) {
+		if (mCurProfile != NULL && mCurProfile->mUnk0x58 < 255) {
+			mCurProfile->mUnk0x58++;
+			mCurProfile->mUnk0xec = true;
+		}
+		DoToMenu();
+	}
 }
 
-// STUB: POPCAPGAME1 0x00429970
-void ThunderballApp::FinishConfirmNewChallengeDialog(bool param_1)
+// FUNCTION: POPCAPGAME1 0x00429970
+void ThunderballApp::FinishConfirmNewChallengeDialog(bool wasConfirmed)
 {
+	DoScrollOff(7);
+	if (wasConfirmed) {
+		FinishOptionsDialog(true, true);
+		ShowTrophyScreen();
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x004084a0
@@ -842,9 +855,16 @@ void ThunderballApp::FinishConfirmQuitDialog(bool param_1)
 	}
 }
 
-// STUB: POPCAPGAME1 0x0041fc00
-void ThunderballApp::FinishConfirmRestartAdventureDialog(bool param_1)
+// FUNCTION: POPCAPGAME1 0x0041fc00
+void ThunderballApp::FinishConfirmRestartAdventureDialog(bool wasConfirmed)
 {
+	DoScrollOff(8);
+	if (wasConfirmed && mCurProfile != NULL) {
+		mCurProfile->RestartAdventure();
+		if (mAdventureScreen != NULL) {
+			mAdventureScreen->StartGame();
+		}
+	}
 }
 
 // STUB: POPCAPGAME1 0x004301c0
