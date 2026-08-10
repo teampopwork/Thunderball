@@ -1,5 +1,9 @@
 #include "TrophyScreen.h"
 
+#include "PlayerInfo.h"
+
+#include <SexyAppFramework/ModVal.h>
+
 using namespace Sexy;
 
 // SYNTHETIC: POPCAPGAME1 0x0049c200
@@ -47,22 +51,35 @@ void TrophyScreen::ButtonDepress(int theId)
 	// TODO
 }
 
-// STUB: POPCAPGAME1 0x00497b60
+// FUNCTION: POPCAPGAME1 0x00497b60
 void TrophyScreen::ButtonMouseEnter(int theId)
 {
-	// TODO
+	if ((unsigned int)theId <= 4) {
+		mHoverId = theId;
+		mHoverTicks = 0;
+	}
 }
 
-// STUB: POPCAPGAME1 0x00497b80
+// FUNCTION: POPCAPGAME1 0x00497b80
 void TrophyScreen::ButtonMouseLeave(int theId)
 {
-	// TODO
+	if ((unsigned int)theId <= 4) {
+		mHoverId = theId;
+		// STRING: POPCAPGAME1 0x005fcf38
+		mHoverTicks = ModVal(
+			0,
+			"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\TrophyScreen.cpp901,346",
+			10);
+	}
 }
 
-// STUB: POPCAPGAME1 0x004979c0
+// FUNCTION: POPCAPGAME1 0x004979c0
 void TrophyScreen::SyncPlayerInfo()
 {
-	// TODO
+	if (mPlayerInfo != NULL && mPlayerInfo->mUnk0x38 != mPlayerInfoValue) {
+		mPlayerInfo->mUnk0x38 = mPlayerInfoValue;
+		mPlayerInfo->mUnk0xec = true;
+	}
 }
 
 // STUB: POPCAPGAME1 0x004ab780

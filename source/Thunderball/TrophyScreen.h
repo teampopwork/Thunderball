@@ -10,9 +10,17 @@ namespace Sexy
 class ThunderballApp;
 class Graphics;
 class DDImage;
+class PlayerInfo;
 
 class TrophyScreen : public Widget, public ButtonListener {
 public:
+	ThunderballApp* mApp;       // +0x8c
+	char mPadding0x90[0xc];     // +0x90
+	PlayerInfo* mPlayerInfo;    // +0x9c
+	int mPlayerInfoValue;       // +0xa0
+	int mHoverId;               // +0xa4
+	int mHoverTicks;            // +0xa8
+
 	TrophyScreen(ThunderballApp* theApp);
 	virtual ~TrophyScreen();
 
