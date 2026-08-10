@@ -130,10 +130,46 @@ void LogicMgr::MouseUp(int param_1, int param_2, int param_3, bool param_4)
 	// TODO
 }
 
-// STUB: POPCAPGAME1 0x0043d6a0
-void LogicMgr::MouseWheel(int param_1)
+// FUNCTION: POPCAPGAME1 0x0043d6a0
+bool LogicMgr::MouseWheel(int param_1)
 {
-	// TODO
+	if (!mUnk0x244[mUnk0x128] && mUnk0x4 == 1)
+	{
+		float anAngleStep = GetMouseAngleStep();
+		Gun* aGun = mBoard->mGun.get();
+		if (aGun->mUnk0x194 && aGun->mAngularVelocity <= 1.0f && abs(param_1) <= 1)
+		{
+			float aSpeedScale = ModVal(
+				0,
+				"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LogicMgr.cpp1257,4148",
+				0.02f
+			) / aGun->mAngularVelocity;
+			anAngleStep = Clamp(
+				mUnk0x70 * aSpeedScale,
+				ModVal(
+					0,
+					"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LogicMgr.cpp1258,4149",
+					0.01f
+				),
+				ModVal(
+					0,
+					"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LogicMgr.cpp1259,4149",
+					0.1f
+				)
+			);
+		}
+
+		mUnk0x70 = anAngleStep;
+		float anAngleDelta = (float) (anAngleStep * (M_PI / 180.0));
+		SetGunAngle(mUnk0xe0 + anAngleDelta * param_1);
+		mUnk0xe8 = ModVal(
+			0,
+			"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LogicMgr.cpp1260,4155",
+			30
+		);
+		aGun->mUnk0x180 = true;
+	}
+	return true;
 }
 
 bool LogicMgr::KeyChar(SexyChar param_1)
@@ -548,9 +584,23 @@ void LogicMgr::AddExtremeFeverEffect(int param_1)
 	// TODO
 }
 
+// FUNCTION: POPCAPGAME1 0x00436fd0
 void LogicMgr::SetGunAngle(float param_1)
 {
-	// TODO
+	mUnk0xe0 = NormalizeAngle(param_1);
+	float aMaxGunAngle = GetMaxGunAngle();
+	float aMinAngle = (float) (90.0 - aMaxGunAngle);
+	aMinAngle = (float) (aMinAngle * M_PI / 180.0);
+	float aMaxAngle = (float) (aMaxGunAngle + 90.0);
+	aMaxAngle = (float) (aMaxAngle * M_PI / 180.0);
+	if (mUnk0xe0 > aMinAngle && mUnk0xe0 < aMaxAngle)
+	{
+		float aMiddleAngle = (float) ((aMaxAngle + aMinAngle) * 0.5);
+		if (mUnk0xe0 > aMiddleAngle)
+			mUnk0xe0 = aMaxAngle;
+		else
+			mUnk0xe0 = aMinAngle;
+	}
 }
 
 // STUB: POPCAPGAME1 0x0043ece0

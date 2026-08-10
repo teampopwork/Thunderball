@@ -23,6 +23,26 @@
 
 using namespace Sexy;
 
+// FUNCTION: POPCAPGAME1 0x00406710
+float Sexy::Clamp(float val, float minVal, float maxVal)
+{
+	if (val < minVal)
+		val = minVal;
+	else if (val > maxVal)
+		val = maxVal;
+	return val;
+}
+
+// FUNCTION: POPCAPGAME1 0x00404c60
+float Sexy::GetMaxGunAngle()
+{
+	return ModVal(
+		0,
+		"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp123,125",
+		83.0f
+	);
+}
+
 // STUB: POPCAPGAME1 0x0040b570
 void Sexy::SetButtonFontColor(int color)
 {

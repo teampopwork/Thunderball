@@ -84,7 +84,7 @@ public:
 	std::vector<PegHitInfo> mUnk0xb4;       // +0xb4
 	std::list<ClickInfo> mUnk0xc4;          // +0xc4
 	std::vector<BallPosInfo> mUnk0xd0;      // +0xd0
-	int mUnk0xe0;                           // +0xe0
+	float mUnk0xe0;                         // +0xe0
 	float mUnk0xe4;                         // +0xe4
 	int mUnk0xe8;                           // +0xe8
 	bool mUnk0xec;                          // +0xec
@@ -182,7 +182,7 @@ public:
 	bool MouseDrag(int param_1, int param_2);
 	void MouseDown(int param_1, int param_2, int param_3, bool param_4, bool param_5);
 	void MouseUp(int param_1, int param_2, int param_3, bool param_4);
-	void MouseWheel(int param_1);
+	bool MouseWheel(int param_1);
 	bool KeyChar(SexyChar param_1);
 	bool KeyDown(KeyCode param_1);
 
