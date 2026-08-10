@@ -259,7 +259,7 @@ bool EditValObj::EditGetSetValDelegate(EditValObj* theObj, const std::string& pa
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-// STUB: POPCAPGAME1 0x00402f90
+// FUNCTION: POPCAPGAME1 0x00402f90
 GlobalEditVal::GlobalEditVal()
 {
 }
@@ -267,7 +267,7 @@ GlobalEditVal::GlobalEditVal()
 // SYNTHETIC: POPCAPGAME1 0x00407490
 // Sexy::GlobalEditVal::`scalar deleting destructor'
 
-// STUB: POPCAPGAME1 0x00402fc0
+// FUNCTION: POPCAPGAME1 0x00402fc0
 GlobalEditVal::~GlobalEditVal()
 {
 }

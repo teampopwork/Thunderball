@@ -777,9 +777,13 @@ void ThunderballApp::EndHelpScreen()
 {
 }
 
-// STUB: POPCAPGAME1 0x0042ff40
+// FUNCTION: POPCAPGAME1 0x0042ff40
 void ThunderballApp::EndUpsellScreen()
 {
+	CleanupScreen(mUpsellScreen);
+	mUpsellScreen = NULL;
+	mSoundManager->StopAllSounds();
+	ShowMainMenu();
 }
 
 // FUNCTION: POPCAPGAME1 0x0041d3d0
