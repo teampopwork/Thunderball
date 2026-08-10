@@ -7,6 +7,7 @@
 #include "DebugMgr.h"
 #include "Gun.h"
 #include "InterfaceMgr.h"
+#include "Mover.h"
 #include "Poly.h"
 #include "SoundMgr.h"
 #include "ThunderCommon.h"
@@ -322,10 +323,47 @@ void LogicMgr::UpdateGun()
 	// TODO
 }
 
-// STUB: POPCAPGAME1 0x00440830
+// FUNCTION: POPCAPGAME1 0x00440830
 void LogicMgr::UpdateFreeBallRadius()
 {
-	// TODO
+	int anUpdateRate = ModVal(
+		0,
+		"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LogicMgr.cpp1261,4256",
+		2
+	);
+	if (mBoard->mUnk0x1c4 % anUpdateRate != 0)
+	{
+		bool aRadiusChanged = false;
+		for (std::list<SmartPtr<PhysObj> >::iterator anItr = mBoard->mUnk0x190.begin();
+			anItr != mBoard->mUnk0x190.end(); ++anItr)
+		{
+			PhysObj* anObj = anItr->get();
+			if (anObj->mUnk0x5c == "freeballcover" ||
+				anObj->mUnk0x5c == "freeball" ||
+				anObj->mUnk0x5c == "bumperhole")
+			{
+				Mover* aMover = anObj->mMover.get();
+				if (aMover != NULL && (float) mUnk0x134 != (float) aMover->mRadius &&
+					aMover->mTime > 0)
+				{
+					aRadiusChanged = true;
+					if (aMover->mRadius > mUnk0x134)
+					{
+						int aRadius = aMover->mRadius - 1;
+						aMover->mRadius = aRadius < mUnk0x134 ? mUnk0x134 : aRadius;
+					}
+					else
+					{
+						int aRadius = aMover->mRadius + 1;
+						aMover->mRadius = aRadius > mUnk0x134 ? mUnk0x134 : aRadius;
+					}
+				}
+			}
+		}
+
+		if (!aRadiusChanged)
+			mUnk0x134 = 0;
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0044b690
