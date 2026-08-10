@@ -1,8 +1,11 @@
 #include "CharacterDialog.h"
 
+#include "Res.h"
 #include "ThunderballApp.h"
 
+#include <SexyAppFramework/ButtonWidget.h>
 #include <SexyAppFramework/Checkbox.h>
+#include <SexyAppFramework/Font.h>
 #include <SexyAppFramework/ModVal.h>
 #include <SexyAppFramework/Widget.h>
 
@@ -61,9 +64,33 @@ int CharacterDialog::CanSelectCharacter(int param_1)
 	return 1;
 }
     
-// STUB: POPCAPGAME1 0x004925d0
+// FUNCTION: POPCAPGAME1 0x004925d0
 void CharacterDialog::SyncNamePos()
 {
+	Font* aFont = FONT_OVERLOAD16OUTLINE;
+	for (int i = 0; i < 2; i++) {
+		int aCenter;
+		if (i == 0) {
+			// STRING: POPCAPGAME1 0x005f9520
+			aCenter = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\CharacterDialog.cpp29,351", 0x5a);
+		} else {
+			// STRING: POPCAPGAME1 0x005f94d8
+			aCenter = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\CharacterDialog.cpp30,351", 0x1a9);
+		}
+
+		std::string& aName = *(std::string*)((char*)this + 0x1c0 + i * 0x1c);
+		int aWidth = aFont->StringWidth(aName);
+		*(int*)((char*)this + 0x1f8 + i * 4) = aCenter - aWidth / 2;
+
+		// STRING: POPCAPGAME1 0x005f9490
+		int aRight = aCenter + aWidth / 2 + ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\CharacterDialog.cpp31,355", 0);
+		// STRING: POPCAPGAME1 0x005f9448
+		int aLimit = mWidth - ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\CharacterDialog.cpp32,356", 0x32);
+		if (aRight > aLimit)
+			aRight = aLimit;
+		ButtonWidget* aButton = *(ButtonWidget**)((char*)this + 0x190 + i * 4);
+		*(int*)((char*)aButton + 0x30) = aRight;
+	}
 }
 
 // STUB: POPCAPGAME1 0x00498670
