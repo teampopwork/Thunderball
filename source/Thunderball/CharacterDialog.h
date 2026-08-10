@@ -12,6 +12,7 @@ class WidgetManager;
 
 class CharacterDialog : public ThunderDialog, public CheckboxListener {
 public:
+	char mPadding0x17c[0x9d];
     bool mUnk0x219;
 
     CharacterDialog(Board* param_1);
@@ -26,7 +27,7 @@ public:
 
     
     void SyncDifficultyVisibility();
-    bool CanSelectCharacter(int param_1);
+    int CanSelectCharacter(int param_1);
     void SyncNamePos();
 
     void CheckboxChecked(int param_1, bool param_2);

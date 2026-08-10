@@ -1,5 +1,11 @@
 #include "CharacterDialog.h"
 
+#include "ThunderballApp.h"
+
+#include <SexyAppFramework/Checkbox.h>
+#include <SexyAppFramework/ModVal.h>
+#include <SexyAppFramework/Widget.h>
+
 using namespace Sexy;
 
 // STUB: POPCAPGAME1 0x004b2990
@@ -28,15 +34,31 @@ void CharacterDialog::RemovedFromManager(WidgetManager* param_1)
     ThunderDialog::RemovedFromManager(param_1);
 }
 
-// STUB: POPCAPGAME1 0x004926a0
+// FUNCTION: POPCAPGAME1 0x004926a0
 void CharacterDialog::SyncDifficultyVisibility()
 {
+	if (mUnk0x219) {
+		Checkbox* aCheckbox = *(Checkbox**)((char*)this + 0x19c);
+		bool aVisible = aCheckbox->mChecked;
+		(*(Widget**)((char*)this + 0x1a0))->mVisible = aVisible;
+		(*(Widget**)((char*)this + 0x1a4))->mVisible = aVisible;
+		(*(Widget**)((char*)this + 0x1a8))->mVisible = aVisible;
+		(*(Widget**)((char*)this + 0x1ac))->mVisible = aVisible;
+	}
 }
 
-// STUB: POPCAPGAME1 0x00492590
-bool CharacterDialog::CanSelectCharacter(int param_1)
+// FUNCTION: POPCAPGAME1 0x00492590
+int CharacterDialog::CanSelectCharacter(int param_1)
 {
-    return false;
+	if (param_1 != 10) {
+		if (param_1 < 0 ||
+			param_1 > (*(ThunderballApp**)((char*)this + 0x180))->GetMaxUnlockedCharacter() ||
+			param_1 > 10) {
+			return 0;
+		}
+	}
+
+	return 1;
 }
     
 // STUB: POPCAPGAME1 0x004925d0
@@ -49,10 +71,22 @@ void CharacterDialog::Resize(int param_1, int param_2, int param_3, int param_4)
 {
 }
 
-// STUB: POPCAPGAME1 0x00492550
+// FUNCTION: POPCAPGAME1 0x00492550
 int CharacterDialog::GetPreferredHeight(int param_1)
 {
-    return 0;
+	if (mUnk0x219) {
+		// STRING: POPCAPGAME1 0x005f9400
+		return ModVal(
+			0,
+			"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\CharacterDialog.cpp27,320",
+			0x20d);
+	}
+
+	// STRING: POPCAPGAME1 0x005f93b8
+	return ModVal(
+		0,
+		"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\CharacterDialog.cpp28,320",
+		0x1e0);
 }
 
 // STUB: POPCAPGAME1 0x004926e0
