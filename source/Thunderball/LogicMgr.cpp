@@ -146,10 +146,23 @@ bool LogicMgr::KeyDown(KeyCode param_1)
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x00440500
+// FUNCTION: POPCAPGAME1 0x00440500
 void LogicMgr::BeginInitLevel()
 {
-	// TODO
+	if (!mUnk0x340.empty())
+	{
+		SetState((LogicState) 8);
+		for (std::list<SmartPtr<PhysObj> >::iterator anItr = mUnk0x340.begin();
+			anItr != mUnk0x340.end(); ++anItr)
+		{
+			anItr->get()->mUnk0x25 = false;
+		}
+
+		mUnk0x40 = 0;
+		mUnk0x44 = 0;
+		mUnk0x3c = 0;
+		mUnk0x34 = 0;
+	}
 }
 
 // STUB: POPCAPGAME1 0x0046e880
