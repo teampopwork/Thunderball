@@ -1,5 +1,7 @@
 #include "LevelEditor.h"
 
+#include "PhysObj.h"
+
 #include <SexyAppFramework/Common.h>
 
 #include <ctype.h>
@@ -387,9 +389,17 @@ void LevelEditor::EditMoveSel(int param_1, int param_2)
 {
 }
 
-// STUB: POPCAPGAME1 0x0040a410
+// FUNCTION: POPCAPGAME1 0x0040a410
 void LevelEditor::EditResetMoveTimes()
 {
+	Board* aBoard = *(Board**)((char*)this + 0x88);
+	std::list<SmartPtr<PhysObj>>& anObjectList =
+		*(std::list<SmartPtr<PhysObj>>*)((char*)aBoard + 0x190);
+	std::list<SmartPtr<PhysObj>>::iterator anItr = anObjectList.begin();
+	while (anItr._Mynode() != anObjectList.end()._Mynode()) {
+		anItr->get()->SetMoveUpdateCnt(0);
+		++anItr;
+	}
 }
 
 // STUB: POPCAPGAME1 0x0040b060
