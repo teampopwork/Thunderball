@@ -772,9 +772,25 @@ void ThunderballApp::DoUserDialog()
 	AddDialog(24, aDialog);
 }
 
-// STUB: POPCAPGAME1 0x0042fe30
+// FUNCTION: POPCAPGAME1 0x0042fe30
 void ThunderballApp::EndHelpScreen()
 {
+	if (mBoard != NULL) {
+		mBoard->mVisible = true;
+	}
+	if (mMainMenu != NULL) {
+		mMainMenu->mVisible = true;
+		mWidgetManager->SetFocus(mMainMenu);
+	}
+
+	if (*(bool*)((char*)this + 0x778)) {
+		ShowBoard(true, true);
+		return;
+	}
+
+	CheckScrollOff(mHelpScreen, 1, true);
+	CleanupScreen(mHelpScreen);
+	mHelpScreen = NULL;
 }
 
 // FUNCTION: POPCAPGAME1 0x0042ff40
