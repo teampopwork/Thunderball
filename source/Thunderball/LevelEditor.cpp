@@ -1,5 +1,6 @@
 #include "LevelEditor.h"
 
+#include "DataSync.h"
 #include "PhysObj.h"
 
 #include <SexyAppFramework/Common.h>
@@ -379,9 +380,14 @@ void LevelEditor::EditSetDrawMovements(bool param_1, bool param_2)
 {
 }
 
-// STUB: POPCAPGAME1 0x00403290
+// FUNCTION: POPCAPGAME1 0x00403290
 void LevelEditor::EditClearUndoPoint()
 {
+	if (GetKeyState(VK_SCROLL)) {
+		__asm nop
+	}
+
+	((DataWriter*)((char*)this + 0x1e4))->Close();
 }
 
 // STUB: POPCAPGAME1 0x0040b1b0
