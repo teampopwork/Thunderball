@@ -221,7 +221,7 @@ public:
 	void SyncOdeVolume();
 	bool TryExpire(bool);
 	bool TryPlayUpsell();
-	int TryShowNewTrophy();
+	bool TryShowNewTrophy();
 	void UpdateMusic();
 	void ViewReplays();
 

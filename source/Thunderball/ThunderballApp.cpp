@@ -22,6 +22,7 @@
 #include "ThunderCommon.h"
 #include "ThunderDialog.h"
 #include "TrophyScreen.h"
+#include "TrophyMgr.h"
 #include "UpsellScreen.h"
 #include "UserDialog.h"
 #include "WidgetMover.h"
@@ -1668,10 +1669,36 @@ bool ThunderballApp::TryPlayUpsell()
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x0042feb0
-int ThunderballApp::TryShowNewTrophy()
+// FUNCTION: POPCAPGAME1 0x0042feb0
+bool ThunderballApp::TryShowNewTrophy()
 {
-	return 0;
+	if (mCurProfile == NULL) {
+		return false;
+	}
+
+	int anOldTrophyLevel = mCurProfile->mUnk0x114;
+	int aTrophyLevel = 0;
+	if (mCurProfile->mUnk0x48 > 0) {
+		aTrophyLevel = 1;
+		if ((int) mCurProfile->mUnk0xfc.size() >= (int) mTrophyMgr->mTrophyInfos.size()) {
+			aTrophyLevel = 2;
+			if ((int) mCurProfile->mUnk0x118.size() >= (int) mStageMgr->mUnk0x1c.size()) {
+				aTrophyLevel = 3;
+			}
+		}
+	}
+
+	// STRING: POPCAPGAME1 0x005d8b58
+	if (ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp187,2139", 0)) {
+		// STRING: POPCAPGAME1 0x005d8b10
+		aTrophyLevel = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp188,2140", 2);
+	}
+
+	if (anOldTrophyLevel < aTrophyLevel) {
+		ShowStoryScreen(true, false);
+	}
+
+	return true;
 }
 
 // STUB: POPCAPGAME1 0x0040bdd0
