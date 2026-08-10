@@ -11,6 +11,15 @@ class ThunderballApp;
 class Graphics;
 class DDImage;
 class PlayerInfo;
+class TrophyInfo;
+
+struct TrophyScreenEntry {
+	Widget* mButton;         // +0x0
+	int mUnk0x4;             // +0x4
+	TrophyInfo* mTrophyInfo; // +0x8
+	int mUnk0xc;             // +0xc
+	int mUnk0x10;            // +0x10
+};
 
 class TrophyScreen : public Widget, public ButtonListener {
 public:
@@ -20,6 +29,8 @@ public:
 	int mPlayerInfoValue;       // +0xa0
 	int mHoverId;               // +0xa4
 	int mHoverTicks;            // +0xa8
+	char mPadding0xac[0x10];    // +0xac
+	TrophyScreenEntry mEntries[5]; // +0xbc
 
 	TrophyScreen(ThunderballApp* theApp);
 	virtual ~TrophyScreen();

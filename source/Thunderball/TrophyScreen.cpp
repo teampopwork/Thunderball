@@ -1,8 +1,13 @@
 #include "TrophyScreen.h"
 
 #include "PlayerInfo.h"
+#include "ThunderballApp.h"
+#include "TrophyMgr.h"
+#include "WidgetMover.h"
 
 #include <SexyAppFramework/ModVal.h>
+
+#include <string.h>
 
 using namespace Sexy;
 
@@ -39,10 +44,12 @@ void TrophyScreen::DrawOverlay(Graphics* g)
 	// TODO
 }
 
-// STUB: POPCAPGAME1 0x0049ee00
+// FUNCTION: POPCAPGAME1 0x0049ee00
 void TrophyScreen::ButtonPress(int theId, int theClickCount)
 {
-	// TODO
+	if (!mApp->mWidgetMover->IsMoving() && (unsigned int)theId <= 4) {
+		DoPlay();
+	}
 }
 
 // STUB: POPCAPGAME1 0x004ac8f0
@@ -94,10 +101,33 @@ bool TrophyScreen::CanSelectTrophy()
 	return true;
 }
 
-// STUB: POPCAPGAME1 0x0049ed10
+// FUNCTION: POPCAPGAME1 0x0049ed10
 void TrophyScreen::DoPlay()
 {
-	// TODO
+	TrophyInfo** aTrophyInfoPtr = &mEntries[0].mTrophyInfo;
+	int aRemaining = 5;
+	do {
+		Widget* aButton = *(Widget**)((char*)aTrophyInfoPtr - 8);
+		if (aButton->mIsOver) {
+			TrophyInfo* aTrophyInfo = *aTrophyInfoPtr;
+			if (aTrophyInfo != NULL) {
+				*(int*)((char*)mApp + 0x76c) = aTrophyInfo->mId;
+				std::vector<std::string>& aCommands =
+					*(std::vector<std::string>*)((char*)aTrophyInfo + 0x78);
+				// STRING: POPCAPGAME1 0x005d5fd4
+				if (aCommands.size() == 1 &&
+					_stricmp(aCommands.front().c_str(), "pick") == 0) {
+					mApp->ShowLevelScreen(false);
+				}
+				else {
+					mApp->ShowBoard(true, true);
+				}
+			}
+		}
+
+		aTrophyInfoPtr = (TrophyInfo**)((char*)aTrophyInfoPtr + 0x14);
+		aRemaining--;
+	} while (aRemaining != 0);
 }
 
 // STUB: POPCAPGAME1 0x00497bb0
