@@ -21,6 +21,7 @@
 #include "ThunderCheckbox.h"
 #include "ThunderCommon.h"
 #include "ThunderDialog.h"
+#include "TrophyMgr.h"
 #include "TrophyScreen.h"
 #include "UpsellScreen.h"
 #include "WidgetMover.h"
@@ -141,13 +142,13 @@ void ThunderballApp::Init()
 	SetCursorImage(2, IMAGE_CURSOR_DRAGGING);
 	SetCursorImage(3, IMAGE_CURSOR_TEXT);
 
-	// mCharacterMgr->Load();
-	// mHighScoreMgr->Load();
+	mCharacterMgr->Load();
+	mHighScoreMgr->Load();
 	mProfileMgr->Load();
-	// mStageMgr->Load();
-	// mStatsMgr->Load();
-	// mEditStatsMgr->Load();
-	// mTrophyMgr->Load();
+	mStageMgr->Load("");
+	mStatsMgr->Load("");
+	mEditStatsMgr->Load("LevelEditor/stats_cheat.dat");
+	mTrophyMgr->Load("");
 
 	std::string aCurUserName;
 	bool registryReadSuccess = false;
@@ -165,9 +166,9 @@ void ThunderballApp::Init()
 	}
 
 	if (!IsScreenSaver() || mCurProfile != NULL) {
-		/*if (mStatsMgr->mWelcomeLabel.empty() && mCurProfile != NULL) {
+		if (mStatsMgr->mWelcomeLabel.empty() && mCurProfile != NULL) {
 			mStatsMgr->mWelcomeLabel = mCurProfile->mName;
-		}*/
+		}
 
 		mWinCloseButton = MakeWinButton(IMAGE_WIN_CLOSE, 1);
 		mWinMinimizeButton = MakeWinButton(IMAGE_WIN_MINIMIZE, 2);
@@ -1030,12 +1031,12 @@ void ThunderballApp::ShowMainMenu()
 	}
 
 	mUnk0x750 = 3;
-	CheckScrollOff(this->mLoadingScreen, 1, 1);
-	CheckScrollOff(this->mLevelScreen, 2, 1);
-	CheckScrollOff(this->mTrophyScreen, 2, 1);
-	CheckScrollOff(this->mStoryScreen, 2, 1);
-	CheckScrollOff(this->mAdventureScreen, 2, 1);
-	CheckScrollOff(this->mBoard, 2, 1);
+	CheckScrollOff(mLoadingScreen, 1, 1);
+	CheckScrollOff(mLevelScreen, 2, 1);
+	CheckScrollOff(mTrophyScreen, 2, 1);
+	CheckScrollOff(mStoryScreen, 2, 1);
+	CheckScrollOff(mAdventureScreen, 2, 1);
+	CheckScrollOff(mBoard, 2, 1);
 
 	ThunderDialog* aDialog = static_cast<ThunderDialog*>(GetDialog(0x13));
 	if (aDialog != NULL) {

@@ -140,8 +140,8 @@ void ThunderDialog::DoScrollOff(bool param_1)
 // FUNCTION: POPCAPGAME1 0x00497700
 void ThunderDialog::FinishScroll()
 {
-	if (this->mUnk0x150 != 0xfffe7960) {
-    	mY = this->mUnk0x150;
+	if (mUnk0x150 != 0xfffe7960) {
+    	mY = mUnk0x150;
   	}
 }
 
@@ -219,7 +219,7 @@ void ThunderDialog::KeyDown(KeyCode theKey)
 // FUNCTION: POPCAPGAME1 0x00497910
 void ThunderDialog::MouseDown(int x, int y, int theClickCount)
 {
-	if (this->mUnk0x150 == 0xfffe7960) {
+	if (mUnk0x150 == 0xfffe7960) {
     	Widget::MouseDown(x, y, theClickCount);
 	}
 }

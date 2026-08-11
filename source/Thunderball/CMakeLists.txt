@@ -60,6 +60,8 @@ add_executable(popcapgame1 WIN32
     WidgetMover.cpp
     TypingCheck.cpp
     BlendedImage.cpp
+    TextReader.cpp
+    StringParser.cpp
 )
 
 target_include_directories(popcapgame1 PRIVATE
