@@ -41,12 +41,12 @@ void CharacterDialog::RemovedFromManager(WidgetManager* param_1)
 void CharacterDialog::SyncDifficultyVisibility()
 {
 	if (mUnk0x219) {
-		Checkbox* aCheckbox = *(Checkbox**)((char*)this + 0x19c);
+		Checkbox* aCheckbox = mPlayCheckboxes[1];
 		bool aVisible = aCheckbox->mChecked;
-		(*(Widget**)((char*)this + 0x1a0))->mVisible = aVisible;
-		(*(Widget**)((char*)this + 0x1a4))->mVisible = aVisible;
-		(*(Widget**)((char*)this + 0x1a8))->mVisible = aVisible;
-		(*(Widget**)((char*)this + 0x1ac))->mVisible = aVisible;
+		mDifficultyCheckboxes[0]->mVisible = aVisible;
+		mDifficultyCheckboxes[1]->mVisible = aVisible;
+		mDifficultyCheckboxes[2]->mVisible = aVisible;
+		mDifficultyCheckboxes[3]->mVisible = aVisible;
 	}
 }
 
@@ -55,7 +55,7 @@ int CharacterDialog::CanSelectCharacter(int param_1)
 {
 	if (param_1 != 10) {
 		if (param_1 < 0 ||
-			param_1 > (*(ThunderballApp**)((char*)this + 0x180))->GetMaxUnlockedCharacter() ||
+			param_1 > mApp->GetMaxUnlockedCharacter() ||
 			param_1 > 10) {
 			return 0;
 		}
@@ -78,9 +78,9 @@ void CharacterDialog::SyncNamePos()
 			aCenter = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\CharacterDialog.cpp30,351", 0x1a9);
 		}
 
-		std::string& aName = *(std::string*)((char*)this + 0x1c0 + i * 0x1c);
+		std::string& aName = mNames[i];
 		int aWidth = aFont->StringWidth(aName);
-		*(int*)((char*)this + 0x1f8 + i * 4) = aCenter - aWidth / 2;
+		mNameX[i] = aCenter - aWidth / 2;
 
 		// STRING: POPCAPGAME1 0x005f9490
 		int aRight = aCenter + aWidth / 2 + ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\CharacterDialog.cpp31,355", 0);
@@ -88,7 +88,7 @@ void CharacterDialog::SyncNamePos()
 		int aLimit = mWidth - ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\CharacterDialog.cpp32,356", 0x32);
 		if (aRight > aLimit)
 			aRight = aLimit;
-		ButtonWidget* aButton = *(ButtonWidget**)((char*)this + 0x190 + i * 4);
+		ButtonWidget* aButton = mNameButtons[i];
 		*(int*)((char*)aButton + 0x30) = aRight;
 	}
 }
@@ -120,7 +120,7 @@ int CharacterDialog::GetPreferredHeight(int param_1)
 void CharacterDialog::CheckboxChecked(int param_1, bool param_2)
 {
 	if ((unsigned int)param_1 <= 1) {
-		(*(Checkbox**)((char*)this + 0x19c - param_1 * 4))->mChecked = false;
+		mPlayCheckboxes[1 - param_1]->mChecked = false;
 		SyncDifficultyVisibility();
 		return;
 	}
@@ -128,7 +128,7 @@ void CharacterDialog::CheckboxChecked(int param_1, bool param_2)
 	if ((unsigned int)(param_1 - 2) <= 3) {
 		for (int i = 2; i < 6; i++) {
 			if (param_1 != i)
-				(*(Checkbox**)((char*)this + 0x1a0 + (i - 2) * 4))->mChecked = false;
+				mDifficultyCheckboxes[i - 2]->mChecked = false;
 		}
 	}
 }

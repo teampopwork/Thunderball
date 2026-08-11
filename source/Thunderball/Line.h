@@ -9,11 +9,11 @@
 namespace Sexy
 {
 
-extern bool gCheckLineCollision;
-
 // VTABLE: POPCAPGAME1 0x005f1a44
 class Line : public PhysObj {
 public:
+	static bool mAllowKissCollision;
+
 	float mUnk0xe4; // +0xe4
 	float mUnk0xe8; // +0xe8
 	float mUnk0xec; // +0xec

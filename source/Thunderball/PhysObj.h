@@ -22,6 +22,7 @@ public:
 	static int mSyncType;
 	static bool mFastLoad;
 	static int mOutlineMode;
+	static float mGravity;
     static void (*mNotifyCollisionFunc)(PhysObj* param_1, PhysObj* param_2);
 
 	int mUnk0x10; // +0x10

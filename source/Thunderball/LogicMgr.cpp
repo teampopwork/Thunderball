@@ -564,7 +564,7 @@ int LogicMgr::GetSlotMachinePowerup()
 	return aPowerups[aSelector % aPowerups.size()];
 }
 
-// TODO: address unknown
+// STUB: POPCAPGAME1 0x0046ecb0
 void LogicMgr::DoSlotMachine(Ball* param_1, PhysObj* param_2)
 {
 	// TODO

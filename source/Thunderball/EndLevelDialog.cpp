@@ -59,7 +59,7 @@ void EndLevelDialog::DrawAdventureWin(Graphics* param_1)
 // FUNCTION: POPCAPGAME1 0x004931a0
 void EndLevelDialog::MouseMove(int, int theY)
 {
-	if (*(int*)((char*)this + 0x1f8) != 0 && theY >= mUnk0x198 - 15 && theY < mUnk0x198 + 15) {
+	if (mHighScoreEntry != NULL && theY >= mUnk0x198 - 15 && theY < mUnk0x198 + 15) {
 		gSexyApp->SetCursor(CURSOR_HAND);
 		return;
 	}
@@ -70,10 +70,10 @@ void EndLevelDialog::MouseMove(int, int theY)
 // FUNCTION: POPCAPGAME1 0x00499760
 void EndLevelDialog::MouseDown(int theX, int theY, int theClickCount)
 {
-	if (*(HighScoreEntry**)((char*)this + 0x1f8) != NULL &&
+	if (mHighScoreEntry != NULL &&
 		theY >= mUnk0x198 - 15 && theY < mUnk0x198 + 15 && theClickCount == 1) {
 		gSexyApp->PlaySample(SOUND_BUTTON1);
-		mBoard->ChangeHighScore(*(HighScoreEntry**)((char*)this + 0x1f8));
+		mBoard->ChangeHighScore(mHighScoreEntry);
 		return;
 	}
 

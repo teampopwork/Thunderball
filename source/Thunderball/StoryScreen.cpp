@@ -23,8 +23,7 @@ using namespace Sexy;
 
 namespace Sexy
 {
-class StoryParticle {
-public:
+struct Particle {
 	float mX;
 	float mY;
 	float mVX;
@@ -34,13 +33,13 @@ public:
 	int mType;
 	int mUnk0x1c;
 
-	__declspec(noinline) StoryParticle();
+	__declspec(noinline) Particle();
 	__declspec(noinline) void Update();
 };
 }
 
 // FUNCTION: POPCAPGAME1 0x00489ce0
-StoryParticle::StoryParticle()
+Particle::Particle()
 {
 	mX = 0.0f;
 	mY = 0.0f;
@@ -53,33 +52,13 @@ StoryParticle::StoryParticle()
 }
 
 // FUNCTION: POPCAPGAME1 0x00489d00
-void StoryParticle::Update()
+void Particle::Update()
 {
 	++mAge;
 	mX += mVX;
 	mY += mVY;
+	// STRING: POPCAPGAME1 0x005f38b8
 	mVY += ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp0,44", 0.01f);
-}
-
-// FUNCTION: POPCAPGAME1 0x004e90e0
-__declspec(noinline) void StoryParticleList::PushBack(StoryParticle* const& theParticle)
-{
-	if (mBegin != NULL && mEnd < mCapacity) {
-		*mEnd++ = theParticle;
-		return;
-	}
-
-	int anOldSize = mBegin == NULL ? 0 : (int) (mEnd - mBegin);
-	int anOldCapacity = mBegin == NULL ? 0 : (int) (mCapacity - mBegin);
-	int aNewCapacity = anOldCapacity == 0 ? 1 : anOldCapacity * 2;
-	StoryParticle** aNewBuffer = (StoryParticle**) operator new(aNewCapacity * sizeof(StoryParticle*));
-	for (int i = 0; i < anOldSize; ++i)
-		aNewBuffer[i] = mBegin[i];
-	operator delete(mBegin);
-	mBegin = aNewBuffer;
-	mEnd = aNewBuffer + anOldSize;
-	mCapacity = aNewBuffer + aNewCapacity;
-	*mEnd++ = theParticle;
 }
 
 // FUNCTION: POPCAPGAME1 0x0048d150
@@ -696,7 +675,7 @@ void StoryScreen::PlayOdeNote(int noteId)
 void StoryScreen::DrawFireworks(Graphics* g)
 {
 	g->SetColorizeImages(true);
-	for (unsigned int i = 0; i < mParticles.Size(); ++i) {
+	for (unsigned int i = 0; i < mParticles.size(); ++i) {
 		if (mParticles[i]->mType == 1) {
 			int aCel = (int) (((double) mParticles[i]->mAge / mParticles[i]->mDuration) * 30.0);
 			g->SetColor(Color(
@@ -791,7 +770,7 @@ void StoryScreen::DrawStars(Graphics* g)
 	g->SetColorizeImages(true);
 	g->SetColor(Color(0xffffff));
 
-	for (unsigned int i = 0; i < mStars.Size(); ++i) {
+	for (unsigned int i = 0; i < mStars.size(); ++i) {
 		if (mStars[i]->mType == 0) {
 			Rect aDestRect(
 				(int) (mStars[i]->mX - ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp183,975", 4)),
@@ -1061,7 +1040,7 @@ void StoryScreen::DoUpdate()
 void StoryScreen::UpdateParticles()
 {
 	for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp53,426", 3); ++i) {
-		StoryParticle* aParticle = new StoryParticle();
+		Particle* aParticle = new Particle();
 		aParticle->mX = mParticleX + rand() % 3;
 		aParticle->mY = mParticleY + rand() % 3 - 1.0f;
 		aParticle->mDuration = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp54,433", 30);
@@ -1071,15 +1050,15 @@ void StoryScreen::UpdateParticles()
 		float aSpeed = (float) ((rand() % 10) * (double) ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp55,437", 0.03f));
 		aParticle->mVX = (float) sin(anAngle) * aSpeed;
 		aParticle->mVY = (float) cos(anAngle) * aSpeed;
-		mParticles.PushBackInline(aParticle);
+		mParticles.push_back(aParticle);
 	}
 
-	for (int i = 0; i < mParticles.mEnd - mParticles.mBegin; ++i) {
-		StoryParticle* aParticle = mParticles.mBegin[i];
+	for (int i = 0; i < (int) mParticles.size(); ++i) {
+		Particle* aParticle = mParticles[i];
 		if (aParticle->mAge >= aParticle->mDuration) {
 			delete aParticle;
-			mParticles.mBegin[i] = mParticles.mEnd[-1];
-			--mParticles.mEnd;
+			mParticles[i] = mParticles.back();
+			mParticles.pop_back();
 			--i;
 		}
 		else {
@@ -1093,7 +1072,7 @@ void StoryScreen::UpdateStars()
 {
 	if (mUnk0xb4 < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp56,468", 400)) {
 		for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp57,470", 6); ++i) {
-			StoryParticle* aStar = new StoryParticle();
+			Particle* aStar = new Particle();
 			aStar->mX = (float) (ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp58,474", 400) - 5 + rand() % 10);
 			aStar->mY = (float) (ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp59,475", 300) - 5 + rand() % 10);
 
@@ -1115,16 +1094,16 @@ void StoryScreen::UpdateStars()
 				aStar->mDuration *= 2;
 			}
 
-			mStars.PushBack(aStar);
+			mStars.push_back(aStar);
 		}
 	}
 
-	for (int i = 0; i < mStars.mEnd - mStars.mBegin; ++i) {
-		StoryParticle* aStar = mStars.mBegin[i];
+	for (int i = 0; i < (int) mStars.size(); ++i) {
+		Particle* aStar = mStars[i];
 		if (aStar->mAge >= aStar->mDuration) {
 			delete aStar;
-			mStars.mBegin[i] = mStars.mEnd[-1];
-			--mStars.mEnd;
+			mStars[i] = mStars.back();
+			mStars.pop_back();
 			--i;
 			continue;
 		}
@@ -1178,7 +1157,7 @@ void StoryScreen::UpdateWin()
 				aColor = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp16,234", 0x3355ff);
 
 			for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp17,240", 60); ++i) {
-				StoryParticle* aParticle = new StoryParticle();
+				Particle* aParticle = new Particle();
 				aParticle->mX = mParticleX + rand() % 10 - 5.0f;
 				aParticle->mY = mParticleY + rand() % 10 - 5.0f;
 				float anAngle = (float) ((rand() % 100) * 6.283 / 100.0);
@@ -1189,11 +1168,11 @@ void StoryScreen::UpdateWin()
 				aParticle->mType = 0;
 				aParticle->mUnk0x1c = aColor;
 				aParticle->mDuration = rand() % 30 + 70;
-				mParticles.PushBack(aParticle);
+				mParticles.push_back(aParticle);
 			}
 
 			for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp19,259", 120); ++i) {
-				StoryParticle* aParticle = new StoryParticle();
+				Particle* aParticle = new Particle();
 				aParticle->mX = mParticleX + rand() % 10 - 5.0f;
 				aParticle->mY = mParticleY + rand() % 10 - 5.0f;
 				float anAngle = (float) ((rand() % 100) * 6.283 / 100.0);
@@ -1204,11 +1183,11 @@ void StoryScreen::UpdateWin()
 				aParticle->mType = 2;
 				aParticle->mUnk0x1c = aColor;
 				aParticle->mDuration = rand() % 30 + 70;
-				mParticles.PushBack(aParticle);
+				mParticles.push_back(aParticle);
 			}
 
 			for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp21,278", 60); ++i) {
-				StoryParticle* aParticle = new StoryParticle();
+				Particle* aParticle = new Particle();
 				aParticle->mX = mParticleX + rand() % 8 - 4.0f;
 				aParticle->mY = mParticleY + rand() % 8 - 4.0f;
 				float anAngle = (float) ((rand() % 100) * 6.283 / 100.0);
@@ -1220,12 +1199,12 @@ void StoryScreen::UpdateWin()
 				aParticle->mType = 3;
 				aParticle->mUnk0x1c = aColor;
 				aParticle->mDuration = rand() % 30 + 70;
-				mParticles.PushBackInline(aParticle);
+				mParticles.push_back(aParticle);
 			}
 
 			if (rand() % 2 == 0) {
 				for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp24,303", 30); ++i) {
-					StoryParticle* aParticle = new StoryParticle();
+					Particle* aParticle = new Particle();
 					aParticle->mX = mParticleX + rand() % 8 - 4.0f;
 					aParticle->mY = mParticleY + rand() % 8 - 4.0f;
 					float anAngle = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp25,310", 2.2f) +
@@ -1240,11 +1219,11 @@ void StoryScreen::UpdateWin()
 					aParticle->mType = 4;
 					aParticle->mUnk0x1c = aColor;
 					aParticle->mDuration = rand() % 30 + 70;
-					mParticles.PushBackInline(aParticle);
+					mParticles.push_back(aParticle);
 				}
 
 				for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp30,323", 60); ++i) {
-					StoryParticle* aParticle = new StoryParticle();
+					Particle* aParticle = new Particle();
 					aParticle->mX = mParticleX + rand() % 8 - 4.0f;
 					aParticle->mY = mParticleY + rand() % 8 - 4.0f;
 					float anAngle = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp31,330", -2.2f) -
@@ -1259,11 +1238,11 @@ void StoryScreen::UpdateWin()
 					aParticle->mType = 4;
 					aParticle->mUnk0x1c = aColor;
 					aParticle->mDuration = rand() % 30 + 70;
-					mParticles.PushBackInline(aParticle);
+					mParticles.push_back(aParticle);
 				}
 
 				for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp36,346", 90); ++i) {
-					StoryParticle* aParticle = new StoryParticle();
+					Particle* aParticle = new Particle();
 					aParticle->mX = mParticleX + rand() % 10 - 5.0f;
 					aParticle->mY = mParticleY + rand() % 10 - 5.0f;
 					float anAngle = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp37,353", -1.0f) +
@@ -1277,11 +1256,11 @@ void StoryScreen::UpdateWin()
 					aParticle->mType = 4;
 					aParticle->mUnk0x1c = aColor;
 					aParticle->mDuration = rand() % 30 + 70;
-					mParticles.PushBackInline(aParticle);
+					mParticles.push_back(aParticle);
 				}
 			} else {
 				for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp41,371", 190); ++i) {
-					StoryParticle* aParticle = new StoryParticle();
+					Particle* aParticle = new Particle();
 					aParticle->mX = mParticleX + rand() % 6 - 3.0f;
 					aParticle->mY = mParticleY + rand() % 6 - 3.0f;
 					float anAngle = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp42,378", 0.0f) +
@@ -1299,7 +1278,7 @@ void StoryScreen::UpdateWin()
 					aParticle->mType = 4;
 					aParticle->mUnk0x1c = aColor;
 					aParticle->mDuration = rand() % 30 + 70;
-					mParticles.PushBackInline(aParticle);
+					mParticles.push_back(aParticle);
 				}
 			}
 

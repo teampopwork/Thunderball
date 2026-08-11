@@ -14,58 +14,7 @@ class ThunderButton;
 class HyperlinkWidget;
 class StoryData;
 class StageInfo;
-class StoryParticle;
-
-extern "C" void __cdecl _invalid_parameter_noinfo();
-
-class StoryParticleList {
-public:
-	int mProxy;
-	StoryParticle** mBegin;
-	StoryParticle** mEnd;
-	StoryParticle** mCapacity;
-
-	StoryParticleList() : mBegin(NULL), mEnd(NULL), mCapacity(NULL) {}
-	~StoryParticleList()
-	{
-		if (mBegin != NULL)
-			operator delete(mBegin);
-		mBegin = NULL;
-		mEnd = NULL;
-		mCapacity = NULL;
-	}
-
-	void PushBack(StoryParticle* const& theParticle);
-
-	unsigned int Size() const
-	{
-		return mBegin == NULL ? 0 : (unsigned int) (mEnd - mBegin);
-	}
-
-	StoryParticle*& operator[](unsigned int theIndex)
-	{
-		if (mBegin == NULL || theIndex >= (unsigned int) (mEnd - mBegin))
-			_invalid_parameter_noinfo();
-		return mBegin[theIndex];
-	}
-
-	void PushBackInline(StoryParticle* theParticle)
-	{
-		if (mEnd == mCapacity) {
-			int anOldSize = mBegin == NULL ? 0 : (int) (mEnd - mBegin);
-			int anOldCapacity = mBegin == NULL ? 0 : (int) (mCapacity - mBegin);
-			int aNewCapacity = anOldCapacity == 0 ? 1 : anOldCapacity * 2;
-			StoryParticle** aNewBuffer = (StoryParticle**) operator new(aNewCapacity * sizeof(StoryParticle*));
-			for (int i = 0; i < anOldSize; ++i)
-				aNewBuffer[i] = mBegin[i];
-			operator delete(mBegin);
-			mBegin = aNewBuffer;
-			mEnd = aNewBuffer + anOldSize;
-			mCapacity = aNewBuffer + aNewCapacity;
-		}
-		*mEnd++ = theParticle;
-	}
-};
+struct Particle;
 
 class StoryScreen : public Widget, public ButtonListener {
 public:
@@ -87,8 +36,8 @@ public:
 	float mParticleVX; // +0xc4
 	float mParticleVY; // +0xc8
 	int mUnk0xcc; // +0xcc
-	StoryParticleList mParticles; // +0xd0
-	StoryParticleList mStars; // +0xe0
+	std::vector<Particle*> mParticles; // +0xd0
+	std::vector<Particle*> mStars; // +0xe0
 	bool mUnk0xf0; // +0xf0
 	bool mUnk0xf1; // +0xf1
 	bool mUnk0xf2; // +0xf2

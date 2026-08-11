@@ -15,8 +15,6 @@ namespace Sexy
 
 class SoundInstance;
 
-extern float gBallGravity;
-
 // VTABLE: POPCAPGAME1 0x005f19b4
 class Ball : public PhysObj {
 public:

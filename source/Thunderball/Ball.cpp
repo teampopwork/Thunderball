@@ -19,9 +19,6 @@ using namespace Sexy;
 // GLOBAL: POPCAPGAME1 0x00649d78
 float Sexy::Ball::mDefRadius = 6.0f;
 
-// GLOBAL: POPCAPGAME1 0x00649d80
-float Sexy::gBallGravity = 0.05f;
-
 // FUNCTION: POPCAPGAME1 0x00480de0
 Ball::Ball(bool param_1)
 {
@@ -349,7 +346,7 @@ void Ball::Update()
 		}
 	}
 
-	mUnk0x100 += gBallGravity;
+	mUnk0x100 += PhysObj::mGravity;
 	if (mUnk0x18d)
 	{
 		float aMaxHatY = mUnk0xf0 + 2.0;
@@ -1018,7 +1015,7 @@ bool Ball::DoCollideUpdate(std::vector<PhysObj*>* param_1, SexyVector2* param_2)
 	float aHitTime = 1.0f;
 	mUnk0x141 = true;
 	bool didCollide = false;
-	gCheckLineCollision = true;
+	Line::mAllowKissCollision = true;
 	int anIteration = 0;
 
 	while (true)

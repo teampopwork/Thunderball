@@ -12,17 +12,17 @@ class Ball;
 class PhysObj;
 class SexyVector2;
 
-struct CollisionPoint {
-	PhysObj* mObject;
-	float mValue1;
-	float mValue2;
-};
-
 class CollisionMgr {
 public:
+	struct EndPoint {
+		PhysObj* mObject;
+		float mValue1;
+		float mValue2;
+	};
+
 	bool mUnk0x0;
-	std::vector<CollisionPoint> mObjects1;
-	std::vector<CollisionPoint> mObjects2;
+	std::vector<EndPoint> mObjects1;
+	std::vector<EndPoint> mObjects2;
 	std::set<std::pair<PhysObj*, PhysObj*> > mCollisions;
 	int mUnk0x30;
 	int mUnk0x34;
@@ -38,11 +38,11 @@ public:
 	CollisionMgr();
 	~CollisionMgr();
 
-	void RemoveObj(PhysObj* param_1, std::vector<CollisionPoint>* param_2);
+	void RemoveObj(PhysObj* param_1, std::vector<EndPoint>* param_2);
 	void RemoveObj(PhysObj* param_1);
-	void SortEndPoints(std::vector<CollisionPoint>* param_1);
+	void SortEndPoints(std::vector<EndPoint>* param_1);
 	void Clear();
-	void AddObj(PhysObj* param_1, float* param_2, float* param_3, std::vector<CollisionPoint>* param_4);
+	void AddObj(PhysObj* param_1, float* param_2, float* param_3, std::vector<EndPoint>* param_4);
 	void AddObj(PhysObj* param_1);
 	void NotifyCollision(PhysObj* param_1, PhysObj* param_2);
 	void Update(bool param_1);

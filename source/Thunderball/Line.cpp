@@ -9,7 +9,7 @@
 using namespace Sexy;
 
 // GLOBAL: POPCAPGAME1 0x00650a54
-bool Sexy::gCheckLineCollision = false;
+bool Line::mAllowKissCollision = false;
 
 // FUNCTION: POPCAPGAME1 0x00475e10
 static int GetRectOutCode(Rect* param_1, float param_2, float param_3)
@@ -417,7 +417,7 @@ bool Line::CheckEdgeTimeCollision(
 
 	if (aSpeed == 0.0f)
 	{
-		if (!gCheckLineCollision || aNormal.y != 0.0f)
+		if (!mAllowKissCollision || aNormal.y != 0.0f)
 			return false;
 
 		SexyVector2 anEdgePoint = *param_1 - aNormal * param_3;
@@ -435,7 +435,7 @@ bool Line::CheckEdgeTimeCollision(
 		*hitNormal = aNormal;
 		hitVelocity->x = 0.0f;
 		hitVelocity->y = 0.0f;
-		gCheckLineCollision = false;
+		mAllowKissCollision = false;
 		return true;
 	}
 

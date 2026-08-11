@@ -15,7 +15,7 @@ CollisionMgr::~CollisionMgr()
 }
 
 // FUNCTION: POPCAPGAME1 0x00443660
-void CollisionMgr::RemoveObj(PhysObj* param_1, std::vector<CollisionPoint>* param_2)
+void CollisionMgr::RemoveObj(PhysObj* param_1, std::vector<EndPoint>* param_2)
 {
 	int anIndex = 0;
 	while (anIndex < (int)param_2->size())
@@ -43,7 +43,7 @@ void CollisionMgr::RemoveObj(PhysObj* param_1)
 }
 
 // STUB: POPCAPGAME1 0x0044b1e0
-void CollisionMgr::SortEndPoints(std::vector<CollisionPoint>* param_1)
+void CollisionMgr::SortEndPoints(std::vector<EndPoint>* param_1)
 {
 }
 
@@ -56,7 +56,7 @@ void CollisionMgr::Clear()
 }
 
 // STUB: POPCAPGAME1 0x0044d920
-void CollisionMgr::AddObj(PhysObj* param_1, float* param_2, float* param_3, std::vector<CollisionPoint>* param_4)
+void CollisionMgr::AddObj(PhysObj* param_1, float* param_2, float* param_3, std::vector<EndPoint>* param_4)
 {
 }
 

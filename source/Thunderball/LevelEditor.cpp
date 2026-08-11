@@ -1,5 +1,6 @@
 #include "LevelEditor.h"
 
+#include "Board.h"
 #include "DataSync.h"
 #include "PhysObj.h"
 
@@ -387,7 +388,7 @@ void LevelEditor::EditClearUndoPoint()
 		__asm nop
 	}
 
-	((DataWriter*)((char*)this + 0x1e4))->Close();
+	mUndoWriter.Close();
 }
 
 // STUB: POPCAPGAME1 0x0040b1b0
@@ -398,9 +399,7 @@ void LevelEditor::EditMoveSel(int param_1, int param_2)
 // FUNCTION: POPCAPGAME1 0x0040a410
 void LevelEditor::EditResetMoveTimes()
 {
-	Board* aBoard = *(Board**)((char*)this + 0x88);
-	std::list<SmartPtr<PhysObj>>& anObjectList =
-		*(std::list<SmartPtr<PhysObj>>*)((char*)aBoard + 0x190);
+	std::list<SmartPtr<PhysObj> >& anObjectList = mBoard->mUnk0x190;
 	std::list<SmartPtr<PhysObj>>::iterator anItr = anObjectList.begin();
 	while (anItr._Mynode() != anObjectList.end()._Mynode()) {
 		anItr->get()->SetMoveUpdateCnt(0);
