@@ -1,5 +1,6 @@
 #include "Mover.h"
 
+#include "DataSync.h"
 #include "PhysObj.h"
 #include "ThunderCommon.h"
 
@@ -18,10 +19,9 @@ Mover::Mover()
 // SYNTHETIC: POPCAPGAME1 0x0047a950
 // Sexy::Mover::`scalar deleting destructor'
 
-// STUB: POPCAPGAME1 0x00478df0
+// FUNCTION: POPCAPGAME1 0x00478df0
 Mover::~Mover()
 {
-	mPhysObj->Release();
 }
 
 // FUNCTION: POPCAPGAME1 0x00476420
@@ -40,29 +40,34 @@ void Mover::SetPos(float param_1, float param_2)
 }
 
 // FUNCTION: POPCAPGAME1 0x00476460
-float Mover::GetTimeTillPhase(int param_1, float param_2)
+int Mover::GetTimeTillPhase(int param_1, float param_2)
 {
-	if (mPause1 < 1) {
-		if (0 < mTime) {
-			return MyMod((int) ((float) mTime * param_2) - (param_1 + mOffset), mTime);
-		}
+	if (mPause1 > 0) {
+		int aTotalTime = mTime + mPause2 + mPause1;
+		if (mTime < 1 || aTotalTime < 1)
+			return 0;
+
+		int aTargetTime = (int) (mTime * param_2);
+		if ((float) mPhase1 < param_2)
+			aTargetTime += mPause1;
+		if ((float) mPhase2 < param_2)
+			aTargetTime += mPause2;
+		return MyMod(aTargetTime - (param_1 + mOffset), aTotalTime);
 	}
-	else {
-		if ((0 < mPause1) && (mTime + mPause2 + mPause1 < 1)) {
-			return MyMod((int) (mPause1 - (param_1 + mOffset)), mTime);
-		}
-	}
+
+	if (mTime < 1)
+		return 0;
+	return MyMod((int) (mTime * param_2) - (param_1 + mOffset), mTime);
 }
 
 // FUNCTION: POPCAPGAME1 0x004764f0
-int Mover::GetMovePos(int param_1)
+float Mover::GetMovePos(int param_1)
 {
 	int local_8;
-	int local_c;
 
 	if (0 < mPause1) {
 		local_8 = mTime + mPause2 + mPause1;
-		param_1 += mType;
+		param_1 += mOffset;
 		if (0 < local_8) {
 			int aVal1 = (mTime * mPhase1) / 100;
 			int aVal2 = ((mPhase2 - mPhase1) * mTime) / 100 + mPause1 + aVal1;
@@ -96,19 +101,120 @@ int Mover::GetMovePos(int param_1)
 		param_1 += (int) (mPhase * local_8);
 	}
 	else {
-		local_c = mTime;
-		param_1 += mType;
+		param_1 += mOffset;
 		local_8 = mTime;
-		param_1 += (int) (mPhase * local_c);
+		param_1 += (int) (mPhase * local_8);
 	}
 
-	param_1 %= local_8;
-	return param_1;
+	return (float) (param_1 % local_8) / local_8;
 }
 
-// STUB: POPCAPGAME1 0x00478ea0
+// FUNCTION: POPCAPGAME1 0x00478ea0
 void Mover::CalcPos(int param_1, float param_2)
 {
+	if (mPhysObj != NULL) {
+		Translate(mPhysObj->mUnk0x54 - mUnk0x4c, mPhysObj->mUnk0x58 - mUnk0x50);
+		mUnk0x4c = mPhysObj->mUnk0x54;
+		mUnk0x50 = mPhysObj->mUnk0x58;
+	}
+
+	if (mType == 0 || mTime < 1) {
+		mUnk0x54 = mUnk0x5c;
+		mUnk0x58 = mUnk0x60;
+		mUnk0x64 = mRotation;
+		return;
+	}
+
+	int aMoveType = mType < 0 ? -mType : mType;
+	int aDirection = mType < 0 ? -1 : 1;
+	float aPhase = GetMovePos(param_1) + param_2 / mTime;
+	float anAngle = (float) (aPhase * (SEXY_PI * 2.0) * aDirection);
+	float aRadiusX = (float) mRadius;
+	float aRadiusY = mRadius2 == 0 ? aRadiusX : (float) mRadius2;
+
+	switch (aMoveType) {
+	case 1:
+		mUnk0x54 = mUnk0x5c;
+		mUnk0x58 = mUnk0x60 - (float) sin(anAngle) * aRadiusY;
+		mUnk0x64 = mRotation;
+		break;
+	case 2:
+		mUnk0x54 = mUnk0x5c + (float) cos(anAngle) * aRadiusX;
+		mUnk0x58 = mUnk0x60;
+		mUnk0x64 = mRotation;
+		break;
+	case 3:
+		mUnk0x54 = mUnk0x5c + (float) cos(anAngle) * aRadiusX;
+		mUnk0x58 = mUnk0x60 - (float) sin(anAngle) * aRadiusY;
+		mUnk0x64 = mRotation;
+		break;
+	case 4:
+		mUnk0x54 = mUnk0x5c + (float) cos(anAngle) * aRadiusX;
+		mUnk0x58 = mUnk0x60 - (float) sin(anAngle * 2.0f) * aRadiusY * 0.5f;
+		mUnk0x64 = mRotation;
+		break;
+	case 5:
+		mUnk0x54 = mUnk0x5c + (float) sin(anAngle * 2.0f) * aRadiusX;
+		mUnk0x58 = mUnk0x60 - (float) sin(anAngle) * aRadiusY;
+		mUnk0x64 = mRotation;
+		break;
+	case 6:
+	case 7: {
+		float aMaxAngle = mMaxAngle == 0.0f ? SEXY_PI : mMaxAngle;
+		float aSwingAngle = (float) ((sin(aPhase * (SEXY_PI * 2.0) - SEXY_PI / 2.0) + 1.0) * aMaxAngle * 0.5);
+		mUnk0x54 = mUnk0x5c + (float) cos(aSwingAngle) * aRadiusX;
+		if (aMoveType == 6)
+			mUnk0x58 = mUnk0x60 - (float) sin(aSwingAngle) * aRadiusY;
+		else
+			mUnk0x58 = mUnk0x60 - (float) cos(aSwingAngle) * aRadiusY;
+		mUnk0x64 = mRotation;
+		break;
+	}
+	case 8:
+		mUnk0x54 = mUnk0x5c;
+		mUnk0x58 = mUnk0x60;
+		mUnk0x64 = mRotation + (mMaxAngle == 0.0f ? anAngle : mMaxAngle * aDirection);
+		break;
+	case 9: {
+		float aMaxAngle = mMaxAngle == 0.0f ? SEXY_PI : mMaxAngle;
+		mUnk0x54 = mUnk0x5c;
+		mUnk0x58 = mUnk0x60;
+		mUnk0x64 = mRotation + ((float) sin(aPhase * (SEXY_PI * 2.0)) * aMaxAngle + mMoveRotation) * aDirection;
+		break;
+	}
+	case 11: {
+		float aFraction = aPhase - (int) aPhase;
+		mUnk0x54 = mUnk0x5c;
+		mUnk0x58 = mUnk0x60 - aFraction * aRadiusY * aDirection;
+		mUnk0x64 = mRotation;
+		break;
+	}
+	case 12: {
+		float aFraction = aPhase - (int) aPhase;
+		mUnk0x54 = mUnk0x5c + aFraction * aRadiusX * aDirection;
+		mUnk0x58 = mUnk0x60;
+		mUnk0x64 = mRotation;
+		break;
+	}
+	case 13:
+		mUnk0x54 = mUnk0x5c + (float) cos(anAngle) * aRadiusX;
+		mUnk0x58 = mUnk0x60 - (float) sin(anAngle) * aRadiusY;
+		if (mRadius == 0 || mRadius2 == 0) {
+			mUnk0x64 = mRotation + anAngle;
+		}
+		else {
+			float aTangentAngle = anAngle + SEXY_PI / 2.0f;
+			float aTangentX = (float) cos(aTangentAngle) * aRadiusX;
+			float aTangentY = -(float) sin(aTangentAngle) * aRadiusY;
+			mUnk0x64 = mRotation + (float) atan2(aTangentY, aTangentX);
+		}
+		break;
+	default:
+		break;
+	}
+
+	if (mMoveRotation != 0.0f)
+		RotateXY(&mUnk0x54, &mUnk0x58, mUnk0x5c, mUnk0x60, mMoveRotation);
 }
 
 // FUNCTION: POPCAPGAME1 0x00479450
@@ -261,10 +367,92 @@ void Mover::InitDefaults()
 	mPause2 = 0;
 	mPhase2 = 0;
 
-	mPhysObj->Release();
+	mPhysObj = NULL;
 }
 
-// STUB: POPCAPGAME1 0x0047a9f0
-void Mover::SyncState(DataSync& param_1)
+// FUNCTION: POPCAPGAME1 0x0047a9f0
+void Mover::SyncState(DataSync& theSync)
 {
+	if (theSync.mReader != NULL)
+		InitDefaults();
+
+	theSync.SyncSByte(mType);
+	theSync.SyncFloat(mUnk0x5c);
+	theSync.SyncFloat(mUnk0x60);
+	theSync.SyncShort(mTime);
+
+	bool hasOffset = mOffset != 0;
+	bool hasRadius = mRadius != 0;
+	bool hasPhase = mPhase != 0.0f;
+	bool hasMoveRotation = mMoveRotation != 0.0f;
+	bool hasRadius2 = mRadius2 != 0;
+	bool hasPause1 = mPause1 != 0;
+	bool hasPause2 = mPause2 != 0;
+	bool hasPhase1 = mPhase1 != 0;
+	bool hasPhase2 = mPhase2 != 0;
+	bool hasPostDelayPhase = mPostDelayPhase != 0.0f;
+	bool hasMaxAngle = mMaxAngle != 0.0f;
+	bool hasCurrentRotation = mUnk0x64 != 0.0f;
+	bool hasParent = mPhysObj != NULL;
+	bool hasCurrentPos = mUnk0x54 != mUnk0x5c || mUnk0x58 != mUnk0x60;
+	bool hasRotation = mRotation != 0.0f;
+
+	theSync.SyncBoolBit(hasOffset);
+	theSync.SyncBoolBit(hasRadius);
+	theSync.SyncBoolBit(hasPhase);
+	theSync.SyncBoolBit(hasMoveRotation);
+	theSync.SyncBoolBit(hasRadius2);
+	theSync.SyncBoolBit(hasPause1);
+	theSync.SyncBoolBit(hasPause2);
+	theSync.SyncBoolBit(hasPhase1);
+	theSync.EndBit();
+
+	theSync.SyncBoolBit(hasPhase2);
+	theSync.SyncBoolBit(hasPostDelayPhase);
+	theSync.SyncBoolBit(hasMaxAngle);
+	theSync.SyncBoolBit(hasCurrentRotation);
+	theSync.SyncBoolBit(hasParent);
+	theSync.SyncBoolBit(hasCurrentPos);
+	theSync.SyncBoolBit(hasRotation);
+	theSync.EndBit();
+
+	if (hasOffset)
+		theSync.SyncSShort(mOffset);
+	if (hasRadius)
+		theSync.SyncSShort(mRadius);
+	if (hasPhase)
+		theSync.SyncFloat(mPhase);
+	if (hasMoveRotation)
+		theSync.SyncFloat(mMoveRotation);
+	if (hasRadius2)
+		theSync.SyncSShort(mRadius2);
+	if (hasPause1)
+		theSync.SyncShort(mPause1);
+	if (hasPause2)
+		theSync.SyncShort(mPause2);
+	if (hasPhase1)
+		theSync.SyncSByte(mPhase1);
+	if (hasPhase2)
+		theSync.SyncSByte(mPhase2);
+	if (hasPostDelayPhase)
+		theSync.SyncFloat(mPostDelayPhase);
+	if (hasMaxAngle)
+		theSync.SyncFloat(mMaxAngle);
+	if (hasCurrentRotation)
+		theSync.SyncFloat(mUnk0x64);
+	if (hasRotation)
+		theSync.SyncFloat(mRotation);
+	if (hasParent) {
+		theSync.SyncFloat(mUnk0x4c);
+		theSync.SyncFloat(mUnk0x50);
+		DataSync_SyncSmartPtr<Mover>(theSync, mPhysObj);
+	}
+	if (hasCurrentPos) {
+		theSync.SyncFloat(mUnk0x54);
+		theSync.SyncFloat(mUnk0x58);
+	}
+	else {
+		mUnk0x54 = mUnk0x5c;
+		mUnk0x58 = mUnk0x60;
+	}
 }

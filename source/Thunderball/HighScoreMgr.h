@@ -2,6 +2,7 @@
 #define __HIGHSCORE_MGR_H__
 
 #include <list>
+#include <map>
 #include <string>
 
 namespace Sexy
@@ -12,15 +13,18 @@ class HighScoreEntry {
 public:
 	std::string mName;
 	int mScore;
+	bool mIsActive;
 
 	HighScoreEntry()
-		: mName(), mScore(0)
+		: mName(), mScore(0), mIsActive(false)
 	{
 	}
 };
 
 class HighScoreMgr {
 public:
+	std::map<std::string, std::list<HighScoreEntry> > mHighScores;
+
 	HighScoreMgr();
 	virtual ~HighScoreMgr();
 

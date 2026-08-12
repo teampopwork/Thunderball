@@ -15,10 +15,33 @@
 #include <SexyAppFramework/Font.h>
 #include <SexyAppFramework/Graphics.h>
 #include <SexyAppFramework/Insets.h>
+#include <SexyAppFramework/ListWidget.h>
 #include <SexyAppFramework/Rect.h>
 #include <SexyAppFramework/WidgetManager.h>
 
+#include <math.h>
+
 using namespace Sexy;
+
+// FUNCTION: POPCAPGAME1 0x00406710
+float Sexy::Clamp(float val, float minVal, float maxVal)
+{
+	if (val < minVal)
+		val = minVal;
+	else if (val > maxVal)
+		val = maxVal;
+	return val;
+}
+
+// FUNCTION: POPCAPGAME1 0x00404c60
+float Sexy::GetMaxGunAngle()
+{
+	return ModVal(
+		0,
+		"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp123,125",
+		83.0f
+	);
+}
 
 // STUB: POPCAPGAME1 0x0040b570
 void Sexy::SetButtonFontColor(int color)
@@ -60,6 +83,41 @@ void Sexy::DrawScreenFrame(Graphics* g)
 	);
 
 	g->DrawImage(IMAGE_SCREENFRAMERIGHT, IMAGE_SCREENFRAMELEFT->mWidth + IMAGE_SCREENFRAMETOP->mWidth, 0);
+}
+
+// FUNCTION: POPCAPGAME1 0x004050a0
+ListWidget* Sexy::MakeListWidget(int theId, ListListener* theListener)
+{
+	ListWidget* aList = new ListWidget(
+		theId,
+		GetFontById(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp124,390", 0x1d)),
+		theListener
+	);
+
+	aList->SetColor(
+		ListWidget::COLOR_BKG,
+		Color(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp125,391", 0x50))
+	);
+	aList->SetColor(
+		ListWidget::COLOR_OUTLINE,
+		Color(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp126,392", 0x800000))
+	);
+	aList->SetColor(
+		ListWidget::COLOR_TEXT,
+		Color(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp127,393", 0xffff50))
+	);
+	aList->SetColor(
+		ListWidget::COLOR_HILITE,
+		Color(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp128,394", 0xffffff))
+	);
+	aList->SetColor(
+		ListWidget::COLOR_SELECT,
+		Color(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp129,395", 0xf45d02))
+	);
+	aList->mDrawOutline = false;
+	aList->mItemHeight =
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderCommon.cpp130,397", 0x10);
+	return aList;
 }
 
 // FUNCTION: POPCAPGAME1 0x0040bc20
@@ -1307,10 +1365,65 @@ float Sexy::InterpValF(
 	return endVal;
 }
 
-// STUB: POPCAPGAME1 0x00404b70
-int Sexy::GetStyleShotScore(Sexy::StyleShot, bool, int)
+// FUNCTION: POPCAPGAME1 0x00404b70
+int Sexy::GetStyleShotScore(Sexy::StyleShot theStyleShot, bool theAlternateScore, int)
 {
-	return 0;
+	if (!theAlternateScore) {
+		switch ((int) theStyleShot) {
+		case 0:
+		case 1:
+		case 5:
+		case 7:
+		case 10:
+		case 11:
+		case 12:
+		case 13:
+			return 25000;
+		case 2:
+		case 3:
+		case 4:
+		case 15:
+			return 50000;
+		case 6:
+		case 16:
+			return 10000;
+		case 8:
+		case 14:
+			return 100000;
+		case 9:
+			return 5000;
+		default:
+			return 0;
+		}
+	}
+
+	switch ((int) theStyleShot) {
+	case 0:
+	case 1:
+	case 2:
+	case 3:
+	case 4:
+	case 5:
+	case 7:
+	case 11:
+	case 13:
+	case 16:
+		return 5000;
+	case 6:
+	case 9:
+	case 10:
+	case 12:
+	case 17:
+	case 18:
+	case 19:
+		return 2500;
+	case 8:
+	case 14:
+	case 15:
+		return 10000;
+	default:
+		return 0;
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x00407d90
@@ -1709,9 +1822,15 @@ void Sexy::DrawAdventureFrame(Graphics* g, int param_1, int param_2, int param_3
 	}
 }
 
-// STUB: POPCAPGAME1 0x004bc2d0
+// FUNCTION: POPCAPGAME1 0x004bc2d0
 void Sexy::RotateXY(float* param_1, float* param_2, float param_3, float param_4, float param_5)
 {
+	float anX = *param_1 - param_3;
+	float aY = *param_2 - param_4;
+	float aCos = (float) cos(param_5);
+	float aSin = (float) sin(param_5);
+	*param_1 = param_3 + anX * aCos + aY * aSin;
+	*param_2 = param_4 + aY * aCos - anX * aSin;
 }
 
 // STUB: POPCAPGAME1 0x00407a60
@@ -1723,12 +1842,12 @@ void Sexy::DrawCircle(Graphics *g ,float param_2, float param_3, float param_4, 
 // FUNCTION: POPCAPGAME1 0x00489f20
 void Sexy::DrawCharacterPlusFrame(Graphics *g, int param_2, int param_3, int param_4)
 {
-    if (param_2 < 0 || param_2 > 11) {
-        param_2 = 0;
+    if (param_4 < 0 || param_4 >= 10) {
+        param_4 = 0;
     }
 
-    Image* aImage = GetImageById(param_2 + 0x16a);
-    g->DrawImage(aImage, param_3, param_4);
+    Image* aImage = GetImageById(param_4 + 0x16a);
+    g->DrawImage(aImage, param_2, param_3);
 
 
     g->DrawImageBox(Rect(

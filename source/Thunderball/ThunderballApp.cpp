@@ -23,19 +23,81 @@
 #include "ThunderDialog.h"
 #include "TrophyMgr.h"
 #include "TrophyScreen.h"
+#include "TrophyMgr.h"
 #include "UpsellScreen.h"
+#include "UserDialog.h"
 #include "WidgetMover.h"
 #include "BlendedImage.h"
 
 #include <SexyAppFramework/BassMusicInterface.h>
 #include <SexyAppFramework/ButtonWidget.h>
+#include <SexyAppFramework/DDImage.h>
 #include <SexyAppFramework/Debug.h>
+#include <SexyAppFramework/DialogButton.h>
+#include <SexyAppFramework/EditWidget.h>
 #include <SexyAppFramework/ResourceManager.h>
 #include <SexyAppFramework/SWTri.h>
 #include <SexyAppFramework/SoundManager.h>
 #include <SexyAppFramework/WidgetManager.h>
 
 using namespace Sexy;
+
+bool mColorblind;
+BlendedImage* Sexy::gBallPegImage[9];
+
+// FUNCTION: POPCAPGAME1 0x004316f0
+int RegistrationControl::GetTrialAge()
+{
+	if (::IsWindow(mWindow)) {
+		return (int) ::SendMessageA(mWindow, mQueryMessage, 0, 0);
+	}
+	mWindowValid = false;
+	return 0;
+}
+
+// FUNCTION: POPCAPGAME1 0x004316c0
+int RegistrationControl::GetTrialDuration()
+{
+	if (::IsWindow(mWindow)) {
+		return (int) ::SendMessageA(mWindow, mQueryMessage, 2, 0);
+	}
+	mWindowValid = false;
+	return 0;
+}
+
+// FUNCTION: POPCAPGAME1 0x00405490
+static void MakeGrayscale(MemoryImage* theImage)
+{
+	ulong* aBits = theImage->GetBits();
+	int aPixelCount = theImage->GetWidth() * theImage->GetHeight();
+	if (aPixelCount > 0) {
+		do {
+			ulong aColor = *aBits;
+			ulong aGray = (((aColor >> 8) & 0xff) * 0x99) / 0xff
+				+ (((aColor >> 16) & 0xff) * 0x4c) / 0xff
+				+ ((aColor & 0xff) * 0x1a) / 0xff;
+			*aBits = (aColor & 0xff000000) | aGray | (aGray << 8) | (aGray << 16);
+			++aBits;
+		} while (--aPixelCount != 0);
+	}
+	theImage->BitsChanged();
+}
+
+// FUNCTION: POPCAPGAME1 0x00431760
+bool RegistrationControl::IsRegistered()
+{
+	if (::IsWindow(mWindow)) {
+		return ::SendMessageA(mWindow, mQueryMessage, 4, 0) != 0;
+	}
+	mWindowValid = false;
+	return false;
+}
+
+// FUNCTION: POPCAPGAME1 0x00431960
+bool RegistrationControl::IsWindowValid()
+{
+	return mWindowValid;
+}
 
 // STUB: POPCAPGAME1 0x00426f10
 ThunderballApp::ThunderballApp()
@@ -194,20 +256,58 @@ void ThunderballApp::BringDialogsToFront()
 {
 }
 
-// STUB: POPCAPGAME1 0x00405f90
+// FUNCTION: POPCAPGAME1 0x00405f90
 void ThunderballApp::ButtonDepress(int param_1)
 {
+	switch (param_1) {
+	case 1:
+		Shutdown();
+		break;
+	case 2:
+		::CloseWindow(mHWnd);
+		break;
+	case 3:
+		SwitchScreenMode(true, Is3DAccelerated(), false);
+		break;
+	}
 }
 
-// STUB: POPCAPGAME1 0x00405a50
-int ThunderballApp::CheckCanExpire()
+// FUNCTION: POPCAPGAME1 0x00405a20
+bool ThunderballApp::CanExpire()
 {
-	return 0;
+	if ((!mLoadingFailed || mCursorThreadRunning) && !mProcessInTimer && !mExpirationDisabled) {
+		return true;
+	}
+
+	return false;
 }
 
-// STUB: POPCAPGAME1 0x00405aa0
+// FUNCTION: POPCAPGAME1 0x00405a50
+bool ThunderballApp::CheckCanExpire()
+{
+	if (!IsRegistered() && mUnk0x834 == 0) {
+		int trialAge = mRegistrationControl->GetTrialAge();
+		int trialDuration = mRegistrationControl->GetTrialDuration();
+		if (trialAge >= trialDuration && CanExpire()) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+// FUNCTION: POPCAPGAME1 0x00405aa0
 void ThunderballApp::CheckMaxStage()
 {
+	if (mCurProfile != NULL) {
+		if (mCurProfile->mUnk0x28 > mMaxStage) {
+			mMaxStage = mCurProfile->mUnk0x28;
+			mMaxLevel = mCurProfile->mUnk0x2c;
+		}
+		else if (mCurProfile->mUnk0x28 == mMaxStage && mCurProfile->mUnk0x2c > mMaxLevel) {
+			mMaxLevel = mCurProfile->mUnk0x2c;
+		}
+	}
 }
 
 // STUB: POPCAPGAME1 0x0040d180
@@ -411,9 +511,28 @@ void ThunderballApp::DialogButtonDepress(int theDialogId, int theButtonId)
 	}
 }
 
-// STUB: POPCAPGAME1 0x0041d260
+// FUNCTION: POPCAPGAME1 0x0041d260
 void ThunderballApp::DoConfirmDeleteUserDialog(const std::string& param_1)
 {
+	KillDialog(2);
+	ThunderDialog* aDialog = static_cast<ThunderDialog*>(DoDialog(
+		2,
+		true,
+		// STRING: POPCAPGAME1 0x005d70f4
+		"Delete User?",
+		StrFormat(
+			// STRING: POPCAPGAME1 0x005d70b8
+			"This will permanently remove '%s' from the player roster!",
+			param_1.c_str()
+		),
+		"",
+		1
+	));
+	aDialog->DoScroll(true);
+	// STRING: POPCAPGAME1 0x005d70b0
+	aDialog->mYesButton->mLabel = "Delete";
+	// STRING: POPCAPGAME1 0x005d70a8
+	aDialog->mNoButton->mLabel = "Cancel";
 }
 
 // STUB: POPCAPGAME1 0x0042d7c0
@@ -421,19 +540,113 @@ void ThunderballApp::DoConfirmMainMenuDialog()
 {
 }
 
-// STUB: POPCAPGAME1 0x0041caa0
+// FUNCTION: POPCAPGAME1 0x0041caa0
 void ThunderballApp::DoConfirmNewChallengeDialog()
 {
+	// STRING: POPCAPGAME1 0x005d6b94
+	SexyString aHeader = "New Challenge?";
+	SexyString aLines = ModVal(
+		0,
+		// STRING: POPCAPGAME1 0x005d6ae8
+		"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp193,2860",
+		// STRING: POPCAPGAME1 0x005d6b30
+		"Are you sure that you want to choose a new challenge? Your progress on this challenge will be lost."
+	);
+	ThunderDialog* aDialog = static_cast<ThunderDialog*>(DoDialog(
+		7,
+		true,
+		aHeader,
+		aLines,
+		"",
+		2
+	));
+	aDialog->mYesButton->mLabel = ModVal(
+		0,
+		// STRING: POPCAPGAME1 0x005d6a90
+		"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp194,2864",
+		// STRING: POPCAPGAME1 0x005d6ad8
+		"New Challenge"
+	);
+	PositionDialog(
+		aDialog,
+		ModVal(
+			0,
+			// STRING: POPCAPGAME1 0x005d6a48
+			"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp195,2865",
+			400
+		),
+		false,
+		-1
+	);
+	aDialog->DoScroll(true);
 }
 
-// STUB: POPCAPGAME1 0x0041c960
+// FUNCTION: POPCAPGAME1 0x0041c960
 void ThunderballApp::DoConfirmQuitDialog()
 {
+	ThunderDialog* aDialog = DoDialogScroll(
+		5,
+		true,
+		// STRING: POPCAPGAME1 0x005d6a10
+		"Quit Peggle?",
+		// STRING: POPCAPGAME1 0x005d6a20
+		"Are you sure you want to\nquit the game?",
+		"",
+		1
+	);
+	// STRING: POPCAPGAME1 0x005d69c8
+	aDialog->mWidth = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp191,2516", 0xeb);
+	// STRING: POPCAPGAME1 0x005d6980
+	aDialog->mHeight = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp192,2517", 0x118);
+	aDialog->DoScroll(-1);
+	aDialog->mUnk0x163 = false;
 }
 
-// STUB: POPCAPGAME1 0x0041cc40
+// FUNCTION: POPCAPGAME1 0x0041cc40
 void ThunderballApp::DoConfirmRestartAdventureDialog()
 {
+	// STRING: POPCAPGAME1 0x005d6d78
+	SexyString aHeader = "Restart Adventure?";
+	SexyString aLines = ModVal(
+		0,
+		// STRING: POPCAPGAME1 0x005d6c98
+		"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp196,2886",
+		// STRING: POPCAPGAME1 0x005d6ce0
+		"Are you sure that you want to ^00FF00^RESTART ADVENTURE?^oldclr^\n\nThis will put you all the way back to the first level and reset your score to zero."
+	);
+	ThunderDialog* aDialog = static_cast<ThunderDialog*>(DoDialog(
+		8,
+		true,
+		aHeader,
+		aLines,
+		"",
+		2
+	));
+	aDialog->mTextAlign = ModVal(
+		0,
+		// STRING: POPCAPGAME1 0x005d6c50
+		"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp197,2889",
+		-1
+	);
+	aDialog->mYesButton->mLabel = ModVal(
+		0,
+		// STRING: POPCAPGAME1 0x005d6bf0
+		"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp198,2890",
+		// STRING: POPCAPGAME1 0x005d6c38
+		"Restart Adventure"
+	);
+	PositionDialog(
+		aDialog,
+		ModVal(
+			0,
+			// STRING: POPCAPGAME1 0x005d6ba8
+			"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp199,2891",
+			0x1cc
+		),
+		false,
+		-1
+	);
+	aDialog->DoScroll(true);
 }
 
 // STUB: POPCAPGAME1 0x004310e0
@@ -478,8 +691,14 @@ ThunderDialog* ThunderballApp::DoDialogScroll(
 	int theButtonMode
 )
 {
-	ThunderDialog* aDialog =
-		new ThunderDialog(theId, isModal, theDialogHeader, theDialogLines, theDialogFooter, theButtonMode);
+	ThunderDialog* aDialog = static_cast<ThunderDialog*>(SexyApp::DoDialog(
+		theId,
+		isModal,
+		theDialogHeader,
+		theDialogLines,
+		theDialogFooter,
+		theButtonMode
+	));
 	aDialog->DoScroll(true);
 	return aDialog;
 }
@@ -502,9 +721,16 @@ void ThunderballApp::DoOptionsDialog()
 	AddDialog(0x13, aDialog);
 }
 
-// STUB: POPCAPGAME1 0x0040c4d0
+// FUNCTION: POPCAPGAME1 0x0040c4d0
 void ThunderballApp::DoRenameUserDialog(std::string& param_1)
 {
+	KillDialog(20);
+	NewUserDialog* aDialog = new NewUserDialog(this, true, false, true);
+	aDialog->GetPreferredHeight(aDialog->mWidth);
+	PositionDialog(aDialog, aDialog->mWidth, false, -1);
+	aDialog->SetName(param_1);
+	aDialog->DoScroll(true);
+	AddDialog(20, aDialog);
 }
 
 // STUB: POPCAPGAME1 0x0041ce00
@@ -513,9 +739,13 @@ bool ThunderballApp::DoReplaysExist()
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x00405f60
+// FUNCTION: POPCAPGAME1 0x00405f60
 void ThunderballApp::DoScrollOff(int param_1)
 {
+	ThunderDialog* dialog = static_cast<ThunderDialog*>(GetDialog(param_1));
+	if (dialog != NULL) {
+		dialog->DoScrollOff(true);
+	}
 }
 
 // STUB: POPCAPGAME1 0x0041cee0
@@ -523,49 +753,140 @@ void ThunderballApp::DoTipDialog(int param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x0042d7a0
+// FUNCTION: POPCAPGAME1 0x0042d7a0
 void ThunderballApp::DoToMenu()
 {
+	KillDialog(13);
+	ShowMainMenu();
 }
 
-// STUB: POPCAPGAME1 0x0040c2e0
+// FUNCTION: POPCAPGAME1 0x0040c2e0
 void ThunderballApp::DoUserDialog()
 {
+	KillDialog(24);
+	UserDialog* aDialog = new UserDialog(this);
+	PositionDialog(aDialog, 400, false, -1);
+	// STRING: POPCAPGAME1 0x005d5cc8
+	aDialog->mX = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp200,2916", 0x96);
+	// STRING: POPCAPGAME1 0x005d5c80
+	aDialog->mY = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp201,2917", 0x3c);
+	aDialog->DoScroll(true);
+	AddDialog(24, aDialog);
 }
 
-// STUB: POPCAPGAME1 0x0042fe30
+// FUNCTION: POPCAPGAME1 0x0042fe30
 void ThunderballApp::EndHelpScreen()
 {
+	if (mBoard != NULL) {
+		mBoard->mVisible = true;
+	}
+	if (mMainMenu != NULL) {
+		mMainMenu->mVisible = true;
+		mWidgetManager->SetFocus(mMainMenu);
+	}
+
+	if (*(bool*)((char*)this + 0x778)) {
+		ShowBoard(true, true);
+		return;
+	}
+
+	CheckScrollOff(mHelpScreen, 1, true);
+	CleanupScreen(mHelpScreen);
+	mHelpScreen = NULL;
 }
 
-// STUB: POPCAPGAME1 0x0042ff40
+// FUNCTION: POPCAPGAME1 0x0042ff40
 void ThunderballApp::EndUpsellScreen()
 {
+	CleanupScreen(mUpsellScreen);
+	mUpsellScreen = NULL;
+	mSoundManager->StopAllSounds();
+	ShowMainMenu();
 }
 
-// STUB: POPCAPGAME1 0x0041d3d0
+// FUNCTION: POPCAPGAME1 0x0041d3d0
 void ThunderballApp::FinishConfirmDeleteUserDialog(bool param_1)
 {
+	DoScrollOff(2);
+	if (!param_1) {
+		return;
+	}
+
+	UserDialog* aDialog = static_cast<UserDialog*>(GetDialog(24));
+	if (aDialog == NULL) {
+		return;
+	}
+
+	std::string aCurName = mCurProfile == NULL ? "" : mCurProfile->mName;
+	std::string aName = aDialog->GetSelName();
+	if (aName.compare(0, aName.length(), aCurName.c_str(), aCurName.length()) == 0) {
+		mCurProfile = NULL;
+	}
+
+	mProfileMgr->DeleteProfile(aName);
+	aDialog->FinishDeleteUser();
+	if (mCurProfile == NULL) {
+		mCurProfile = mProfileMgr->GetProfile(aDialog->GetSelName());
+		if (mCurProfile == NULL) {
+			mCurProfile = mProfileMgr->GetAnyProfile();
+		}
+	}
+
+	mProfileMgr->Save();
+	if (mCurProfile == NULL) {
+		DoCreateUserDialog();
+	}
+	mWidgetManager->MarkAllDirty();
+	if (mMainMenu != NULL) {
+		mMainMenu->SyncPlayerInfo();
+	}
 }
 
-// STUB: POPCAPGAME1 0x0042d980
-void ThunderballApp::FinishConfirmMainMenuDialog(bool param_1)
+// FUNCTION: POPCAPGAME1 0x0042d980
+void ThunderballApp::FinishConfirmMainMenuDialog(bool wasConfirmed)
 {
+	DoScrollOff(4);
+	if (wasConfirmed) {
+		if (mCurProfile != NULL && mCurProfile->mUnk0x58 < 255) {
+			mCurProfile->mUnk0x58++;
+			mCurProfile->mUnk0xec = true;
+		}
+		DoToMenu();
+	}
 }
 
-// STUB: POPCAPGAME1 0x00429970
-void ThunderballApp::FinishConfirmNewChallengeDialog(bool param_1)
+// FUNCTION: POPCAPGAME1 0x00429970
+void ThunderballApp::FinishConfirmNewChallengeDialog(bool wasConfirmed)
 {
+	DoScrollOff(7);
+	if (wasConfirmed) {
+		FinishOptionsDialog(true, true);
+		ShowTrophyScreen();
+	}
 }
 
-// STUB: POPCAPGAME1 0x004084a0
+// FUNCTION: POPCAPGAME1 0x004084a0
 void ThunderballApp::FinishConfirmQuitDialog(bool param_1)
 {
+	if (param_1) {
+		KillDialog(5);
+		Shutdown();
+	}
+	else {
+		DoScrollOff(5);
+	}
 }
 
-// STUB: POPCAPGAME1 0x0041fc00
-void ThunderballApp::FinishConfirmRestartAdventureDialog(bool param_1)
+// FUNCTION: POPCAPGAME1 0x0041fc00
+void ThunderballApp::FinishConfirmRestartAdventureDialog(bool wasConfirmed)
 {
+	DoScrollOff(8);
+	if (wasConfirmed && mCurProfile != NULL) {
+		mCurProfile->RestartAdventure();
+		if (mAdventureScreen != NULL) {
+			mAdventureScreen->StartGame();
+		}
+	}
 }
 
 // STUB: POPCAPGAME1 0x004301c0
@@ -659,9 +980,14 @@ void ThunderballApp::FinishHighScoreEntryDialog(bool param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x00408500
+// FUNCTION: POPCAPGAME1 0x00408500
 void ThunderballApp::FinishNameErrorDialog(int param_1)
 {
+	DoScrollOff(param_1);
+	NewUserDialog* aDialog = static_cast<NewUserDialog*>(GetDialog(param_1 != 11 ? 20 : 10));
+	if (aDialog != NULL) {
+		mWidgetManager->SetFocus(aDialog->mUnk0x180);
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0041c840
@@ -691,19 +1017,87 @@ void ThunderballApp::FinishOptionsDialog(bool param_1, bool param_2)
 	}
 }
 
-// STUB: POPCAPGAME1 0x00427b90
+// FUNCTION: POPCAPGAME1 0x00427b90
 void ThunderballApp::FinishRenameUserDialog(bool param_1)
 {
+	if (!param_1) {
+		DoScrollOff(20);
+		return;
+	}
+
+	UserDialog* aUserDialog = static_cast<UserDialog*>(GetDialog(24));
+	NewUserDialog* aRenameDialog = static_cast<NewUserDialog*>(GetDialog(20));
+	if (aUserDialog == NULL || aRenameDialog == NULL) {
+		return;
+	}
+
+	std::string anOldName = aUserDialog->GetSelName();
+	std::string aNewName = aRenameDialog->GetName();
+	if (!aNewName.empty()) {
+		mCurProfile->SaveIfDirty();
+		bool isCurProfile = mProfileMgr->GetProfile(anOldName) == mCurProfile;
+		if (!mProfileMgr->RenameProfile(anOldName, aNewName)) {
+			DoDialogScroll(
+				21,
+				true,
+				// STRING: POPCAPGAME1 0x005d7e70
+				"Name Conflict",
+				// STRING: POPCAPGAME1 0x005d7e80
+				"The name you entered is already being used.  Please enter a unique player name.",
+				// STRING: POPCAPGAME1 0x005d7f44
+				"OK",
+				3
+			);
+		}
+		else {
+			mProfileMgr->Save();
+			if (isCurProfile) {
+				mCurProfile = mProfileMgr->GetProfile(aNewName);
+			}
+
+			aUserDialog->FinishRenameUser(&aNewName);
+			mWidgetManager->MarkAllDirty();
+			DoScrollOff(20);
+		}
+	}
 }
 
-// STUB: POPCAPGAME1 0x004084e0
+// FUNCTION: POPCAPGAME1 0x004084e0
 void ThunderballApp::FinishTipDialog(bool param_1)
 {
+	if (GetDialog(14) != NULL) {
+		DoScrollOff(14);
+	}
 }
 
-// STUB: POPCAPGAME1 0x00427720
-void ThunderballApp::FinishUserDialog(bool param_1)
+// FUNCTION: POPCAPGAME1 0x00427720
+void ThunderballApp::FinishUserDialog(bool accepted)
 {
+	UserDialog* aDialog = static_cast<UserDialog*>(GetDialog(24));
+	if (aDialog == NULL) {
+		return;
+	}
+
+	if (accepted) {
+		if (mCurProfile != NULL) {
+			mCurProfile->SaveIfDirty();
+		}
+
+		PlayerInfo* aProfile = mProfileMgr->GetProfile(aDialog->GetSelName());
+		if (aProfile != NULL) {
+			mCurProfile = aProfile;
+			mWidgetManager->MarkAllDirty();
+			if (mMainMenu != NULL) {
+				mMainMenu->SyncPlayerInfo();
+			}
+			CheckMaxStage();
+		}
+	}
+
+	if (mMainMenu != NULL) {
+		mWidgetManager->SetFocus(mMainMenu);
+	}
+	DoScrollOff(24);
 }
 
 // FUNCTION: POPCAPGAME1 0x00405bf0
@@ -729,9 +1123,19 @@ long double ThunderballApp::GetFeverVolume()
 	return mFeverVolume;
 }
 
-// STUB: POPCAPGAME1 0x00405ae0
+// FUNCTION: POPCAPGAME1 0x00405ae0
 DDImage* ThunderballApp::GetImage(const std::string& theFileName, bool commitBits = true)
 {
+	if (ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp160,1205", 0) != 0) {
+		DDImage* anImage = SexyApp::GetImage(theFileName, false);
+		if (anImage != NULL) {
+			MakeGrayscale(anImage);
+			if (commitBits) {
+				anImage->CommitBits();
+			}
+		}
+		return anImage;
+	}
 	return SexyApp::GetImage(theFileName, commitBits);
 }
 
@@ -819,33 +1223,84 @@ void ThunderballApp::IncLevel(int param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x004057f0
-bool ThunderballApp::IsExpired()
+// FUNCTION: POPCAPGAME1 0x004057f0
+int ThunderballApp::IsExpired()
 {
+	if (mUnk0x834 == 0 && mRegistrationControl != NULL) {
+		int trialAge = mRegistrationControl->GetTrialAge();
+		int trialDuration = mRegistrationControl->GetTrialDuration();
+		if (trialAge >= trialDuration && !mRegistrationControl->IsRegistered()) {
+			return true;
+		}
+	}
+
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x00405c60
+// FUNCTION: POPCAPGAME1 0x00405c60
 bool ThunderballApp::IsLevelDemoLocked(int param_1, int param_2)
 {
+	if (IsRegistered()) {
+		return false;
+	}
+
+	int trialType = mUnk0x834;
+	if (mCurProfile == NULL ||
+		(trialType == 1 && param_1 == 0 && param_2 >= 4) ||
+		(trialType == 2 && param_1 == 1 && param_2 >= 1) ||
+		(trialType == 1 && param_1 >= 1) ||
+		(trialType == 2 && param_1 >= 2) ||
+		(trialType == 3 && param_1 >= 3) ||
+		(trialType == 5 && param_1 >= 4) ||
+		(trialType == 4 && param_1 == 3 && param_2 >= 1) ||
+		(trialType == 4 && param_1 >= 4)) {
+		return true;
+	}
+
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x00405860
-bool ThunderballApp::IsLevelLockedTrial()
+// FUNCTION: POPCAPGAME1 0x00405860
+int ThunderballApp::IsLevelLockedTrial()
 {
+	if (mUnk0x834 == 1 || mUnk0x834 == 2 || mUnk0x834 == 3 || mUnk0x834 == 4 || mUnk0x834 == 5) {
+		return true;
+	}
+
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x004057d0
+// FUNCTION: POPCAPGAME1 0x004057d0
 bool ThunderballApp::IsRegistered()
 {
+	if (mRegistrationControl != NULL) {
+		return mRegistrationControl->IsRegistered();
+	}
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x00405d90
+// FUNCTION: POPCAPGAME1 0x00405d90
 bool ThunderballApp::IsTrialOver()
 {
+	if (IsRegistered()) {
+		return false;
+	}
+	if ((unsigned char) IsExpired()) {
+		return true;
+	}
+
+	if (mCurProfile == NULL ||
+		(mUnk0x834 == 1 && mCurProfile->mUnk0x30 == 0 && mCurProfile->mUnk0x34 >= 4) ||
+		(mUnk0x834 == 2 && mCurProfile->mUnk0x30 == 1 && mCurProfile->mUnk0x34 >= 1) ||
+		(mUnk0x834 == 1 && mCurProfile->mUnk0x30 >= 1) ||
+		(mUnk0x834 == 2 && mCurProfile->mUnk0x30 >= 2) ||
+		(mUnk0x834 == 3 && mCurProfile->mUnk0x30 >= 3) ||
+		(mUnk0x834 == 5 && mCurProfile->mUnk0x30 >= 4) ||
+		(mUnk0x834 == 4 && mCurProfile->mUnk0x30 == 3 && mCurProfile->mUnk0x34 >= 1) ||
+		(mUnk0x834 == 4 && mCurProfile->mUnk0x30 >= 4)) {
+		return true;
+	}
+
 	return false;
 }
 
@@ -862,15 +1317,25 @@ void ThunderballApp::LoadMusic(int param_1, const std::string& param_2)
 {
 }
 
-// STUB: POPCAPGAME1 0x00405c00
+// FUNCTION: POPCAPGAME1 0x00405c00
 bool ThunderballApp::OnMaxLevel()
 {
-	return false;
+	if (mCurProfile == NULL) {
+		return false;
+	}
+
+	return mCurProfile->GetMaxLevel() == GetCurLevel();
 }
 
-// STUB: POPCAPGAME1 0x00405c30
+// FUNCTION: POPCAPGAME1 0x00405c30
 void ThunderballApp::PauseBoard(bool param_1)
 {
+	if (mBoard != NULL) {
+		mBoard->Pause(param_1);
+	}
+	if (mUpsellScreen != NULL) {
+		mUpsellScreen->Pause(param_1);
+	}
 }
 
 // STUB: POPCAPGAME1 0x0040bdd0
@@ -878,14 +1343,32 @@ void ThunderballApp::PlayMusic(int param_1, bool param_2)
 {
 }
 
-// STUB: POPCAPGAME1 0x004294a0
+// FUNCTION: POPCAPGAME1 0x004294a0
 void ThunderballApp::RemoveBoard()
 {
+	if (mBoard != NULL) {
+		if (mBoard->NeedSaveGame()) {
+			mBoard->SaveGame();
+		}
+		mBoard->NotifyRemoving();
+	}
+	CleanupScreen(mBoard);
+	mBoard = NULL;
 }
 
-// STUB: POPCAPGAME1 0x00405b50
+// FUNCTION: POPCAPGAME1 0x00405b50
 void ThunderballApp::ResetTwoPlayerStats()
 {
+	mUnk0x880 = 0;
+	mUnk0x87c = 0;
+	mUnk0x888 = 0;
+	mUnk0x884 = 0;
+	mUnk0x890 = 0;
+	mUnk0x88c = 0;
+	mUnk0x894 = -1;
+	mUnk0x898 = 0;
+	mTwoPlayerStats[0].Reset();
+	mTwoPlayerStats[1].Reset();
 }
 
 // FUNCTION: POPCAPGAME1 0x004234c0
@@ -920,14 +1403,24 @@ void ThunderballApp::SetExpired()
 void ThunderballApp::SetFeverVolume(double param_1)
 {
 	mFeverVolume = param_1;
-	if (mMainMenu == 0) {
+	if (mUnk0x77c == 0) {
 		SyncOdeVolume();
 	}
 }
 
-// STUB: POPCAPGAME1 0x004059c0
+// FUNCTION: POPCAPGAME1 0x004059c0
 void ThunderballApp::SetMusicIntensityIncreasePending(int param_1)
 {
+	if (param_1 <= 6) {
+		int currentOffset = mUnk0x77c - 1;
+		mUnk0x77c += (currentOffset / 6) * 6 - currentOffset - 2 + param_1;
+
+		int musicOrder = GetMusicOrder(1);
+		if (musicOrder != -1) {
+			mMusicIntensityIncreasePending = true;
+			mPendingMusicOrder = musicOrder;
+		}
+	}
 }
 
 // STUB: POPCAPGAME1 0x0040d2c0
@@ -938,7 +1431,7 @@ void ThunderballApp::SetMusicSpeed(float param_1)
 // FUNCTION: POPCAPGAME1 0x00405900
 void ThunderballApp::SetMusicVolume(double theVolume)
 {
-	if (mMainMenu != 0) {
+	if (mUnk0x77c != 0) {
 		SexyApp::SetMusicVolume(theVolume);
 	}
 }
@@ -1015,7 +1508,7 @@ void ThunderballApp::ShowLoadingScreen()
 	mWidgetManager->SetFocus(mLoadingScreen);
 }
 
-// STUB: POPCAPGAME1 0x0042d480
+// FUNCTION: POPCAPGAME1 0x0042d480
 void ThunderballApp::ShowMainMenu()
 {
 	mSoundManager->StopAllSounds();
@@ -1026,7 +1519,8 @@ void ThunderballApp::ShowMainMenu()
 	if (aMainMenu != 0) {
 		mMainMenu = NULL;
 		CleanupScreens(true);
-		mWidgetManager->SetFocus(mMainMenu);
+		mMainMenu = aMainMenu;
+		mWidgetManager->SetFocus(aMainMenu);
 		return;
 	}
 
@@ -1094,8 +1588,9 @@ void ThunderballApp::ShowTrophyScreen()
 }
 
 // STUB: POPCAPGAME1 0x004294f0
-void ThunderballApp::ShowUpsellScreen()
+bool ThunderballApp::ShowUpsellScreen(bool param_1, bool param_2)
 {
+	return false;
 }
 
 // FUNCTION: POPCAPGAME1 0x0042ff70
@@ -1138,27 +1633,73 @@ void ThunderballApp::StartAdventureGame()
     }
 }
 
-// STUB: POPCAPGAME1 0x004058b0
+// FUNCTION: POPCAPGAME1 0x004058b0
 void ThunderballApp::SyncOdeVolume()
 {
+	if (mMusicInterface != NULL) {
+		mMusicInterface->SetVolume(mMuteCount > 0 ? 0.0 : mFeverVolume);
+	}
 }
 
-// STUB: POPCAPGAME1 0x0042d270
+// FUNCTION: POPCAPGAME1 0x0042d270
 bool ThunderballApp::TryExpire(bool param_1)
 {
-	return false;
+	if (CheckCanExpire()) {
+		mUnk0x83A = true;
+		if (GetDialog(14) != NULL) {
+			FinishTipDialog(true);
+			return false;
+		}
+
+		return ShowUpsellScreen(param_1, false);
+	}
+	else {
+		mUnk0x83A = false;
+		return false;
+	}
 }
 
-// STUB: POPCAPGAME1 0x0042d320
+// FUNCTION: POPCAPGAME1 0x0042d320
 bool ThunderballApp::TryPlayUpsell()
 {
+	if (!IsRegistered() && IsTrialOver()) {
+		ShowUpsellScreen(false, false);
+		return true;
+	}
+
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x0042feb0
-int ThunderballApp::TryShowNewTrophy()
+// FUNCTION: POPCAPGAME1 0x0042feb0
+bool ThunderballApp::TryShowNewTrophy()
 {
-	return 0;
+	if (mCurProfile == NULL) {
+		return false;
+	}
+
+	int anOldTrophyLevel = mCurProfile->mUnk0x114;
+	int aTrophyLevel = 0;
+	if (mCurProfile->mUnk0x48 > 0) {
+		aTrophyLevel = 1;
+		if ((int) mCurProfile->mUnk0xfc.size() >= (int) mTrophyMgr->mTrophyInfos.size()) {
+			aTrophyLevel = 2;
+			if ((int) mCurProfile->mUnk0x118.size() >= (int) mStageMgr->mUnk0x1c.size()) {
+				aTrophyLevel = 3;
+			}
+		}
+	}
+
+	// STRING: POPCAPGAME1 0x005d8b58
+	if (ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp187,2139", 0)) {
+		// STRING: POPCAPGAME1 0x005d8b10
+		aTrophyLevel = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\ThunderballApp.cpp188,2140", 2);
+	}
+
+	if (anOldTrophyLevel < aTrophyLevel) {
+		ShowStoryScreen(true, false);
+	}
+
+	return true;
 }
 
 // STUB: POPCAPGAME1 0x0040bdd0
@@ -1171,16 +1712,20 @@ void ThunderballApp::ViewReplays()
 {
 }
 
-// STUB: POPCAPGAME1 0x00430680
+// STUB: POPCAPGAME1 0x
 void ThunderballApp::GotFocus()
 {
 	SexyApp::GotFocus();
 }
 
-// STUB: POPCAPGAME1 0x00405890
+// FUNCTION: POPCAPGAME1 0x00405890
 bool ThunderballApp::DebugKeyDown(int theKey)
 {
-	return SexyApp::DebugKeyDown(theKey);
+	if (SexyApp::DebugKeyDown(theKey)) {
+		return true;
+	}
+
+	return false;
 }
 
 // STUB: POPCAPGAME1 0x
@@ -1188,9 +1733,16 @@ void ThunderballApp::InitHook()
 {
 }
 
-// STUB: POPCAPGAME1 0x00408430
+// FUNCTION: POPCAPGAME1 0x00408430
 bool ThunderballApp::IsAltKeyUsed(WPARAM wParam)
 {
+	if (SexyApp::IsAltKeyUsed(wParam)) {
+		return true;
+	}
+	if (mBoard != NULL) {
+		return mBoard->IsAltKeyUsed(wParam);
+	}
+
 	return false;
 }
 
@@ -1256,10 +1808,13 @@ void ThunderballApp::LoadingThreadProc()
 	// MakeFeverStars();
 }
 
-// STUB: POPCAPGAME1 0x00408470
+// FUNCTION: POPCAPGAME1 0x00408470
 void ThunderballApp::LostFocus()
 {
 	SexyApp::LostFocus();
+	if (mBoard != NULL && mBoard->mUnk0x130 == 0) {
+		PauseBoard(true);
+	}
 }
 
 // STUB: POPCAPGAME1 0x004057c0
@@ -1284,10 +1839,38 @@ Dialog* ThunderballApp::NewDialog(
 	return static_cast<Dialog*>(aDialog);
 }
 
-// STUB: POPCAPGAME1 0x0041c400
+// FUNCTION: POPCAPGAME1 0x0041c400
 void ThunderballApp::ReadFromRegistry()
 {
 	SexyApp::ReadFromRegistry();
+
+	int aFeverVolume = 85;
+	// STRING: POPCAPGAME1 0x005d692c
+	RegistryReadInteger("FeverVolume", &aFeverVolume);
+	mFeverVolume = aFeverVolume * 0.01;
+
+	bool shouldShowUpsellButton = false;
+	// STRING: POPCAPGAME1 0x005d6914
+	RegistryReadBoolean("ShouldShowUpsellButton", &shouldShowUpsellButton);
+	if (shouldShowUpsellButton) {
+		mShouldShowUpsellButton = true;
+	}
+
+	int aMaxStage = 0;
+	int aMaxLevel = 0;
+	// STRING: POPCAPGAME1 0x005d6908
+	RegistryReadInteger("MaxStage", &aMaxStage);
+	RegistryReadInteger("MaxStage", &aMaxLevel);
+
+	if (aMaxStage < mMaxStage) {
+		aMaxStage = mMaxStage;
+	}
+	else if (aMaxStage == mMaxStage && aMaxLevel < mMaxLevel) {
+		aMaxLevel = mMaxLevel;
+	}
+
+	mMaxStage = aMaxStage;
+	mMaxLevel = aMaxLevel;
 }
 
 // FUNCTION: POPCAPGAME1 0x0042d2d0
@@ -1303,7 +1886,7 @@ void ThunderballApp::UpdateFrames()
 	UpdateMusic();
 }
 
-// STUB: POPCAPGAME1 0x00427380
+// FUNCTION: POPCAPGAME1 0x00427380
 void ThunderballApp::WriteToRegistry()
 {
 	if (!IsScreenSaver()) {
@@ -1320,16 +1903,20 @@ void ThunderballApp::WriteToRegistry()
 		// STRING: POPCAPGAME1 0x005d7e64
 		RegistryWriteInteger("MaxLevel", mMaxLevel);
 
-		/*if (mCurUser != NULL) {
+		if (mCurProfile != NULL) {
 			// STRING: POPCAPGAME1 0x005d7e5c
-			RegistryWriteString("CurUser", mCurUser);
-		}*/
+			RegistryWriteString("CurUser", mCurProfile->mName);
+			mCurProfile->SaveIfDirty();
+		}
 	}
 }
 
-// STUB: POPCAPGAME1 0x0042d180
+// FUNCTION: POPCAPGAME1 0x0042d180
 void ThunderballApp::Shutdown()
 {
+	if (mShutdown)
+		return;
+
 	SexyApp::Shutdown();
 
 	CleanupScreens(true);
@@ -1348,10 +1935,25 @@ void ThunderballApp::Shutdown()
 	}
 }
 
-// STUB: POPCAPGAME1 0x
+// FUNCTION: POPCAPGAME1 0x00430680
 void ThunderballApp::ShutdownHook()
 {
 	SexyApp::ShutdownHook();
+	if (mUpsellScreen != NULL && IsRegistered()) {
+		if (mUnk0x83b) {
+			mUnk0x83b = false;
+			StartAdventureGame();
+		}
+		else {
+			ShowMainMenu();
+		}
+		return;
+	}
+
+	mUnk0x799 = true;
+	if (mBoard != NULL && mBoard->mUnk0x130 == 0) {
+		PauseBoard(false);
+	}
 }
 
 // STUB: POPCAPGAME1 0x00405e70
@@ -1360,8 +1962,11 @@ void ThunderballApp::SwitchScreenMode(bool wantWindowed, bool is3d, bool force)
 	SexyApp::SwitchScreenMode(wantWindowed, is3d, force);
 }
 
-// STUB: POPCAPGAME1 0x00405840
+// FUNCTION: POPCAPGAME1 0x00405840
 bool ThunderballApp::meth_0x405840()
 {
+	if (mRegistrationControl != NULL) {
+		return mRegistrationControl->IsWindowValid();
+	}
 	return false;
 }

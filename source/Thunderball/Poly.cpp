@@ -9,6 +9,8 @@
 #include "ThunderCommon.h"
 
 #include <SexyAppFramework/SexyVector.h>
+#include <SexyAppFramework/MemoryImage.h>
+#include <algorithm>
 #include <vector>
 
 using namespace Sexy;
@@ -78,10 +80,10 @@ bool Poly::EditGetSetValHook(const std::string& param_1, bool param_2)
 	else if (param_1 == "poly_width" || param_1 == "poly_height") {
 		if (mUnk0x12c) {
 			if (mUnk0xe8.size() == 5) {
-				SexyVector2* aPoint0 = mUnk0xe8[0];
-				SexyVector2* aPoint2 = mUnk0xe8[2];
-				float width = abs(aPoint0->x - aPoint2->x) + 1.0f;
-				float height = abs(aPoint0->y - aPoint2->y) + 1.0f;
+				SexyVector2& aPoint0 = mUnk0xe8[0];
+				SexyVector2& aPoint2 = mUnk0xe8[2];
+				float width = abs(aPoint0.x - aPoint2.x) + 1.0f;
+				float height = abs(aPoint0.y - aPoint2.y) + 1.0f;
 				if (param_1 == "poly_width") {
 					EditValSyncNum(width, 1.0f, 100000.0f);
 				}
@@ -193,9 +195,33 @@ void Poly::EditDrawOutline(Graphics* g)
 	}
 }
 
-// STUB: POPCAPGAME1 0x0047eb70
+// FUNCTION: POPCAPGAME1 0x0047eb70
 void Poly::EditDrawPoints(Graphics* g)
 {
+	EnsureLines();
+	float centerX = (mUnk0x1c + mUnk0x14) * 0.5f;
+	float centerY = (mUnk0x20 + mUnk0x18) * 0.5f;
+	if ((mUnk0x114 < centerX - 10.0f || mUnk0x114 > centerX + 10.0f ||
+		 mUnk0x118 < centerY - 10.0f || mUnk0x118 > centerY + 10.0f) &&
+		!PointInside(mUnk0x114, mUnk0x118)) {
+		int pointCount = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Poly.cpp103,1055", 5);
+		for (int i = 0; i < pointCount; i++) {
+			float amount = (i + 0.5f) / pointCount;
+			float inverse = 1.0f - amount;
+			g->FillRect(
+				(int)(mUnk0x114 * inverse + centerX * amount),
+				(int)(mUnk0x118 * inverse + centerY * amount),
+				1,
+				1);
+		}
+		g->FillRect((int)mUnk0x114, (int)mUnk0x118, 1, 1);
+	}
+
+	g->FillRect((int)(mUnk0x114 - 1.0f), (int)(mUnk0x118 - 1.0f), 3, 3);
+	for (int i = 0; i < (int)mUnk0x108.size(); i++) {
+		Line* line = mUnk0x108[i];
+		g->FillRect((int)(line->mUnk0xec - 1.0f), (int)(line->mUnk0xf4 - 1.0f), 3, 3);
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0047edb0
@@ -253,9 +279,83 @@ void Poly::EditGetDragMode(float param_1, float param_2)
 {
 }
 
-// STUB: POPCAPGAME1 0x00486fe0
+// FUNCTION: POPCAPGAME1 0x00486fe0
 void Poly::EditDoPointDrag(float param_1, float param_2)
 {
+	if (mUnk0xd8 == 0) {
+		return;
+	}
+	if (mUnk0xd8 == -1) {
+		MoveCenterTo(param_1, param_2);
+		return;
+	}
+
+	FRect rect;
+	if (!GetStandardRectF(&rect)) {
+		if (mUnk0xd8 < 1 || mUnk0xd8 > (int)mUnk0xe8.size()) {
+			return;
+		}
+
+		bool moveClosingPoint = false;
+		if (mUnk0xd8 == 1) {
+			moveClosingPoint = mUnk0xe8.front() == mUnk0xe8.back();
+		}
+		if (mUnk0x11c != 0.0f) {
+			RotateXY(&param_1, &param_2, mUnk0x114, mUnk0x118, -mUnk0x11c);
+		}
+
+		SexyVector2& point = mUnk0xe8[mUnk0xd8 - 1];
+		point.x = param_1 - mUnk0x114;
+		point.y = param_2 - mUnk0x118;
+		if (moveClosingPoint) {
+			mUnk0xe8.back() = mUnk0xe8.front();
+		}
+		InitFromPoints();
+		return;
+	}
+
+	float left = rect.mX;
+	float top = rect.mY;
+	float right = rect.mX + rect.mWidth;
+	float bottom = rect.mY + rect.mHeight;
+	switch (mUnk0xd8) {
+	case 1:
+		left = param_1;
+	case 2:
+		top = param_2;
+		break;
+	case 3:
+		right = param_1;
+		top = param_2;
+		break;
+	case 4:
+		left = param_1;
+		break;
+	case 5:
+		right = param_1;
+		break;
+	case 6:
+		left = param_1;
+	case 7:
+		bottom = param_2;
+		break;
+	case 8:
+		right = param_1;
+		bottom = param_2;
+		break;
+	default:
+		return;
+	}
+
+	if (right < left) {
+		std::swap(left, right);
+	}
+	if (bottom < top) {
+		std::swap(top, bottom);
+	}
+	float height = max((bottom - top) + 1.0f, 1.0f);
+	float width = max((right - left) + 1.0f, 1.0f);
+	InitFromRect(left, top, width, height);
 }
 
 // FUNCTION: POPCAPGAME1 0x0052a680
@@ -263,9 +363,24 @@ void Poly::EditFinishDrag()
 {
 }
 
-// STUB: POPCAPGAME1 0x00485540
-void Poly::EditReflect(float param_1, float param_2, bool param_3)
+// FUNCTION: POPCAPGAME1 0x00485540
+void Poly::EditReflect(float param_1, float param_2, bool param_3, bool param_4)
 {
+	PhysObj::EditReflect(param_1, param_2, param_3, param_4);
+	if (!param_4) {
+		return;
+	}
+
+	for (int i = 0; i < (int)mUnk0xe8.size(); i++) {
+		if (param_3) {
+			mUnk0xe8[i].x = -mUnk0xe8[i].x;
+		}
+		else {
+			mUnk0xe8[i].y = -mUnk0xe8[i].y;
+		}
+	}
+	std::reverse(mUnk0xe8.begin(), mUnk0xe8.end());
+	InitFromPoints();
 }
 
 // FUNCTION: POPCAPGAME1 0x00476d70
@@ -369,9 +484,54 @@ void Poly::DrawShadow(Graphics* g)
 	}
 }
 
-// STUB: POPCAPGAME1 0x0047e7e0
+// FUNCTION: POPCAPGAME1 0x0047e7e0
 void Poly::Draw(Graphics* g)
 {
+	if (mUnk0xb4 == NULL || mOutlineMode == 2) {
+		DrawPoly(g, mUnk0x40, mUnk0x44);
+		return;
+	}
+
+	Rect rect;
+	if (!mUnk0x12f || !GetStandardRect(&rect)) {
+		bool smooth = !mUnk0x27 && (g->mIs3D || mUnk0x2d);
+		if (mUnk0x138 == 0 || mUnk0x13c == 0) {
+			DrawImage(g, mUnk0x114, mUnk0x118, mUnk0x128, smooth, mUnk0x130);
+			if (mUnk0x140 > 0 &&
+				(mUnk0x140 / ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Poly.cpp99,907", 20)) % 2 == 0) {
+				g->SetColor(Color(ModVal(
+					0,
+					"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Poly.cpp100,909",
+					0x808080)));
+				g->SetColorizeImages(true);
+				g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+				DrawImage(g, mUnk0x114, mUnk0x118, mUnk0x128, smooth, mUnk0x130);
+				g->SetColorizeImages(false);
+				g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+			}
+		}
+		else {
+			float percent = mUnk0x138 / ModVal(
+				0,
+				"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Poly.cpp98,902",
+				20.0f);
+			DrawImage(g, mUnk0x114, mUnk0x118, mUnk0x128, smooth, mUnk0x13c, percent);
+		}
+	}
+	else {
+		for (int x = 0; x < rect.mWidth; x += mUnk0xb4->mWidth) {
+			int width = min(mUnk0xb4->mWidth, rect.mWidth - x);
+			for (int y = 0; y < rect.mHeight; y += mUnk0xb4->mHeight) {
+				int height = min(mUnk0xb4->mHeight, rect.mHeight - y);
+				Rect source(0, 0, width, height);
+				g->DrawImage(mUnk0xb4, x + rect.mX, y + rect.mY, source);
+			}
+		}
+	}
+
+	if (mOutlineMode == 1) {
+		DrawPoly(g, 0, 0xffffff);
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0047a230
@@ -515,19 +675,70 @@ void Poly::ActualSetPos(float param_1, float param_2)
 	int i = 0;
 	for (std::vector<SmartPtr<Line>>::iterator it = mUnk0x108.begin(); it != mUnk0x108.end(); ++it, i++) {
 		Line* aLine = *it;
-		SexyVector2* aLineStart = mUnk0xf8[i];
-		aLine->SetPos(mUnk0x114 + aLineStart->x, mUnk0x118 + aLineStart->y);
+		SexyVector2& aLineStart = mUnk0xf8[i];
+		aLine->SetPos(mUnk0x114 + aLineStart.x, mUnk0x118 + aLineStart.y);
 	}
 }
 
-// STUB: POPCAPGAME1 0x0047bab0
+// FUNCTION: POPCAPGAME1 0x0047bab0
 void Poly::CalcBoundingBox()
 {
+	mUnk0x14 = 1.0e12f;
+	mUnk0x18 = 1.0e12f;
+	mUnk0x1c = -1.0e12f;
+	mUnk0x20 = -1.0e12f;
+
+	for (std::vector<SmartPtr<Line>>::iterator it = mUnk0x108.begin(); it != mUnk0x108.end(); ++it)
+	{
+		Line* aLine = *it;
+		if (aLine->mUnk0x14 < mUnk0x14)
+			mUnk0x14 = aLine->mUnk0x14;
+		if (mUnk0x1c < aLine->mUnk0x1c)
+			mUnk0x1c = aLine->mUnk0x1c;
+		if (aLine->mUnk0x18 < mUnk0x18)
+			mUnk0x18 = aLine->mUnk0x18;
+		if (mUnk0x20 < aLine->mUnk0x20)
+			mUnk0x20 = aLine->mUnk0x20;
+	}
 }
 
-// STUB: POPCAPGAME1 0x0047d3a0
+// FUNCTION: POPCAPGAME1 0x0047d3a0
 void Poly::CheckConvex()
 {
+	if (mUnk0xe8.size() <= 2)
+		return;
+
+	SexyVector2& aFirst = mUnk0xe8.front();
+	SexyVector2& aLast = mUnk0xe8.back();
+	mUnk0x12e = aFirst.x == aLast.x && aFirst.y == aLast.y;
+	if (!mUnk0x12e)
+	{
+		mUnk0x12d = false;
+		return;
+	}
+
+	mUnk0x12d = true;
+	float aCrossSign = 0.0f;
+	SexyVector2 aCurrent = aFirst;
+	SexyVector2 aPrevious(
+		aFirst.x - mUnk0xe8[mUnk0xe8.size() - 2].x,
+		aFirst.y - mUnk0xe8[mUnk0xe8.size() - 2].y);
+
+	for (int i = 1; i < (int) mUnk0xe8.size(); i++)
+	{
+		SexyVector2& aPoint = mUnk0xe8[i];
+		SexyVector2 aDelta(aPoint.x - aCurrent.x, aPoint.y - aCurrent.y);
+		float aCross = aDelta.y * aPrevious.x - aDelta.x * aPrevious.y;
+		if ((aCrossSign < 0.0f && aCross > 0.0f) || (aCrossSign > 0.0f && aCross < 0.0f))
+		{
+			mUnk0x12d = false;
+			return;
+		}
+		if (aCrossSign == 0.0f && aCross != 0.0f)
+			aCrossSign = aCross;
+		aCurrent = aPoint;
+		aPrevious = aDelta;
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0047d5b0
@@ -539,15 +750,15 @@ void Poly::InitRotatedFromPoints(float param_1)
 		float fVar1 = cos(param_1);
 		float fVar2 = sin(param_1);
 
-		SexyVector2* aPoint0 = mUnk0xe8[0];
-		float fVar3 = fVar2 * aPoint0->y - fVar1 * aPoint0->x;
-		float fVar4 = fVar1 * aPoint0->y + fVar2 * aPoint0->x;
+		SexyVector2& aPoint0 = mUnk0xe8[0];
+		float fVar3 = fVar2 * aPoint0.y - fVar1 * aPoint0.x;
+		float fVar4 = fVar1 * aPoint0.y + fVar2 * aPoint0.x;
 
 		int i = 0;
-		for (std::vector<SexyVector2*>::iterator it = mUnk0xe8.begin(); it != mUnk0xe8.end(); ++it, i++) {
-			SexyVector2* aPoint = *it;
-			float fVar5 = aPoint->x;
-			float fVar6 = aPoint->y;
+		for (std::vector<SexyVector2>::iterator it = mUnk0xe8.begin(); it != mUnk0xe8.end(); ++it, i++) {
+			SexyVector2& aPoint = *it;
+			float fVar5 = aPoint.x;
+			float fVar6 = aPoint.y;
 			float fVar7 = fVar1 * fVar5 + fVar2 * fVar6;
 			float fVar8 = fVar6 * fVar1 - fVar2 * fVar5;
 			Line* aLine = mUnk0x108[i];
@@ -558,9 +769,9 @@ void Poly::InitRotatedFromPoints(float param_1)
 				mUnk0x118 + fVar8
 			);
 
-			SexyVector2* aLineStart = mUnk0xf8[i];
-			aLineStart->x = aLine->mUnk0xec - mUnk0x114;
-			aLineStart->y = aLine->mUnk0xf4 - mUnk0x118;
+			SexyVector2& aLineStart = mUnk0xf8[i];
+			aLineStart.x = aLine->mUnk0xec - mUnk0x114;
+			aLineStart.y = aLine->mUnk0xf4 - mUnk0x118;
 		}
 
 		CalcBoundingBox();
@@ -579,8 +790,8 @@ void Poly::DelayedInitRotatedFromPoints(float param_1)
 	float fVar2 = sin(param_1);
 
 	for (int i = 0; i < mUnk0xe8.size(); i++) {
-		float x = mUnk0xe8[i]->x;
-		float y = mUnk0xe8[i]->y;
+		float x = mUnk0xe8[i].x;
+		float y = mUnk0xe8[i].y;
 		float fVar3 = fVar2 * y + fVar1 * x + mUnk0x114;
 		float fVar4 = (y * fVar1 - fVar2 * x) + mUnk0x118;
 
@@ -629,30 +840,105 @@ bool Poly::PointInside(float param_1, float param_2)
 	return uVar1 & 1;
 }
 
-// STUB: POPCAPGAME1 0x0047e4b0
+// FUNCTION: POPCAPGAME1 0x0047e4b0
 bool Poly::GetStandardRectF(FRect* param_1)
 {
-	return false;
+	if (!mUnk0x12c || mUnk0x108.size() != 4 || mUnk0x11c != 0.0f)
+		return false;
+
+	EnsureLines();
+	Line* aStartLine = mUnk0x108.front();
+	Line* anOppositeLine = mUnk0x108[mUnk0x108.size() - 2];
+	param_1->mX = aStartLine->mUnk0xec;
+	param_1->mY = aStartLine->mUnk0xf4;
+	param_1->mWidth = anOppositeLine->mUnk0xec - aStartLine->mUnk0xec;
+	param_1->mHeight = anOppositeLine->mUnk0xf4 - aStartLine->mUnk0xf4;
+	return true;
 }
 
-// STUB: POPCAPGAME1 0x0047e390
+// FUNCTION: POPCAPGAME1 0x0047e390
 bool Poly::GetStandardRect(Rect* param_1)
 {
-	return false;
+	if (!mUnk0x12c || mUnk0x108.size() != 4 || mUnk0x11c != 0.0f)
+		return false;
+
+	EnsureLines();
+	Line* aStartLine = mUnk0x108.front();
+	Line* anOppositeLine = mUnk0x108[mUnk0x108.size() - 2];
+	param_1->mX = (int) aStartLine->mUnk0xec;
+	param_1->mY = (int) aStartLine->mUnk0xf4;
+	param_1->mWidth = (int) (anOppositeLine->mUnk0xec - aStartLine->mUnk0xec);
+	param_1->mHeight = (int) (anOppositeLine->mUnk0xf4 - aStartLine->mUnk0xf4);
+	return true;
 }
 
-// STUB: POPCAPGAME1 0x00w
+// FUNCTION: POPCAPGAME1 0x0047ef90
 bool Poly::EditIntersects(Rect* param_1)
 {
+	EnsureLines();
+
+	Rect aStandardRect;
+	if (mUnk0x134 == -1 && GetStandardRect(&aStandardRect))
+	{
+		Rect aHandleRect(aStandardRect.mX - 5, aStandardRect.mY - 5, 10, 10);
+		return aHandleRect.Intersects(*param_1);
+	}
+
+	Rect aBounds(
+		(int) mUnk0x14,
+		(int) mUnk0x18,
+		(int) (mUnk0x1c - mUnk0x14),
+		(int) (mUnk0x20 - mUnk0x18));
+	if (!aBounds.Intersects(*param_1))
+		return false;
+
+	for (int i = 0; i < (int) mUnk0x108.size(); i++)
+	{
+		if (mUnk0x108[i]->IsPartlyInsideRect(param_1))
+			return true;
+	}
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x0047e5b0
+// FUNCTION: POPCAPGAME1 0x0047e5b0
 void Poly::DrawPoly(Graphics* g, int param_2, int param_3)
 {
+	if (ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Poly.cpp96,809", true)) {
+		EnsureLines();
+	}
+
+	if (param_2 != 0) {
+		g->SetColor(Color(param_2));
+		Rect rect;
+		if (GetStandardRect(&rect)) {
+			g->FillRect(rect);
+		}
+		else if (mUnk0x108.size() >= 2) {
+			Point points[100];
+			int pointCount = min((int)mUnk0x108.size(), 100);
+			for (int i = 0; i < (int)mUnk0x108.size(); i++) {
+				Line* line = mUnk0x108[i];
+				points[i].mX = (int)line->mUnk0xec;
+				points[i].mY = (int)line->mUnk0xf4;
+			}
+			g->PolyFill(points, pointCount, mUnk0x12d);
+		}
+	}
+
+	if (param_3 != 0) {
+		g->SetColor(Color(param_3));
+		for (int i = 0; i < (int)mUnk0x108.size(); i++) {
+			Line* line = mUnk0x108[i];
+			g->DrawLine(
+				(int)line->mUnk0xec,
+				(int)line->mUnk0xf4,
+				(int)line->mUnk0xf0,
+				(int)line->mUnk0xf8);
+		}
+	}
 }
 
-// STUB: POPCAPGAME1 0x0047dfe0
+// FUNCTION: POPCAPGAME1 0x0047dfe0
 bool Poly::CheckCollision(
 	SexyVector2* param_1,
 	SexyVector2* param_2,
@@ -664,38 +950,183 @@ bool Poly::CheckCollision(
 	SexyVector2* param_8
 )
 {
+	if (mUnk0x14 - 20.0f > param_1->x + param_3 ||
+		param_1->x - param_3 > mUnk0x1c + 20.0f ||
+		mUnk0x18 - 20.0f > param_1->y + param_3 ||
+		param_1->y - param_3 > mUnk0x20 + 20.0f)
+	{
+		return false;
+	}
+
+	EnsureLines();
+	bool isConvex = mUnk0x12d;
+	bool checkPenetration = mUnk0x134 == 1 && mUnk0x12e;
+	float aClosestDepth = 1.0e7f;
+	Line* aClosestLine = NULL;
+	Line* aHitLine = NULL;
+	uint aCrossingCount = 0;
+
+	for (std::vector<SmartPtr<Line>>::iterator it = mUnk0x108.begin();
+		it != mUnk0x108.end(); ++it)
+	{
+		Line* aLine = it->get();
+		if (aLine->CheckCollision(
+			param_1, param_2, param_3, param_4,
+			param_5, param_6, param_7, false))
+		{
+			aHitLine = aLine;
+		}
+
+		if (checkPenetration)
+		{
+			SexyVector2 aDelta = *param_1 - SexyVector2(aLine->mUnk0xec, aLine->mUnk0xf4);
+			float aDepth = -SexyVector2(aLine->mUnk0x104, aLine->mUnk0x108).Dot(aDelta);
+			bool isCandidate = isConvex;
+			if (!isConvex)
+			{
+				float aStartY = aLine->mUnk0xf4;
+				float anEndY = aLine->mUnk0xf8;
+				if ((aStartY != anEndY && aStartY <= param_1->y && param_1->y < anEndY) ||
+					(anEndY <= param_1->y && param_1->y < aStartY))
+				{
+					float anIntersectX =
+						((param_1->y - aStartY) * (aLine->mUnk0xf0 - aLine->mUnk0xec)) /
+						(anEndY - aStartY) + aLine->mUnk0xec;
+					if (param_1->x < anIntersectX)
+						aCrossingCount++;
+				}
+				isCandidate = aDepth > 0.0f;
+			}
+
+			if (isCandidate && aDepth < aClosestDepth)
+			{
+				aClosestDepth = aDepth;
+				aClosestLine = aLine;
+			}
+		}
+	}
+
+	if (isConvex && aClosestDepth > 0.0f)
+		aCrossingCount = 1;
+
+	if ((aCrossingCount & 1) != 0 && aClosestLine != NULL && *param_4 != 0.0f)
+	{
+		*param_4 = 0.0f;
+		SexyVector2 aNormal(aClosestLine->mUnk0x104, aClosestLine->mUnk0x108);
+		*param_5 = *param_1 + aNormal * (aClosestDepth + param_3);
+		aClosestLine->CalcEdgeHitVelocity(&aNormal, param_7);
+		*param_6 = aNormal;
+		aHitLine = aClosestLine;
+	}
+
+	if (aHitLine != NULL)
+	{
+		if (mUnk0x120 != 0.0f)
+		{
+			param_8->x += (param_5->y - mUnk0x118) * mUnk0x120;
+			param_8->y -= mUnk0x120 * (param_5->x - mUnk0x114);
+		}
+		return true;
+	}
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x0047d810
+// FUNCTION: POPCAPGAME1 0x0047d810
 void Poly::SetRotation(float param_1)
 {
+	if (param_1 == mUnk0x11c)
+		return;
+
+	mUnk0x128 = mUnk0x11c = NormalizeAngle(param_1);
+	if (mMover.get() != NULL)
+		mMover->mRotation = mUnk0x11c;
+	InitRotatedFromPoints(mUnk0x11c);
 }
 
 // FUNCTION: POPCAPGAME1 0x00483330
 void Poly::AddPoint(float param_1, float param_2)
 {
-	mUnk0xe8.push_back(new SexyVector2(param_1, param_2));
+	mUnk0xe8.push_back(SexyVector2(param_1, param_2));
 }
 
-// STUB: POPCAPGAME1 0x00484730
+// FUNCTION: POPCAPGAME1 0x00484730
 void Poly::InitFromPoints()
 {
+	int aLineCount = (int) mUnk0xe8.size() - 1;
+	if ((int) mUnk0x108.size() != aLineCount)
+	{
+		mUnk0x108.clear();
+		for (int i = 0; i < aLineCount; i++)
+		{
+			mUnk0x108.push_back(new Line(0.0f, 0.0f, 0.0f, 0.0f));
+			mUnk0x108.back()->mUnk0x111 = mUnk0x134 != 0;
+			mUnk0xf8.push_back(SexyVector2(0.0f, 0.0f));
+		}
+	}
+
+	if (mUnk0x11c == 0.0f)
+	{
+		for (int i = 0; i < aLineCount; i++)
+		{
+			SexyVector2& aStart = mUnk0xe8[i];
+			SexyVector2& anEnd = mUnk0xe8[i + 1];
+			Line* aLine = mUnk0x108[i];
+			aLine->Init(
+				aStart.x + mUnk0x114,
+				aStart.y + mUnk0x118,
+				anEnd.x + mUnk0x114,
+				anEnd.y + mUnk0x118);
+			mUnk0xf8[i] = SexyVector2(aLine->mUnk0xec - mUnk0x114, aLine->mUnk0xf4 - mUnk0x118);
+		}
+		CalcBoundingBox();
+	}
+	else
+	{
+		InitRotatedFromPoints(mUnk0x11c);
+	}
+
+	CheckConvex();
 }
 
-// STUB: POPCAPGAME1 0x00484e80
+// FUNCTION: POPCAPGAME1 0x00484e80
 void Poly::ReverseLines()
 {
+	std::reverse(mUnk0xe8.begin(), mUnk0xe8.end());
+	InitFromPoints();
 }
 
-// STUB: POPCAPGAME1 0x00486e20
+// FUNCTION: POPCAPGAME1 0x00486e20
 void Poly::SetNormalDir(int param_1)
 {
+	if (param_1 == -mUnk0x134)
+	{
+		ReverseLines();
+	}
+	else if (param_1 == 0)
+	{
+		for (std::vector<SmartPtr<Line>>::iterator it = mUnk0x108.begin(); it != mUnk0x108.end(); ++it)
+			(*it)->mUnk0x111 = false;
+		mUnk0x134 = 0;
+		return;
+	}
+	mUnk0x134 = param_1;
 }
 
-// STUB: POPCAPGAME1 0x00484dc0
+// FUNCTION: POPCAPGAME1 0x00484dc0
 void Poly::Close()
 {
+	if (mUnk0xe8.size() > 1)
+	{
+		SexyVector2& aFirst = mUnk0xe8.front();
+		SexyVector2& aLast = mUnk0xe8.back();
+		float aDx = aLast.x - aFirst.x;
+		float aDy = aLast.y - aFirst.y;
+		if (aDx * aDx + aDy * aDy < 100.0f)
+			aLast = aFirst;
+		else
+			mUnk0xe8.push_back(aFirst);
+		InitFromPoints();
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x00484b30
@@ -704,9 +1135,9 @@ void Poly::MoveCenterTo(float param_1, float param_2)
 	float fVar1 = param_1 - mUnk0x114;
 	float fVar2 = param_2 - mUnk0x118;
 	for (int i = 0; i < (int)mUnk0xe8.size(); i++) {
-		SexyVector2* aPoint = mUnk0xe8[i];
-		aPoint->x -= fVar1;
-		aPoint->y -= fVar2;
+		SexyVector2& aPoint = mUnk0xe8[i];
+		aPoint.x -= fVar1;
+		aPoint.y -= fVar2;
 	}
 
 	mUnk0x114 += fVar1;
@@ -728,9 +1159,9 @@ void Poly::SetScale(float param_1)
 	if (param_1 > 0) {
 		float aScale = param_1 / mUnk0x124;
 		for (int i = 0; i < (int)mUnk0xe8.size(); i++) {
-			SexyVector2* aPoint = mUnk0xe8[i];
-			aPoint->x *= aScale;
-			aPoint->y *= aScale;
+			SexyVector2& aPoint = mUnk0xe8[i];
+			aPoint.x *= aScale;
+			aPoint.y *= aScale;
 		}
 
 		mUnk0x124 = param_1;

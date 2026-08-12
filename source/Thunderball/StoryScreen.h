@@ -14,6 +14,7 @@ class ThunderButton;
 class HyperlinkWidget;
 class StoryData;
 class StageInfo;
+struct Particle;
 
 class StoryScreen : public Widget, public ButtonListener {
 public:
@@ -24,24 +25,28 @@ public:
     int mUnk0x9c; // +0x9c
 	int mUnk0xa0; // +0xa0
 	int mUnk0xa4; // +0xa4
-    int mUnk0xa8; // +0xa8
+	bool mUnk0xa8; // +0xa8
+	char mPadding0xa9[3]; // +0xa9
     int mUnk0xac; // +0xac
 	int mUnk0xb0; // +0xb0
 	int mUnk0xb4; // +0xb4
 	int mUnk0xb8; // +0xb8
+	float mParticleX; // +0xbc
+	float mParticleY; // +0xc0
+	float mParticleVX; // +0xc4
+	float mParticleVY; // +0xc8
 	int mUnk0xcc; // +0xcc
-	int mUnk0xd4; // +0xd4
-	int mUnk0xd8; // +0xd8
-	int mUnk0xdc; // +0xdc
-	int mUnk0xe4; // +0xe4
-	int mUnk0xe8; // +0xe8
-	int mUnk0xec; // +0xec
+	std::vector<Particle*> mParticles; // +0xd0
+	std::vector<Particle*> mStars; // +0xe0
+	bool mUnk0xf0; // +0xf0
 	bool mUnk0xf1; // +0xf1
 	bool mUnk0xf2; // +0xf2
+	char mPadding0xf3; // +0xf3
 	int mUnk0xf4; // +0xf4
     int mUnk0xf8; // +0xf8
 	int mUnk0xfc; // +0xfc
 	int mUnk0x100; // +0x100
+	float mUnk0x104; // +0x104
 	int mUnk0x108; // +0x108
 	int mUnk0x10c; // +0x10c
 
@@ -59,7 +64,7 @@ public:
 	void DrawFireworks(Graphics* g);
 	void DrawStars(Graphics* g);
 	void DrawWin(Graphics* g);
-	void DoDrawText(Graphics* g, Rect& param_2, std::vector<StoryData> param_3, int param_4);
+	void DoDrawText(Graphics* g, Rect& param_2, std::vector<StoryData>& param_3, int param_4);
 	void DoUpdate();
 	void UpdateParticles();
 	void UpdateStars();

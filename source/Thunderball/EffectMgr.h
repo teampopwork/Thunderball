@@ -1,21 +1,52 @@
 #ifndef __EFFECT_MGR_H__
 #define __EFFECT_MGR_H__
 
+#include <SexyAppFramework/SmartPtr.h>
+
+#include <list>
+
 namespace Sexy
 {
 class PhysObj;
 class Graphics;
+class Image;
 class DataSync;
 class SexyVector2;
 enum EffectType;
 
 class Effect {
 public:
+	int mUnk0x4;
+	EffectType mType;
 	int mUnk0xc;
+	int mUnk0x10;
+	float mUnk0x14;
+	float mUnk0x18;
+	float mUnk0x1c;
+	float mUnk0x20;
+	float mUnk0x24;
+	float mUnk0x28;
+	float mUnk0x2c;
+	int mUnk0x30;
+	int mUnk0x34;
+	int mUnk0x38;
+	int mUnk0x3c;
+	bool mUnk0x40;
+	Image* mUnk0x44;
+	Image* mUnk0x48;
+	RefCountPtr mUnk0x4c;
+	RefCountPtr mUnk0x50;
+	RefCountPtr mUnk0x54;
+
+	Effect();
+	Effect(const Effect& param_1);
+	virtual ~Effect();
 };
 
 class EffectMgr {
 public:
+	std::list<Effect> mEffects[5];
+
 	EffectMgr();
 	virtual ~EffectMgr();
 
@@ -49,15 +80,14 @@ public:
 	void SyncState(DataSync& param_1);
 
 	Effect* GetEffectByType(EffectType param_1);
-	void EraseAllOfType(EffectType param_1);
-	void SetPriority(Effect* param_1, int param_2);
+	int EraseAllOfType(EffectType param_1);
+	Effect* SetPriority(Effect* param_1, int param_2);
 	void Draw(Graphics* param_1, int param_2);
 
 	void FinishFeverRainbow();
 	int ClampPriority(int param_1);
 	int PriorityToList(int param_1);
 	void SetCrackPoint(SexyVector2* param_1, int param_2, int param_3, int param_4);
-	void SetPriority(Effect* param_1, int param_2, int param_3); // overload helper
 };
 
 } // namespace Sexy

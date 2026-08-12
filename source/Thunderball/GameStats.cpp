@@ -58,19 +58,36 @@ void GameStats::CheckBestShot(int theScore)
 // FUNCTION: POPCAPGAME1 0x00402f50
 int GameStats::GetTotalFreeBalls()
 {
-    return 0;
+    return mUnk0xc + (mUnk0x10 + mUnk0x14 + mUnk0x18);
 }
 
 // FUNCTION: POPCAPGAME1 0x00407460
 int GameStats::GetTotalStylePoints()
 {
-    return 0;
+    int aTotal = 0;
+    int i = 0;
+    int* aShotCounts = &mUnk0x1c;
+
+    do {
+        aTotal += GetStyleShotScore((StyleShot) i, false, 0) * *aShotCounts;
+        ++i;
+        ++aShotCounts;
+    } while (i < 20);
+
+    return aTotal;
 }
 
 // FUNCTION: POPCAPGAME1 0x00402f60
 int GameStats::GetTotalStyleShots() 
 {
-    return 0;
+    int aTotal = 0;
+    int* aShotCounts = &mUnk0x1c;
+
+    for (int i = 0; i < 20; ++i) {
+        aTotal += aShotCounts[i];
+    }
+
+    return aTotal;
 }
 
 // FUNCTION: POPCAPGAME1 0x00402da0

@@ -1,5 +1,6 @@
 #include "LoadingScreen.h"
 
+#include "PlayerInfo.h"
 #include "Res.h"
 #include "SafetyCheck.h"
 #include "ThunderButton.h"
@@ -269,10 +270,17 @@ void LoadingScreen::ButtonDepress(int theId)
 	mApp->ShowBoard(true, true);
 }
 
-// STUB: POPCAPGAME1 0x00494850
+// FUNCTION: POPCAPGAME1 0x00494850
 void LoadingScreen::QuickPlay()
 {
-	printf("QuickPlay invoked\n");
+	if (mApp->mCurProfile != NULL) {
+		int aLevel = mApp->mCurProfile->mUnk0x3c;
+		if (aLevel < 0 || aLevel >= 10) {
+			aLevel = 0;
+		}
+		mApp->mUnk0x764 = aLevel;
+		mApp->mUnk0x768 = 0;
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x004948b0

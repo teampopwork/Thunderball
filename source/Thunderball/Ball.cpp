@@ -20,7 +20,7 @@ using namespace Sexy;
 float Sexy::Ball::mDefRadius = 6.0f;
 
 // FUNCTION: POPCAPGAME1 0x00480de0
-Ball::Ball(bool param_1 = false)
+Ball::Ball(bool param_1)
 {
     mUnk0xe8 = mCurSortId;
     mUnk0x140 = param_1;
@@ -271,9 +271,118 @@ void Ball::SetVelocity(float param_1, float param_2)
     mUnk0x100 = param_2;
 }
 
-// STUB: POPCAPGAME1 0x0047a450
+// FUNCTION: POPCAPGAME1 0x0047a450
 void Ball::Update()
 {
+	if (mUnk0x18c)
+	{
+		mUnk0x4c++;
+		return;
+	}
+
+	if (mUnk0x140)
+	{
+		mUnk0xf4 = mUnk0xec;
+		mUnk0xf8 = mUnk0xf0;
+		PhysObj::Update();
+		mUnk0x141 = true;
+		return;
+	}
+
+	PhysObj::Update();
+	mUnk0x148++;
+	if (mUnk0x150 != 0 && --mUnk0x150 == 0)
+		mUnk0x154 = 0;
+
+	mUnk0xe4++;
+	if (mUnk0xe4 % 10 == 0)
+	{
+		int aHistoryCount = mUnk0xe4 / 10;
+		if (aHistoryCount < 1)
+			aHistoryCount = 1;
+		else if (aHistoryCount > 6)
+			aHistoryCount = 6;
+
+		SexyVector2* aHistory = mUnk0x10c;
+		aHistory[aHistoryCount - 1].x = mUnk0xec;
+		aHistory[aHistoryCount - 1].y = mUnk0xf0;
+		bool aWasSlow = mUnk0x164;
+		mUnk0x164 = false;
+		for (int i = 0; i < aHistoryCount - 1; i++)
+		{
+			float aDx = aHistory[i].x - mUnk0xec;
+			float aDy = aHistory[i].y - mUnk0xf0;
+			float aDistanceSquared = aDx * aDx + aDy * aDy;
+			if (aDistanceSquared >= 4.0f)
+			{
+				mUnk0xe4 = 0;
+				break;
+			}
+			if (aDistanceSquared >= 0.040000003f && !aWasSlow)
+			{
+				mUnk0xe4 -= 5;
+				aWasSlow = true;
+				mUnk0x164 = true;
+			}
+		}
+	}
+
+	mUnk0xf4 = mUnk0xec;
+	mUnk0xf8 = mUnk0xf0;
+	if (mUnk0x14c > 0)
+	{
+		mUnk0xe4 = 0;
+		if (--mUnk0x14c != 0)
+		{
+			mUnk0x141 = true;
+			return;
+		}
+
+		SetActive(true);
+		if (mUnk0x15c != NULL)
+		{
+			SetAbsPos(mUnk0x15c->GetXPos(), mUnk0x15c->GetYPos());
+			mUnk0x15c = NULL;
+		}
+	}
+
+	mUnk0x100 += PhysObj::mGravity;
+	if (mUnk0x18d)
+	{
+		float aMaxHatY = mUnk0xf0 + 2.0;
+		if (aMaxHatY < mUnk0x108)
+			mUnk0x108 = aMaxHatY;
+
+		mUnk0x104 += (mUnk0xec - mUnk0x104) * 0.25;
+		mUnk0x108 += (mUnk0xf0 - mUnk0x108) * 0.25;
+		if (mUnk0x188 != NULL)
+		{
+			float aHatX = mUnk0x104 + ModVal(
+				0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Ball.cpp4,1048", 0);
+			float aHatY = mUnk0x108 - ModVal(
+				0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Ball.cpp5,1049", 21);
+			mUnk0x188->SetPos(aHatX, aHatY);
+		}
+	}
+
+	float aMaxSpeed = ModVal(
+		0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Ball.cpp6,1055", 15.0f);
+	SexyVector2 aVelocity(mUnk0xfc, mUnk0x100);
+	if (aVelocity.MagnitudeSquared() > aMaxSpeed * aMaxSpeed)
+	{
+		aVelocity = aVelocity.Normalize() * aMaxSpeed;
+		mUnk0xfc = aVelocity.x;
+		mUnk0x100 = aVelocity.y;
+	}
+
+	mUnk0x14 = mUnk0xec - mUnk0x13c + (mUnk0xfc < 0.0f ? mUnk0xfc : 0.0f);
+	mUnk0x1c = mUnk0xec + mUnk0x13c + (mUnk0xfc > 0.0f ? mUnk0xfc : 0.0f);
+	mUnk0x18 = mUnk0xf0 - mUnk0x13c + (mUnk0x100 < 0.0f ? mUnk0x100 : 0.0f);
+	mUnk0x20 = mUnk0xf0 + mUnk0x13c + (mUnk0x100 > 0.0f ? mUnk0x100 : 0.0f);
+	mUnk0x141 = false;
+	mUnk0x142 = false;
+	mUnk0x134 = mUnk0xec;
+	mUnk0x138 = mUnk0xf0;
 }
 
 // FUNCTION: POPCAPGAME1 0x0047a8d0
@@ -717,14 +826,72 @@ void Ball::DoBallBallCollision(Ball* param_1)
     }
 }
 
-// STUB: POPCAPGAME1 0x00477340
+// FUNCTION: POPCAPGAME1 0x00477340
 void Ball::DoBallPegCollision(Ball* param_1)
 {
+	float aDx = mUnk0xec - param_1->mUnk0xec;
+	float aDy = mUnk0xf0 - param_1->mUnk0xf0;
+	float aDistanceSquared = aDx * aDx + aDy * aDy;
+	float aThisRadius = mUnk0x13c;
+	float anOtherRadius = param_1->mUnk0x13c;
+	SexyVector2 aNormal = SexyVector2(
+		param_1->mUnk0xec - mUnk0xec,
+		param_1->mUnk0xf0 - mUnk0xf0).Normalize();
+
+	float aThisVX = mUnk0xfc;
+	float aThisVY = mUnk0x100;
+	float anOtherVX = param_1->mUnk0xfc;
+	float anOtherVY = param_1->mUnk0x100;
+	mUnk0x168 = -aNormal;
+
+	float aBounce = param_1->mUnk0x34;
+	float aSlideThreshold = param_1->mUnk0x38;
+	if (aBounce == 0.0f)
+		aBounce = 0.9f;
+	if (aSlideThreshold == 0.0f)
+		aSlideThreshold = ModVal(
+			0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Ball.cpp1,533", 1.0f);
+
+	float anImpulse = ((aThisVX - anOtherVX) * aNormal.x +
+		(aThisVY - anOtherVY) * aNormal.y) * aBounce;
+	if (fabs(anImpulse) <= aSlideThreshold)
+		mUnk0x148 = 0;
+	else
+		anImpulse += anImpulse;
+	mUnk0x170 = fabs(anImpulse);
+
+	if (!mUnk0x161 || param_1->mPegInfo.get() == NULL)
+	{
+		float aResponse = -(anImpulse / 999999995905.0) * 999999995904.0;
+		mUnk0xfc = aThisVX + aResponse * aNormal.x;
+		mUnk0x100 = aThisVY + aResponse * aNormal.y;
+		float anOverlap = aThisRadius + anOtherRadius - sqrtf(aDistanceSquared);
+		Translate(-anOverlap * aNormal.x, -anOverlap * aNormal.y);
+		if (param_1->mUnk0x2b)
+			mUnk0xe4 = 0;
+	}
+
+	if (mNotifyCollisionFunc != NULL)
+		mNotifyCollisionFunc(this, param_1);
 }
 
-// STUB: POPCAPGAME1 0x004775b0
+// FUNCTION: POPCAPGAME1 0x004775b0
 void Ball::DoBallCollision(Ball* param_1)
 {
+	if (mUnk0x140)
+	{
+		if (param_1->mUnk0x140)
+			return;
+		param_1->DoBallPegCollision(this);
+	}
+	else if (param_1->mUnk0x140)
+	{
+		DoBallPegCollision(param_1);
+	}
+	else
+	{
+		DoBallBallCollision(param_1);
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0047a3b0
@@ -760,7 +927,7 @@ void Ball::CheckBallCollision(Ball* param_1)
     (void)aRadiusSum;
 }
 
-// STUB: POPCAPGAME1 0x004775f0
+// FUNCTION: POPCAPGAME1 0x004775f0
 void Ball::DoLineCollision(
 	SexyVector2* param_1,
 	PhysObj* param_2,
@@ -770,9 +937,173 @@ void Ball::DoLineCollision(
 	SexyVector2* param_6
 )
 {
+	mUnk0x168 = *param_3;
+	if (mUnk0x161 && param_2->mPegInfo.get() != NULL)
+	{
+		if (mNotifyCollisionFunc != NULL)
+			mNotifyCollisionFunc(this, param_2);
+		return;
+	}
+
+	SetPos(param_4->x, param_4->y);
+	SexyVector2 aRelativeVelocity = *param_1 - *param_5;
+	float anImpact = -param_3->Dot(aRelativeVelocity - *param_6);
+	if (anImpact < 0.0f)
+	{
+		mUnk0x170 = 0.0f;
+		return;
+	}
+	mUnk0x170 = anImpact;
+
+	float aBounce = param_2->mUnk0x34;
+	float aSlideThreshold = param_2->mUnk0x38;
+	if (aBounce == 0.0f)
+		aBounce = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Ball.cpp2,674", 0.82f);
+	if (aSlideThreshold == 0.0f)
+		aSlideThreshold = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Ball.cpp3,675", 1.4f);
+	if (fabs(param_3->x) > 0.99)
+		anImpact *= 5.0;
+
+	if (anImpact <= aSlideThreshold)
+	{
+		mUnk0x148 = 0;
+		SexyVector2 aTangent = *param_1 - *param_3 * param_1->Dot(*param_3);
+		float aRotationDot = param_3->Dot(*param_6);
+		if (aRotationDot <= 0.0f)
+			*param_6 = SexyVector2(0.0f, 0.0f);
+		else
+			*param_6 = *param_3 * aRotationDot;
+		mUnk0xfc = param_5->x + aTangent.x + param_6->x;
+		mUnk0x100 = param_5->y + aTangent.y + param_6->y;
+	}
+	else
+	{
+		float aNormalSpeed = param_1->Dot(*param_3);
+		if (aNormalSpeed < 0.0f)
+			*param_1 = (*param_1 - *param_3 * (aNormalSpeed * 2.0)) * aBounce;
+
+		SexyVector2 anAddedVelocity = (*param_5 + *param_6) * (aBounce + 1.0);
+		if (anAddedVelocity.Dot(*param_3) > 0.0f)
+			Translate(anAddedVelocity.x, anAddedVelocity.y);
+		*param_1 += anAddedVelocity;
+		mUnk0xfc = param_1->x;
+		mUnk0x100 = param_1->y;
+
+		float aMaxSpeed = param_2->mUnk0x3c;
+		if (aMaxSpeed > 0.0f &&
+			aMaxSpeed * aMaxSpeed < mUnk0xfc * mUnk0xfc + mUnk0x100 * mUnk0x100)
+		{
+			SexyVector2 aVelocity = SexyVector2(mUnk0xfc, mUnk0x100).Normalize() * aMaxSpeed;
+			mUnk0xfc = aVelocity.x;
+			mUnk0x100 = aVelocity.y;
+		}
+	}
+
+	if (param_2->mUnk0x2b)
+		mUnk0xe4 = 0;
+	if (mNotifyCollisionFunc != NULL)
+		mNotifyCollisionFunc(this, param_2);
 }
 
-// STUB: POPCAPGAME1 0x0047f160
-void Ball::DoCollideUpdate(std::vector<PhysObj*>* param_1, SexyVector2* param_2)
+// FUNCTION: POPCAPGAME1 0x0047f160
+bool Ball::DoCollideUpdate(std::vector<PhysObj*>* param_1, SexyVector2* param_2)
 {
+	if (mUnk0x140 || (!mUnk0x24 && !mUnk0x18c))
+		return false;
+
+	float aRemainingTime = 1.0f;
+	float aHitTime = 1.0f;
+	mUnk0x141 = true;
+	bool didCollide = false;
+	Line::mAllowKissCollision = true;
+	int anIteration = 0;
+
+	while (true)
+	{
+		SexyVector2 aPosition(mUnk0xec, mUnk0xf0);
+		SexyVector2 aVelocity(mUnk0xfc, mUnk0x100);
+		SexyVector2 aHitPoint(0.0f, 0.0f);
+		SexyVector2 aHitNormal(0.0f, 0.0f);
+		SexyVector2 aHitVelocity(0.0f, 0.0f);
+		SexyVector2 anAngularVelocity(0.0f, 0.0f);
+		PhysObj* aHitObject = NULL;
+
+		for (size_t i = 0; i < param_1->size(); i++)
+		{
+			PhysObj* anObject = (*param_1)[i];
+			bool didHit = false;
+			if (anObject->mUnk0x10 == 4)
+			{
+				didHit = ((Line*) anObject)->CheckCollision(
+					&aPosition, &aVelocity, mUnk0x13c, &aHitTime,
+					&aHitPoint, &aHitNormal, &aHitVelocity, true);
+				if (didHit)
+					anAngularVelocity = SexyVector2(0.0f, 0.0f);
+			}
+			else if (anObject->mUnk0x10 == 5)
+			{
+				didHit = ((Poly*) anObject)->CheckCollision(
+					&aPosition, &aVelocity, mUnk0x13c, &aHitTime,
+					&aHitPoint, &aHitNormal, &aHitVelocity, &anAngularVelocity);
+			}
+			else if (anObject->mUnk0x10 == 3)
+			{
+				didHit = ((Ball*) anObject)->CheckCollision(
+					&aPosition, &aVelocity, mUnk0x13c, &aHitTime, &aHitPoint);
+			}
+
+			if (didHit)
+				aHitObject = anObject;
+		}
+
+		if (aHitObject == NULL)
+			break;
+
+		if (!mUnk0x161 || aHitObject->mPegInfo.get() == NULL)
+		{
+			mUnk0x142 = true;
+			mUnk0x165 = true;
+			didCollide = true;
+			if (param_2 != NULL && anIteration == 0)
+				*param_2 = aHitPoint;
+
+			if (aHitObject->mUnk0x10 == 3)
+			{
+				SetPos(aHitPoint.x, aHitPoint.y);
+				DoBallCollision((Ball*) aHitObject);
+			}
+			else
+			{
+				DoLineCollision(
+					&aVelocity, aHitObject, &aHitNormal,
+					&aHitPoint, &aHitVelocity, &anAngularVelocity);
+			}
+
+			mUnk0x134 = mUnk0xec;
+			mUnk0x138 = mUnk0xf0;
+			aRemainingTime -= aHitTime;
+			aHitTime = aRemainingTime;
+		}
+		else
+		{
+			if (mNotifyCollisionFunc != NULL)
+				mNotifyCollisionFunc(this, aHitObject);
+			for (std::vector<PhysObj*>::iterator it = param_1->begin(); it != param_1->end(); ++it)
+			{
+				if (*it == aHitObject)
+				{
+					param_1->erase(it);
+					break;
+				}
+			}
+		}
+
+		anIteration++;
+		if (anIteration > 19)
+			return didCollide;
+	}
+
+	mUnk0xec += aRemainingTime * mUnk0xfc;
+	mUnk0xf0 += aRemainingTime * mUnk0x100;
+	return didCollide;
 }

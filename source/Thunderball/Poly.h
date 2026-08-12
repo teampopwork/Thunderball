@@ -6,17 +6,16 @@
 
 #include <string>
 #include <vector>
+#include <SexyAppFramework/SexyVector.h>
 
 namespace Sexy
 {
 
-class SexyVector2;
-
 // VTABLE: POPCAPGAME1 0x005f1f4c
 class Poly : public PhysObj {
 public:
-	std::vector<SexyVector2*> mUnk0xe8;    // +0xe4
-	std::vector<SexyVector2*> mUnk0xf8;    // +0xf8
+	std::vector<SexyVector2> mUnk0xe8;     // +0xe4
+	std::vector<SexyVector2> mUnk0xf8;     // +0xf4
 	std::vector<SmartPtr<Line>> mUnk0x108; // +0x108
 	float mUnk0x114;                       // +0x114
 	float mUnk0x118;                       // +0x118
@@ -49,7 +48,7 @@ public:
 	virtual void EditGetDragMode(float param_1, float param_2);
 	virtual void EditDoPointDrag(float param_1, float param_2);
 	virtual void EditFinishDrag();
-	virtual void EditReflect(float param_1, float param_2, bool param_3);
+	virtual void EditReflect(float param_1, float param_2, bool param_3, bool param_4);
 	virtual void SetPos(float param_1, float param_2);
 	virtual void Translate(float param_1, float param_2);
 	virtual void SetVelocity(float param_1, float param_2);

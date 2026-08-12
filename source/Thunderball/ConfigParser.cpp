@@ -19,10 +19,11 @@ ConfigParser::~ConfigParser()
 	// TODO
 }
 
-// STUB: POPCAPGAME1 0x004be580
+// FUNCTION: POPCAPGAME1 0x004be580
 void ConfigParser::SetThrowExceptions(bool on)
 {
-	// TODO
+	mValParserThrowExceptions = on;
+	mThrowExceptions = on;
 }
 
 // STUB: POPCAPGAME1 0x004be5a0

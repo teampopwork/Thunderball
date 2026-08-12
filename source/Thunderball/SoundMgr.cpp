@@ -104,10 +104,28 @@ void SoundMgr::SyncState(DataSync& theSync)
 	}
 }
 
-// STUB: POPCAPGAME1 0x00458e80
-SoundInstance* SoundMgr::PlaySample(SoundDesc* param_1)
+// FUNCTION: POPCAPGAME1 0x00458e80
+void SoundMgr::PlaySample(SoundDesc* param_1)
 {
-	return NULL;
+	int& aLastPlayTime = mUnk0x28[param_1];
+	if (aLastPlayTime != 0 && GetThunderballApp()->mUpdateCount - aLastPlayTime < param_1->mUnk0x0) {
+		return;
+	}
+
+	aLastPlayTime = GetThunderballApp()->mUpdateCount;
+	SoundInstance* anInstance = GetThunderballApp()->mSoundManager->GetSoundInstance(param_1->mUnk0x4);
+	if (anInstance != NULL) {
+		if (param_1->mUnk0xc != 0.0f) {
+			anInstance->AdjustPitch(param_1->mUnk0xc);
+		}
+		if (param_1->mUnk0x8 != 0) {
+			anInstance->SetPan(param_1->mUnk0x8);
+		}
+		if (0.0f < param_1->mUnk0x10) {
+			anInstance->SetVolume(param_1->mUnk0x10);
+		}
+		anInstance->Play(false, true);
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0045af70
@@ -116,42 +134,97 @@ void SoundMgr::AddSound(int param_1, int param_2)
 	AddSound(param_1, 0.0f, 0,0, param_2, -1.0f);
 }
 
+// FUNCTION: POPCAPGAME1 0x0045afa0
+void SoundMgr::AddSound(int param_1, float param_2, int param_3)
+{
+	AddSound(param_1, param_2, 0, 0, param_3, -1.0f);
+}
+
 // FUNCTION: POPCAPGAME1 0x00458f30
 void SoundMgr::AddSound(int param_1, float param_2, int param_3, int param_4, int param_5, float param_6)
 {
 	if (param_6 == 0.0f) {
-		SoundDesc theDesc;
-		theDesc.mUnk0x4 = param_1;
-		theDesc.mUnk0xc = param_2;
-		theDesc.mUnk0x8 = param_3;
-		theDesc.mUnk0x0 = param_5;
-		theDesc.mUnk0x10 = param_6;
-		if (param_4 == 0) {
-			PlaySample(&theDesc);
-		} else {
-			theDesc.mUnk0x0 = param_4 + mUnk0x10;
-			theDesc.mUnk0x4 = param_5;
-			theDesc.mUnk0x8 = param_1;
-			theDesc.mUnk0xc = param_3;
-			theDesc.mUnk0x10 = param_2;
-			mUnk0x4.insert(std::pair<int, SoundDesc*>(theDesc.mUnk0x0, &theDesc));
+		return;
+	}
+
+	SoundDesc theDesc;
+	theDesc.mUnk0x0 = param_5;
+	theDesc.mUnk0x4 = param_1;
+	theDesc.mUnk0x8 = param_3;
+	theDesc.mUnk0xc = param_2;
+	theDesc.mUnk0x10 = param_6;
+	if (param_4 == 0) {
+		PlaySample(&theDesc);
+		return;
+	}
+
+	mUnk0x4.insert(std::pair<int, SoundDesc>(mUnk0x10 + param_4, theDesc));
+}
+
+// FUNCTION: POPCAPGAME1 0x00452810
+void SoundMgr::AddFadeSound(SoundInstance* param_1)
+{
+	mUnk0x48.push_back(param_1);
+}
+
+// FUNCTION: POPCAPGAME1 0x00441d50
+void SoundMgr::UpdateSounds()
+{
+	if (mUnk0x20 > 0 && --mUnk0x20 == 0) {
+		mUnk0x18 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\SoundMgr.cpp1422,199", 0.01f);
+	}
+
+	if (mUnk0x18 != 0.0f) {
+		float aMinVolume = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\SoundMgr.cpp1423,204", 0.4f);
+		float anOldVolume = mUnk0x14;
+		mUnk0x14 += mUnk0x18;
+		if (mUnk0x14 < aMinVolume) {
+			mUnk0x14 = aMinVolume;
+		}
+		else if (mUnk0x14 > 1.0f) {
+			mUnk0x14 = 1.0f;
+		}
+
+		if (anOldVolume != mUnk0x14) {
+			ThunderballApp* anApp = GetThunderballApp();
+			anApp->mMusicInterface->SetSongVolume(anApp->mUnk0x77c, mUnk0x14);
+		}
+	}
+
+	for (std::list<SoundInstance*>::iterator it = mUnk0x48.begin(); it != mUnk0x48.end();) {
+		SoundInstance* anInstance = *it;
+		if (!anInstance->IsPlaying()) {
+			anInstance->Release();
+			it = mUnk0x48.erase(it);
+		}
+		else {
+			float aVolume = (float) (anInstance->GetVolume() - 0.05);
+			if (aVolume <= 0.0f) {
+				anInstance->Release();
+				it = mUnk0x48.erase(it);
+			}
+			else {
+				anInstance->SetVolume(aVolume);
+				++it;
+			}
 		}
 	}
 }
 
-// STUB: POPCAPGAME1 0x00452810
-void SoundMgr::AddFadeSound(SoundInstance* param_1)
-{
-}
-
-// STUB: POPCAPGAME1 0x00441d50
-void SoundMgr::UpdateSounds()
-{
-}
-
-// STUB: POPCAPGAME1 0x00458fc0
+// FUNCTION: POPCAPGAME1 0x00458fc0
 void SoundMgr::Update()
 {
+	++mUnk0x10;
+	for (std::multimap<int, SoundDesc>::iterator it = mUnk0x4.begin(); it != mUnk0x4.end();) {
+		if (it->first <= mUnk0x10) {
+			PlaySample(&it->second);
+			it = mUnk0x4.erase(it);
+		}
+		else {
+			++it;
+		}
+	}
+	UpdateSounds();
 }
 
 // STUB: POPCAPGAME1 0x

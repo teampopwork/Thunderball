@@ -597,8 +597,8 @@ void Board::UpdateTwoPlayerStats()
         mApp->mUnk0x898 = 1;
     }
 
-    mApp->mUnk0x89c->Add(mLogicMgr->mUnk0x248[0]);
-    mApp->mUnk0x908->Add(mLogicMgr->mUnk0x248[1]);
+    mApp->mTwoPlayerStats[0].Add(mLogicMgr->mUnk0x248[0]);
+    mApp->mTwoPlayerStats[1].Add(mLogicMgr->mUnk0x248[1]);
 
     if (999999999 < mApp->mUnk0x88c || 999999999 < mApp->mUnk0x890) {
         mApp->mUnk0x88c = 0;
@@ -1161,21 +1161,96 @@ void Board::SetSyncPoint(DataWriter* param_1, bool param_2)
 {
 }
 
-// STUB: POPCAPGAME1 0x00424c50
+// FUNCTION: POPCAPGAME1 0x00424c50
 void Board::EndReplay()
 {
+	if (mUnk0x188 != NULL) {
+		SetSyncPoint(mUnk0x188, false);
+		delete mUnk0x188;
+		mUnk0x188 = NULL;
+		if (mUnk0xc5) {
+			return;
+		}
+		mLogicMgr->mUnk0xf5 = false;
+	}
+	else if (mLogicMgr->mUnk0xf5) {
+		mLogicMgr->mUnk0xf5 = false;
+		if (mLogicMgr->mUnk0x4 == 0) {
+			mLogicMgr->BeginTurn(false);
+		}
+	}
+
+	if (!mUnk0xc5) {
+		if (mReplayDialog->mWidgetManager != NULL) {
+			mReplayDialog->DoScrollOff(false);
+			mReplayDialog->mUnk0x15C = 1;
+			mReplayDialog->mUnk0x150 = ModVal(
+				0,
+				"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp15,849",
+				10
+			) + mHeight - IMAGE_DLG_REPLAYTOP->mHeight;
+			mInterfaceMgr->mUnk0xf0 = 0;
+		}
+		if (mEndLevelDialog->mWidgetManager != NULL) {
+			mEndLevelDialog->SetVisible(true);
+		}
+	}
 }
 
-// STUB: POPCAPGAME1 0x00427e50
+// FUNCTION: POPCAPGAME1 0x00427e50
 bool Board::NeedSaveGame()
 {
+	EndReplay();
+	if (!mUnk0x120) {
+		return false;
+	}
+
+	if (mLogicMgr->mUnk0x4 == 5) {
+		if (mUnk0xb4 != GameMode::CHALLENGE || mUnk0x128 == NULL) {
+			return false;
+		}
+
+		int aMode = mEndLevelDialog->mUnk0x180;
+		if (aMode == 0) {
+			return true;
+		}
+		if (aMode <= 2) {
+			return false;
+		}
+		if (aMode > 5) {
+			return false;
+		}
+		return true;
+	}
+
+	if (mApp->mCurProfile == NULL) {
+		return false;
+	}
+
+	if (mUnk0xb4 == GameMode::ADVENTURE) {
+		return true;
+	}
+	if (mUnk0xb4 == GameMode::QUICK_PLAY) {
+		return mLogicMgr->mUnk0x174 > 0;
+	}
+	if (mUnk0xb4 == GameMode::CHALLENGE) {
+		return mUnk0xf0 > 0 || mLogicMgr->mUnk0x174 > 0;
+	}
+	if (mUnk0xb4 == GameMode::DUEL) {
+		return mLogicMgr->mUnk0x174 > 0 || mLogicMgr->mUnk0x178 > 0;
+	}
 	return false;
 }
 
-// STUB: POPCAPGAME1 0x004249c0
-void* Board::GetSyncPoint()
+// FUNCTION: POPCAPGAME1 0x004249c0
+DataWriter* Board::GetSyncPoint()
 {
-	return NULL;
+	DataWriter* aWriter = new DataWriter();
+	aWriter->OpenMemory(32);
+	DataSync aSync(*aWriter);
+	SyncState(aSync);
+	aSync.SyncPointers();
+	return aWriter;
 }
 
 // STUB: POPCAPGAME1 0x00424d40
@@ -1183,10 +1258,15 @@ void Board::ShowReplay(int param_1, bool param_2)
 {
 }
 
-// STUB: POPCAPGAME1 0x00424be0
-void* Board::GetReplayPoint()
+// FUNCTION: POPCAPGAME1 0x00424be0
+void Board::GetReplayPoint()
 {
-	return NULL;
+	DataWriter* aWriter = GetSyncPoint();
+	mUnk0x174.push_back(aWriter);
+	if (mUnk0x174.size() >= 50) {
+		delete mUnk0x174.front();
+		mUnk0x174.pop_front();
+	}
 }
 
 // STUB: POPCAPGAME1 0x00424860

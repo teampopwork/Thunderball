@@ -6,26 +6,64 @@
 #include "PlayerInfo.h"
 #include "Res.h"
 #include "StageMgr.h"
+#include "TrophyMgr.h"
 
 #include <SexyAppFramework/HyperlinkWidget.h>
 #include <SexyAppFramework/ModVal.h>
 #include <SexyAppFramework/Font.h>
+#include <SexyAppFramework/ResourceManager.h>
+#include <SexyAppFramework/SexyMatrix.h>
 #include <SexyAppFramework/SoundManager.h>
 #include <SexyAppFramework/SoundInstance.h>
 
+#include <cmath>
 #include <string>
 
 using namespace Sexy;
 
+namespace Sexy
+{
+struct Particle {
+	float mX;
+	float mY;
+	float mVX;
+	float mVY;
+	int mAge;
+	int mDuration;
+	int mType;
+	int mUnk0x1c;
+
+	__declspec(noinline) Particle();
+	__declspec(noinline) void Update();
+};
+}
+
+// FUNCTION: POPCAPGAME1 0x00489ce0
+Particle::Particle()
+{
+	mX = 0.0f;
+	mY = 0.0f;
+	mVX = 0.0f;
+	mVY = 0.0f;
+	mAge = 0;
+	mDuration = 0;
+	mType = 0;
+	mUnk0x1c = 0;
+}
+
+// FUNCTION: POPCAPGAME1 0x00489d00
+void Particle::Update()
+{
+	++mAge;
+	mX += mVX;
+	mY += mVY;
+	// STRING: POPCAPGAME1 0x005f38b8
+	mVY += ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp0,44", 0.01f);
+}
+
 // FUNCTION: POPCAPGAME1 0x0048d150
 StoryScreen::StoryScreen(ThunderballApp* theApp, bool param_2, bool param_3)
 {
-	mUnk0xd4 = 0;
-	mUnk0xd8 = 0;
-	mUnk0xdc = 0;
-	mUnk0xe4 = 0;
-	mUnk0xe8 = 0;
-	mUnk0xec = 0;
 	mUnk0xf1 = param_2;
 	mApp = theApp;
 	mUnk0xf2 = param_3;
@@ -83,14 +121,19 @@ StoryScreen::StoryScreen(ThunderballApp* theApp, bool param_2, bool param_3)
 // SYNTHETIC: POPCAPGAME1 0x0048b5c0
 // Sexy::StoryScreen::`scalar deleting destructor'
 
-// STUB: POPCAPGAME1 0x0048b500
+// FUNCTION: POPCAPGAME1 0x0048b500
 StoryScreen::~StoryScreen()
 {
+	RemoveAllWidgets(true, false);
 }
 
-// STUB: POPCAPGAME1 0x00489ec0
+// FUNCTION: POPCAPGAME1 0x00489ec0
 void StoryScreen::ButtonDepress(int theId)
 {
+	if (mUnk0xa8 != 0)
+		mApp->ShowMainMenu();
+	else
+		mApp->ShowBoard(true, true);
 }
 
 // FUNCTION: POPCAPGAME1 0x00489ee0
@@ -423,9 +466,121 @@ void StoryScreen::Draw(Graphics* g)
     } 
 }
 
-// STUB: POPCAPGAME1 0x0048b860
+// FUNCTION: POPCAPGAME1 0x0048b860
 void StoryScreen::DrawOverlay(Graphics* g)
 {
+	g->SetColor(Color(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp122,812", 0)));
+	if (mUnk0xb4 < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp123,816", 500)) {
+		g->FillRect(0, 0, mWidth, mHeight);
+		DrawStars(g);
+
+		int anAlpha = 255;
+		if (mUnk0xb4 > 450) {
+			float aFade = (float) (500 - mUnk0xb4);
+			anAlpha = (int) (aFade / 50.0 * 255.0);
+		}
+
+		g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+		g->SetColor(Color(0xffffff, anAlpha));
+		Transform aTransform;
+		aTransform.RotateRad(
+			ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp124,830", 9.28f) *
+			(float) std::sin(
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp125,830", 0.007f) *
+				mUnk0xb4));
+		g->DrawImageTransform(
+			IMAGE_UPSELL_ZEN,
+			aTransform,
+			(float) ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp126,831", 400),
+			(float) ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp127,831", 300));
+		g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+	} else if (mUnk0xb4 < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp128,835", 850)) {
+		int aCellSize = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp129,837", 40);
+		int aColumnDelay = 0;
+		int aStartDelay = 21;
+		for (int aColumn = 0, aCellX = 0; aCellX < 800;
+			++aColumn, aCellX = aColumn * aCellSize, aColumnDelay += 18, aStartDelay += 7) {
+			int aCellDelay = aStartDelay;
+			int aCellPhase = 0;
+			for (int aRow = 0, aCellY = 0; aCellY < 600;
+				++aRow, aCellY = aRow * aCellSize, aCellPhase += 23,
+				aCellDelay += aColumn + 3) {
+				int aTrigger = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp130,844", 500) +
+					((aColumnDelay + aCellDelay + aCellPhase) % 8) * 40;
+				int anOffsetX = 0;
+				int anOffsetY = 0;
+				float aScale = 1.0f;
+				if (mUnk0xb4 < aTrigger) {
+					g->SetColor(Color(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp131,849", 0)));
+				} else {
+					int aDelta = aTrigger - mUnk0xb4;
+					anOffsetY = (int) (
+						ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp133,852", 0.1) *
+							aDelta * aDelta +
+						ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp132,852", 6.5) *
+							aDelta);
+					int aWobble =
+						(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp135,853", 117) * aColumn +
+							ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp136,853", 37) * aRow) %
+							50 - 25;
+					anOffsetX = (int) (
+						ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp134,853", 0.2) *
+							aDelta * aWobble);
+					aScale = 1.0f -
+						(float) (mUnk0xb4 - aTrigger) /
+						ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp137,854", 80.0f);
+					if (aScale < 0.0f)
+						aScale = 0.0f;
+					int aBrightness = (int) ((1.0f - aScale) * 255.0);
+					g->SetColor(Color(aBrightness, aBrightness, aBrightness));
+				}
+
+				int aDrawSize = (int) ((float) aCellSize * aScale);
+				g->FillRect(aCellX + anOffsetX, aCellY + anOffsetY, aDrawSize, aDrawSize);
+			}
+		}
+	}
+
+	int anOffset = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp138,867", -600);
+	if (mUnk0xb4 >= ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp139,868", 50)) {
+		if (mUnk0xb4 < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp140,873", 100)) {
+			anOffset += ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp141,874", 12) *
+				(mUnk0xb4 - 50);
+		} else if (mUnk0xb4 < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp142,875", 400)) {
+			anOffset = 0;
+		} else if (mUnk0xb4 >= ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp143,877", 400)) {
+			anOffset = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp144,878", 12) *
+				(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp145,878", 400) - mUnk0xb4);
+		}
+
+		g->DrawImage(
+			IMAGE_MM_BJORN,
+			ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp146,881", 0) + anOffset,
+			ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp147,881", 200));
+		if (mUnk0xb4 > ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp148,883", 160) &&
+			mUnk0xb4 < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp149,883", 340)) {
+			g->DrawImage(
+				IMAGE_MM_SPEECHBUBBLE,
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp150,885", 280) + anOffset,
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp151,885", 180));
+			g->SetFont(GetFontById(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp152,887", 50)));
+			g->SetColor(Color(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp153,888", 100)));
+			Rect aTextRect(
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp154,890", 280) +
+					ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp155,890", 12) + anOffset,
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp156,890", 180) +
+					ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp157,890", 15),
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp158,890", 235),
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp159,890", 80));
+			std::string aText = ModVal(
+				0,
+				"SEXY_SEXYMODVAL.\\StoryScreen.cpp160,891",
+				"HANG ON FOLKS!!");
+			aTextRect.mY +=
+				(aTextRect.mHeight - GetWordWrappedHeight(g, aTextRect.mWidth, aText, 20)) / 2;
+			WriteWordWrapped(g, aTextRect, aText, 20, 0);
+		}
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0048f0e0
@@ -452,9 +607,53 @@ void StoryScreen::Update()
     DoUpdate();
 }
 
-// STUB: POPCAPGAME1 0x0048b5f0
+// FUNCTION: POPCAPGAME1 0x0048b5f0
 void StoryScreen::InitText()
 {
+	int aStage = mUnk0x9c;
+	if (mUnk0xf1 || aStage > 10)
+		aStage = 10;
+	else if (aStage < 0)
+		aStage = 0;
+
+	mUnk0x98 = mApp->mStageMgr->GetStageInfo(aStage);
+	mUnk0xa8 = mUnk0x9c == 11 || mUnk0xf1;
+	if (mUnk0xa8) {
+		if (!mApp->mResourceManager->LoadResources("Story"))
+			mApp->ShowResourceError(true);
+		if (!ExtractStoryResources(mApp->mResourceManager))
+			mApp->ShowResourceError(true);
+		if (mApp->mCurProfile != NULL && !mUnk0xf1)
+			mApp->mCurProfile->RestartAdventure();
+		if (mUnk0xb0 == 0)
+			mApp->PlayMusic(2000, true);
+	}
+	else {
+		mApp->PlayMusic(49, true);
+	}
+
+	mUnk0xf0 = false;
+	mUnk0xf4 = 0;
+	mUnk0x108 = 0;
+	mUnk0x10c = 0;
+	mUnk0xfc = 0;
+	mUnk0x100 = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp11,144", 20);
+	mUnk0x90->SetVisible(false);
+	mUnk0x90->mX = -(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp12,146", 100) + mUnk0x90->mWidth);
+	mUnk0x104 = 0.0f;
+	mUnk0xac = 0;
+	if (!mUnk0xa8) {
+		mUnk0xac = 1;
+		if (mApp->mCurProfile != NULL) {
+			if (mApp->mCurProfile->mUnk0x48 < 4)
+				mUnk0xac = mApp->mCurProfile->mUnk0x48 + 1;
+			else
+				mUnk0xac += rand() % 3 + 1;
+		}
+		if (mUnk0x98->mUnk0x8[mUnk0xac].empty())
+			mUnk0xac = 1;
+	}
+	mUnk0x94->SetVisible(mUnk0xa8);
 }
 
 // FUNCTION: POPCAPGAME1 0x00489d40
@@ -472,42 +671,637 @@ void StoryScreen::PlayOdeNote(int noteId)
     }
 }
 
-// STUB: POPCAPGAME1 0x0048a090
+// FUNCTION: POPCAPGAME1 0x0048a090
 void StoryScreen::DrawFireworks(Graphics* g)
 {
+	g->SetColorizeImages(true);
+	for (unsigned int i = 0; i < mParticles.size(); ++i) {
+		if (mParticles[i]->mType == 1) {
+			int aCel = (int) (((double) mParticles[i]->mAge / mParticles[i]->mDuration) * 30.0);
+			g->SetColor(Color(
+				0,
+				0,
+				0,
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp161,908", 40) -
+					ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp162,908", 1) * aCel));
+			g->DrawImageCel(
+				IMAGE_FIREBALLFIRE,
+				Rect(
+					(int) (mParticles[i]->mX - ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp163,909", 4)),
+					(int) (mParticles[i]->mY - ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp164,909", 4)),
+					ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp165,909", 9),
+					ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp166,909", 9)),
+				aCel);
+		} else if (mParticles[i]->mType == 0) {
+			g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+			g->SetColor(Color(
+				mParticles[i]->mUnk0x1c,
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp167,914", 120)));
+			int aCel = (int) (((double) mParticles[i]->mAge / mParticles[i]->mDuration) * 14.0);
+			g->DrawImageCel(
+				IMAGE_STORY_BIGSPARKLE,
+				Rect(
+					(int) (mParticles[i]->mX - ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp168,916", 15)),
+					(int) (mParticles[i]->mY - ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp169,916", 15)),
+					ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp170,916", 30),
+					ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp171,916", 30)),
+				aCel);
+			g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+		} else if (mParticles[i]->mType == 2 || mParticles[i]->mType == 4) {
+			g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+			int anAlpha = (int) (255.0 -
+				((double) mParticles[i]->mAge / mParticles[i]->mDuration) * 255.0);
+			g->SetColor(Color(mParticles[i]->mUnk0x1c, anAlpha));
+			const bool isNukeStreak = mParticles[i]->mType == 4;
+			g->DrawImage(
+				IMAGE_NUKESTREAK,
+				(int) (mParticles[i]->mX - ModVal(
+					0,
+					isNukeStreak ? "SEXY_SEXYMODVAL.\\StoryScreen.cpp177,947" : "SEXY_SEXYMODVAL.\\StoryScreen.cpp172,925",
+					6)),
+				(int) (mParticles[i]->mY - ModVal(
+					0,
+					isNukeStreak ? "SEXY_SEXYMODVAL.\\StoryScreen.cpp178,947" : "SEXY_SEXYMODVAL.\\StoryScreen.cpp173,925",
+					6)),
+				ModVal(
+					0,
+					isNukeStreak ? "SEXY_SEXYMODVAL.\\StoryScreen.cpp179,947" : "SEXY_SEXYMODVAL.\\StoryScreen.cpp174,925",
+					13),
+				ModVal(
+					0,
+					isNukeStreak ? "SEXY_SEXYMODVAL.\\StoryScreen.cpp180,947" : "SEXY_SEXYMODVAL.\\StoryScreen.cpp175,925",
+					13));
+			g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+		} else if (mParticles[i]->mType == 3) {
+			g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+			int anAlpha = (int) (255.0 -
+				((double) mParticles[i]->mAge / mParticles[i]->mDuration) * 255.0);
+			g->SetColor(Color(mParticles[i]->mUnk0x1c, anAlpha));
+			Transform aTransform;
+			aTransform.Scale(
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp176,935", 0.75f),
+				1.0f);
+			aTransform.RotateRad((float) std::atan2(mParticles[i]->mVY, mParticles[i]->mVX) + 3.1415f);
+			g->DrawImageTransform(
+				IMAGE_STREAK,
+				aTransform,
+				mParticles[i]->mX,
+				mParticles[i]->mY);
+			g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+		}
+	}
+
+	if (mUnk0xcc >= 0) {
+		g->SetColor(Color(0xffffff));
+		Transform aTransform;
+		aTransform.Scale(
+			ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp181,958", 0.75f),
+			ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp182,958", 0.5f));
+		aTransform.RotateRad((float) std::atan2(mParticleVY, mParticleVX) + 3.1415f);
+		g->DrawImageTransform(IMAGE_STORY_ROCKET, aTransform, mParticleX, mParticleY);
+	}
+	g->SetColorizeImages(false);
 }
 
-// STUB: POPCAPGAME1 0x0048ab40
+// FUNCTION: POPCAPGAME1 0x0048ab40
 void StoryScreen::DrawStars(Graphics* g)
 {
+	g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+	g->SetColorizeImages(true);
+	g->SetColor(Color(0xffffff));
+
+	for (unsigned int i = 0; i < mStars.size(); ++i) {
+		if (mStars[i]->mType == 0) {
+			Rect aDestRect(
+				(int) (mStars[i]->mX - ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp183,975", 4)),
+				(int) (mStars[i]->mY - ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp184,975", 4)),
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp185,975", 9),
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp186,975", 9));
+			g->DrawImageCel(
+				IMAGE_STORY_BIGSPARKLE,
+				aDestRect,
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp187,975", 7));
+			continue;
+		}
+
+		g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+		g->SetColorizeImages(false);
+		Image* anImage = IMAGE_FLOWER;
+		if (mStars[i]->mType < 5) {
+			anImage = GetImageById(mStars[i]->mType + 0x1a0);
+		} else {
+			switch (mStars[i]->mType) {
+			case 6:
+				anImage = IMAGE_MAGICHAT;
+				break;
+			case 7:
+				anImage = IMAGE_FEVERSTAR_RED;
+				break;
+			case 8:
+				anImage = IMAGE_FEVERSTAR_GREEN;
+				break;
+			case 9:
+				anImage = IMAGE_FEVERSTAR_BLUE;
+				break;
+			}
+		}
+
+		Transform aTransform;
+		if (mStars[i]->mType != 1 && mStars[i]->mType != 6) {
+			aTransform.RotateRad((float) (ModVal(
+				0,
+				"SEXY_SEXYMODVAL.\\StoryScreen.cpp188,1009",
+				-0.05) * mStars[i]->mAge));
+		}
+		g->DrawImageTransform(anImage, aTransform, mStars[i]->mX, mStars[i]->mY);
+		g->SetDrawMode(Graphics::DRAWMODE_ADDITIVE);
+		g->SetColorizeImages(true);
+	}
+
+	g->SetColorizeImages(false);
+	g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
 }
 
-// STUB: POPCAPGAME1 0x0048af20
+// FUNCTION: POPCAPGAME1 0x0048af20
 void StoryScreen::DrawWin(Graphics* g)
 {
+	g->SetColor(Color(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp88,722", 0)));
+	g->FillRect(0, 0, mWidth, mHeight);
+	g->DrawImage(
+		IMAGE_STORY_WIN,
+		(mWidth - IMAGE_STORY_WIN->mWidth) / 2,
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp89,725", 0));
+	g->SetColor(Color(
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp90,727", 107),
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp91,727", 49),
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp92,727", 173)));
+	g->FillRect(
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp93,728", 283),
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp94,728", 118),
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp95,728", 262),
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp96,728", 294));
+	g->FillRect(
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp97,729", 313),
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp98,729", 232),
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp99,729", 412),
+		ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp100,729", 20));
+
+	if (mUnk0x98 != NULL) {
+		if (mUnk0xf2)
+			DeferOverlay(0);
+
+		Graphics aGraphics(*g);
+		Rect aClipRect(
+			ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp101,738", 280),
+			ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp102,738", 117),
+			ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp103,738", 266),
+			ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp104,738", 316));
+		aGraphics.ClipRect(aClipRect);
+
+		int aStoryTier = 0;
+		if (mApp->mCurProfile != NULL &&
+			mApp->mTrophyMgr->mTrophyInfos.size() <= mApp->mCurProfile->mUnk0xfc.size()) {
+			aStoryTier = 1;
+			if (mApp->mStageMgr->mUnk0x1c.size() <= mApp->mCurProfile->mUnk0x118.size())
+				aStoryTier = 2;
+		}
+		if (mUnk0xf2)
+			aStoryTier = 3;
+		if (mUnk0x98->mUnk0x8[aStoryTier].empty())
+			aStoryTier = 0;
+
+		std::vector<StoryData>& aStory = mUnk0x98->mUnk0x8[aStoryTier];
+		int aTextY = (int) (ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp105,759", 455) - mUnk0x104);
+		int aTextX = aClipRect.mX + aClipRect.mWidth / 2;
+		if (aStoryTier < 3) {
+			int aTrophyOffset = 0;
+			if (aStoryTier == 1)
+				aTrophyOffset = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp108,765", 60);
+			else if (aStoryTier == 2)
+				aTrophyOffset = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp109,765", 125);
+
+			aGraphics.DrawImageCel(
+				IMAGE_MM_TROPHIES,
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp106,764", 305),
+				aTextY + ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp107,765", 160) + aTrophyOffset,
+				aStoryTier);
+		}
+
+		for (unsigned int i = 1; i < aStory.size(); ++i) {
+			StoryData& aStoryData = aStory[i];
+			int aSpacing = 0;
+			switch (aStoryData.mUnk0x1c) {
+			case 0:
+				aGraphics.SetFont(GetFontById(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp110,774", 14)));
+				aGraphics.SetColor(Color(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp111,775", 0xffff88)));
+				aSpacing = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp112,776", 0);
+				break;
+			case 1:
+				aGraphics.SetFont(GetFontById(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp113,780", 48)));
+				aGraphics.SetColor(Color(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp114,781", 0xffff00)));
+				aSpacing = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp115,782", 0);
+				break;
+			case 2:
+				aTextY += ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp116,786", 20);
+				continue;
+			default:
+				aGraphics.SetFont(GetFontById(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp117,790", 51)));
+				aGraphics.SetColor(Color(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp118,791", 0xffffaa)));
+				aSpacing = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp119,792", 0);
+				break;
+			}
+
+			aTextY += aGraphics.GetFont()->GetHeight() + aSpacing;
+			aGraphics.DrawString(
+				aStoryData.mUnk0x0,
+				aTextX - aGraphics.GetFont()->StringWidth(aStoryData.mUnk0x0) / 2,
+				aTextY);
+		}
+
+		g->DrawImage(
+			IMAGE_STORY_CLAWS,
+			ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp120,802", 522),
+			ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp121,802", 386));
+		bool colorizeImages = g->mColorizeImages;
+		mUnk0xb8 = colorizeImages;
+		if (colorizeImages)
+			DrawFireworks(g);
+	}
 }
 
-// STUB: POPCAPGAME1 0x00489fd0
-void StoryScreen::DoDrawText(Graphics* g, Rect& param_2, std::vector<StoryData> param_3, int param_4)
+// FUNCTION: POPCAPGAME1 0x00489fd0
+void StoryScreen::DoDrawText(Graphics* g, Rect& param_2, std::vector<StoryData>& param_3, int param_4)
 {
+	Rect aRect = param_2;
+	StoryData& aStory = param_3[0];
+	int aMaxChars = mUnk0xf4 - mUnk0xf8;
+	if (aMaxChars > 0) {
+		if (!aStory.mUnk0x0.empty()) {
+			aRect.mY += g->WriteWordWrapped(
+				aRect,
+				aStory.mUnk0x0,
+				ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp87,708", -1),
+				param_4,
+				NULL,
+				aMaxChars,
+				NULL
+			);
+			mUnk0xf8 += aStory.mUnk0x0.length();
+			return;
+		}
+		aRect.mY += g->GetFont()->GetLineSpacing();
+		mUnk0xf8 += aStory.mUnk0x0.length();
+	}
 }
 
-// STUB: POPCAPGAME1 0x0048ee20
+// FUNCTION: POPCAPGAME1 0x0048ee20
 void StoryScreen::DoUpdate()
 {
+	if (mUnk0xa8) {
+		UpdateWin();
+		return;
+	}
+	if (mUnk0xf0)
+		return;
+
+	if (mUnk0x100 != 0) {
+		if (--mUnk0x100 == 0) {
+			++mUnk0x10c;
+			mUnk0x108 = 1;
+			mUnk0xfc = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp70,554", 20);
+			MarkDirty();
+		}
+		return;
+	}
+
+	if (mUnk0x108 != 0) {
+		MarkDirty();
+		if (++mUnk0x108 == 20)
+			mUnk0x108 = 0;
+	}
+	if (mUnk0xfc != 0) {
+		--mUnk0xfc;
+		return;
+	}
+
+	if (mUnk0xf4 < 1000000) {
+		++mUnk0xf4;
+		MarkDirty();
+		mApp->PlaySample(SOUND_TYPING);
+	}
+	if (mUnk0x98 == NULL) {
+		mUnk0xf0 = true;
+		return;
+	}
+
+	std::vector<StoryData>& aStory = mUnk0x98->mUnk0x8[mUnk0xac];
+	if (!aStory.empty()) {
+		std::string& aText = aStory[0].mUnk0x0;
+		int anOffset = mUnk0xf4 - 1;
+		if (anOffset >= 0 && anOffset < (int) aText.length()) {
+			switch (aText[anOffset]) {
+			case '!':
+				mUnk0xfc = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp71,607", 20);
+				break;
+			case '.':
+				mUnk0xfc = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp72,608", 10);
+				break;
+			case '?':
+				mUnk0xfc = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp73,609", 20);
+				break;
+			case ',':
+				mUnk0xfc = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp74,610", 10);
+				break;
+			default:
+				mUnk0xfc = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp75,613", 2);
+				break;
+			}
+
+			if (anOffset == aText.length() - 1) {
+				if (aStory.size() - 1 == 0)
+					mUnk0x100 = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp76,620", 50);
+				else
+					mUnk0xfc = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp77,622", 20);
+			}
+		}
+
+		if (mUnk0xfc == 0) {
+			mUnk0xf0 = true;
+			mUnk0x90->SetVisible(true);
+			mUnk0x90->mUnk0x154 = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp78,638", 120);
+			mUnk0x90->mUnk0x151 = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp79,639", 1) != 0;
+			mUnk0x90->Blink(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp80,640", 1000), true);
+			mApp->PlaySample(SOUND_TEXT_WOOSH);
+		}
+	}
 }
 
-// STUB: POPCAPGAME1 0x0048d520
+// FUNCTION: POPCAPGAME1 0x0048d520
 void StoryScreen::UpdateParticles()
 {
+	for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp53,426", 3); ++i) {
+		Particle* aParticle = new Particle();
+		aParticle->mX = mParticleX + rand() % 3;
+		aParticle->mY = mParticleY + rand() % 3 - 1.0f;
+		aParticle->mDuration = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp54,433", 30);
+		aParticle->mType = 1;
+
+		float anAngle = (float) ((rand() % 100) * 6.283 / 100.0);
+		float aSpeed = (float) ((rand() % 10) * (double) ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp55,437", 0.03f));
+		aParticle->mVX = (float) sin(anAngle) * aSpeed;
+		aParticle->mVY = (float) cos(anAngle) * aSpeed;
+		mParticles.push_back(aParticle);
+	}
+
+	for (int i = 0; i < (int) mParticles.size(); ++i) {
+		Particle* aParticle = mParticles[i];
+		if (aParticle->mAge >= aParticle->mDuration) {
+			delete aParticle;
+			mParticles[i] = mParticles.back();
+			mParticles.pop_back();
+			--i;
+		}
+		else {
+			aParticle->Update();
+		}
+	}
 }
 
-// STUB: POPCAPGAME1 0x0048d830
+// FUNCTION: POPCAPGAME1 0x0048d830
 void StoryScreen::UpdateStars()
 {
+	if (mUnk0xb4 < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp56,468", 400)) {
+		for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp57,470", 6); ++i) {
+			Particle* aStar = new Particle();
+			aStar->mX = (float) (ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp58,474", 400) - 5 + rand() % 10);
+			aStar->mY = (float) (ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp59,475", 300) - 5 + rand() % 10);
+
+			float anAngle = (float) ((rand() % 100) * 6.283 / 100.0);
+			float aSpeed = (float) ((rand() % 8 + 2) * (double) ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp60,478", 4.2f));
+			aStar->mVX = (float) sin(anAngle) * aSpeed;
+			aStar->mVY = (float) cos(anAngle) * aSpeed;
+			aStar->mType = 0;
+			aStar->mDuration = rand() % 30 + 70;
+
+			if (rand() % ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp61,486", 30) == 0 &&
+				mUnk0xb4 < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp62,486", 360)) {
+				aStar->mType = rand() % ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp63,488", 9) + 1;
+				float aLength = (float) sqrt(aStar->mVX * aStar->mVX + aStar->mVY * aStar->mVY);
+				if (aLength > 0.0f) {
+					aStar->mVX *= ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp64,492", 5.0f) / aLength;
+					aStar->mVY *= ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp65,493", 5.0f) / aLength;
+				}
+				aStar->mDuration *= 2;
+			}
+
+			mStars.push_back(aStar);
+		}
+	}
+
+	for (int i = 0; i < (int) mStars.size(); ++i) {
+		Particle* aStar = mStars[i];
+		if (aStar->mAge >= aStar->mDuration) {
+			delete aStar;
+			mStars[i] = mStars.back();
+			mStars.pop_back();
+			--i;
+			continue;
+		}
+
+		if (aStar->mType != 0) {
+			aStar->mVX += (rand() % 100 - 50) * ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp66,519", 0.005f);
+			aStar->mVY += (rand() % 100 - 50) * ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp67,520", 0.005f);
+			float aLength = (float) sqrt(aStar->mVX * aStar->mVX + aStar->mVY * aStar->mVY);
+			if (aLength > 0.0f) {
+				aStar->mVX *= ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp68,525", 5.0f) / aLength;
+				aStar->mVY *= ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp69,526", 5.0f) / aLength;
+			}
+		}
+
+		aStar->Update();
+	}
 }
 
-// STUB: POPCAPGAME1 0x0048dea0
+// FUNCTION: POPCAPGAME1 0x0048dea0
 void StoryScreen::UpdateWin()
 {
+	if (!mApp->mLoaded)
+		return;
+
+	if (mUnk0xb0 > 0) {
+		++mUnk0xb4;
+		--mUnk0xb0;
+		UpdateStars();
+		if (mUnk0xb4 == ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp13,199", 50))
+			mApp->PlaySample(SOUND_POWERUP_ZEN);
+		if (mUnk0xb4 >= 500 && mUnk0xb4 < 820 && (mUnk0xb4 - 500) % 40 == 0)
+			PlayOdeNote((mUnk0xb4 - 500) / 40);
+		if (mUnk0xb0 == 0)
+			mApp->PlayMusic(2000, true);
+		MarkDirty();
+		return;
+	}
+
+	if (mUnk0xcc > 0) {
+		--mUnk0xcc;
+		mParticleX += mParticleVX;
+		mParticleY += mParticleVY;
+	}
+	if (mUnk0xcc < 1) {
+		if (mParticleY < 500.0f) {
+			int aColor = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp14,227", 0xff5511);
+			int aColorChoice = rand();
+			if (aColorChoice % 3 == 0)
+				aColor = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp15,231", 0x55ff22);
+			else if (aColorChoice % 3 == 1)
+				aColor = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp16,234", 0x3355ff);
+
+			for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp17,240", 60); ++i) {
+				Particle* aParticle = new Particle();
+				aParticle->mX = mParticleX + rand() % 10 - 5.0f;
+				aParticle->mY = mParticleY + rand() % 10 - 5.0f;
+				float anAngle = (float) ((rand() % 100) * 6.283 / 100.0);
+				float aSpeed = (rand() % 8 + 2) *
+					ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp18,248", 0.2f);
+				aParticle->mVX = (float) sin(anAngle) * aSpeed;
+				aParticle->mVY = (float) cos(anAngle) * aSpeed;
+				aParticle->mType = 0;
+				aParticle->mUnk0x1c = aColor;
+				aParticle->mDuration = rand() % 30 + 70;
+				mParticles.push_back(aParticle);
+			}
+
+			for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp19,259", 120); ++i) {
+				Particle* aParticle = new Particle();
+				aParticle->mX = mParticleX + rand() % 10 - 5.0f;
+				aParticle->mY = mParticleY + rand() % 10 - 5.0f;
+				float anAngle = (float) ((rand() % 100) * 6.283 / 100.0);
+				float aSpeed = (rand() % 8 + 2) *
+					ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp20,267", 0.2f);
+				aParticle->mVX = (float) sin(anAngle) * aSpeed;
+				aParticle->mVY = (float) cos(anAngle) * aSpeed;
+				aParticle->mType = 2;
+				aParticle->mUnk0x1c = aColor;
+				aParticle->mDuration = rand() % 30 + 70;
+				mParticles.push_back(aParticle);
+			}
+
+			for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp21,278", 60); ++i) {
+				Particle* aParticle = new Particle();
+				aParticle->mX = mParticleX + rand() % 8 - 4.0f;
+				aParticle->mY = mParticleY + rand() % 8 - 4.0f;
+				float anAngle = (float) ((rand() % 100) * 6.283 / 100.0);
+				float aSpeed =
+					(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp23,286", 10) + rand() % 10) *
+					ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp22,286", 0.1f);
+				aParticle->mVX = (float) sin(anAngle) * aSpeed;
+				aParticle->mVY = (float) cos(anAngle) * aSpeed;
+				aParticle->mType = 3;
+				aParticle->mUnk0x1c = aColor;
+				aParticle->mDuration = rand() % 30 + 70;
+				mParticles.push_back(aParticle);
+			}
+
+			if (rand() % 2 == 0) {
+				for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp24,303", 30); ++i) {
+					Particle* aParticle = new Particle();
+					aParticle->mX = mParticleX + rand() % 8 - 4.0f;
+					aParticle->mY = mParticleY + rand() % 8 - 4.0f;
+					float anAngle = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp25,310", 2.2f) +
+						(rand() % 100) *
+							ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp26,310", 0.4f) / 100.0f;
+					float aSpeed =
+						(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp28,311", 4) +
+							rand() % ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp29,311", 2)) *
+						ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp27,311", 0.2f);
+					aParticle->mVX = (float) sin(anAngle) * aSpeed;
+					aParticle->mVY = (float) cos(anAngle) * aSpeed;
+					aParticle->mType = 4;
+					aParticle->mUnk0x1c = aColor;
+					aParticle->mDuration = rand() % 30 + 70;
+					mParticles.push_back(aParticle);
+				}
+
+				for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp30,323", 60); ++i) {
+					Particle* aParticle = new Particle();
+					aParticle->mX = mParticleX + rand() % 8 - 4.0f;
+					aParticle->mY = mParticleY + rand() % 8 - 4.0f;
+					float anAngle = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp31,330", -2.2f) -
+						(rand() % 100) *
+							ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp32,330", 0.4f) / 100.0f;
+					float aSpeed =
+						(ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp34,331", 4) +
+							rand() % ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp35,331", 2)) *
+						ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp33,331", 0.2f);
+					aParticle->mVX = (float) sin(anAngle) * aSpeed;
+					aParticle->mVY = (float) cos(anAngle) * aSpeed;
+					aParticle->mType = 4;
+					aParticle->mUnk0x1c = aColor;
+					aParticle->mDuration = rand() % 30 + 70;
+					mParticles.push_back(aParticle);
+				}
+
+				for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp36,346", 90); ++i) {
+					Particle* aParticle = new Particle();
+					aParticle->mX = mParticleX + rand() % 10 - 5.0f;
+					aParticle->mY = mParticleY + rand() % 10 - 5.0f;
+					float anAngle = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp37,353", -1.0f) +
+						(rand() % 100) *
+							ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp38,353", 2.0f) / 100.0f;
+					(void) rand();
+					float aSpeed = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp40,354", 5) *
+						ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp39,354", 0.2f);
+					aParticle->mVX = (float) sin(anAngle) * aSpeed;
+					aParticle->mVY = (float) cos(anAngle) * aSpeed;
+					aParticle->mType = 4;
+					aParticle->mUnk0x1c = aColor;
+					aParticle->mDuration = rand() % 30 + 70;
+					mParticles.push_back(aParticle);
+				}
+			} else {
+				for (int i = 0; i < ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp41,371", 190); ++i) {
+					Particle* aParticle = new Particle();
+					aParticle->mX = mParticleX + rand() % 6 - 3.0f;
+					aParticle->mY = mParticleY + rand() % 6 - 3.0f;
+					float anAngle = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp42,378", 0.0f) +
+						(rand() % 100) *
+							ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp43,378", 6.283f) / 100.0f;
+					float aCosine = (float) cos(anAngle);
+					float aSpeed = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp44,379", 0.95f) *
+						(aCosine + ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp45,379", 1.0f));
+					aParticle->mVX = (float) sin(anAngle) * aSpeed;
+					aParticle->mVY = aCosine * aSpeed;
+					if (aParticle->mVY > 0.0f)
+						aParticle->mVX = (1.0f - aCosine) * aParticle->mVX;
+					aParticle->mVY -=
+						ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp46,386", 0.75f);
+					aParticle->mType = 4;
+					aParticle->mUnk0x1c = aColor;
+					aParticle->mDuration = rand() % 30 + 70;
+					mParticles.push_back(aParticle);
+				}
+			}
+
+			if (mUpdateCnt > 20 && mUnk0xb8)
+				mApp->PlaySample(SOUND_FIREWORKPOP);
+		}
+
+		mParticleY = (float) mApp->mHeight;
+		float aLaunchSide = rand() % 2 == 0 ? 0.5f : 1.0f;
+		mParticleX = (float) (
+			((double) (rand() % 500) / 1000.0 + aLaunchSide) *
+			mApp->mWidth * 0.5);
+		mParticleVX = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp47,404", 0.12f) *
+			(10 - rand() % 20);
+		mParticleVY = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp48,405", -4.0f);
+		mUnk0xcc = ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp49,407", 40) +
+			rand() % ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp50,407", 80);
+	}
+	UpdateParticles();
+
+	mUnk0x104 += ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp51,413", 0.25f);
+	if (mUnk0x104 > ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp52,415", 4100.0f))
+		mUnk0x104 = 0.0f;
+
+	MarkDirty();
 }

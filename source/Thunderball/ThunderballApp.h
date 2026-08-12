@@ -2,12 +2,13 @@
 #define __THUNDERBALLAPP_H__
 
 #include "ConstEnums.h"
+#include "GameStats.h"
 
 #include <SexyAppFramework/SexyApp.h>
 #include <SexyAppFramework/Image.h>
 
 // GLOBAL: POPCAPGAME1 0x00650a55
-static bool mColorblind;
+extern bool mColorblind;
 
 
 namespace Sexy
@@ -34,9 +35,24 @@ class HighScoreMgr;
 class ImageMgr;
 class Board;
 class BlendedImage;
-class GameStats;
 
-static BlendedImage* gBallPegImage[9];
+class RegistrationControl {
+public:
+	int mUnk0x0;             // +0x0
+	HWND mWindow;            // +0x4
+	char mPadding0x8[8];     // +0x8
+	bool mWindowValid;       // +0x10
+	char mPadding0x11[0x1b]; // +0x11
+	UINT mQueryMessage;      // +0x2c
+
+	int GetTrialAge();
+	int GetTrialDuration();
+	bool IsRegistered();
+	bool IsWindowValid();
+};
+
+// GLOBAL: POPCAPGAME1 0x0065057c
+extern BlendedImage* gBallPegImage[9];
 
 // VTABLE: POPCAPGAME1 0x005d7cb8
 class ThunderballApp : public SexyApp {
@@ -56,10 +72,13 @@ public:
     int mUnk0x77c;                     // +0x77C
 	int mUnk0x780;                     // +0x780
 	int mUnk0x784;                     // +0x784
-	char mPadding0x788[0x8];            // +0x788
+	int mPendingMusicOrder;             // +0x788
+	bool mMusicIntensityIncreasePending; // +0x78c
+	char mPadding0x78d[0x3];            // +0x78d
 	double mFeverVolume;               // +0x790
 	bool mShouldShowUpsellButton;      // +0x798
-	char mPadding0x799[0x17];           // +0x799
+	bool mUnk0x799;                     // +0x799
+	char mPadding0x79a[0x16];           // +0x79a
 	int mUnk0x7b0;                     // +0x7B0
 	int mUnk0x7b8;                     // +0x7B4
 	Board* mBoard;                     // +0x7B8
@@ -71,12 +90,13 @@ public:
 	TrophyScreen* mTrophyScreen;       // +0x7D0
 	StoryScreen* mStoryScreen;         // +0x7D4
 	AdventureScreen* mAdventureScreen; // +0x7D8
-	char mPadding0x7dc[0x58];           // +0x7DC
+	char mPadding0x7dc[0x54];           // +0x7DC
+	RegistrationControl* mRegistrationControl; // +0x830
 	int mUnk0x834;                     // +0x834
-	char mPadding0x838;                 // +0x838
+	bool mExpirationDisabled;           // +0x838
 	bool mUnk0x839;                    // +0x839
 	bool mUnk0x83A;                    // +0x83A
-	char mPadding0x83b;                 // +0x83b
+	bool mUnk0x83b;                     // +0x83b
 	bool mUnk0x83C;                    // +0x83C
 	char mPadding0x83d[0x7];            // +0x83d
 	CharacterMgr* mCharacterMgr;       // +0x844
@@ -93,23 +113,23 @@ public:
 	ButtonWidget* mWinMinimizeButton;  // +0x870
 	ButtonWidget* mWinUnmaxButton;     // +0x874
 	PlayerInfo* mCurProfile;           // +0x878
-    int mUnk0x87c;                     // +0x87C
-    int mUnk0x880;                     // +0x880
-	char mPadding0x884[0x8];            // +0x884
-    int mUnk0x88c;                     // +0x88c
-    int mUnk0x890;                     // +0x890
-    int mUnk0x894;                     // +0x894
-    int mUnk0x898;                     // +0x898
-    GameStats* mUnk0x89c;                     // +0x89C
-	char mPadding0x8a0[0x68];           // +0x8a0
-    GameStats* mUnk0x908;                     // +0x908
+	int mUnk0x87c;                     // +0x87c
+	int mUnk0x880;                     // +0x880
+	int mUnk0x884;                     // +0x884
+	int mUnk0x888;                     // +0x888
+	int mUnk0x88c;                     // +0x88c
+	int mUnk0x890;                     // +0x890
+	int mUnk0x894;                     // +0x894
+	int mUnk0x898;                     // +0x898
+	GameStats mTwoPlayerStats[2];       // +0x89c
 
 	ThunderballApp();
 	virtual ~ThunderballApp();
 
 	void BringDialogsToFront();
 	void ButtonDepress(int);
-	int CheckCanExpire();
+	bool CanExpire();
+	bool CheckCanExpire();
 	void CheckMaxStage();
 	void CheckPlayMusic(bool);
 	bool CheckSaveGame(bool);
@@ -167,9 +187,9 @@ public:
 	int GetMaxUnlockedCharacter();
 	int GetMusicOrder(int theId);
 	void IncLevel(int);
-	bool IsExpired();
+	int IsExpired();
 	bool IsLevelDemoLocked(int, int);
-	bool IsLevelLockedTrial();
+	int IsLevelLockedTrial();
 	bool IsRegistered();
 	bool IsTrialOver();
 	void LoadLevelMusic();
@@ -196,12 +216,12 @@ public:
 	void ShowReplay(bool);
 	void ShowStoryScreen(bool, bool);
 	void ShowTrophyScreen();
-	void ShowUpsellScreen();
+	bool ShowUpsellScreen(bool param_1 = false, bool param_2 = false);
 	void StartAdventureGame();
 	void SyncOdeVolume();
 	bool TryExpire(bool);
 	bool TryPlayUpsell();
-	int TryShowNewTrophy();
+	bool TryShowNewTrophy();
 	void UpdateMusic();
 	void ViewReplays();
 

@@ -49,7 +49,7 @@ public:
 	bool mUnk0xef;
 	std::multiset<int> mAdventureScores; // +0xf0
 	std::set<int> mUnk0xfc;              // +0xfc
-	std::map<int, class MemoryImage*, std::greater<int> > mUnk0x108; // +0x108
+	std::map<int, int, std::greater<int> > mUnk0x108; // +0x108
 	int mUnk0x114;
 	std::set<std::string, struct StringLessNoCase> mUnk0x118;        // +0x118
 	int mUnk0x124;
@@ -85,7 +85,7 @@ public:
 
 	void AddTotalStats(GameStats& theStats);
 	int GetTrophyTopScore(int trophyId);
-	bool CheckTrophyTopScore(int trophyId, int theScore);
+	void CheckTrophyTopScore(int trophyId, int theScore);
 	void AwardTrophy(int trophyId);
 	void SubmitAdventureHighScore(int theScore);
 

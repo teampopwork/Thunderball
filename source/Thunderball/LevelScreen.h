@@ -8,9 +8,37 @@ namespace Sexy
 {
 class ThunderballApp;
 class Graphics;
+class PlayerInfo;
+class LevelInfo;
+class ImageMgr;
+class HighScoreMgr;
+class StageMgr;
+
+class LevelScreenEntry {
+public:
+    char mUnk0x0[0x10];
+    LevelInfo* mLevelInfo;          // +0x10
+    int mUnk0x14;                  // +0x14
+};
 
 class LevelScreen : public Widget, public ButtonListener {
 public:
+    ThunderballApp* mApp;          // +0x8c
+    ImageMgr* mImageMgr;            // +0x90
+    HighScoreMgr* mHighScoreMgr;    // +0x94
+    int mUnk0x98;                  // +0x98
+    StageMgr* mStageMgr;            // +0x9c
+    PlayerInfo* mPlayerInfo;        // +0xa0
+    int mUnk0xa4;                  // +0xa4
+    int mStage;                     // +0xa8
+    int mHoveredLevel;             // +0xac
+    int mHoverTicks;               // +0xb0
+    LevelScreenEntry mLevels[5];    // +0xb4
+    void* mUnk0x12c;               // +0x12c
+    void* mUnk0x130;               // +0x130
+    void* mUnk0x134;               // +0x134
+    void* mUnk0x138;               // +0x138
+
     LevelScreen(ThunderballApp* theApp);
     virtual ~LevelScreen();
 

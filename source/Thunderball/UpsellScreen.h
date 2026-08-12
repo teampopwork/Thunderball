@@ -11,6 +11,9 @@ class Graphics;
 
 class UpsellScreen : public Widget, public ButtonListener {
 public:
+	char mPadding0x8c[0x44]; // +0x8c
+	bool mPaused;            // +0xd0
+
 	UpsellScreen(ThunderballApp* theApp, bool param_2);
 	virtual ~UpsellScreen();
 

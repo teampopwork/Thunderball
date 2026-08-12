@@ -12,6 +12,8 @@ class Graphics;
 class ThunderDialog;
 typedef void (*DrawFunc)(ThunderDialog*, Graphics*);
 
+// VTABLE: POPCAPGAME1 0x005fc8d4 Sexy::Widget
+// VTABLE: POPCAPGAME1 0x005fc8b0 Sexy::ButtonListener
 class ThunderDialog : public Dialog {
 public:
 	int mUnk0x150;

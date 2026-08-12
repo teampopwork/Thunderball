@@ -149,10 +149,15 @@ StageInfo* StageMgr::GetStageInfo(int param_1)
 	}
 }
 
-// STUB: POPCAPGAME1 0x00442f30
-int StageMgr::GetTip(unsigned long param_1)
+// FUNCTION: POPCAPGAME1 0x00442f30
+const std::string& StageMgr::GetTip(unsigned long param_1)
 {
-	return 0;
+	if (mUnk0x2c.empty()) {
+		static std::string anEmptyTip;
+		return anEmptyTip;
+	}
+
+	return mUnk0x2c[param_1 % mUnk0x2c.size()];
 }
 
 // FUNCTION: POPCAPGAME1 0x00468830
@@ -168,9 +173,10 @@ void StageMgr::Load(char* param_1)
 	}
 }
 
-// STUB: POPCAPGAME1 0x00437620
+// FUNCTION: POPCAPGAME1 0x00437620
 void StageMgr::MarkLastUseTime(LevelInfo* param_1)
 {
+	param_1->mUnk0x8 = ++mUnk0x8;
 }
 
 // STUB: POPCAPGAME1 0x004685f0
@@ -188,7 +194,14 @@ void StageMgr::ReadStageConfig(ConfigParser* param_1, StageInfo* param_2)
 {
 }
 
-// STUB: POPCAPGAME1 0x0043d890
+// FUNCTION: POPCAPGAME1 0x0043d890
 void StageMgr::ResetLastUseTimes()
 {
+	mUnk0x8 = 0;
+	for (int aStage = 0; aStage < (int) mUnk0xc.size(); aStage++) {
+		StageInfo* aStageInfo = mUnk0xc[aStage].get();
+		for (int aLevel = 0; aLevel < (int) aStageInfo->mUnk0x5c.size(); aLevel++) {
+			aStageInfo->mUnk0x5c[aLevel]->mUnk0x8 = -1000;
+		}
+	}
 }

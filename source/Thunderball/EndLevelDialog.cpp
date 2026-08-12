@@ -1,5 +1,11 @@
 #include "EndLevelDialog.h"
 
+#include "Board.h"
+#include "Res.h"
+
+#include <SexyAppFramework/DialogButton.h>
+#include <SexyAppFramework/SexyApp.h>
+
 using namespace Sexy;
 
 // STUB: POPCAPGAME1 0x004a1a10
@@ -10,9 +16,10 @@ EndLevelDialog::EndLevelDialog(Board* param_1) : ThunderDialog(0, false, "", "",
 // SYNTHETIC: POPCAPGAME1 0x0049ec50
 // Sexy::EndLevelDialog::`scalar deleting destructor'
 
-// STUB: POPCAPGAME1 0x0049db50
+// FUNCTION: POPCAPGAME1 0x0049db50
 EndLevelDialog::~EndLevelDialog()
 {
+	RemoveAllWidgets(true, false);
 }
 
 // STUB: POPCAPGAME1 0x00492c90
@@ -20,9 +27,18 @@ void EndLevelDialog::Resize(int param_1, int param_2, int param_3, int param_4)
 {
 }
 
-// STUB: POPCAPGAME1 0x00492e30
+// FUNCTION: POPCAPGAME1 0x00492e30
 void EndLevelDialog::SetVisible(bool param_1)
 {
+	if (mVisible != param_1) {
+		Widget::SetVisible(param_1);
+		if (!param_1 || mShowYesButton) {
+			mYesButton->SetVisible(param_1);
+		}
+		if (!param_1 || mShowNoButton) {
+			mNoButton->SetVisible(param_1);
+		}
+	}
 }
 
 // STUB: POPCAPGAME1 0x00492ea0
@@ -40,19 +56,35 @@ void EndLevelDialog::DrawAdventureWin(Graphics* param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x004931a0
-void EndLevelDialog::MouseMove(int param_1, int param_2)
+// FUNCTION: POPCAPGAME1 0x004931a0
+void EndLevelDialog::MouseMove(int, int theY)
 {
+	if (mHighScoreEntry != NULL && theY >= mUnk0x198 - 15 && theY < mUnk0x198 + 15) {
+		gSexyApp->SetCursor(CURSOR_HAND);
+		return;
+	}
+
+	gSexyApp->SetCursor(CURSOR_POINTER);
 }
 
-// STUB: POPCAPGAME1 0x00499760
-void EndLevelDialog::MouseDown(int param_1, int param_2, int param_3)
+// FUNCTION: POPCAPGAME1 0x00499760
+void EndLevelDialog::MouseDown(int theX, int theY, int theClickCount)
 {
+	if (mHighScoreEntry != NULL &&
+		theY >= mUnk0x198 - 15 && theY < mUnk0x198 + 15 && theClickCount == 1) {
+		gSexyApp->PlaySample(SOUND_BUTTON1);
+		mBoard->ChangeHighScore(mHighScoreEntry);
+		return;
+	}
+
+	ThunderDialog::MouseDown(theX, theY, theClickCount);
 }
 
-// STUB: POPCAPGAME1 0x004931f0
+// FUNCTION: POPCAPGAME1 0x004931f0
 void EndLevelDialog::MouseLeave()
 {
+	gSexyApp->SetCursor(CURSOR_POINTER);
+	Widget::MouseLeave();
 }
 
 // STUB: POPCAPGAME1 0x00499520

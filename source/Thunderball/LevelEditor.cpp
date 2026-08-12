@@ -1,6 +1,12 @@
 #include "LevelEditor.h"
 
+#include "Board.h"
+#include "DataSync.h"
+#include "PhysObj.h"
+
 #include <SexyAppFramework/Common.h>
+
+#include <ctype.h>
 
 using namespace Sexy;
 
@@ -257,7 +263,7 @@ bool EditValObj::EditGetSetValDelegate(EditValObj* theObj, const std::string& pa
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-// STUB: POPCAPGAME1 0x00402f90
+// FUNCTION: POPCAPGAME1 0x00402f90
 GlobalEditVal::GlobalEditVal()
 {
 }
@@ -265,7 +271,7 @@ GlobalEditVal::GlobalEditVal()
 // SYNTHETIC: POPCAPGAME1 0x00407490
 // Sexy::GlobalEditVal::`scalar deleting destructor'
 
-// STUB: POPCAPGAME1 0x00402fc0
+// FUNCTION: POPCAPGAME1 0x00402fc0
 GlobalEditVal::~GlobalEditVal()
 {
 }
@@ -375,9 +381,14 @@ void LevelEditor::EditSetDrawMovements(bool param_1, bool param_2)
 {
 }
 
-// STUB: POPCAPGAME1 0x00403290
+// FUNCTION: POPCAPGAME1 0x00403290
 void LevelEditor::EditClearUndoPoint()
 {
+	if (GetKeyState(VK_SCROLL)) {
+		__asm nop
+	}
+
+	mUndoWriter.Close();
 }
 
 // STUB: POPCAPGAME1 0x0040b1b0
@@ -385,9 +396,15 @@ void LevelEditor::EditMoveSel(int param_1, int param_2)
 {
 }
 
-// STUB: POPCAPGAME1 0x0040a410
+// FUNCTION: POPCAPGAME1 0x0040a410
 void LevelEditor::EditResetMoveTimes()
 {
+	std::list<SmartPtr<PhysObj> >& anObjectList = mBoard->mUnk0x190;
+	std::list<SmartPtr<PhysObj>>::iterator anItr = anObjectList.begin();
+	while (anItr._Mynode() != anObjectList.end()._Mynode()) {
+		anItr->get()->SetMoveUpdateCnt(0);
+		++anItr;
+	}
 }
 
 // STUB: POPCAPGAME1 0x0040b060
@@ -435,9 +452,12 @@ void LevelEditor::ShowKeyboardHelp()
 {
 }
 
-// STUB: POPCAPGAME1 0x004032f0
-bool LevelEditor::IsAltKeyUsed(int param_1)
+// FUNCTION: POPCAPGAME1 0x004032f0
+bool LevelEditor::IsAltKeyUsed(int theKey)
 {
+	if (toupper(theKey) == 'Z') {
+		return true;
+	}
 	return false;
 }
 

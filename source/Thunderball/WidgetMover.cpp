@@ -13,13 +13,13 @@ using namespace Sexy;
 // FUNCTION: POPCAPGAME1 0x00405ff0
 MovingWidget::MovingWidget()
 {
-	mWidget = NULL;
-	mTicks = 0;
-	mRemoveWhenDone = false;
 	mStartX = 0.0f;
 	mStartY = 0.0f;
 	mTargetX = 0.0f;
 	mTargetY = 0.0f;
+	mWidget = NULL;
+	mTicks = 0;
+	mRemoveWhenDone = false;
 }
 
 // FUNCTION: POPCAPGAME1 0x00406010
@@ -27,8 +27,15 @@ bool MovingWidget::Update()
 {
 	mTicks -= 1;
 	float t = (float) mTicks / 20.0;
+	float inverseT = 1.0f - t;
+	float targetX = mTargetX * inverseT;
+	float targetY = mTargetY * inverseT;
+	float startX = mStartX * t;
+	float startY = mStartY * t;
+	float x = startX + targetX;
+	float y = startY + targetY;
 
-	mWidget->Move((1.0 - t) * mTargetX + t * mStartX, (1.0 - t) * mTargetY + t * mStartY);
+	mWidget->Move(x, y);
 
 	if (mTicks == 0) {
 		if (mRemoveWhenDone) {
@@ -66,8 +73,16 @@ WidgetMover::~WidgetMover()
 // FUNCTION: POPCAPGAME1 0x0040c700
 void WidgetMover::Clear()
 {
+	for (std::list<MovingWidget>::iterator it = mWidgets.begin(); it != mWidgets.end(); ++it) {
+		MovingWidget& movingWidget = *it;
+		if (movingWidget.mRemoveWhenDone) {
+			gSexyApp->mWidgetManager->RemoveWidget(movingWidget.mWidget);
+			if (movingWidget.mWidget != NULL) {
+				delete movingWidget.mWidget;
+			}
+		}
+	}
 	mWidgets.clear();
-	mUnk0xc = 0;
 }
 
 // FUNCTION: POPCAPGAME1 0x00421d90
@@ -93,7 +108,11 @@ MovingWidget* WidgetMover::GetWidgetData(Widget* param_1, bool param_2)
 // FUNCTION: POPCAPGAME1 0x00408550
 bool WidgetMover::IsMoving()
 {
-	return mUnk0xc != 0;
+	if (mWidgets.size() > 0) {
+		return true;
+	}
+
+	return false;
 }
 
 // FUNCTION: POPCAPGAME1 0x0040c7a0
@@ -218,8 +237,9 @@ void WidgetMover::ScrollOn(Widget* param_1, int param_2)
 void WidgetMover::Update()
 {
 	for (std::list<MovingWidget>::iterator it = mWidgets.begin(); it != mWidgets.end();) {
-		if (it->Update()) {
-			it = mWidgets.erase(it);
+		if (!it->Update()) {
+			std::list<MovingWidget>::iterator eraseIt = it++;
+			mWidgets.erase(eraseIt);
 		}
 		else {
 			++it;
@@ -231,9 +251,11 @@ void WidgetMover::Update()
 bool WidgetMover::WillRemove(Widget* param_1)
 {
 	MovingWidget* mw = GetWidgetData(param_1, false);
-	if (mw == NULL) {
-		return false;
+	if (mw != NULL) {
+		if (mw->mRemoveWhenDone) {
+			return true;
+		}
 	}
 
-	return (mw->mRemoveWhenDone != 0);
+	return false;
 }

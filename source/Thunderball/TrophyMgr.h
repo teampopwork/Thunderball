@@ -2,6 +2,7 @@
 #ifndef __TROPHY_MGR_H__
 #define __TROPHY_MGR_H__
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -26,12 +27,15 @@ public:
     std::vector<OpponentInfo> mUnk0x88; // +0x88
 };
 
-struct TrophyPage;
+struct TrophyPage {
+	char mData[100];
+};
 
 class TrophyMgr {
 public:
-	char padding[0x1c];
-	int mUnk0x20;
+	ThunderballApp* mApp;
+	std::vector<TrophyPage> mPages;
+	std::map<int, TrophyInfo*> mTrophyInfos;
 
 	TrophyMgr(ThunderballApp* theApp);
 	virtual ~TrophyMgr();

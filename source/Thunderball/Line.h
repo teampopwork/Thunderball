@@ -12,11 +12,21 @@ namespace Sexy
 // VTABLE: POPCAPGAME1 0x005f1a44
 class Line : public PhysObj {
 public:
+	static bool mAllowKissCollision;
+
+	float mUnk0xe4; // +0xe4
+	float mUnk0xe8; // +0xe8
 	float mUnk0xec; // +0xec
 	float mUnk0xf0; // +0xf0
 	float mUnk0xf4; // +0xf4
 	float mUnk0xf8; // +0xf8
-    bool mUnk0x18c; // +0x18c
+	float mUnk0xfc; // +0xfc
+	float mUnk0x100; // +0x100
+	float mUnk0x104; // +0x104
+	float mUnk0x108; // +0x108
+	float mUnk0x10c; // +0x10c
+	bool mUnk0x110; // +0x110
+	bool mUnk0x111; // +0x111
 
 	Line();
 	Line(float param_1, float param_2, float param_3, float param_4);
@@ -29,7 +39,7 @@ public:
 	virtual bool EditContains(float param_1, float param_2, bool param_3);
 	virtual void EditGetDragMode(float param_1, float param_2);
 	virtual void EditDoPointDrag(float param_1, float param_2);
-	virtual void EditReflect(float param_1, float param_2, bool param_3);
+	virtual void EditReflect(float param_1, float param_2, bool param_3, bool param_4);
 	virtual void SetPos(float theX, float theY);
 	virtual void Translate(float theDx, float theDy);
 	virtual void SetVelocity(float theVx, float theVy);
@@ -43,14 +53,14 @@ public:
 	bool EditIntersects(Rect* theRect);
 	void CalcEdgeHitVelocity(SexyVector2* param_1, SexyVector2* param_2);
 	void CalcVertexHitVelocity(SexyVector2* param_1, SexyVector2* param_2);
-	bool CircleIntersect(float param_1, float param_2, float param_3, SexyVector2* param_4, SexyVector2* param_5);
+	int CircleIntersect(float param_1, float param_2, float param_3, SexyVector2* param_4, SexyVector2* param_5);
 	bool CheckEdgeTimeCollision(
 		SexyVector2* param_1,
 		SexyVector2* param_2,
 		float param_3,
-		SexyVector2* param_4,
-		SexyVector2* param_5,
+		SexyVector2* hitPoint,
 		SexyVector2* hitNormal,
+		SexyVector2* hitVelocity,
 		float* hitTime
 	);
 	bool CheckVertexTimeCollision(

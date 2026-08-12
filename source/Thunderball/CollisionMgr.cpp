@@ -2,38 +2,61 @@
 
 using namespace Sexy;
 
-// STUB: POPCAPGAME1 0x0044d870
-CollisionMgr::CollisionMgr()
+// FUNCTION: POPCAPGAME1 0x0044d870
+CollisionMgr::CollisionMgr() : mUnk0x30(0), mUnk0x34(0)
 {
+	mUnk0x0 = false;
+	mUnk0x78 = false;
 }
 
-// STUB: POPCAPGAME1 0x00423fa0
+// FUNCTION: POPCAPGAME1 0x00423fa0
 CollisionMgr::~CollisionMgr()
 {
 }
 
-// STUB: POPCAPGAME1 0x00443660
-void CollisionMgr::RemoveObj(PhysObj* param_1, std::vector<PhysObj*>* param_2)
+// FUNCTION: POPCAPGAME1 0x00443660
+void CollisionMgr::RemoveObj(PhysObj* param_1, std::vector<EndPoint>* param_2)
 {
+	int anIndex = 0;
+	while (anIndex < (int)param_2->size())
+	{
+		if ((*param_2)[anIndex].mObject == param_1)
+			param_2->erase(param_2->begin() + anIndex);
+		else
+			++anIndex;
+	}
 }
 
-// STUB: POPCAPGAME1 0x004465a0
+// FUNCTION: POPCAPGAME1 0x004465a0
 void CollisionMgr::RemoveObj(PhysObj* param_1)
 {
+	RemoveObj(param_1, &mObjects1);
+	RemoveObj(param_1, &mObjects2);
+	std::set<std::pair<PhysObj*, PhysObj*> >::iterator anItr = mCollisions.begin();
+	while (anItr != mCollisions.end())
+	{
+		if (anItr->first == param_1 || anItr->second == param_1)
+			mCollisions.erase(anItr++);
+		else
+			++anItr;
+	}
 }
 
 // STUB: POPCAPGAME1 0x0044b1e0
-void CollisionMgr::SortEndPoints(std::vector<PhysObj*>* param_1)
+void CollisionMgr::SortEndPoints(std::vector<EndPoint>* param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x00446560
+// FUNCTION: POPCAPGAME1 0x00446560
 void CollisionMgr::Clear()
 {
+	mCollisions.clear();
+	mObjects1.clear();
+	mObjects2.clear();
 }
 
 // STUB: POPCAPGAME1 0x0044d920
-void CollisionMgr::AddObj(PhysObj* param_1, float* param_2, float* param_3, std::vector<PhysObj*>* param_4)
+void CollisionMgr::AddObj(PhysObj* param_1, float* param_2, float* param_3, std::vector<EndPoint>* param_4)
 {
 }
 

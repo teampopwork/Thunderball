@@ -27,10 +27,10 @@ PlayerInfo::PlayerInfo(const PlayerInfo& param_1)
 // std::_Tree<std::_Tset_traits<int,std::less<int>,std::allocator<int>,1> >::_Copy(class std::_Tree<class std::_Tset_traits<int, struct std::less<int>, class std::allocator<int>, 1>> const &)
 
 // TEMPLATE: POPCAPGAME1 0x0041dd80
-// std::_Tree<std::_Tmap_traits<int,Sexy::MemoryImage *,std::greater<int>,std::allocator<std::pair<int const ,Sexy::MemoryImage *> >,1> >::erase(class std::_Tree<class std::_Tmap_traits<int, class Sexy::SoundMgr::SoundDesc *, struct std::less<int>, class std::allocator<struct std::pair<int const, class Sexy::SoundMgr::SoundDesc *>>, 1>>::iterator, class std::_Tree<class std::_Tmap_traits<int, class Sexy::SoundMgr::SoundDesc *, struct std::less<int>, class std::allocator<struct std::pair<int const, class Sexy::SoundMgr::SoundDesc *>>, 1>>::iterator)
+// std::_Tree<std::_Tmap_traits<int,int,std::greater<int>,std::allocator<std::pair<int const,int> >,1> >::erase
 
 // TEMPLATE: POPCAPGAME1 0x004423f0
-// std::_Tree<std::_Tmap_traits<int,Sexy::MemoryImage *,std::greater<int>,std::allocator<std::pair<int const ,Sexy::MemoryImage *> >,0> >::_Copy(class std::_Tree<class std::_Tmap_traits<int, class Sexy::MemoryImage *, struct std::greater<int>, class std::allocator<struct std::pair<int const, class Sexy::MemoryImage *>>, 0>> const &)
+// std::_Tree<std::_Tmap_traits<int,int,std::greater<int>,std::allocator<std::pair<int const,int> >,0> >::_Copy
 
 // TEMPLATE: POPCAPGAME1 0x0041ffe0
 // std::_Tree<std::_Tset_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,Sexy::StringLessNoCase,std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,0> >::erase(class std::_Tree<class std::_Tset_traits<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, struct Sexy::StringLessNoCase, class std::allocator<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>, 0>>::iterator, class std::_Tree<class std::_Tset_traits<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, struct Sexy::StringLessNoCase, class std::allocator<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>, 0>>::iterator)
@@ -134,10 +134,17 @@ void PlayerInfo::AwardTrophy(int trophyId)
     }
 }
 
-// STUB: POPCAPGAME1 0x0049d670
-bool PlayerInfo::CheckTrophyTopScore(int trophyId, int theScore)
+// FUNCTION: POPCAPGAME1 0x0041f950
+void PlayerInfo::CheckTrophyTopScore(int trophyId, int theScore)
 {
-	return false;
+	if (theScore > 0) {
+		std::map<int, int, std::greater<int> >::iterator anItr =
+			mUnk0x108.insert(std::make_pair(trophyId, theScore)).first;
+		if (anItr->second < theScore) {
+			anItr->second = theScore;
+			mUnk0xec = true;
+		}
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x00412940
@@ -207,10 +214,14 @@ std::string PlayerInfo::GetSavedGameName(GameMode theGameMode)
 	}
 }
 
-// STUB: POPCAPGAME1 0x0040d110
+// FUNCTION: POPCAPGAME1 0x0040d110
 int PlayerInfo::GetTrophyTopScore(int trophyId)
 {
-	return 0;
+	std::map<int, int, std::greater<int> >::iterator anItr = mUnk0x108.find(trophyId);
+	if (anItr == mUnk0x108.end()) {
+		return 0;
+	}
+	return anItr->second;
 }
 
 // FUNCTION: POPCAPGAME1 0x004037b0
@@ -406,6 +417,15 @@ void PlayerInfo::SetComputerSkill(int theSkill)
 {
 	if (mUnk0x50 != theSkill) {
 		mUnk0x50 = theSkill;
+		mUnk0xec = true;
+	}
+}
+
+// FUNCTION: POPCAPGAME1 0x00403790
+void PlayerInfo::SetLevelSelectStage(int theStage)
+{
+	if (mUnk0x3c != theStage) {
+		mUnk0x3c = theStage;
 		mUnk0xec = true;
 	}
 }

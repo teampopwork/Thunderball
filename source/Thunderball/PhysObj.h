@@ -22,6 +22,7 @@ public:
 	static int mSyncType;
 	static bool mFastLoad;
 	static int mOutlineMode;
+	static float mGravity;
     static void (*mNotifyCollisionFunc)(PhysObj* param_1, PhysObj* param_2);
 
 	int mUnk0x10; // +0x10
@@ -92,14 +93,14 @@ public:
 	virtual void EditDrawOutline(Graphics* g);
 	virtual void EditDrawPoints(Graphics* g);
 	virtual bool EditContains(float param_1, float param_2, bool param_3);
-	virtual bool EditIntersects(Rect param_1);
+	virtual bool EditIntersects(Rect* param_1);
 	virtual void EditTranslate(float param_1, float param_2);
 	virtual void EditSetPos(float param_1, float param_2);
 	virtual void EditGetDragMode(float param_1, float param_2);
 	virtual void EditDoPointDrag(float param_1, float param_2);
 	virtual void EditFinishDrag();
 	virtual void EditReloadImage();
-	virtual void EditReflect(float param_1, float param_2, bool param_3);
+	virtual void EditReflect(float param_1, float param_2, bool param_3, bool param_4);
 	virtual void SetPos(float theX, float theY);
 	virtual void Translate(float theDx, float theDy);
 	virtual void SetVelocity(float theVx, float theVy);

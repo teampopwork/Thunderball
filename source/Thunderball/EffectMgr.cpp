@@ -1,10 +1,53 @@
 #include "EffectMgr.h"
 
+#include <SexyAppFramework/Image.h>
+#include <SexyAppFramework/ModVal.h>
+
 #include "ThunderCommon.h"
 
 using namespace Sexy;
 
-// STUB: POPCAPGAME1 0x004471e0
+// FUNCTION: POPCAPGAME1 0x0043e540
+Effect::Effect()
+{
+	mUnk0x44 = NULL;
+	mUnk0x48 = NULL;
+}
+
+// FUNCTION: POPCAPGAME1 0x00440100
+Effect::Effect(const Effect& param_1)
+{
+	mType = param_1.mType;
+	mUnk0xc = param_1.mUnk0xc;
+	mUnk0x10 = param_1.mUnk0x10;
+	mUnk0x14 = param_1.mUnk0x14;
+	mUnk0x18 = param_1.mUnk0x18;
+	mUnk0x1c = param_1.mUnk0x1c;
+	mUnk0x20 = param_1.mUnk0x20;
+	mUnk0x24 = param_1.mUnk0x24;
+	mUnk0x28 = param_1.mUnk0x28;
+	mUnk0x2c = param_1.mUnk0x2c;
+	mUnk0x30 = param_1.mUnk0x30;
+	mUnk0x34 = param_1.mUnk0x34;
+	mUnk0x4 = param_1.mUnk0x4;
+	mUnk0x38 = param_1.mUnk0x38;
+	mUnk0x3c = param_1.mUnk0x3c;
+	mUnk0x40 = param_1.mUnk0x40;
+	mUnk0x4c = param_1.mUnk0x4c;
+	mUnk0x50 = param_1.mUnk0x50;
+	mUnk0x54 = param_1.mUnk0x54;
+	mUnk0x44 = NULL;
+	mUnk0x48 = NULL;
+}
+
+// FUNCTION: POPCAPGAME1 0x00439bd0
+Effect::~Effect()
+{
+	delete mUnk0x44;
+	delete mUnk0x48;
+}
+
+// FUNCTION: POPCAPGAME1 0x004471e0
 EffectMgr::EffectMgr()
 {
 }
@@ -12,20 +55,33 @@ EffectMgr::EffectMgr()
 // SYNTHETIC: POPCAPGAME1 0x0044b550
 // Sexy::EffectMgr::`scalar deleting destructor'
 
-// STUB: POPCAPGAME1 0x00447210
+// FUNCTION: POPCAPGAME1 0x00447210
 EffectMgr::~EffectMgr()
 {
 }
 
-// STUB: POPCAPGAME1 0x00443720
+// FUNCTION: POPCAPGAME1 0x00443720
 void EffectMgr::Clear()
 {
+	for (int i = 0; i < 5; ++i) {
+		mEffects[i].clear();
+	}
 }
 
-// STUB: POPCAPGAME1 0x0044de40
+// FUNCTION: POPCAPGAME1 0x0044de40
 Effect* EffectMgr::AddEffect(EffectType param_1, float param_2, float param_3, int param_4, bool param_5)
 {
-	return NULL;
+	int priority = ClampPriority(param_4);
+	std::list<Effect>& effects = mEffects[PriorityToList(priority)];
+	std::list<Effect>::iterator position = param_5 ? effects.begin() : effects.end();
+	std::list<Effect>::iterator it = effects.insert(position, Effect());
+	Effect* effect = &*it;
+	effect->mUnk0x14 = param_2;
+	effect->mType = param_1;
+	effect->mUnk0x18 = param_3;
+	effect->mUnk0x4 = priority;
+	effect->mUnk0x10 = 100;
+	return effect;
 }
 
 // STUB: POPCAPGAME1 0x0045bc60
@@ -76,10 +132,30 @@ Effect* EffectMgr::AddFeverRainbow(int param_1)
 	return NULL;
 }
 
-// STUB: POPCAPGAME1 0x0044fd20
+// FUNCTION: POPCAPGAME1 0x0044fd20
 Effect* EffectMgr::AddRay(float param_1, float param_2)
 {
-	return NULL;
+	Effect* effect = AddEffect(
+		(EffectType)0x10,
+		param_1,
+		param_2,
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp781,4163", 1),
+		false);
+	effect->mUnk0x10 = ModVal(
+		0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp782,4164", 200);
+	int angleRange = ModVal(
+		0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp784,4165", 100);
+	effect->mUnk0x30 = ModVal(
+		0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp783,4165", 362) +
+		Rand() % angleRange;
+	int velocityRange = ModVal(
+		0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp785,4167", 10);
+	effect->mUnk0x28 =
+		(float)((Rand() % (velocityRange * 2 + 1) - velocityRange) * 3.14159274101257 / 180.0);
+	effect->mUnk0x2c = ModVal(
+		0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp786,4169", 0.01f) *
+		effect->mUnk0x28;
+	return effect;
 }
 
 // STUB: POPCAPGAME1 0x0044fe00
@@ -118,16 +194,36 @@ Effect* EffectMgr::AddFeverBlast(float param_1, float param_2)
 	return NULL;
 }
 
-// STUB: POPCAPGAME1 0x0044e7f0
+// FUNCTION: POPCAPGAME1 0x0044e7f0
 Effect* EffectMgr::AddFeverScoreText()
 {
-	return NULL;
+	Effect* effect = AddEffect(
+		(EffectType)0x15,
+		(float)ModVal(
+			0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp637,3818", 400),
+		(float)ModVal(
+			0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp638,3818", 300),
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp639,3818", 0),
+		false);
+	effect->mUnk0x10 = ModVal(
+		0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp640,3819", 100000);
+	effect->mUnk0x38 = ModVal(
+		0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp641,3820", 3);
+	return effect;
 }
 
-// STUB: POPCAPGAME1 0x0044e740
+// FUNCTION: POPCAPGAME1 0x0044e740
 Effect* EffectMgr::AddBubble(float param_1, float param_2)
 {
-	return NULL;
+	Effect* effect = AddEffect((EffectType)9, param_1, param_2, 0, false);
+	float speeds[6] = {0.67f, 0.83f, 1.0f, 1.07f, 0.76f, 0.93f};
+	effect->mUnk0x20 = -speeds[Rand() % 6];
+	effect->mUnk0x30 = Rand() % 4;
+	if (effect->mUnk0x30 == 3) {
+		effect->mUnk0x30 = Rand() % 4;
+	}
+	effect->mUnk0x10 = 0;
+	return effect;
 }
 
 // STUB: POPCAPGAME1 0x0044e010
@@ -136,22 +232,42 @@ Effect* EffectMgr::AddFlowerSparkles(float param_1, float param_2)
 	return NULL;
 }
 
-// STUB: POPCAPGAME1 0x0044dfc0
+// FUNCTION: POPCAPGAME1 0x0044dfc0
 Effect* EffectMgr::AddCoinFlip(float param_1, float param_2, bool param_3)
 {
-	return NULL;
+	Effect* effect = AddEffect((EffectType)8, param_1, param_2, 0, false);
+	effect->mUnk0x10 = 250;
+	effect->mUnk0x30 = Rand() % 360;
+	effect->mUnk0x34 = param_3;
+	return effect;
 }
 
-// STUB: POPCAPGAME1 0x0044df70
+// FUNCTION: POPCAPGAME1 0x0044df70
 Effect* EffectMgr::AddMasterBadge(float param_1, float param_2, int param_3)
 {
-	return NULL;
+	Effect* effect = AddEffect(
+		(EffectType)0x21,
+		param_1,
+		param_2,
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp591,3676", 0),
+		false);
+	effect->mUnk0x10 = 0;
+	effect->mUnk0xc = -param_3;
+	return effect;
 }
 
-// STUB: POPCAPGAME1 0x0044df20
+// FUNCTION: POPCAPGAME1 0x0044df20
 Effect* EffectMgr::AddRibbon(float param_1, float param_2, int param_3)
 {
-	return NULL;
+	Effect* effect = AddEffect(
+		(EffectType)7,
+		param_1,
+		param_2,
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp590,3666", 0),
+		false);
+	effect->mUnk0x10 = 0;
+	effect->mUnk0xc = -param_3;
+	return effect;
 }
 
 // STUB: POPCAPGAME1 0x0044e1c0
@@ -175,20 +291,59 @@ void EffectMgr::SyncState(DataSync& param_1)
 {
 }
 
-// STUB: POPCAPGAME1 0x00441650
+// FUNCTION: POPCAPGAME1 0x00441650
 Effect* EffectMgr::GetEffectByType(EffectType param_1)
 {
+	for (int i = 0; i < 5; ++i) {
+		for (std::list<Effect>::iterator it = mEffects[i].begin(); it != mEffects[i].end(); ++it) {
+			if (it->mType == param_1) {
+				return &*it;
+			}
+		}
+	}
 	return NULL;
 }
 
-// STUB: POPCAPGAME1 0x00443780
-void EffectMgr::EraseAllOfType(EffectType param_1)
+// FUNCTION: POPCAPGAME1 0x00443780
+int EffectMgr::EraseAllOfType(EffectType param_1)
 {
+	int count = 0;
+	for (int i = 0; i < 5; ++i) {
+		std::list<Effect>::iterator it = mEffects[i].begin();
+		while (it != mEffects[i].end()) {
+			if (it->mType == param_1) {
+				++count;
+				it = mEffects[i].erase(it);
+			} else {
+				++it;
+			}
+		}
+	}
+	return count;
 }
 
-// STUB: POPCAPGAME1 0x0044dd30
-void EffectMgr::SetPriority(Effect* param_1, int param_2)
+// FUNCTION: POPCAPGAME1 0x0044dd30
+Effect* EffectMgr::SetPriority(Effect* param_1, int param_2)
 {
+	int priority = ClampPriority(param_2);
+	int oldPriority = ClampPriority(param_1->mUnk0x4);
+	if (oldPriority == priority) {
+		return param_1;
+	}
+
+	std::list<Effect>& oldEffects = mEffects[PriorityToList(oldPriority)];
+	std::list<Effect>& newEffects = mEffects[PriorityToList(priority)];
+	std::list<Effect>::iterator inserted = newEffects.insert(newEffects.end(), *param_1);
+	Effect* effect = &*inserted;
+	effect->mUnk0x4 = priority;
+
+	for (std::list<Effect>::iterator it = oldEffects.begin(); it != oldEffects.end(); ++it) {
+		if (&*it == param_1) {
+			oldEffects.erase(it);
+			break;
+		}
+	}
+	return effect;
 }
 
 // STUB: POPCAPGAME1 0x004573b0
@@ -196,30 +351,44 @@ void EffectMgr::Draw(Graphics* param_1, int param_2)
 {
 }
 
-// STUB: POPCAPGAME1 0x004415c0
+// FUNCTION: POPCAPGAME1 0x004415c0
 void EffectMgr::FinishFeverRainbow()
 {
+	int duration = ModVal(
+		0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\EffectMgr.cpp880,4400", 60);
+	for (int i = 0; i < 5; ++i) {
+		for (std::list<Effect>::iterator it = mEffects[i].begin(); it != mEffects[i].end(); ++it) {
+			if (it->mType == (EffectType)0x18) {
+				it->mUnk0x10 = it->mUnk0xc + 100;
+			} else if (it->mType == (EffectType)0x26) {
+				it->mUnk0x10 = it->mUnk0xc + 80;
+			} else if (it->mType == (EffectType)0x15) {
+				it->mUnk0x10 = it->mUnk0xc + duration;
+			}
+		}
+	}
 }
 
-// STUB: POPCAPGAME1 0x0043bc60
+// FUNCTION: POPCAPGAME1 0x0043bc60
 int EffectMgr::ClampPriority(int param_1)
 {
-	return 0;
+	if (param_1 < -1) {
+		return -1;
+	}
+	if (param_1 > 3) {
+		return 3;
+	}
+	return param_1;
 }
 
-// STUB: POPCAPGAME1 0x004363c0
+// FUNCTION: POPCAPGAME1 0x004363c0
 int EffectMgr::PriorityToList(int param_1)
 {
-	return 0;
+	return param_1 + 1;
 }
 
 // STUB: POPCAPGAME1 0x00433850
 void EffectMgr::SetCrackPoint(SexyVector2* param_1, int param_2, int param_3, int param_4)
-{
-}
-
-// STUB: POPCAPGAME1 0x0044dd30
-void EffectMgr::SetPriority(Effect* param_1, int param_2, int param_3)
 {
 }
 

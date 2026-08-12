@@ -26,7 +26,10 @@ using namespace Sexy;
 int Sexy::PhysObj::gCurSortId = 0;
 int Sexy::PhysObj::mSyncType = 0;
 bool Sexy::PhysObj::mFastLoad = true;
+// GLOBAL: POPCAPGAME1 0x00650a58
 int Sexy::PhysObj::mOutlineMode = 0;
+// GLOBAL: POPCAPGAME1 0x00649d80
+float Sexy::PhysObj::mGravity = 0.05f;
 void (*Sexy::PhysObj::mNotifyCollisionFunc)(PhysObj* param_1, PhysObj* param_2) = NULL;
 
 // FUNCTION: POPCAPGAME1 0x00480660
@@ -200,10 +203,10 @@ void PhysObj::SetMovingPercent(float param_1, bool param_2)
 	if (mMover != NULL) {
 		bool bVar2 = param_1 < 0.0f;
 		if (bVar2) {
-			param_1 * -1.0f;
+			param_1 *= -1.0f;
 		}
-		float dVar3 = mMover->GetTimeTillPhase(mUnk0x4c, param_1);
-		if ((int) dVar3 < 1) {
+		int dVar3 = mMover->GetTimeTillPhase(mUnk0x4c, param_1);
+		if (dVar3 < 1) {
 			if (bVar2) {
 				dVar3 += mMover->mPause2 + mMover->mPause1 + mMover->mTime;
 			}
@@ -213,7 +216,8 @@ void PhysObj::SetMovingPercent(float param_1, bool param_2)
 		}
 
 		if (param_2) {
-			SetMoveUpdateCnt(dVar3);
+			SetMoveUpdateCnt(mUnk0x4c + dVar3);
+			return;
 		}
 		mUnk0x26 = true;
 		mUnk0x50 = dVar3;
@@ -532,36 +536,35 @@ bool PhysObj::EditContains(float param_1, float param_2, bool param_3)
 }
 
 // FUNCTION: POPCAPGAME1 0x00479740
-bool PhysObj::EditIntersects(Rect param_1)
+bool PhysObj::EditIntersects(Rect* param_1)
 {
 	int var1 = (int) mUnk0x14;
 	int var2 = (int) mUnk0x18;
 	int var3 = (int) (mUnk0x1c - mUnk0x14);
 	int var4 = (int) (mUnk0x20 - mUnk0x18);
 
-	if (param_1.mX > var1 + var3 &&
-		param_1.mY > var2 + var4 &&
-		var1 < param_1.mWidth + param_1.mX &&
-		var2 < param_1.mHeight + param_1.mY) {
+	if (param_1->mX < var1 + var3 &&
+		param_1->mY < var2 + var4 &&
+		var1 < param_1->mWidth + param_1->mX &&
+		var2 < param_1->mHeight + param_1->mY) {
 		return true;
 	}
 	return false;
 }
 
 // FUNCTION: POPCAPGAME1 0x00476a90
-void PhysObj::EditReflect(float param_1, float param_2, bool param_3)
+void PhysObj::EditReflect(float param_1, float param_2, bool param_3, bool param_4)
 {
 	float xPos = GetXPos();
 	float yPos = GetYPos();
+	float dx = 0.0f;
+	float dy = 0.0f;
 	if (param_3) {
-		xPos = 0;
-		yPos = (yPos - param_2) + (yPos - param_2);
+		dx = (param_1 - xPos) + (param_1 - xPos);
 	} else {
-		yPos = 0;
-		xPos = (xPos - param_1) + (xPos - param_1);
+		dy = (param_2 - yPos) + (param_2 - yPos);
 	}
-
-	EditTranslate(xPos, yPos);
+	EditTranslate(dx, dy);
 }
 
 // FUNCTION: POPCAPGAME1 0x00479b90
