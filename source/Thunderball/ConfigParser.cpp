@@ -163,6 +163,7 @@ bool ConfigParser::GroupTypeIs(const char* str, int val)
 // STUB: POPCAPGAME1 0x004bf270
 std::string ConfigParser::GetError()
 {
+	return NULL;
 }
 
 bool ConfigParser::HadError()
