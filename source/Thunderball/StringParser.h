@@ -17,11 +17,10 @@ public:
     int mUnk0x4;
     int mUnk0x8;
     std::string mUnk0xc;
-    bool mUnk0x28;
+    bool mThrowExceptions; // +0x28
 
     StringParser();
     StringParser(std::string& theString);
-    ~StringParser();
 
     void Set(std::string& theString);
     bool Error(std::string& theError, bool param_2);

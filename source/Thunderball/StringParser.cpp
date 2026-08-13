@@ -10,13 +10,13 @@ StringParser::StringParser()
     mUnk0x0 = "";
     mUnk0x4 = 0;
     mUnk0x8 = 0;
-    mUnk0x28 = false;
+    mThrowExceptions = false;
 }
 
 // FUNCTION: POPCAPGAME1 0x004c0f40
 StringParser::StringParser(std::string& theString)
 {
-    mUnk0x28 = 0;
+    mThrowExceptions = false;
     Set(theString);
 }
 
@@ -24,14 +24,14 @@ StringParser::StringParser(std::string& theString)
 void StringParser::Set(std::string& theString)
 {
     mUnk0xc = theString;
-    mUnk0x28 = 0;
+    mThrowExceptions = false;
 }
 
 // FUNCTION: POPCAPGAME1 0x004c0fa0
 bool StringParser::Error(std::string& theError, bool param_2)
 {
     mUnk0xc = theError;
-    if (mUnk0x28 && param_2) {
+    if (mThrowExceptions && param_2) {
         throw ParserException(theError);
     }
     return false;
@@ -229,4 +229,27 @@ std::string StringParser::ReadString(bool param_1, bool param_2)
     std::string aString;
     ReadString(aString, param_1, param_2);
     return aString;
+}
+
+void StringParser::ReadHTMLString(std::string& theString)
+{
+    ReadString(theString, false, true);
+}
+
+bool StringParser::ReadBool()
+{
+    SkipWhitespace();
+    if (mUnk0x4 < mUnk0x8) {
+        char c = tolower(mUnk0x0[mUnk0x4]);
+        if (c == 't') {
+            mUnk0x4++;
+            return true;
+        } else if (c == 'f') {
+            mUnk0x4++;
+            return false;
+        }
+    }
+
+    Error(std::string("Expecting Boolean"), true);
+    return false;
 }

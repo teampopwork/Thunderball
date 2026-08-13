@@ -13,7 +13,7 @@ TextReader::TextReader()
 }
 
 // FUNCTION: POPCAPGAME1 0x004be790
-TextReader::TextReader(TextReader& param_1)
+TextReader::TextReader(const TextReader& param_1)
 {
     mUnk0x4 = param_1.mUnk0x4;
     mUnk0x8 = param_1.mUnk0x8;

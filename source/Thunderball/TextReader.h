@@ -16,7 +16,7 @@ public:
     std::string mUnk0x34;
 
     TextReader();
-    TextReader(TextReader& param_1);
+    TextReader(const TextReader& param_1);
     virtual ~TextReader();
 
     void Close();

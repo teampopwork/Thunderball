@@ -30,6 +30,7 @@ public:
 	std::string mUnk0x34;
 	std::string mUnk0x50;
 	std::string mUnk0x6c;
+	bool mUnk0x84;
 };
 
 class StageInfo : public RefCount {
@@ -65,8 +66,8 @@ public:
 	void Load(char* param_1);
 	void MarkLastUseTime(LevelInfo* param_1);
 	void ReadConfig(const std::string& param_1);
-	void ReadKeyVal(ConfigParser* param_1);
-	void ReadStageConfig(ConfigParser* param_1, StageInfo* param_2);
+	void ReadKeyVal(ConfigParser* theConfigParser);
+	void ReadStageConfig(ConfigParser* theConfigParser, StageInfo* param_2);
 	void ResetLastUseTimes();
 };
 

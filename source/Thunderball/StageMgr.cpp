@@ -1,6 +1,9 @@
 #include "StageMgr.h"
 
+#include "ConfigParser.h"
 #include "PlayerInfo.h"
+#include "ThunderballApp.h"
+
 
 using namespace Sexy;
 
@@ -179,18 +182,116 @@ void StageMgr::MarkLastUseTime(LevelInfo* param_1)
 	param_1->mUnk0x8 = ++mUnk0x8;
 }
 
-// STUB: POPCAPGAME1 0x004685f0
-void StageMgr::ReadConfig(const std::string& param_1)
+// FUNCTION: POPCAPGAME1 0x004685f0
+void StageMgr::ReadConfig(const std::string& pathString)
 {
+	Clear();
+
+	ConfigParser parser(true);
+	parser.Open(pathString, true);
+
+	bool inStageGroup = false;
+
+	while (parser.ReadNext()) {
+		if (parser.mUnk0x9c == 1) {
+			if (parser.GroupTypeIs("Stage", true)) {
+				inStageGroup = true;
+
+				SmartPtr<StageInfo> stageInfo = new StageInfo();
+
+				mUnk0xc.push_back(stageInfo);
+			}
+			else {
+				parser.ErrorUnexpectedGroupType();
+			}
+		}
+		else if (parser.mUnk0x9c == 2) {
+			inStageGroup = false;
+		}
+		else {
+			if (!inStageGroup) {
+				ReadKeyVal(&parser);
+			}
+			else {
+				StageInfo* currentStage = mUnk0xc.back();
+				ReadStageConfig(&parser, currentStage);
+			}
+		}
+	}
 }
 
-// STUB: POPCAPGAME1 0x00468300
-void StageMgr::ReadKeyVal(ConfigParser* param_1)
+// FUNCTION: POPCAPGAME1 0x00468300
+void StageMgr::ReadKeyVal(ConfigParser* theConfigParser)
 {
+	StringParser* aStringParser = theConfigParser->GetValParser();
+	if (stricmp(theConfigParser->mUnk0x70.c_str(), "ExcludeRandStages") == 0) {
+		if (aStringParser->mUnk0x4 < aStringParser->mUnk0x8) {
+			do {
+				int anInt = aStringParser->ReadInt();
+				StageInfo* aStageInfo = GetStageInfo(anInt);
+				if (aStageInfo == NULL) {
+					theConfigParser->Error(StrFormat("Stage not found: %d", anInt - 1), false, true);
+				}
+
+				for (int i = 0; i < aStageInfo->mUnk0x5c.size(); i++) {
+					aStageInfo->mUnk0x5c[i]->mUnk0x84 = true;
+				}
+			} while (aStringParser->CheckNextChar(',') && aStringParser->mUnk0x4 < aStringParser->mUnk0x8);
+		}
+	}
+	else {
+		if (stricmp(theConfigParser->mUnk0x70.c_str(), "IncludeRandStages") == 0) {
+			if (aStringParser->mUnk0x4 < aStringParser->mUnk0x8) {
+				do {
+					int anInt = aStringParser->ReadInt();
+					StageInfo* aStageInfo = GetStageInfo(anInt);
+					if (aStageInfo == NULL) {
+						theConfigParser->Error(StrFormat("Stage not found: %d", anInt - 1), false, true);
+					}
+
+					for (int i = 0; i < aStageInfo->mUnk0x5c.size(); i++) {
+						aStageInfo->mUnk0x5c[i]->mUnk0x84 = false;
+					}
+				} while (aStringParser->CheckNextChar(',') && aStringParser->mUnk0x4 < aStringParser->mUnk0x8);
+			}
+		}
+		else {
+			if (stricmp(theConfigParser->mUnk0x70.c_str(), "ExcludeRandLevels") != 0) {
+				if (stricmp(theConfigParser->mUnk0x70.c_str(), "IncludeRandLevels") != 0) {
+					if (stricmp(theConfigParser->mUnk0x70.c_str(), "Tip") == 0) {
+						std::string aTip;
+						if (aStringParser->ReadString(aTip, true, true)) {
+							mUnk0x2c.push_back(aTip);
+						}
+					}
+				}
+				else {
+					theConfigParser->ErrorUnexpectedKey();
+				}
+				return;
+			}
+		}
+
+		bool local_31 = stricmp(theConfigParser->mUnk0x70.c_str(), "ExcludeRandLevels") == 0;
+		while (aStringParser->mUnk0x4 < aStringParser->mUnk0x8) {
+			std::string aLevelName = aStringParser->ReadString(true, true);
+			LevelInfo* aLevelInfo = GetLevelInfoByName(aLevelName);
+			if (aLevelInfo == NULL) {
+				theConfigParser->Error("Level not found: " + aLevelName, false, true);
+			}
+			else {
+				aLevelInfo->mUnk0x84 = local_31;
+			}
+
+			if (!aStringParser->CheckNextChar(',')) {
+				break;
+			}
+		}
+	}
 }
 
 // STUB: POPCAPGAME1 0x00467d50
-void StageMgr::ReadStageConfig(ConfigParser* param_1, StageInfo* param_2)
+void StageMgr::ReadStageConfig(ConfigParser* theConfigParser, StageInfo* param_2)
 {
 }
 
