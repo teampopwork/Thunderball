@@ -183,7 +183,7 @@ void StageMgr::MarkLastUseTime(LevelInfo* param_1)
 }
 
 // FUNCTION: POPCAPGAME1 0x004685f0
-void StageMgr::ReadConfig(const std::string& pathString)
+void StageMgr::ReadConfig(std::string& pathString)
 {
 	Clear();
 
@@ -224,7 +224,7 @@ void StageMgr::ReadConfig(const std::string& pathString)
 void StageMgr::ReadKeyVal(ConfigParser* theConfigParser)
 {
 	StringParser* aStringParser = theConfigParser->GetValParser();
-	if (stricmp(theConfigParser->mUnk0x70.c_str(), "ExcludeRandStages") == 0) {
+	if (stricmp(theConfigParser->mUnk0x64.c_str(), "ExcludeRandStages") == 0) {
 		if (aStringParser->mUnk0x4 < aStringParser->mUnk0x8) {
 			do {
 				int anInt = aStringParser->ReadInt();
@@ -240,7 +240,7 @@ void StageMgr::ReadKeyVal(ConfigParser* theConfigParser)
 		}
 	}
 	else {
-		if (stricmp(theConfigParser->mUnk0x70.c_str(), "IncludeRandStages") == 0) {
+		if (stricmp(theConfigParser->mUnk0x64.c_str(), "IncludeRandStages") == 0) {
 			if (aStringParser->mUnk0x4 < aStringParser->mUnk0x8) {
 				do {
 					int anInt = aStringParser->ReadInt();
@@ -256,9 +256,9 @@ void StageMgr::ReadKeyVal(ConfigParser* theConfigParser)
 			}
 		}
 		else {
-			if (stricmp(theConfigParser->mUnk0x70.c_str(), "ExcludeRandLevels") != 0) {
-				if (stricmp(theConfigParser->mUnk0x70.c_str(), "IncludeRandLevels") != 0) {
-					if (stricmp(theConfigParser->mUnk0x70.c_str(), "Tip") == 0) {
+			if (stricmp(theConfigParser->mUnk0x64.c_str(), "ExcludeRandLevels") != 0) {
+				if (stricmp(theConfigParser->mUnk0x64.c_str(), "IncludeRandLevels") != 0) {
+					if (stricmp(theConfigParser->mUnk0x64.c_str(), "Tip") == 0) {
 						std::string aTip;
 						if (aStringParser->ReadString(aTip, true, true)) {
 							mUnk0x2c.push_back(aTip);
@@ -272,7 +272,7 @@ void StageMgr::ReadKeyVal(ConfigParser* theConfigParser)
 			}
 		}
 
-		bool local_31 = stricmp(theConfigParser->mUnk0x70.c_str(), "ExcludeRandLevels") == 0;
+		bool local_31 = stricmp(theConfigParser->mUnk0x64.c_str(), "ExcludeRandLevels") == 0;
 		while (aStringParser->mUnk0x4 < aStringParser->mUnk0x8) {
 			std::string aLevelName = aStringParser->ReadString(true, true);
 			LevelInfo* aLevelInfo = GetLevelInfoByName(aLevelName);

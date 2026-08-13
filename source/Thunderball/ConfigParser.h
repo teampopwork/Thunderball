@@ -35,10 +35,10 @@ public:
 	TextReader* mUnk0x14;
 	std::string mUnk0x18;
 	std::string mUnk0x38;
-	int mUnk0x54;
+	int mUnk0x50;
 	std::vector<GroupInfo> mUnk0x58;
-	std::string mUnk0x70;
-	std::string mUnk0x8c;
+	std::string mUnk0x64;
+	std::string mUnk0x80;
 	int mUnk0x9c;
 	bool mThrowExceptions; // +0xa0
 	StringParser mStringParser; // +0xa4
@@ -49,21 +49,16 @@ public:
 	void SetThrowExceptions(bool on);
 	StringParser* GetValParser();
 
-	std::string GetCode(const std::string& param_1);
-	bool GetToken(std::string& out, bool param_1);
+	void GetCode(std::string& theCode);
+	void GetToken(std::string& theToken, bool allowSpaces);
 	bool DoReadNext();
 	bool ReadNext();
-	bool Open(const std::string& param_1, bool param_2);
-	bool IncludeFile(const std::string& param_1);
+	bool Open(std::string& param_1, bool param_2);
+	bool IncludeFile(std::string& param_1);
 
-	void Error(const std::string& param_1, bool param_2, bool param_3);
+	bool Error(const std::string& param_1, bool param_2, bool param_3);
 	void ErrorNoException(const std::string& param_1, bool param_2);
 	std::string GetError();
-	bool HadError();
-
-	std::string GetKey();
-	int GetStackLevel();
-	int GetGroupType();
 	bool ErrorUnexpectedKey();
 	bool ErrorUnexpectedGroupType();
 	bool GroupTypeIs(const char* str, int val);

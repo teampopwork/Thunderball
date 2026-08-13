@@ -110,8 +110,14 @@ void TextReader::RewindToMark() {
     mUnk0x8 = mUnk0xc;
 }
 
+// FUNCTION: POPCAPGAME1 0x004c1b40
 void TextReader::SkipWhitespace() {
-    
+    while(!EndOfFile() && isspace(mUnk0x4[mUnk0x8])) {
+        if (mUnk0x4[mUnk0x8] == '\n') {
+            mUnk0x14++;
+        }
+        mUnk0x8++;
+    }
 }
 
 // FUNCTION: POPCAPGAME1 0x004c1b90

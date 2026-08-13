@@ -65,7 +65,7 @@ public:
 	const std::string& GetTip(unsigned long param_1);
 	void Load(char* param_1);
 	void MarkLastUseTime(LevelInfo* param_1);
-	void ReadConfig(const std::string& param_1);
+	void ReadConfig(std::string& param_1);
 	void ReadKeyVal(ConfigParser* theConfigParser);
 	void ReadStageConfig(ConfigParser* theConfigParser, StageInfo* param_2);
 	void ResetLastUseTimes();
