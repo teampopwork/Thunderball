@@ -33,7 +33,7 @@ public:
     int ReadInt();
     bool ReadString(std::string& theString, bool param_2, bool param_3);
     std::string ReadString(bool param_1, bool param_2);
-    void ReadHTMLString(std::string& theString);
+    bool ReadHTMLString(std::string& theString);
     bool ReadBool();
 };
 

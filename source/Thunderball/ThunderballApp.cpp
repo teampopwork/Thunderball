@@ -142,7 +142,7 @@ ThunderballApp::~ThunderballApp()
 	delete mProfileMgr;
 }
 
-// STUB: POPCAPGAME1 0x0042ca30
+// FUNCTION: POPCAPGAME1 0x0042ca30
 void ThunderballApp::Init()
 {
 	SexyApp::Init();
@@ -207,10 +207,10 @@ void ThunderballApp::Init()
 	mCharacterMgr->Load();
 	mHighScoreMgr->Load();
 	mProfileMgr->Load();
-	mStageMgr->Load("");
-	mStatsMgr->Load("");
+	mStageMgr->Load(NULL);
+	mStatsMgr->Load(NULL);
 	mEditStatsMgr->Load("LevelEditor/stats_cheat.dat");
-	mTrophyMgr->Load("");
+	mTrophyMgr->Load(NULL);
 
 	std::string aCurUserName;
 	bool registryReadSuccess = false;
@@ -246,7 +246,7 @@ void ThunderballApp::Init()
 		ShowLoadingScreen();
 	}
 	else {
-		// DoDialog("No User Profile");
+		LogScreenSaverError("No User Profile");
 		mLoadingFailed = true;
 	}
 }

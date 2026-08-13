@@ -4,7 +4,6 @@
 #include "PlayerInfo.h"
 #include "ThunderballApp.h"
 
-
 using namespace Sexy;
 
 // FUNCTION: POPCAPGAME1 0x00441fd0
@@ -290,9 +289,92 @@ void StageMgr::ReadKeyVal(ConfigParser* theConfigParser)
 	}
 }
 
-// STUB: POPCAPGAME1 0x00467d50
-void StageMgr::ReadStageConfig(ConfigParser* theConfigParser, StageInfo* param_2)
+// FUNCTION: POPCAPGAME1 0x00467d50
+void StageMgr::ReadStageConfig(ConfigParser* theConfigParser, StageInfo* theStageInfo)
 {
+	StringParser* aStringParser = theConfigParser->GetValParser();
+
+	if (stricmp(theConfigParser->mUnk0x64.c_str(), "Level") == 0) {
+		SmartPtr<LevelInfo> aLevelInfo = new LevelInfo();
+		theStageInfo->mUnk0x5c.push_back(aLevelInfo);
+
+		LevelInfo* iVar4 = theStageInfo->mUnk0x5c.back().get();
+		iVar4->mUnk0x14 = aStringParser->ReadString(false, false);
+		iVar4->mUnk0xc = theStageInfo->mUnk0x5c.size() - 1;
+		iVar4->mUnk0x10 = mUnk0xc.size() - 1;
+
+		if (aStringParser->CheckNextChar(',')) {
+			iVar4->mUnk0x34 = aStringParser->ReadString(false, false);
+		}
+		else {
+			iVar4->mUnk0x34 = iVar4->mUnk0x14;
+		}
+
+		if (GetThunderballApp() != NULL) {
+			if (!GetThunderballApp()->FileExists("levels\\" + iVar4->mUnk0x14 + ".dat")) {
+				theConfigParser->Error("Level file not found: " + iVar4->mUnk0x14, false, true);
+			}
+		}
+
+		mUnk0x1c.insert(std::pair<std::string, SmartPtr<LevelInfo>>(iVar4->mUnk0x14, aLevelInfo));
+	}
+	else if (stricmp(theConfigParser->mUnk0x64.c_str(), "Dialog") == 0) {
+		int aLevelNum = aStringParser->ReadInt() - 1;
+		aStringParser->CheckNextChar(',');
+		if (aLevelNum < 0) {
+			theConfigParser->Error("Invalid level num.", false, true);
+		}
+		else {
+			if (aLevelNum >= theStageInfo->mUnk0x5c.size()) {
+				theConfigParser->Error("Invalid level num.", false, true);
+			}
+			else {
+				LevelInfo* aLevelInfo = theStageInfo->GetLevelInfo(aLevelNum);
+				aStringParser->ReadHTMLString(aLevelInfo->mUnk0x50);
+				if (aStringParser->CheckNextChar(',')) {
+					aStringParser->ReadString(aLevelInfo->mUnk0x6c, true, true);
+				}
+			}
+		}
+	}
+	else if (stricmp(theConfigParser->mUnk0x64.c_str(), "StageDialog") == 0) {
+		int aTextNum = aStringParser->ReadInt();
+		aStringParser->CheckNextChar(',');
+		if (aTextNum - 1 < 0) {
+			theConfigParser->Error("Invalid text num.", false, true);
+		}
+
+		std::vector<StoryData>& aStoryVector = theStageInfo->mUnk0x8[aTextNum];
+		if (aStoryVector.empty()) {
+			aStoryVector.push_back(StoryData());
+		}
+
+		StoryData& aStoryData = aStoryVector.back();
+		aStringParser->ReadHTMLString(aStoryData.mUnk0x0);
+
+		if (aStringParser->CheckNextChar(',')) {
+			aStoryData.mUnk0x1c = aStringParser->ReadInt(-1);
+		}
+	}
+	else if (stricmp(theConfigParser->mUnk0x64.c_str(), "Credit") == 0) {
+		int aTextNum = aStringParser->ReadInt();
+		aStringParser->CheckNextChar(',');
+		if (aTextNum - 1 < 0) {
+			theConfigParser->Error("Invalid text num.", false, true);
+		}
+
+		std::vector<StoryData>& aStoryVector = theStageInfo->mUnk0x8[aTextNum];
+		aStoryVector.push_back(StoryData());
+		StoryData& aStoryData = aStoryVector.back();
+		aStringParser->ReadHTMLString(aStoryData.mUnk0x0);
+
+		if (aStringParser->CheckNextChar(',')) {
+			aStoryData.mUnk0x1c = aStringParser->ReadInt(-1);
+		}
+	}
+	else {
+		theConfigParser->ErrorUnexpectedKey();
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x0043d890

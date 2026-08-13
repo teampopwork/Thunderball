@@ -224,18 +224,64 @@ bool StringParser::ReadString(std::string& theString, bool param_2, bool param_3
 }
 
 // FUNCTION: POPCAPGAME1 0x004c1550
-std::string StringParser::ReadString(bool param_1, bool param_2)
+std::string StringParser::ReadString(bool param_1, bool param_2 = false)
 {
     std::string aString;
     ReadString(aString, param_1, param_2);
     return aString;
 }
 
-void StringParser::ReadHTMLString(std::string& theString)
+// FUNCTION: POPCAPGAME1 0x004c15c0
+bool StringParser::ReadHTMLString(std::string& theString)
 {
-    ReadString(theString, false, true);
+    SkipWhitespace();
+    if (mUnk0x0[mUnk0x4] == '\"') {
+        return ReadString(theString, true, true);
+    } else {
+        bool local_11 = false;
+        bool local_10 = false;
+        bool local_f = false;
+        while (mUnk0x4 < mUnk0x8) {
+            char c = mUnk0x0[mUnk0x4];
+            if (c == '\\') {
+                mUnk0x4++;
+                char c2 = mUnk0x0[mUnk0x4];
+                if (c2 == '\n') {
+                    theString += '\n';
+                    local_10 = true;
+                    local_11 = false;
+                } else {
+                    if (c2 != '\\') {
+                        return Error(StrFormat("Invalid escape char: \\%c", c2), true);
+                    }
+                    c = '\\';
+                }
+                mUnk0x4++;
+            } else {
+                if (isspace(c) == 0) {
+                    if (local_11 && (theString += ' ', local_f)) {
+                        theString += ' ';
+                    }
+
+                    theString += c;
+                    mUnk0x4++;
+                    local_11 = false;
+                    local_10 = false;
+                    local_f = c == '.';
+                } else {
+                    if (!local_10) {
+                        local_11 = true;
+                    }
+                    mUnk0x4++;
+                }
+            }
+        }
+        
+        return true;
+    }
 }
 
+// FUNCTION: POPCAPGAME1 0x004653a0
 bool StringParser::ReadBool()
 {
     SkipWhitespace();

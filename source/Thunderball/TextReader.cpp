@@ -1,5 +1,7 @@
 #include "TextReader.h"
 
+#include <PakLib/PakInterface.h>
+
 using namespace Sexy;
 
 // FUNCTION: POPCAPGAME1 0x004c1a40
@@ -42,18 +44,18 @@ void TextReader::Close() {
 
 // FUNCTION: POPCAPGAME1 0x004c1c50
 bool TextReader::Open(std::string& theFileName) {
-    FILE* file = fopen(theFileName.c_str(), "rb");
+    PFILE* file = p_fopen(theFileName.c_str(), "rb");
     if (file == NULL) {
         return false;
     }
 
-    fseek(file, 0, 2);
-    mUnk0x10 = ftell(file);
-    fseek(file, 0, 0);
+    p_fseek(file, 0, 2);
+    mUnk0x10 = p_ftell(file);
+    p_fseek(file, 0, 0);
     mUnk0x4 = new char[mUnk0x10 + 1];
-    mUnk0x10 = fread(mUnk0x4, 1, mUnk0x10, file);
+    mUnk0x10 = p_fread(mUnk0x4, 1, mUnk0x10, file);
     mUnk0x4[mUnk0x10] = 0;
-    fclose(file);
+    p_fclose(file);
     return true;
 }
 
