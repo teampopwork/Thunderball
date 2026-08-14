@@ -247,7 +247,7 @@ bool ConfigParser::ReadNext()
 }
 
 // FUNCTION: POPCAPGAME1 0x004c0510
-bool ConfigParser::Open(std::string& param_1, bool param_2)
+bool ConfigParser::Open(const std::string& param_1, bool param_2)
 {
 	mUnk0x4.resize(1);
 

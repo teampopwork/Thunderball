@@ -53,7 +53,7 @@ public:
 	void GetToken(std::string& theToken, bool allowSpaces);
 	bool DoReadNext();
 	bool ReadNext();
-	bool Open(std::string& param_1, bool param_2);
+	bool Open(const std::string& param_1, bool param_2);
 	bool IncludeFile(std::string& param_1);
 
 	bool Error(const std::string& param_1, bool param_2, bool param_3);

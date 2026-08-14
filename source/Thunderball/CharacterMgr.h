@@ -10,11 +10,14 @@ class Board;
 class Graphics;
 class ConfigParser;
 class DataSync;
-class Image;
+class MemoryImage;
 class ImageMgr;
 
 class CharacterInfo {
 public:
+	CharacterInfo();
+	CharacterInfo(const CharacterInfo& other);
+
 	std::vector<int> mFrames;
 	std::vector<std::string> mTips;
 	int mUnk0x20;
@@ -22,19 +25,19 @@ public:
 	int mUnk0x28;
 	std::string mName;
 	std::string mDescription;
-	int mUnk0x64;
-	int mUnk0x68;
+	float mUnk0x64;
+	float mUnk0x68;
 	int mUnk0x6C;
 	int mUnk0x70;
 	int mUnk0x74;
-	int mUnk0x78;
+	bool mUnk0x78;
 };
 
 class CharacterMgr {
 public:
 	ImageMgr* mImageMgr;
-	Image* mImage1;
-	Image* mImage2;
+	MemoryImage* mImage1;
+	MemoryImage* mImage2;
 	std::vector<CharacterInfo> mCharacters;
 	int mCurCharacter;
 	int mUnk0x24;
@@ -92,7 +95,7 @@ public:
 	int GetCurCharFrame(CharacterInfo* param_1);
 	void InitDefault();
 	void Load();
-	void ReadConfig(std::string* param_1);
+	void ReadConfig(const std::string& param_1);
 	void ReaderCharacterConfig(ConfigParser* param_1, CharacterInfo* param_2);
 	int ReadPowerupType(ConfigParser* param_1, std::string* param_2);
 	void Resync();

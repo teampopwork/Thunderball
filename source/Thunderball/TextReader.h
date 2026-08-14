@@ -20,7 +20,7 @@ public:
     virtual ~TextReader();
 
     void Close();
-    bool Open(std::string& theFileName);
+    bool Open(const std::string& theFileName);
     bool EndOfFile();
     char NextChar();
     char PeekChar();

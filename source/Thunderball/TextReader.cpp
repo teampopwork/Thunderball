@@ -43,7 +43,7 @@ void TextReader::Close() {
 }
 
 // FUNCTION: POPCAPGAME1 0x004c1c50
-bool TextReader::Open(std::string& theFileName) {
+bool TextReader::Open(const std::string& theFileName) {
     PFILE* file = p_fopen(theFileName.c_str(), "rb");
     if (file == NULL) {
         return false;
