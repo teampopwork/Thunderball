@@ -877,6 +877,7 @@ void MemoryImage::CommitBits()
 	//	mApp->CopyToClipboard("-MemoryImage::CommitBits");
 }
 
+// FUNCTION: POPCAPGAME1 0x004cf030
 void MemoryImage::SetImageMode(bool hasTrans, bool hasAlpha)
 {
 	mForcedMode = true;	

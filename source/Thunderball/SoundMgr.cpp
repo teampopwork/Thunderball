@@ -10,8 +10,19 @@
 
 using namespace Sexy;
 
-// TEMPLATE: POPCAPGAME1 0x00
-// std::_Tree<std::_Tmap_traits<int,Sexy::MemoryImage *,std::greater<int>,std::allocator<std::pair<int const ,Sexy::MemoryImage *> >,1> >::_Buynode(void)
+void SoundMgr::SoundDesc::SyncState(DataSync& theSync)
+{
+	theSync.SyncLong(mUnk0x0);
+	theSync.SyncLong(mUnk0x4);
+	theSync.SyncLong(mUnk0x8);
+	theSync.SyncFloat(mUnk0xc);
+	if (48 < theSync.mVersion) {
+		theSync.SyncFloat(mUnk0x10);
+	}
+}
+
+// TEMPLATE: POPCAPGAME1 0x0043f490
+// std::_Tree<std::_Tmap_traits<int,Sexy::SoundMgr::SoundDesc,std::less<int>,std::allocator<std::pair<int const ,Sexy::SoundMgr::SoundDesc> >,1> >::_Buynode(void)
 
 // FUNCTION: POPCAPGAME1 0x0045f1d0
 SoundMgr::SoundMgr()
@@ -91,10 +102,12 @@ void SoundMgr::Clear()
 	KillAllSounds();
 }
 
+
+
 // FUNCTION: POPCAPGAME1 0x0045f2c0
 void SoundMgr::SyncState(DataSync& theSync)
 {
-	// DataSync_SyncSTLMapImplSimple<int, SoundDesc*>(param_1, mUnk0x4);
+	DataSync_SyncSTLMapImplSimple(theSync, mUnk0x4, DataSyncFunc_SyncInt(), DataSyncFunc_SyncClass<SoundDesc>());
 	if (0x2f < theSync.mVersion) {
 		theSync.SyncLong(mUnk0x10);
 	}

@@ -13,6 +13,8 @@ class SoundInstance;
 class SoundMgr {
 	class SoundDesc {
 	public:
+		void SyncState(DataSync& theSync);
+
 		int mUnk0x0;    // +0x0
 		int mUnk0x4;    // +0x4
 		int mUnk0x8;    // +0x8

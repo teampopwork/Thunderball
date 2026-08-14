@@ -11,15 +11,15 @@
 
 namespace Sexy
 {
+
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
 // VTABLE: POPCAPGAME1 0x005d5f34
-struct DataReaderException : public std::exception
-{
+struct DataReaderException : public std::exception {
 	std::string what;
-    // FUNCTION: POPCAPGAME1 0x00422a20
-	DataReaderException(const std::string &theWhat) : what(theWhat) { }
+	// FUNCTION: POPCAPGAME1 0x00422a20
+	DataReaderException(const std::string& theWhat) : what(theWhat) {}
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -54,8 +54,8 @@ public:
 	void ReadString(std::string& theString);
 	bool ReadBit();
 	void EndBit();
-    void* ReadBytesFromMem(ulong theLength);
-    bool CanReadBytes(int param_1);
+	void* ReadBytesFromMem(ulong theLength);
+	bool CanReadBytes(int param_1);
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -156,11 +156,38 @@ private:
 	int mCurPointerIndex;                 // +0x90
 };
 
-template <class T>
-struct DataSyncFunc_SyncSmartPtrFactory { void Sync(DataSync &theSync, SmartPtr<T> &theVal) { DataSync_SyncSmartPtrFactory<T>(theSync, theVal, NULL); } };
+struct DataSyncFunc_SyncInt {
+	void Sync(DataSync& theSync, int& theVal) { theSync.SyncLong(theVal); }
+};
+struct DataSyncFunc_SyncFloat {
+	void Sync(DataSync& theSync, float& theVal) { theSync.SyncFloat(theVal); }
+};
+struct DataSyncFunc_SyncString {
+	void Sync(DataSync& theSync, std::string& theVal) { theSync.SyncString(theVal); }
+};
+struct DataSyncFunc_SyncBoolBit {
+	void Sync(DataSync& theSync, bool& theVal) { theSync.SyncBoolBit(theVal); }
+};
 
 template <class T>
-struct DataSyncFunc_AllocStack { T Alloc() { return T(); } };
+struct DataSyncFunc_SyncSmartPtrFactory {
+	void Sync(DataSync& theSync, SmartPtr<T>& theVal) { DataSync_SyncSmartPtrFactory<T>(theSync, theVal, NULL); }
+};
+
+template <class T>
+struct DataSyncFunc_SyncClass {
+	void Sync(DataSync& theSync, T& theClass) { theClass.SyncState(theSync); }
+};
+
+template <class T>
+struct DataSyncFunc_SyncClassPtr {
+	void Sync(DataSync& theSync, T* theClass) { theClass->SyncState(theSync); }
+};
+
+template <class T>
+struct DataSyncFunc_AllocStack {
+	T Alloc() { return T(); }
+};
 
 template <typename TContainer>
 void DataSync_SyncSTLContainer(DataSync& theSync, TContainer& theValue)
@@ -187,69 +214,114 @@ void DataSync_SyncSTLContainer(DataSync& theSync, TContainer& theValue)
 }
 
 template <class T, class ValSync, class AllocStackFunc>
-void DataSync_SyncSTLListImpl(DataSync &theSync, T &theList, ValSync theValSync, AllocStackFunc theAllocStack)
+void DataSync_SyncSTLListImpl(DataSync& theSync, T& theList, ValSync theValSync, AllocStackFunc theAllocStack)
 {
-    DataReader *aReader = theSync.mReader;
-    DataWriter *aWriter = theSync.mWriter;
+	DataReader* aReader = theSync.mReader;
+	DataWriter* aWriter = theSync.mWriter;
 
-    if (aReader != NULL) 
-    {
-        theList.clear();
+	if (aReader != NULL) {
+		theList.clear();
 
-        int aNumItems = aReader->ReadLong();
-        for (int i = 0; i < aNumItems; i++)
-        {
-            theList.push_back(theAllocStack.Alloc());
-            theValSync.Sync(theSync, theList.back());
-        }
-    }
-    else
-    {
-        aWriter->WriteLong((int)theList.size());
-        
-        for (typename T::iterator anItr = theList.begin(); anItr != theList.end(); ++anItr)
-        {
-            theValSync.Sync(theSync, *anItr);
-        }
-    }
+		int aNumItems = aReader->ReadLong();
+		for (int i = 0; i < aNumItems; i++) {
+			theList.push_back(theAllocStack.Alloc());
+			theValSync.Sync(theSync, theList.back());
+		}
+	}
+	else {
+		aWriter->WriteLong((int) theList.size());
+
+		for (typename T::iterator anItr = theList.begin(); anItr != theList.end(); ++anItr) {
+			theValSync.Sync(theSync, *anItr);
+		}
+	}
+}
+
+template <class T, class KeySync, class ValSync, class KeyAllocStackFunc, class ValAllocStackFunc>
+void DataSync_SyncSTLMapImpl(DataSync& theSync, T& theMap, KeySync theKeySync, ValSync theValSync, KeyAllocStackFunc theKeyAllocStack, ValAllocStackFunc theValAllocStack)
+{
+	DataReader* aReader = theSync.mReader;
+	DataWriter* aWriter = theSync.mWriter;
+	if (aReader != NULL) {
+		theMap.clear();
+
+		int aNumItems = aReader->ReadLong();
+		typename T::iterator anItr = theMap.begin();
+		
+		for (int i = 0; i < aNumItems; i++) {
+			bool unk0x4c = theSync.mUnk0x4c;
+			theSync.mUnk0x4c = false;
+
+			typename T::key_type aKey = theKeyAllocStack.Alloc();
+			theKeySync.Sync(theSync, aKey);
+
+			theSync.mUnk0x4c = unk0x4c;
+
+			anItr = theMap.insert(anItr, typename T::value_type(aKey, theValAllocStack.Alloc()));
+			
+			theValSync.Sync(theSync, anItr->second);
+		}
+	}
+	else {
+		aWriter->WriteLong((int) theMap.size());
+		for (typename T::iterator anItr = theMap.begin(); anItr != theMap.end(); ++anItr) {
+			bool unk0x4c = theSync.mUnk0x4c;
+			theSync.mUnk0x4c = false;
+			theKeySync.Sync(theSync, (typename T::key_type&) anItr->first);
+			theSync.mUnk0x4c = unk0x4c;
+			theValSync.Sync(theSync, anItr->second);
+		}
+	}
 }
 
 template <class T, class ValSync>
-void DataSync_SyncSTLListImplSimple(DataSync &theSync, T &theList, ValSync theValSync)
+void DataSync_SyncSTLListImplSimple(DataSync& theSync, T& theList, ValSync theValSync)
 {
-    DataSyncFunc_AllocStack<typename T::value_type> anAllocStack;
-    DataSync_SyncSTLListImpl(theSync, theList, theValSync, anAllocStack);
+	DataSyncFunc_AllocStack<typename T::value_type> aValAlloc;
+	*(char*)&aValAlloc = 0;
+	
+	DataSync_SyncSTLListImpl(theSync, theList, theValSync, aValAlloc);
+}
+
+template <class T, class KeySync, class ValSync>
+void DataSync_SyncSTLMapImplSimple(DataSync& theSync, T& theMap, KeySync theKeySync, ValSync theValSync)
+{
+	DataSyncFunc_AllocStack<typename T::key_type> aKeyAlloc;
+	*(char*)&aKeyAlloc = 0;
+	
+	DataSyncFunc_AllocStack<typename T::mapped_type> aValAlloc;
+	*(char*)&aValAlloc = 0;
+	
+	DataSync_SyncSTLMapImpl(theSync, theMap, theKeySync, theValSync, aKeyAlloc, aValAlloc);
 }
 
 template <typename T>
 T* DataSync_SyncRefCount(DataSync& theSync, T* thePointer)
 {
 	if (theSync.mReader != NULL) {
-		int refCount = theSync.mReader->ReadLong();
-		if (refCount == 0) {
+		int anId = theSync.mReader->ReadLong();
+		if (anId == 0) {
 			return NULL;
 		}
-		else if (refCount == 1) {
+		else if (anId == 1) {
 			T* newObject = new T();
 			theSync.AddRefCount(newObject);
 			newObject->SyncState(theSync);
 			return newObject;
 		}
 		else {
-			return (T*) theSync.GetRefCount(refCount);
+			return (T*) theSync.GetRefCount(anId);
 		}
 	}
 	else {
-		int refCount = theSync.AddRefCount(thePointer);
-		theSync.mWriter->WriteLong(refCount);
-		if (refCount == 1) {
+		int anId = theSync.AddRefCount(thePointer);
+		theSync.mWriter->WriteLong(anId);
+		if (anId == 1) {
 			thePointer->SyncState(theSync);
 		}
 		return thePointer;
 	}
 }
-
-
 
 template <typename T>
 void DataSync_SyncSmartPtr(DataSync& theSync, SmartPtr<T>& thePointer)
@@ -287,7 +359,7 @@ T* DataSync_SyncRefCountFactory(DataSync& theSync, T* theFactory)
 			return newObject;
 		}
 		else {
-			return (T*)theSync.GetRefCount(refCount);
+			return (T*) theSync.GetRefCount(refCount);
 		}
 	}
 
@@ -297,18 +369,13 @@ T* DataSync_SyncRefCountFactory(DataSync& theSync, T* theFactory)
 template <typename T>
 void DataSync_SyncSmartPtrFactory(DataSync& theSync, SmartPtr<T>& thePointer, T* theFactory)
 {
-    if (theSync.mReader != NULL) {
-        RefCount* refCount = DataSync_SyncRefCountFactory(theSync, theFactory);
-        thePointer = (T*) refCount;
-    }
-    else {
-        DataSync_SyncRefCountFactory(theSync, theFactory);
-    }
-}
-
-template <typename TKey, typename TValue>
-void DataSync_SyncSTLMapImplSimple(DataSync* theSync, std::multimap<TKey, TValue>& theMap)
-{
+	if (theSync.mReader != NULL) {
+		RefCount* refCount = DataSync_SyncRefCountFactory(theSync, theFactory);
+		thePointer = (T*) refCount;
+	}
+	else {
+		DataSync_SyncRefCountFactory(theSync, theFactory);
+	}
 }
 
 } // namespace Sexy
