@@ -319,10 +319,10 @@ void CharacterMgr::Load()
 	if (mImage1 == NULL) {
 		mImage1 = new MemoryImage();
 		mImage1->Create(4, 4);
-		Graphics g;
+		Graphics g(mImage1);
 		Color aColor(0);
 		g.SetColor(aColor);
-		g.FillRect(0, 0, mImage1->GetWidth(), mImage1->GetHeight());
+		g.FillRect(0, 0, mImage1->mWidth, mImage1->mHeight);
 	}
 
 	ReadConfig("characters/characters.cfg");

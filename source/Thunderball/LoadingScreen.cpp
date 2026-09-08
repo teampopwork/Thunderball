@@ -381,12 +381,13 @@ void LoadingScreen::Draw(Graphics* g)
 	// STRING: POPCAPGAME1 0x006075d8
 	int bounceLimit = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp446,604", 10);
 	
-	mLogoBounceFrame = (mLogoBounceFrame > 0 && mLogoBounceFrame < bounceLimit) ?
-		// STRING: POPCAPGAME1 0x00607548
-		(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp447,605", 8) -
-		// STRING: POPCAPGAME1 0x00607590
-		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp448,605", 1.5f) * mLogoBounceFrame) :
-		0.0f;
+	if (mLogoBounceFrame > 0 && mLogoBounceFrame < bounceLimit) {
+		finalLogoY +=
+			// STRING: POPCAPGAME1 0x00607548
+			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp447,605", 8) -
+			// STRING: POPCAPGAME1 0x00607590
+			ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp448,605", 1.5f) * mLogoBounceFrame;
+	}
 
 	if (logoStartY > 0 && logoStartY < mLogoAnimFrames) {
 		finalLogoY += mLogoAnimFrames;

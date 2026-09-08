@@ -20,11 +20,13 @@ StringParser::StringParser(std::string& theString)
     Set(theString);
 }
 
-// FUNCTION: POPCAPGAME1 0x004c0f40
+// FUNCTION: POPCAPGAME1 0x004c0ed0
 void StringParser::Set(std::string& theString)
 {
-    mUnk0xc = theString;
-    mThrowExceptions = false;
+    mUnk0x4 = 0;
+    mUnk0x0 = (char*)theString.c_str();
+    mUnk0x8 = theString.size();
+    mUnk0xc.erase();
 }
 
 // FUNCTION: POPCAPGAME1 0x004c0fa0
