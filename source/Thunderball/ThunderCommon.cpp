@@ -1324,7 +1324,7 @@ long double Sexy::GetLoadTime(int param_1)
 }
 
 // FUNCTION: POPCAPGAME1 0x004942f0
-bool Sexy::SolveLinearSystem(float a, float b, float e, float c, float d, float f, float* outX, float* outY)
+bool Sexy::SolveLinearSystem(float a, float b, float e, float c, float d, float f, float& outX, float& outY)
 {
 	float det = (a * d) - (b * c);
 
@@ -1333,10 +1333,10 @@ bool Sexy::SolveLinearSystem(float a, float b, float e, float c, float d, float 
 	}
 
 	float numX = (e * d) - (f * b);
-	*outX = numX / det;
+	outX = numX / det;
 
 	float numY = (a * f) - (e * c);
-	*outY = numY / det;
+	outY = numY / det;
 
 	return true;
 }

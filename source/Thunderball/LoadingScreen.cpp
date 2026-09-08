@@ -298,13 +298,11 @@ void LoadingScreen::Draw(Graphics* g)
 	g->FillRect(0, 0, mWidth, mHeight);
 	g->DrawImage(IMAGE_LOAD_BACK, 0, 0);
 
-	int sunY = (1.0f - mVisualLoadProgress) *
-				   // STRING: POPCAPGAME1 0x006078f8
-				   (float) ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp435,549", 500) -
-			   214.0;
+	// STRING: POPCAPGAME1 0x006078f8
+	int sunY = (1.0f - mVisualLoadProgress) * ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp435,549", 500) - 214.0;
 
 	if (g->mIs3D && mSunRotationAngle != 0.0f) {
-		double angleRad = mSunRotationAngle * SEXY_PI / 180.0;
+		float angleRad = mSunRotationAngle * SEXY_PI / 180.0;
 
 		g->DrawImageRotated(
 			IMAGE_SUNGLOW,
@@ -368,33 +366,30 @@ void LoadingScreen::Draw(Graphics* g)
 			logoRiseFrames * logoRiseFrames,
 			logoRiseFrames,
 			finalLogoY - y,
-			&b,
-			&a
+			a,
+			b
 		);
+
 	}
 
-	int logoY = (b * mLogoAnimFrames * mLogoAnimFrames) + (a * mLogoAnimFrames) + y;
+	float logoY = (b * mLogoAnimFrames * mLogoAnimFrames) + (a * mLogoAnimFrames) + y;
 
 	if (mLogoAnimFrames < hillOffsetY) {
-		g->DrawImage(IMAGE_LOAD_LOGO, logoX, logoY);
+		g->DrawImage(IMAGE_LOAD_LOGO, logoX, (int)logoY);
 	}
 
-	if (mLogoBounceFrame > 0 &&
-		// STRING: POPCAPGAME1 0x006075d8
-		mLogoBounceFrame < ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp446,604", 10)) {
-		mLogoBounceFrame =
-			(mLogoBounceFrame *
-				 // STRING: POPCAPGAME1 0x00607548
-				 -ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp448,605", 1.5f) +
-			 // STRING: POPCAPGAME1 0x00607590
-			 ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp447,605", 8));
-	}
-	else {
-		mLogoBounceFrame = 0;
-	}
+	// STRING: POPCAPGAME1 0x006075d8
+	int bounceLimit = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp446,604", 10);
+	
+	mLogoBounceFrame = (mLogoBounceFrame > 0 && mLogoBounceFrame < bounceLimit) ?
+		// STRING: POPCAPGAME1 0x00607548
+		(ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp447,605", 8) -
+		// STRING: POPCAPGAME1 0x00607590
+		ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LoadingScreen.cpp448,605", 1.5f) * mLogoBounceFrame) :
+		0.0f;
 
 	if (logoStartY > 0 && logoStartY < mLogoAnimFrames) {
-		logoY += mLogoAnimFrames;
+		finalLogoY += mLogoAnimFrames;
 	}
 
 	g->DrawImage(IMAGE_LOAD_HILL, 0, 0x11d);
@@ -428,7 +423,7 @@ void LoadingScreen::Draw(Graphics* g)
 	);
 
 	if (mLogoAnimFrames >= hillOffsetY && mLogoAnimFrames < logoRiseFrames) {
-		g->DrawImage(IMAGE_LOAD_LOGO, logoX, logoY);
+		g->DrawImage(IMAGE_LOAD_LOGO, logoX, (int)logoY);
 	}
 	else {
 		if (mLogoAnimFrames >= logoRiseFrames) {
