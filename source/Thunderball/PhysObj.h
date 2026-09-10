@@ -24,6 +24,7 @@ public:
 	static int mOutlineMode;
 	static float mGravity;
     static void (*mNotifyCollisionFunc)(PhysObj* param_1, PhysObj* param_2);
+	static void* mNotifyCollisionData;
 
 	int mUnk0x10; // +0x10
 

@@ -31,6 +31,7 @@ int Sexy::PhysObj::mOutlineMode = 0;
 // GLOBAL: POPCAPGAME1 0x00649d80
 float Sexy::PhysObj::mGravity = 0.05f;
 void (*Sexy::PhysObj::mNotifyCollisionFunc)(PhysObj* param_1, PhysObj* param_2) = NULL;
+void* Sexy::PhysObj::mNotifyCollisionData = NULL;
 
 // FUNCTION: POPCAPGAME1 0x00480660
 PhysObj::PhysObj()

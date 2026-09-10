@@ -63,7 +63,7 @@ public:
 	int mUnk0x4c;                           // +0x4c
 	int mUnk0x50;                           // +0x50
 	bool mUnk0x54;                          // +0x54
-	char mUnk0x55[3];                       // +0x55
+	bool mUnk0x55;                          // +0x55
 	char mUnk0x58[0x10];                    // +0x58
 	bool mUnk0x68;                          // +0x68
 	bool mUnk0x69;                          // +0x69
@@ -144,15 +144,14 @@ public:
 	PowerupType mUnk0x1cc[2];               // +0x1cc
 	int mUnk0x1d4;                          // +0x1d4
 	int mUnk0x1d8;                          // +0x1d8
-	int mUnk0x1dc;                          // +0x1dc
-	char mUnk0x1e0[4];                      // +0x1e0
+	int mUnk0x1dc[2];                       // +0x1dc
 	int mUnk0x1e4[4];                       // +0x1e4
-	int mFreeBallCount[2];                   // +0x1f4
+	int mFreeBallCount[2];                  // +0x1f4
 	int mUnk0x1fc[4];                       // +0x1fc
-	int mZenBallCount[2];                    // +0x20c
+	int mZenBallCount[2];                   // +0x20c
 	int mUnk0x214[2];                       // +0x214
 	char mUnk0x21c[0x18];                   // +0x21c
-	int mFireballCount[2];                   // +0x234
+	int mFireballCount[2];                  // +0x234
 	char mUnk0x23c[0x8];                    // +0x23c
 	bool mUnk0x244[2];                      // +0x244
 	GameStats mUnk0x248[2];                 // +0x248

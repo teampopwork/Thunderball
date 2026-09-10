@@ -217,13 +217,13 @@ class Board : public Widget, public ButtonListener
 	void     DoLevelDone();
 	void     SyncModeOptions();
 	void     SyncState(DataSync& theSync);
-	void     SetSyncPoint(DataWriter* param_1, bool param_2);
+	bool     SetSyncPoint(DataWriter* param_1, bool param_2);
 	void     EndReplay();
 	bool     NeedSaveGame();
 	DataWriter* GetSyncPoint();
 	void     ShowReplay(int param_1, bool param_2);
 	void     GetReplayPoint();
-	void     LoadGame(Buffer* param_1);
+	bool     LoadGame(Buffer* param_1);
 	void     SaveGame();
 	void     MakeThumbnail();
 	void     SetupLevel();

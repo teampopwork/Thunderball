@@ -897,6 +897,25 @@ void ThunderballApp::FinishConfirmRestartLevelDialog(bool param_1)
 // STUB: POPCAPGAME1 0x00430020
 void ThunderballApp::FinishContinueDialog(bool param_1)
 {
+	if (mCurProfile != NULL) {
+		std::string aSavedGameName = mCurProfile->GetSavedGameName(mGameMode);
+		if (!aSavedGameName.empty()) {
+			EraseFile(aSavedGameName);
+		}
+	}
+
+	if (!param_1) {
+		if (mMainMenu != NULL) {
+			mMainMenu->StartGame();
+		}
+	} else {
+		ShowBoard(true, false);
+		if (!mBoard->LoadGame(&mDemoBuffer)) {
+			ShowMainMenu();
+			DoDialogScroll(26, true, "Save Game Error", "The save game file was corrupt.", "OK", 3);
+
+		}
+	}
 }
 
 // FUNCTION: POPCAPGAME1 0x00427830
