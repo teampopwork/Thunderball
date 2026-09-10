@@ -166,7 +166,7 @@ void StoryScreen::Draw(Graphics* g)
 
     int iVar5 = ModVal(0,"SEXY_SEXYMODVAL.\\StoryScreen.cpp201,1073",2);
     int iVar6 = ModVal(0,"SEXY_SEXYMODVAL.\\StoryScreen.cpp202,1074",4);
-    Rect aDialogRect = aDialogRect.Inflate(iVar5, iVar6);
+	Rect aDialogRect(-iVar5, -iVar6, mWidth + iVar5 * 2, mHeight + iVar6 * 2);
     g->DrawImageBox(aDialogRect, IMAGE_DLG_DIALOGBOX);
     g->DrawImage(IMAGE_DLG_PLAYWIDGET1, mX - ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp203,1079", 32), mY - ModVal(0, "SEXY_SEXYMODVAL.\\StoryScreen.cpp204,1079", 20));
 

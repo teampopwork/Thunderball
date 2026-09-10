@@ -344,7 +344,7 @@ void StageMgr::ReadStageConfig(ConfigParser* theConfigParser, StageInfo* theStag
 			theConfigParser->Error("Invalid text num.", false, true);
 		}
 
-		std::vector<StoryData>& aStoryVector = theStageInfo->mUnk0x8[aTextNum];
+		std::vector<StoryData>& aStoryVector = theStageInfo->mUnk0x8[aTextNum - 1];
 		if (aStoryVector.empty()) {
 			aStoryVector.push_back(StoryData());
 		}
@@ -363,7 +363,7 @@ void StageMgr::ReadStageConfig(ConfigParser* theConfigParser, StageInfo* theStag
 			theConfigParser->Error("Invalid text num.", false, true);
 		}
 
-		std::vector<StoryData>& aStoryVector = theStageInfo->mUnk0x8[aTextNum];
+		std::vector<StoryData>& aStoryVector = theStageInfo->mUnk0x8[aTextNum - 1];
 		aStoryVector.push_back(StoryData());
 		StoryData& aStoryData = aStoryVector.back();
 		aStringParser->ReadHTMLString(aStoryData.mUnk0x0);

@@ -342,7 +342,7 @@ void CharacterMgr::ReadConfig(const std::string& param_1)
 
 	while (aConfigParser.ReadNext()) {
 		if (aConfigParser.mUnk0x9c == 1) {
-			if (!aConfigParser.GroupTypeIs("character", 1)) {
+			if (!aConfigParser.GroupTypeIs("Character", 1)) {
 				aConfigParser.ErrorUnexpectedGroupType();
 				continue;
 			}

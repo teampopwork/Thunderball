@@ -42,7 +42,7 @@ void ConfigParser::SetThrowExceptions(bool on)
 // FUNCTION: POPCAPGAME1 0x004be5a0
 StringParser* ConfigParser::GetValParser()
 {
-	mStringParser.Set(mUnk0x64);
+	mStringParser.Set(mUnk0x80);
 	return &mStringParser;
 }
 
@@ -175,24 +175,11 @@ bool ConfigParser::DoReadNext()
 		return false;
 	}
 
-	if (aToken[aToken.size() - 1] == ':') {
-		mUnk0x64 = aToken.substr(0, aToken.size() - 1);
-		mUnk0x50 = mUnk0x14->mUnk0x14;
-		GetToken(mUnk0x80, false);
-		mUnk0x9c = 2;
-		if (stricmp(mUnk0x80.c_str(), "IncludeFile") == 0) {
-			IncludeFile(mUnk0x64);
-			return false;
-		}
-		else {
-			return DoReadNext();
-		}
-	}
-	else {
+	if (aToken[aToken.size() - 1] != ':') {
 		if (aToken == "}") {
 			if (!mUnk0x58.empty()) {
 				mUnk0x9c = 3;
-				return false;
+				return true;
 			}
 			else {
 				return Error("Unexpected }", false, true);
@@ -200,7 +187,7 @@ bool ConfigParser::DoReadNext()
 		}
 		else {
 			GroupInfo aGroupInfo;
-			aGroupInfo.mUnk0x1c = aToken;
+			aGroupInfo.mUnk0x0 = aToken;
 			GetToken(aToken, true);
 			if (aToken == "[") {
 				mUnk0x64 = aGroupInfo.mUnk0x1c;
@@ -209,36 +196,53 @@ bool ConfigParser::DoReadNext()
 				GetCode(mUnk0x80);
 				mUnk0x9c = 2;
 			}
-			else if (aToken != "{") {
-				if (aToken.empty() && aToken[0] != '\"') {
-					aGroupInfo.mUnk0x1c = aToken;
-				}
-				else {
-					StringParser aStringParser(aToken);
-					aGroupInfo.mUnk0x1c = aStringParser.ReadString(false, false);
-				}
-				GetToken(aToken, false);
+			else {
 				if (aToken != "{") {
-					return Error("Expecting {", false, true);
-				}
+					if (!aToken.empty() && aToken[0] != '\"') {
+						StringParser aStringParser(aToken);
+						aGroupInfo.mUnk0x1c = aStringParser.ReadString(false, false);
+					}
+					else {
+						aGroupInfo.mUnk0x1c = aToken;
+					}
+					GetToken(aToken, false);
+					if (aToken != "{") {
+						return Error("Expecting {", false, true);
+					}
+				} 
+				mUnk0x58.push_back(aGroupInfo);
+				mUnk0x9c = 1;
+				
 			}
-			mUnk0x58.push_back(aGroupInfo);
-			mUnk0x9c = 1;
 		}
 	}
+	else {
+		mUnk0x64 = aToken.substr(0, aToken.size() - 1);
+		mUnk0x50 = mUnk0x14->mUnk0x14;
+		GetToken(mUnk0x80, true);
+		mUnk0x9c = 2;
+		if (stricmp(mUnk0x80.c_str(), "IncludeFile") == 0) {
+			IncludeFile(mUnk0x64);
+			return false;
+		}
+		else {
+			return DoReadNext();
+		}
+		
+	}
 
-	return false;
+	return true;
 }
 
 // FUNCTION: POPCAPGAME1 0x004c0db0
 bool ConfigParser::ReadNext()
 {
-	if (!mUnk0x18.empty() || mStringParser.mUnk0xc.empty()) {
+	if (mUnk0x18.empty() || mStringParser.mUnk0xc.empty()) {
 		if (mUnk0x9c == 3 && !mUnk0x58.empty()) {
 			mUnk0x58.pop_back();
 		}
 
-		if (DoReadNext() || mUnk0x58.empty()) {
+		if (DoReadNext() || !mUnk0x58.empty()) {
 			return true;
 		}
 	}
@@ -268,7 +272,6 @@ bool ConfigParser::Open(const std::string& param_1, bool param_2)
 // STUB: POPCAPGAME1 0x004c0740
 bool ConfigParser::IncludeFile(std::string& param_1)
 {
-	// TODO
 	return false;
 }
 
