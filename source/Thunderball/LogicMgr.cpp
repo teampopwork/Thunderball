@@ -38,6 +38,9 @@ LogicMgr::LogicMgr(Board* param_1)
 	Clear(true, false);
 }
 
+// TEMPLATE: POPCAPGAME1 0x0040e2d0
+// std::_Tree<std::_Tset_traits<Sexy::SmartPtr<Sexy::PhysObj>,std::less<Sexy::SmartPtr<Sexy::PhysObj> >,std::allocator<Sexy::SmartPtr<Sexy::PhysObj> >,0> >::erase(class std::_Tree<class std::_Tset_traits<class Sexy::SmartPtr<class Sexy::PhysObj>, struct std::less<class Sexy::SmartPtr<class Sexy::PhysObj>>, class std::allocator<class Sexy::SmartPtr<class Sexy::PhysObj>>, 0>>::iterator, class std::_Tree<class std::_Tset_traits<class Sexy::SmartPtr<class Sexy::PhysObj>, struct std::less<class Sexy::SmartPtr<class Sexy::PhysObj>>, class std::allocator<class Sexy::SmartPtr<class Sexy::PhysObj>>, 0>>::iterator)
+
 // FUNCTION: POPCAPGAME1 0x0045c990
 LogicMgr::~LogicMgr()
 {

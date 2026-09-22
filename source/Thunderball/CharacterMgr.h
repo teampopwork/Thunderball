@@ -33,6 +33,7 @@ public:
 	bool mUnk0x78;
 };
 
+// VTABLE: POPCAPGAME1 0x005f07a8
 class CharacterMgr {
 public:
 	ImageMgr* mImageMgr;

@@ -2,12 +2,21 @@
 
 using namespace Sexy;
 
+// TEMPLATE: POPCAPGAME1 0x004baa10
+// std::_Tree<std::_Tmap_traits<int,Sexy::MemoryImage *,std::greater<int>,std::allocator<std::pair<int const ,Sexy::MemoryImage *> >,1> >::_Buynode(void)
+
 // FUNCTION: POPCAPGAME1 0x0044d870
 CollisionMgr::CollisionMgr() : mUnk0x30(0), mUnk0x34(0)
 {
 	mUnk0x0 = false;
 	mUnk0x78 = false;
 }
+
+// TEMPLATE: POPCAPGAME1 0x0041feb0
+// std::vector<std::pair<Sexy::SmartPtr<Sexy::RefCount>,Sexy::SmartPtr<Sexy::RefCount> >,std::allocator<std::pair<Sexy::SmartPtr<Sexy::RefCount>,Sexy::SmartPtr<Sexy::RefCount> > > >::_Tidy
+
+// TEMPLATE: POPCAPGAME1 0x00408ec0
+// std::pair<Sexy::SmartPtr<Sexy::RefCount>,Sexy::SmartPtr<Sexy::RefCount> >::~pair<Sexy::SmartPtr<Sexy::RefCount>,Sexy::SmartPtr<Sexy::RefCount> >
 
 // FUNCTION: POPCAPGAME1 0x00423fa0
 CollisionMgr::~CollisionMgr()

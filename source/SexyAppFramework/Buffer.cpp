@@ -454,6 +454,21 @@ void Buffer::SetData(const ByteVector& theBuffer)
 	mDataBitSize = mData.size() * 8;
 }
 
+// TEMPLATE: POPCAPGAME1 0x00501580
+// std::vector<unsigned char,std::allocator<unsigned char> >::clear
+
+// TEMPLATE: POPCAPGAME1 0x00505520
+// std::vector<unsigned char,std::allocator<unsigned char> >::_Insert<unsigned char *>
+
+// TEMPLATE: POPCAPGAME1 0x0049d750
+// std::vector<unsigned char,std::allocator<unsigned char> >::end
+
+// TEMPLATE: POPCAPGAME1 0x004fdcd0
+// std::_Vector_iterator<unsigned char,std::allocator<unsigned char> >::operator-
+
+// TEMPLATE: POPCAPGAME1 0x004ff1a0
+// stdext::unchecked_copy<unsigned char *,unsigned char *>
+
 // FUNCTION: POPCAPGAME1 0x0050d3a0
 void Buffer::SetData(uchar* thePtr, int theCount)
 {

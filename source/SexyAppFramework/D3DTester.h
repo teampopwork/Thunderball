@@ -72,6 +72,7 @@ protected:
 	struct TestException : public std::exception
 	{
 		std::string mMsg;
+		// FUNCTION: POPCAPGAME1 0x004dd980
 		TestException(const std::string &theMsg) : mMsg(theMsg) { }
 	};
 

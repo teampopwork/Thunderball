@@ -14,6 +14,7 @@ class DataSync;
 class SexyVector2;
 enum EffectType;
 
+// VTABLE: POPCAPGAME1 0x005dd438
 class Effect {
 public:
 	int mUnk0x4;

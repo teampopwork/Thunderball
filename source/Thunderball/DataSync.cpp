@@ -412,6 +412,7 @@ void DataSync::SyncLong(unsigned long& theValue)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004ba840
 void DataSync::SyncShort(int& theValue)
 {
 	if (mReader) {

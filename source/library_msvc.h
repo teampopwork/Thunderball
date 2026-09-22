@@ -2579,3 +2579,18 @@
 
 // LIBRARY: POPCAPGAME1 0x005ab2e0
 // _CIsin_pentium4
+
+// LIBRARY: POPCAPGAME1 0x005a80aa
+// __crtCompareStringA_stat
+
+// LIBRARY: POPCAPGAME1 0x005a8473
+// __crtGetStringTypeW_stat
+
+// LIBRARY: POPCAPGAME1 0x005a86d5
+// __crtLCMapStringW_stat
+
+// LIBRARY: POPCAPGAME1 0x005b51cc
+// __crtGetStringTypeA_stat
+
+// LIBRARY: POPCAPGAME1 0x005baaec
+// __crtGetLocaleInfoA_stat

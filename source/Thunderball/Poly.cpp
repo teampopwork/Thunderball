@@ -1088,6 +1088,9 @@ void Poly::InitFromPoints()
 	CheckConvex();
 }
 
+// TEMPLATE: POPCAPGAME1 0x0047b080
+// std::_Reverse<Sexy::SexyVector2 *>
+
 // FUNCTION: POPCAPGAME1 0x00484e80
 void Poly::ReverseLines()
 {

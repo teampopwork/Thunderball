@@ -253,6 +253,12 @@ void Gun::Reload(Ball* param_1)
 	CalcPoints();
 }
 
+// TEMPLATE: POPCAPGAME1 0x0047b040
+// std::list<std::pair<float,int>,std::allocator<std::pair<float,int> > >::clear
+
+// TEMPLATE: POPCAPGAME1 0x00480ce0
+// std::list<std::pair<float,int>,std::allocator<std::pair<float,int> > >::push_back
+
 // FUNCTION: POPCAPGAME1 0x004843a0
 bool Gun::SetAngle(float param_1, bool param_2)
 {

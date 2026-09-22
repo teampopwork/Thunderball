@@ -38,6 +38,9 @@ void GraphicsState::CopyStateFrom(const GraphicsState* theState)
 
 //////////////////////////////////////////////////////////////////////////
 
+// TEMPLATE: POPCAPGAME1 0x004dc740
+// std::list<Sexy::GraphicsState,std::allocator<Sexy::GraphicsState> >::_Buynode(void)
+
 // FUNCTION: POPCAPGAME1 0x004dd1c0
 Graphics::Graphics(const Graphics& theGraphics)
 {

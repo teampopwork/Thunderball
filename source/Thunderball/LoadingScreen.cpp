@@ -958,6 +958,9 @@ void LoadingScreen::UpdateParticles()
 // TEMPLATE: POPCAPGAME1 0x0049d8c0
 // stdext::_Unchecked_move_backward<Sexy::Particle *,Sexy::Particle *>
 
+// TEMPLATE: POPCAPGAME1 0x0049c3e0
+// std::_Copy_backward_opt<Sexy::Particle *,Sexy::Particle *>
+
 // TEMPLATE: POPCAPGAME1 0x0049e960
 // std::vector<Sexy::Particle,std::allocator<Sexy::Particle> >::_Ufill
 

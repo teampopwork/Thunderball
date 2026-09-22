@@ -947,6 +947,9 @@ void TextureData::ReleaseTextures()
 // TEMPLATE: POPCAPGAME1 0x0049e920
 // std::vector<Sexy::TextureDataPiece,std::allocator<Sexy::TextureDataPiece> >::_Ufill
 
+// TEMPLATE: POPCAPGAME1 0x0043f990
+// std::_Uninit_fill_n<Sexy::TextureDataPiece *,unsigned int,Sexy::TextureDataPiece,std::allocator<Sexy::TextureDataPiece> >
+
 // TEMPLATE: POPCAPGAME1 0x00443550
 // std::vector<Sexy::TextureDataPiece,std::allocator<Sexy::TextureDataPiece> >::_Umove<Sexy::TextureDataPiece *>
 

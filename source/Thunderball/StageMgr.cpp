@@ -58,6 +58,9 @@ LevelInfo* StageInfo::GetLevelInfo(int param_1)
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
+// TEMPLATE: POPCAPGAME1 0x004dc870
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,bool,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,bool> >,0> >::_Buynode(void)
+
 // FUNCTION: POPCAPGAME1 0x00461940
 StageMgr::StageMgr(ThunderballApp* theApp)
 {
@@ -78,6 +81,18 @@ StageMgr::~StageMgr()
 {
 }
 
+// TEMPLATE: POPCAPGAME1 0x00449450
+// std::vector<Sexy::SmartPtr<Sexy::Line>,std::allocator<Sexy::SmartPtr<Sexy::Line> > >::erase
+
+// TEMPLATE: POPCAPGAME1 0x0047a240
+// std::_Copy_opt<Sexy::SmartPtr<Sexy::Line> *,Sexy::SmartPtr<Sexy::Line> *,std::forward_iterator_tag>
+
+// TEMPLATE: POPCAPGAME1 0x004494d0
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,Sexy::SmartPtr<Sexy::LevelInfo>,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,Sexy::SmartPtr<Sexy::LevelInfo> > >,1> >::_Erase
+
+// TEMPLATE: POPCAPGAME1 0x00440a20
+// std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,Sexy::SmartPtr<Sexy::LevelInfo> >::~pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,Sexy::SmartPtr<Sexy::LevelInfo> >
+
 // FUNCTION: POPCAPGAME1 0x0045f460
 void StageMgr::Clear()
 {
@@ -86,6 +101,9 @@ void StageMgr::Clear()
 	mUnk0x1c.clear();
 	mUnk0x2c.clear();
 }
+
+// TEMPLATE: POPCAPGAME1 0x004422a0
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,bool,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,bool> >,0> >::find
 
 // FUNCTION: POPCAPGAME1 0x00442ff0
 LevelInfo* StageMgr::GetLevelInfoByName(const std::string& theName)

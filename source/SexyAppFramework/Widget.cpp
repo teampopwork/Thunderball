@@ -132,6 +132,9 @@ void Widget::DrawOverlay(Graphics* g, int thePriority)
 // TEMPLATE: POPCAPGAME1 0x00542530
 // stdext::_Unchecked_move_backward<Sexy::Color *,Sexy::Color *>
 
+// TEMPLATE: POPCAPGAME1 0x00541ca0
+// std::_Copy_backward_opt<Sexy::Color *,Sexy::Color *>
+
 // TEMPLATE: POPCAPGAME1 0x00443250
 // std::vector<Sexy::Color,std::allocator<Sexy::Color> >::erase
 

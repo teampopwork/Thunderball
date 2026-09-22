@@ -34,6 +34,9 @@ ProfileMgr::~ProfileMgr()
 // TEMPLATE: POPCAPGAME1 0x0044c270
 // std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,Sexy::PlayerInfo,Sexy::StringLessNoCase,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,Sexy::PlayerInfo> >,0> >::_Erase
 
+// TEMPLATE: POPCAPGAME1 0x00441ce0
+// std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,Sexy::PlayerInfo>::~pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,Sexy::PlayerInfo>
+
 // FUNCTION: POPCAPGAME1 0x00458d50
 void ProfileMgr::Clear()
 {
@@ -71,6 +74,9 @@ void ProfileMgr::Save()
 
 // TEMPLATE: POPCAPGAME1 0x00442370
 // std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,Sexy::PlayerInfo,Sexy::StringLessNoCase,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,Sexy::PlayerInfo> >,0> >::find
+
+// TEMPLATE: POPCAPGAME1 0x0043f3a0
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,Sexy::PlayerInfo,Sexy::StringLessNoCase,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,Sexy::PlayerInfo> >,0> >::_Lbound
 
 // FUNCTION: POPCAPGAME1 0x00442e10
 PlayerInfo* ProfileMgr::GetProfile(const std::string& theName)
@@ -195,6 +201,9 @@ void ProfileMgr::DeleteOldProfiles()
 		DeleteOldestProfile();
 	}
 }
+
+// TEMPLATE: POPCAPGAME1 0x0044b880
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,Sexy::PlayerInfo,Sexy::StringLessNoCase,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,Sexy::PlayerInfo> >,0> >::erase(class std::_Tree<class std::_Tmap_traits<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, class Sexy::PlayerInfo, struct Sexy::StringLessNoCase, class std::allocator<struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const, class Sexy::PlayerInfo>>, 0>>::iterator)
 
 // FUNCTION: POPCAPGAME1 0x00452670
 void ProfileMgr::DeleteProfile(ProfileMap::iterator theItr)

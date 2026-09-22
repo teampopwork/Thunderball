@@ -154,6 +154,7 @@ bool ResourceManager::Fail(const std::string& theErrorText)
 		int aLineNum = mXMLParser->GetCurrentLineNum();
 
 		char aLineNumStr[16];
+		// STRING: POPCAPGAME1 0x005d615c
 		sprintf(aLineNumStr, "%d", aLineNum);	
 
 		mError = theErrorText;
@@ -162,9 +163,8 @@ bool ResourceManager::Fail(const std::string& theErrorText)
 			mError += std::string(" on Line ") + aLineNumStr;
 
 		if (mXMLParser->GetFileName().length() > 0)
-			// STRING: POPCAPGAME1 0x0061089c
-			// "in File '"
 
+			// STRING: POPCAPGAME1 0x0061089c
 			mError += " in File '" + mXMLParser->GetFileName() + "'";
 	}
 
@@ -257,6 +257,7 @@ bool ResourceManager::ParseSoundResource(XMLElement &theElement)
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+// FUNCTION: POPCAPGAME1 0x00511d60
 static void ReadIntVector(const SexyString &theVal, std::vector<int> &theVector)
 {
 	theVector.clear();
@@ -275,12 +276,29 @@ static void ReadIntVector(const SexyString &theVal, std::vector<int> &theVector)
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+// TEMPLATE: POPCAPGAME1 0x005135a0
+// std::map<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,Sexy::ResourceManager::BaseRes *,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,Sexy::ResourceManager::BaseRes *> > >::operator[]
+
+// TEMPLATE: POPCAPGAME1 0x0050fb30
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,Sexy::ResourceManager::BaseRes *,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,Sexy::ResourceManager::BaseRes *> >,0> >::insert(class std::_Tree<class std::_Tmap_traits<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, struct Sexy::ResourceManager::BaseRes *, struct std::less<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>, class std::allocator<struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const, struct Sexy::ResourceManager::BaseRes *>>, 0>>::iterator, struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const, struct Sexy::ResourceManager::BaseRes *> const &)
+
+// TEMPLATE: POPCAPGAME1 0x00516d10
+// std::map<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,std::basic_string<char,std::char_traits<char>,std::allocator<char> > > > >::operator=
+
+// TEMPLATE: POPCAPGAME1 0x00432430
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >,0> >::erase(class std::_Tree<class std::_Tmap_traits<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, struct std::less<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>, class std::allocator<struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>>, 0>>::iterator, class std::_Tree<class std::_Tmap_traits<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, struct std::less<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>, class std::allocator<struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>>, 0>>::iterator)
+
+// TEMPLATE: POPCAPGAME1 0x0050fa60
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >,0> >::_Copy(class std::_Tree<class std::_Tmap_traits<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, struct std::less<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>, class std::allocator<struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>>, 0>> const &)
+
+// TEMPLATE: POPCAPGAME1 0x0049d670
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >,0> >::iterator::operator->
+
 // FUNCTION: POPCAPGAME1 0x0051a730
 bool ResourceManager::ParseImageResource(XMLElement &theElement)
 {
 	ImageRes *aRes = new ImageRes;
-	if (!ParseCommonResource(theElement, aRes, mImageMap))
-	{
+	if (!ParseCommonResource(theElement, aRes, mImageMap)) {
 		if (mHadAlreadyDefinedError && mAllowAlreadyDefinedResources)
 		{
 			mError = "";

@@ -205,6 +205,7 @@ bool PropertiesParser::ParseProperties()
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x00520720
 bool PropertiesParser::DoParseProperties()
 {
 	if (!mXMLParser->HasFailed())

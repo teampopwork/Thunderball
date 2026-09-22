@@ -224,6 +224,12 @@ void SoundMgr::UpdateSounds()
 	}
 }
 
+// TEMPLATE: POPCAPGAME1 0x00445690
+// std::_Tree<std::_Tmap_traits<int,Sexy::SoundMgr::SoundDesc,std::less<int>,std::allocator<std::pair<int const ,Sexy::SoundMgr::SoundDesc> >,1> >::erase(class std::_Tree<class std::_Tmap_traits<int, class Sexy::SoundMgr::SoundDesc, struct std::less<int>, class std::allocator<struct std::pair<int const, class Sexy::SoundMgr::SoundDesc>>, 1>>::iterator)
+
+// TEMPLATE: POPCAPGAME1 0x00438070
+// std::_Tree<std::_Tmap_traits<int,Sexy::SoundMgr::SoundDesc,std::less<int>,std::allocator<std::pair<int const ,Sexy::SoundMgr::SoundDesc> >,1> >::const_iterator::_Inc
+
 // FUNCTION: POPCAPGAME1 0x00458fc0
 void SoundMgr::Update()
 {

@@ -422,6 +422,7 @@ void ListWidget::ScrollPosition(int theId, double thePosition)
 	MarkDirty();
 }
 
+// FUNCTION: POPCAPGAME1 0x005401b0
 void ListWidget::SetHilite(int theHiliteIdx, bool notifyListener)
 {
 	int anOldIdx = mHiliteIdx;

@@ -44,6 +44,21 @@ PakInterface::~PakInterface()
 // TEMPLATE: POPCAPGAME1 0x0055a3e0
 // std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,PakRecord,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,PakRecord> >,0> >::insert
 
+// TEMPLATE: POPCAPGAME1 0x00559db0
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,PakRecord,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,PakRecord> >,0> >::_Buynode(struct std::_Tree_nod<class std::_Tmap_traits<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, class PakRecord, struct std::less<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>, class std::allocator<struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const, class PakRecord>>, 0>>::_Node *, struct std::_Tree_nod<class std::_Tmap_traits<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, class PakRecord, struct std::less<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>, class std::allocator<struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const, class PakRecord>>, 0>>::_Node *, struct std::_Tree_nod<class std::_Tmap_traits<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, class PakRecord, struct std::less<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>, class std::allocator<struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const, class PakRecord>>, 0>>::_Node *, struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const, class PakRecord> const &, char)
+
+// TEMPLATE: POPCAPGAME1 0x00559090
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,PakRecord,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,PakRecord> >,0> >::_Rrotate
+
+// TEMPLATE: POPCAPGAME1 0x00559030
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,PakRecord,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,PakRecord> >,0> >::_Lrotate
+
+// TEMPLATE: POPCAPGAME1 0x00559e90
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,PakRecord,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,PakRecord> >,0> >::_Insert
+
+// TEMPLATE: POPCAPGAME1 0x00559160
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,PakRecord,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,PakRecord> >,0> >::const_iterator::_Dec
+
 // TEMPLATE: POPCAPGAME1 0x00559370
 // std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,PakRecord>::~pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,PakRecord>
 

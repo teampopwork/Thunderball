@@ -1636,6 +1636,7 @@ bool SexyAppBase::RegistryWriteString(const std::string& theValueName, const std
 	return RegistryWrite(theValueName, REG_SZ, (uchar*) theString.c_str(), theString.length());
 }
 
+// FUNCTION: POPCAPGAME1 0x0052ee90
 bool SexyAppBase::RegistryWriteInteger(const std::string& theValueName, int theValue)
 {
 	return RegistryWrite(theValueName, REG_DWORD, (uchar*) &theValue, sizeof(int));
@@ -6043,6 +6044,9 @@ SexyString SexyAppBase::GetString(const std::string& theId)
 // TEMPLATE: POPCAPGAME1 0x00502240
 // std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<wchar_t,std::char_traits<wchar_t>,std::allocator<wchar_t> >,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,std::basic_string<wchar_t,std::char_traits<wchar_t>,std::allocator<wchar_t> > > >,0> >::find
 
+// TEMPLATE: POPCAPGAME1 0x0052bad0
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<wchar_t,std::char_traits<wchar_t>,std::allocator<wchar_t> >,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,std::basic_string<wchar_t,std::char_traits<wchar_t>,std::allocator<wchar_t> > > >,0> >::_Lbound
+
 // FUNCTION: POPCAPGAME1 0x0052dd40
 SexyString SexyAppBase::GetString(const std::string& theId, const SexyString& theDefault)
 {
@@ -7398,6 +7402,12 @@ SharedImageRef SexyAppBase::GetSharedImage(const std::string& theFileName, const
 
 	return aSharedImageRef;
 }
+
+// TEMPLATE: POPCAPGAME1 0x0052ad20
+// std::_Tree<std::_Tmap_traits<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,Sexy::SharedImage,std::less<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >,std::allocator<std::pair<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<char,std::char_traits<char>,std::allocator<char> > > const ,Sexy::SharedImage> >,0> >::const_iterator::_Inc
+
+// TEMPLATE: POPCAPGAME1 0x00532e40
+// std::_Tree<std::_Tmap_traits<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,Sexy::SharedImage,std::less<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >,std::allocator<std::pair<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<char,std::char_traits<char>,std::allocator<char> > > const ,Sexy::SharedImage> >,0> >::erase(class std::_Tree<class std::_Tmap_traits<struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>, class Sexy::SharedImage, struct std::less<struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>>, class std::allocator<struct std::pair<struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>> const, class Sexy::SharedImage>>, 0>>::iterator)
 
 // FUNCTION: POPCAPGAME1 0x00534fd0
 void SexyAppBase::CleanSharedImages()

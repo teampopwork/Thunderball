@@ -336,7 +336,7 @@ void ThunderballApp::CheckScrollOff(Widget* param_1, int param_2, bool param_3)
 void ThunderballApp::CleanupScreen(Widget* param_1)
 {
 	if (param_1 != NULL) {
-		if (mWidgetMover->WillRemove(param_1)) {
+		if (!mWidgetMover->WillRemove(param_1)) {
 			mWidgetMover->RemoveWidget(param_1);
 			mWidgetManager->RemoveWidget(param_1);
 			SafeDeleteWidget(param_1);
@@ -601,6 +601,9 @@ void ThunderballApp::DoConfirmQuitDialog()
 	aDialog->DoScroll(-1);
 	aDialog->mUnk0x163 = false;
 }
+
+// TEMPLATE: POPCAPGAME1 0x00523d00
+// Sexy::ModVal(int, char const *, char const *)
 
 // FUNCTION: POPCAPGAME1 0x0041cc40
 void ThunderballApp::DoConfirmRestartAdventureDialog()

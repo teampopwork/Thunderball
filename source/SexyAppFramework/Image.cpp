@@ -172,6 +172,9 @@ int AnimInfo::GetPerFrameCel(int theTime)
 	return mNumCels-1;
 }
 
+// TEMPLATE: POPCAPGAME1 0x00406110
+// std::vector<Sexy::DataElement *,std::allocator<Sexy::DataElement *> >::operator[]
+
 // FUNCTION: POPCAPGAME1 0x004d7fd0
 int AnimInfo::GetCel(int theTime)
 {

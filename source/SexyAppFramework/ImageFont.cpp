@@ -255,6 +255,9 @@ bool FontData::Error(const std::string& theError)
 // TEMPLATE: POPCAPGAME1 0x005025e0
 // std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,bool,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,bool> >,0> >::find
 
+// TEMPLATE: POPCAPGAME1 0x004ff8f0
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,bool,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,bool> >,0> >::_Lbound
+
 // FUNCTION: POPCAPGAME1 0x004e3120
 bool FontData::DataToLayer(DataElement* theSource, FontLayer** theFontLayer)
 {

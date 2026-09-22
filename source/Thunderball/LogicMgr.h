@@ -24,6 +24,7 @@ enum KeyCode;
 enum LogicState;
 enum StyleShot;
 
+// VTABLE: POPCAPGAME1 0x005eaf08
 class LogicMgr {
 	class ClickInfo {};
 

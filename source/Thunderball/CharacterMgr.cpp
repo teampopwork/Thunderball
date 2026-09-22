@@ -44,6 +44,48 @@ CharacterInfo::CharacterInfo(const CharacterInfo& other)
 	mUnk0x78 = other.mUnk0x78;
 }
 
+// FUNCTION: POPCAPGAME1 0x0045ac90
+// Sexy::CharacterInfo::~CharacterInfo
+
+// FUNCTION: POPCAPGAME1 0x00460230
+// Sexy::CharacterInfo::operator=
+
+// TEMPLATE: POPCAPGAME1 0x0044a8e0
+// std::vector<int,std::allocator<int> >::operator=
+
+// TEMPLATE: POPCAPGAME1 0x0045a500
+// std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >::operator=
+
+// TEMPLATE: POPCAPGAME1 0x004593a0
+// std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >::clear
+
+// TEMPLATE: POPCAPGAME1 0x00452dc0
+// std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >::erase(class std::_Vector_iterator<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, class std::allocator<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>>, class std::_Vector_iterator<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, class std::allocator<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>>)
+
+// TEMPLATE: POPCAPGAME1 0x0044cf40
+// stdext::unchecked_copy<std::basic_string<char,std::char_traits<char>,std::allocator<char> > *,std::basic_string<char,std::char_traits<char>,std::allocator<char> > *>
+
+// TEMPLATE: POPCAPGAME1 0x0044a680
+// std::_Copy_opt<std::basic_string<char,std::char_traits<char>,std::allocator<char> > *,std::basic_string<char,std::char_traits<char>,std::allocator<char> > *>
+
+// TEMPLATE: POPCAPGAME1 0x00446210
+// std::_Copy_opt<std::basic_string<char,std::char_traits<char>,std::allocator<char> > *,std::basic_string<char,std::char_traits<char>,std::allocator<char> > *,std::forward_iterator_tag>
+
+// TEMPLATE: POPCAPGAME1 0x0044c2c0
+// std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >::_Destroy
+
+// TEMPLATE: POPCAPGAME1 0x004491c0
+// std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >::_Buy
+
+// TEMPLATE: POPCAPGAME1 0x0044d840
+// std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >::_Ucopy<std::basic_string<char,std::char_traits<char>,std::allocator<char> > *>
+
+// TEMPLATE: POPCAPGAME1 0x004463d0
+// std::_Uninit_copy<std::basic_string<char,std::char_traits<char>,std::allocator<char> > *,std::basic_string<char,std::char_traits<char>,std::allocator<char> > *,std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >
+
+// TEMPLATE: POPCAPGAME1 0x004435e0
+// std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >::destroy
+
 // FUNCTION: POPCAPGAME1 0x00473c30
 CharacterMgr::CharacterMgr()
 {
@@ -105,6 +147,12 @@ void CharacterMgr::CalcPowerupActive(Board* theBoard)
 void CharacterMgr::CheckCrossEyeFix()
 {
 }
+
+// TEMPLATE: POPCAPGAME1 0x00471c00
+// std::vector<Sexy::CharacterInfo,std::allocator<Sexy::CharacterInfo> >::erase
+
+// TEMPLATE: POPCAPGAME1 0x004629a0
+// std::_Copy_opt<Sexy::CharacterInfo *,Sexy::CharacterInfo *>
 
 // FUNCTION: POPCAPGAME1 0x00473d90
 void CharacterMgr::Clear(bool param_1)

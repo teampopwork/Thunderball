@@ -47,6 +47,12 @@ protected:
 		XMLParamMap mXMLAttributes;
 		bool mFromProgram;
 
+		// TEMPLATE: POPCAPGAME1 0x0052b980
+		// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >,0> >::_Buynode(void)
+
+		// FUNCTION: POPCAPGAME1 0x005181a0
+		// Sexy::ResourceManager::BaseRes::BaseRes
+
 		virtual ~BaseRes() {}
 		virtual void DeleteResource() { }
 	};
@@ -69,6 +75,7 @@ protected:
 		DWORD mAlphaColor;
 		AnimInfo mAnimInfo;
 
+		// FUNCTION: POPCAPGAME1 0x0051a1f0
 		ImageRes() { mType = ResType_Image; }
 		virtual void DeleteResource();
 	};

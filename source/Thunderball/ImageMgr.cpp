@@ -28,6 +28,12 @@ void ImageMgr::AddDeleteImage(Image* theImage)
 	}
 }
 
+// TEMPLATE: POPCAPGAME1 0x0050ee50
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,bool,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,bool> >,0> >::_Erase
+
+// TEMPLATE: POPCAPGAME1 0x00409450
+// std::_Tree<std::_Tset_traits<Sexy::MemoryImage *,std::less<Sexy::MemoryImage *>,std::allocator<Sexy::MemoryImage *>,0> >::_Erase
+
 // FUNCTION: POPCAPGAME1 0x00457610
 void ImageMgr::Clear()
 {

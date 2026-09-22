@@ -554,6 +554,18 @@ std::string Sexy::GetFullPath(const std::string& theRelPath)
 	return GetPathFrom(theRelPath, GetCurDir());
 }
 
+// TEMPLATE: POPCAPGAME1 0x00408610
+// std::basic_string<char,std::char_traits<char>,std::allocator<char> >::find
+
+// TEMPLATE: POPCAPGAME1 0x004fc770
+// std::_String_const_iterator<char,std::char_traits<char>,std::allocator<char> >::operator+=
+
+// TEMPLATE: POPCAPGAME1 0x005014d0
+// std::basic_string<char,std::char_traits<char>,std::allocator<char> >::erase(class std::_String_iterator<char, struct std::char_traits<char>, class std::allocator<char>>, class std::_String_iterator<char, struct std::char_traits<char>, class std::allocator<char>>)
+
+// TEMPLATE: POPCAPGAME1 0x004be740
+// std::basic_string<char,std::char_traits<char>,std::allocator<char> >::operator=(char)
+
 // FUNCTION: POPCAPGAME1 0x005081d0
 std::string Sexy::GetPathFrom(const std::string& theRelPath, const std::string& theDir)
 {

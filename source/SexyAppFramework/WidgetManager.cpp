@@ -140,6 +140,9 @@ void WidgetManager::DoMouseUps()
 // TEMPLATE: POPCAPGAME1 0x00422270
 // std::vector<std::pair<Sexy::Widget *,int>,std::allocator<std::pair<Sexy::Widget *,int> > >::push_back
 
+// TEMPLATE: POPCAPGAME1 0x0043f930
+// std::_Uninit_fill_n<std::pair<Sexy::Widget *,int> *,unsigned int,std::pair<Sexy::Widget *,int>,std::allocator<std::pair<Sexy::Widget *,int> > >
+
 // FUNCTION: POPCAPGAME1 0x005482a0
 void WidgetManager::DeferOverlay(Widget* theWidget, int thePriority)
 {
@@ -153,6 +156,24 @@ void WidgetManager::DeferOverlay(Widget* theWidget, int thePriority)
 
 // TEMPLATE: POPCAPGAME1 0x0041e0d0
 //std::vector<std::pair<Sexy::Widget *,int>,std::allocator<std::pair<Sexy::Widget *,int> > >::_Insert_n
+
+// TEMPLATE: POPCAPGAME1 0x00438260
+// std::_Allocate<std::pair<Sexy::Widget *,int> >
+
+// TEMPLATE: POPCAPGAME1 0x00408f50
+// std::_Uninit_copy<std::pair<Sexy::Widget *,int> *,std::pair<Sexy::Widget *,int> *,std::allocator<std::pair<Sexy::Widget *,int> > >
+
+// TEMPLATE: POPCAPGAME1 0x00442590
+// std::vector<std::pair<Sexy::Widget *,int>,std::allocator<std::pair<Sexy::Widget *,int> > >::_Ufill
+
+// TEMPLATE: POPCAPGAME1 0x0040d5a0
+// std::vector<std::pair<Sexy::Widget *,int>,std::allocator<std::pair<Sexy::Widget *,int> > >::_Umove<std::pair<Sexy::Widget *,int> *>
+
+// TEMPLATE: POPCAPGAME1 0x0043f740
+// std::fill<std::pair<Sexy::Widget *,int> *,std::pair<Sexy::Widget *,int> >
+
+// TEMPLATE: POPCAPGAME1 0x0040ab90
+// stdext::_Unchecked_move_backward<std::pair<Sexy::Widget *,int> *,std::pair<Sexy::Widget *,int> *>
 
 // TEMPLATE: POPCAPGAME1 0x004432e0
 // std::vector<std::pair<Sexy::Widget *,int>,std::allocator<std::pair<Sexy::Widget *,int> > >::erase
