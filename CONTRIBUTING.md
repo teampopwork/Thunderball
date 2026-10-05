@@ -5,7 +5,7 @@ Contributions are generally taken in the form of pull requests, be it creation o
 
 ## Ghidra Server
 Since decompilation is a harder skill that takes a while to learn, write access to the ghidra server is limited to those who gain permission from us in the discord. 
-In order to signup for the ghidra server, head to the [panel website](https://panel.bananapizzuh.dev/) and login with discord.
+In order to signup for the ghidra server, head to the [panel website](https://panel.bananapi.dev/) and login with discord.
 
 ## General Decompilation Process
 This section is not necessarily applicable to all cases, but it does apply to most. 
