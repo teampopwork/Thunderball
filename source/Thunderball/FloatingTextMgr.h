@@ -13,13 +13,14 @@ namespace Sexy
 class Graphics;
 class Image;
 class DataSync;
+class PhysObj;
 
 class FloatingText {
 public:
 	Image* mImage;                                   // +0x4
 	std::vector<std::string> mStrings;               // +0x8
 	std::vector<int> mUnk0x18;                       // +0x18
-	std::vector<std::pair<int, int> > mUnk0x28;      // +0x28
+	std::vector<std::pair<float, int> > mUnk0x28;      // +0x28
 	std::vector<int> mUnk0x38;                       // +0x38
 	int mUnk0x48;
 	int mUnk0x4c;
@@ -56,6 +57,18 @@ public:
 
 	FloatingText();
 	virtual ~FloatingText();
+	void AddScale(float param_1, int param_2);
+	void CreateTextImage();
+	void Draw(Graphics* g);
+	void HoldPos(int param_1);
+	void MoveTo(int param_1, int param_2, int param_3);
+	void SetRefObj(PhysObj* param_1);
+	void SetText(const std::string& param_1);
+	void SyncState(DataSync& param_1);
+	void Update();
+	void UpdatePos();
+	void UpdateRotation();
+	void UpdateScale();
 	void Reset();
 };
 

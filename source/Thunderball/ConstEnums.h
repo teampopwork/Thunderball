@@ -16,11 +16,17 @@ enum GameMode {
 enum PowerupType {
 	POWERUP_0 = 0,
 	POWERUP_1 = 1,
-	POWERUP_2 = 2
+	POWERUP_2 = 2,
+	POWERUP_4 = 4,
+	POWERUP_7 = 7,
+	POWERUP_10 = 10
 };
 
 enum StyleShot;
-enum LogicState;
+enum LogicState {
+	LOGICSTATE_5 = 5,
+	LOGICSTATE_6 = 6
+};
 
 enum PegType {
 	NONE = 0,
@@ -32,6 +38,18 @@ enum PegType {
 
 enum EndLevelMode;
 
+enum EffectType {
+	EFFECT_0 = 0,
+	EFFECT_1 = 1,
+	EFFECT_2 = 2,
+	EFFECT_3 = 3,
+	EFFECT_4 = 4,
+	EFFECT_5 = 5,
+	EFFECT_6 = 6,
+	EFFECT_7 = 7,
+	EFFECT_22 = 22,
+	EFFECT_33 = 33
+};
 
 } // namespace Sexy
 

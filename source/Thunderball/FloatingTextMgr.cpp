@@ -19,6 +19,73 @@ FloatingText::~FloatingText()
 	delete mImage;
 }
 
+
+
+// FUNCTION: POPCAPGAME1 0x00457430
+void FloatingText::AddScale(float param_1, int param_2)
+{
+	mUnk0x28.push_back(std::make_pair(param_1, param_2));
+	if (param_2 == 0) {
+		mUnk0x90 = param_1;
+	}
+}
+
+// FUNCTION: POPCAPGAME1 0x00457460
+void FloatingText::CreateTextImage()
+{
+	
+}
+
+// STUB: POPCAPGAME1 0x0043c000
+void FloatingText::Draw(Graphics* g)
+{
+}
+
+// STUB
+void FloatingText::HoldPos(int param_1)
+{
+}
+
+// STUB
+void FloatingText::MoveTo(int param_1, int param_2, int param_3)
+{
+}
+
+// STUB
+void FloatingText::SetRefObj(PhysObj* param_1)
+{
+}
+
+// STUB
+void FloatingText::SetText(const std::string& param_1)
+{
+}
+
+// STUB
+void FloatingText::SyncState(DataSync& param_1)
+{
+}
+
+// STUB
+void FloatingText::Update()
+{
+}
+
+// STUB
+void FloatingText::UpdatePos()
+{
+}
+
+// STUB
+void FloatingText::UpdateRotation()
+{
+}
+
+// STUB
+void FloatingText::UpdateScale()
+{
+}
+
 // FUNCTION: POPCAPGAME1 0x0045c160
 void FloatingText::Reset()
 {

@@ -832,7 +832,7 @@ void InterfaceMgr::DrawBallsLeftDetail(Graphics* theGraphics, int theNumBalls, b
 		if (aLogicMgr->mUnk0x248[aPlayer].mUnk0x0 == 0) {
 			DrawDetail(
 				theGraphics,
-				aBoard->mApp->mCharacterMgr->GetCharacterName((&aLogicMgr->mUnk0x184)[aPlayer]),
+				aBoard->mApp->mCharacterMgr->GetCharacterName((aLogicMgr->mUnk0x184)[aPlayer]),
 				isLeftSide,
 				0);
 			return;

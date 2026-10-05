@@ -26,7 +26,12 @@ enum StyleShot;
 
 // VTABLE: POPCAPGAME1 0x005eaf08
 class LogicMgr {
-	class ClickInfo {};
+	class ClickInfo {
+	public:
+		int mUnk0x8; // +0x8
+		bool mUnk0xc; // +0xc
+		bool mUnk0xd; // +0xd
+	};
 
 	class PegHitInfo {
 	public:
@@ -65,7 +70,8 @@ public:
 	int mUnk0x50;                           // +0x50
 	bool mUnk0x54;                          // +0x54
 	bool mUnk0x55;                          // +0x55
-	char mUnk0x58[0x10];                    // +0x58
+	int mUnk0x58[2];                        // +0x58
+	int mUnk0x60[2];                        // +0x60
 	bool mUnk0x68;                          // +0x68
 	bool mUnk0x69;                          // +0x69
 	char mUnk0x6a[6];                       // +0x6a
@@ -83,7 +89,7 @@ public:
 	SoundInstance* mUnk0xac;                // +0xac
 	SoundInstance* mUnk0xb0;                // +0xb0
 	std::vector<PegHitInfo> mUnk0xb4;       // +0xb4
-	std::list<ClickInfo> mUnk0xc4;          // +0xc4
+	std::list<ClickInfo*> mUnk0xc4;          // +0xc4
 	std::vector<BallPosInfo> mUnk0xd0;      // +0xd0
 	float mUnk0xe0;                         // +0xe0
 	float mUnk0xe4;                         // +0xe4
@@ -135,23 +141,22 @@ public:
 	SmartPtr<PhysObj> mUnk0x170;            // +0x170
 	int mUnk0x174;                          // +0x174
 	int mUnk0x178;                          // +0x178
-	int mUnk0x17c;                          // +0x17c
-	int mUnk0x180;                          // +0x180
-	int mUnk0x184;                          // +0x184
-	int mUnk0x188;                          // +0x188
+	int mUnk0x17c [2];                      // +0x17c
+	int mUnk0x184 [2];                      // +0x184
 	std::string mUnk0x18c[2];               // +0x18c
 	int mUnk0x1c4;                          // +0x1c4
 	int mUnk0x1c8;                          // +0x1c8
 	PowerupType mUnk0x1cc[2];               // +0x1cc
-	int mUnk0x1d4;                          // +0x1d4
-	int mUnk0x1d8;                          // +0x1d8
+	int mUnk0x1d4[2];                       // +0x1d4
 	int mUnk0x1dc[2];                       // +0x1dc
 	int mUnk0x1e4[4];                       // +0x1e4
 	int mFreeBallCount[2];                  // +0x1f4
 	int mUnk0x1fc[4];                       // +0x1fc
 	int mZenBallCount[2];                   // +0x20c
 	int mUnk0x214[2];                       // +0x214
-	char mUnk0x21c[0x18];                   // +0x21c
+	char mUnk0x21c[0x10];                   // +0x21c
+	int mUnk0x22c[2];                       // +0x22c
+	char mUnk0x234[0x8];                    // +0x234
 	int mFireballCount[2];                  // +0x234
 	char mUnk0x23c[0x8];                    // +0x23c
 	bool mUnk0x244[2];                      // +0x244
@@ -180,8 +185,8 @@ public:
 	void MouseLeave();
 	bool MouseMove(int param_1, int param_2);
 	bool MouseDrag(int param_1, int param_2);
-	void MouseDown(int param_1, int param_2, int param_3, bool param_4, bool param_5);
-	void MouseUp(int param_1, int param_2, int param_3, bool param_4);
+	bool MouseDown(int param_1, int param_2, int param_3, bool param_4, bool param_5);
+	bool MouseUp(int param_1, int param_2, int param_3, bool param_4);
 	bool MouseWheel(int param_1);
 	bool KeyChar(SexyChar param_1);
 	bool KeyDown(KeyCode param_1);

@@ -1830,12 +1830,12 @@ void Board::SetupLevel()
 				dVar2 = ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Board.cpp22,1658",6);
 			}
 
-			mLogicMgr->mUnk0x180 = dVar2;
-			mLogicMgr->mUnk0x17c = dVar2;
+			mLogicMgr->mUnk0x17c[1] = dVar2;
+			mLogicMgr->mUnk0x17c[0] = dVar2;
 		} else if (mUnk0xec == 1) {
-			mLogicMgr->mUnk0x17c = mUnk0x128->mUnk0x64;
-		} else if (mLogicMgr->mUnk0x17c < 1) {
-			mLogicMgr->mUnk0x17c = 1;
+			mLogicMgr->mUnk0x17c[0] = mUnk0x128->mUnk0x64;
+		} else if (mLogicMgr->mUnk0x17c[0] < 1) {
+			mLogicMgr->mUnk0x17c[0] = 1;
 		}
 
 		if (mUnk0xec == 1 || mUnk0x128->mUnk0x74 != 0) {
