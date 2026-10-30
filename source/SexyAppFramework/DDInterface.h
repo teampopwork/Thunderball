@@ -45,25 +45,26 @@ public:
 	bool					mInRedraw;
 	LPDIRECTDRAW			mDD;
 	LPDIRECTDRAW7			mDD7;
-	LPDIRECTDRAWSURFACE		mPrimarySurface;
-	LPDIRECTDRAWSURFACE		mSecondarySurface;
-	LPDIRECTDRAWSURFACE		mDrawSurface;
-	int						mWidth;
-	int						mHeight;
-	Ratio					mAspect;
-	int						mDesktopWidth;
-	int						mDesktopHeight;
-	Ratio					mDesktopAspect;
-	bool					mIsWidescreen;
-	int						mDisplayWidth;
-	int						mDisplayHeight;
-	Ratio					mDisplayAspect;
+	LPDIRECTDRAWSURFACE		mPrimarySurface; // +0x60
+	LPDIRECTDRAWSURFACE		mSecondarySurface; // +0x64
+	LPDIRECTDRAWSURFACE		mDrawSurface; // +0x68
+	char					mUnk0x6c[16]; // +0x6c
+	int						mWidth; // +0x7c
+	int						mHeight; // +0x80
+	Ratio					mAspect; // +0x84
+	int						mDesktopWidth; // +0x8c
+	int						mDesktopHeight; // +0x90
+	Ratio					mDesktopAspect; // +0x94
+	bool					mIsWidescreen; // +0x9c
+	int						mDisplayWidth; // +0xa0
+	int						mDisplayHeight; // +0xa4
+	Ratio					mDisplayAspect; // +0xa8
 
-	Rect					mPresentationRect;
+	Rect					mPresentationRect; // +0xb0
 	int						mFullscreenBits;
 	DWORD					mRefreshRate;
-	DWORD					mMillisecondsPerFrame;
-	int						mScanLineFailCount;
+	DWORD					mMillisecondsPerFrame; // +0xc8
+	int						mScanLineFailCount; // +0xcc
 
 	int*					mRedAddTable;
 	int*					mGreenAddTable;
@@ -73,28 +74,29 @@ public:
 	ulong					mGreenConvTable[256];
 	ulong					mBlueConvTable[256];
 
-	bool					mInitialized;
-	HWND					mHWnd;
-	bool					mIsWindowed;
-	DDImage*				mScreenImage;
-	DDImageSet				mDDImageSet;
+	bool					mInitialized; // +0xcdc
+	HWND					mHWnd; // +0xce0
+	bool					mIsWindowed; // +0xce4
+	DDImage*				mScreenImage; // +0xce8
+	DDImage*				mUnk0xcec; // +0xcec
+	DDImageSet				mDDImageSet; // +0xcf0
 	bool					mVideoOnlyDraw;
-	ulong					mInitCount;
+	ulong					mInitCount; // +0xd00
 
-	int						mCursorWidth;
-	int						mCursorHeight;
+	int						mCursorWidth; // +0xd04
+	int						mCursorHeight; // +0xd08
 	int						mNextCursorX;
 	int						mNextCursorY;
 	int						mCursorX;
 	int						mCursorY;
 	Image*					mCursorImage;
-	bool					mHasOldCursorArea;	
-	LPDIRECTDRAWSURFACE		mOldCursorArea;
-	LPDIRECTDRAWSURFACE		mNewCursorArea;	
-	DDImage*				mOldCursorAreaImage;
-	DDImage*				mNewCursorAreaImage;	
+	bool					mHasOldCursorArea; // +0xd20
+	LPDIRECTDRAWSURFACE		mOldCursorArea; // +0xd24
+	LPDIRECTDRAWSURFACE		mNewCursorArea;	// +0xd28
+	DDImage*				mOldCursorAreaImage; // +0xd2c
+	DDImage*				mNewCursorAreaImage; // +0xd30
 
-	std::string				mErrorString;
+	std::string				mErrorString; // +0xd34
 
 public:
 	bool					CopyBitmap(LPDIRECTDRAWSURFACE theSurface, HBITMAP TheBitmap, int theX, int theY, int theWidth, int theHeight);
