@@ -106,6 +106,7 @@ long __stdcall SEHCatcher::UnhandledExceptionFilter(LPEXCEPTION_POINTERS lpExcep
 	return EXCEPTION_CONTINUE_SEARCH;	
 }
 
+// FUNCTION: POPCAPGAME1 0x004fb1b0
 bool SEHCatcher::LoadImageHelp()
 {
 	mImageHelpLib = LoadLibraryA("IMAGEHLP.DLL");
@@ -164,12 +165,14 @@ bool SEHCatcher::LoadImageHelp()
     return true;
 }
 
+// FUNCTION: POPCAPGAME1 0x004fb350
 void SEHCatcher::UnloadImageHelp()
 {
 	if (mImageHelpLib != NULL)
 		FreeLibrary(mImageHelpLib);
 }
 
+// FUNCTION: POPCAPGAME1 0x004fe0f0
 static bool StrToLongHex(const std::string& aString, DWORD* theValue)
 {	
 	*theValue = 0;
@@ -194,6 +197,112 @@ static bool StrToLongHex(const std::string& aString, DWORD* theValue)
 	return true;
 }
 
+// TEMPLATE: POPCAPGAME1 0x004fefa0
+// std::_Tree<std::_Tmap_traits<std::pair<unsigned long,unsigned long>,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::less<std::pair<unsigned long,unsigned long> >,std::allocator<std::pair<std::pair<unsigned long,unsigned long> const ,std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >,0> >::_Buynode(void)
+
+// TEMPLATE: POPCAPGAME1 0x004ff0d0
+// std::_Tree<std::_Tmap_traits<std::pair<unsigned long,unsigned long>,std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,int>,std::less<std::pair<unsigned long,unsigned long> >,std::allocator<std::pair<std::pair<unsigned long,unsigned long> const ,std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,int> > >,0> >::_Buynode(void)
+
+// TEMPLATE: POPCAPGAME1 0x00513d00
+// std::basic_iostream<char,std::char_traits<char> >::basic_iostream<char,std::char_traits<char> >
+
+// TEMPLATE: POPCAPGAME1 0x004fd9a0
+// std::basic_streambuf<char,std::char_traits<char> >::basic_streambuf<char,std::char_traits<char> >
+
+// TEMPLATE: POPCAPGAME1 0x0050c2a0
+// std::codecvt<char,char,int>::codecvt<char,char,int>
+
+// TEMPLATE: POPCAPGAME1 0x004fc610
+// std::basic_streambuf<char,std::char_traits<char> >::getloc
+
+// TEMPLATE: POPCAPGAME1 0x0050ef20
+// std::codecvt<char,char,int>::_Getcat
+
+// TEMPLATE: POPCAPGAME1 0x00510650
+// std::use_facet<std::codecvt<char,char,int> >
+
+// TEMPLATE: POPCAPGAME1 0x00513de0
+// std::basic_filebuf<char,std::char_traits<char> >::open
+
+// TEMPLATE: POPCAPGAME1 0x005170f0
+// std::basic_fstream<char,std::char_traits<char> >::basic_fstream<char,std::char_traits<char> >
+
+// TEMPLATE: POPCAPGAME1 0x00513140
+// std::basic_istream<char,std::char_traits<char> >::sentry::sentry
+
+// TEMPLATE: POPCAPGAME1 0x0050f370
+// std::basic_ostream<char,std::char_traits<char> >::flush
+
+// TEMPLATE: POPCAPGAME1 0x00505d40
+// std::ctype<char>::ctype<char>
+
+// TEMPLATE: POPCAPGAME1 0x00506030
+// std::ctype<char>::_Getcat
+
+// TEMPLATE: POPCAPGAME1 0x0050bc70
+// std::use_facet<std::ctype<char> >
+
+// TEMPLATE: POPCAPGAME1 0x0050f6d0
+// std::basic_istream<char,std::char_traits<char> >::_Ipfx
+
+// TEMPLATE: POPCAPGAME1 0x004fe560
+// std::basic_streambuf<char,std::char_traits<char> >::snextc
+
+// TEMPLATE: POPCAPGAME1 0x0050dd70
+// std::basic_ios<char,std::char_traits<char> >::widen
+
+// TEMPLATE: POPCAPGAME1 0x00513770
+// std::basic_istream<char,std::char_traits<char> >::getline
+
+// TEMPLATE: POPCAPGAME1 0x00513920
+// std::_Tree<std::_Tmap_traits<std::pair<unsigned long,unsigned long>,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::less<std::pair<unsigned long,unsigned long> >,std::allocator<std::pair<std::pair<unsigned long,unsigned long> const ,std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >,0> >::insert(class std::_Tree<class std::_Tmap_traits<struct std::pair<unsigned long, unsigned long>, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, struct std::less<struct std::pair<unsigned long, unsigned long>>, class std::allocator<struct std::pair<struct std::pair<unsigned long, unsigned long> const, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>>, 0>>::iterator, struct std::pair<struct std::pair<unsigned long, unsigned long> const, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>> const &)
+
+// TEMPLATE: POPCAPGAME1 0x00516e80
+// std::map<std::pair<unsigned long,unsigned long>,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::less<std::pair<unsigned long,unsigned long> >,std::allocator<std::pair<std::pair<unsigned long,unsigned long> const ,std::basic_string<char,std::char_traits<char>,std::allocator<char> > > > >::operator[]
+
+// TEMPLATE: POPCAPGAME1 0x00513b10
+// std::_Tree<std::_Tmap_traits<std::pair<unsigned long,unsigned long>,std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,int>,std::less<std::pair<unsigned long,unsigned long> >,std::allocator<std::pair<std::pair<unsigned long,unsigned long> const ,std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,int> > >,0> >::insert(class std::_Tree<class std::_Tmap_traits<struct std::pair<unsigned long, unsigned long>, struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, int>, struct std::less<struct std::pair<unsigned long, unsigned long>>, class std::allocator<struct std::pair<struct std::pair<unsigned long, unsigned long> const, struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, int>>>, 0>>::iterator, struct std::pair<struct std::pair<unsigned long, unsigned long> const, struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, int>> const &)
+
+// TEMPLATE: POPCAPGAME1 0x00516fb0
+// std::map<std::pair<unsigned long,unsigned long>,std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,int>,std::less<std::pair<unsigned long,unsigned long> >,std::allocator<std::pair<std::pair<unsigned long,unsigned long> const ,std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,int> > > >::operator[]
+
+// TEMPLATE: POPCAPGAME1 0x004feb00
+// std::_Tree<std::_Tmap_traits<std::pair<unsigned long,unsigned long>,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::less<std::pair<unsigned long,unsigned long> >,std::allocator<std::pair<std::pair<unsigned long,unsigned long> const ,std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >,0> >::_Lbound
+
+// TEMPLATE: POPCAPGAME1 0x004fdb90
+// std::_Tree<std::_Tmap_traits<std::pair<unsigned long,unsigned long>,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::less<std::pair<unsigned long,unsigned long> >,std::allocator<std::pair<std::pair<unsigned long,unsigned long> const ,std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >,0> >::const_iterator::_Dec
+
+// TEMPLATE: POPCAPGAME1 0x004fd900
+// std::_Tree<std::_Tmap_traits<std::pair<unsigned long,unsigned long>,std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,int>,std::less<std::pair<unsigned long,unsigned long> >,std::allocator<std::pair<std::pair<unsigned long,unsigned long> const ,std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,int> > >,0> >::_Lbound
+
+// TEMPLATE: POPCAPGAME1 0x00437f50
+// std::_Tree<std::_Tmap_traits<std::pair<unsigned long,unsigned long>,std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,int>,std::less<std::pair<unsigned long,unsigned long> >,std::allocator<std::pair<std::pair<unsigned long,unsigned long> const ,std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,int> > >,0> >::const_iterator::_Dec
+
+// TEMPLATE: POPCAPGAME1 0x00502690
+// std::basic_string<char,std::char_traits<char>,std::allocator<char> >::insert(unsigned int, char const *, unsigned int)
+
+// TEMPLATE: POPCAPGAME1 0x00502870
+// std::basic_filebuf<char,std::char_traits<char> >::_Endwrite
+
+// TEMPLATE: POPCAPGAME1 0x004fc660
+// std::basic_streambuf<char,std::char_traits<char> >::_Init
+
+// TEMPLATE: POPCAPGAME1 0x00504d60
+// std::basic_filebuf<char,std::char_traits<char> >::close
+
+// TEMPLATE: POPCAPGAME1 0x0050af60
+// std::basic_filebuf<char,std::char_traits<char> >::~basic_filebuf<char,std::char_traits<char> >
+
+// TEMPLATE: POPCAPGAME1 0x0050dce0
+// std::basic_fstream<char,std::char_traits<char> >::~basic_fstream<char,std::char_traits<char> >
+
+// TEMPLATE: POPCAPGAME1 0x005148b0
+// std::_Tree<std::_Tmap_traits<std::pair<unsigned long,unsigned long>,std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,int>,std::less<std::pair<unsigned long,unsigned long> >,std::allocator<std::pair<std::pair<unsigned long,unsigned long> const ,std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,int> > >,0> >::erase(class std::_Tree<class std::_Tmap_traits<struct std::pair<unsigned long, unsigned long>, struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, int>, struct std::less<struct std::pair<unsigned long, unsigned long>>, class std::allocator<struct std::pair<struct std::pair<unsigned long, unsigned long> const, struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, int>>>, 0>>::iterator, class std::_Tree<class std::_Tmap_traits<struct std::pair<unsigned long, unsigned long>, struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, int>, struct std::less<struct std::pair<unsigned long, unsigned long>>, class std::allocator<struct std::pair<struct std::pair<unsigned long, unsigned long> const, struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, int>>>, 0>>::iterator)
+
+// TEMPLATE: POPCAPGAME1 0x0050fee0
+// std::_Tree<std::_Tmap_traits<std::pair<unsigned long,unsigned long>,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::less<std::pair<unsigned long,unsigned long> >,std::allocator<std::pair<std::pair<unsigned long,unsigned long> const ,std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >,0> >::erase(class std::_Tree<class std::_Tmap_traits<struct std::pair<unsigned long, unsigned long>, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, struct std::less<struct std::pair<unsigned long, unsigned long>>, class std::allocator<struct std::pair<struct std::pair<unsigned long, unsigned long> const, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>>, 0>>::iterator, class std::_Tree<class std::_Tmap_traits<struct std::pair<unsigned long, unsigned long>, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>, struct std::less<struct std::pair<unsigned long, unsigned long>>, class std::allocator<struct std::pair<struct std::pair<unsigned long, unsigned long> const, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>>>, 0>>::iterator)
+
+// FUNCTION: POPCAPGAME1 0x0051c170
 void SEHCatcher::GetSymbolsFromMapFile(std::string &theDebugDump)
 {
 	DWORD aTick = GetTickCount();
@@ -343,6 +452,7 @@ void SEHCatcher::GetSymbolsFromMapFile(std::string &theDebugDump)
 //	MessageBox(NULL,StrFormat("%d",GetTickCount()-aTick).c_str(),"Time",MB_OK);
 }
 
+// FUNCTION: POPCAPGAME1 0x00521ed0
 void SEHCatcher::DoHandleDebugEvent(LPEXCEPTION_POINTERS lpEP)
 {
 	bool hasImageHelp = LoadImageHelp();
@@ -469,6 +579,7 @@ void SEHCatcher::DoHandleDebugEvent(LPEXCEPTION_POINTERS lpEP)
 	UnloadImageHelp();	
 }
 
+// FUNCTION: POPCAPGAME1 0x0050c6e0
 std::string SEHCatcher::IntelWalk(PCONTEXT theContext, int theSkipCount)
 {
 	std::string aDebugDump;
@@ -510,6 +621,7 @@ std::string SEHCatcher::IntelWalk(PCONTEXT theContext, int theSkipCount)
 	return aDebugDump;
 }
 
+// FUNCTION: POPCAPGAME1 0x0050c8e0
 std::string SEHCatcher::ImageHelpWalk(PCONTEXT theContext, int theSkipCount)
 {
 	char aBuffer[2048];
@@ -590,6 +702,7 @@ std::string SEHCatcher::ImageHelpWalk(PCONTEXT theContext, int theSkipCount)
 	return aDebugDump;
 }
 
+// FUNCTION: POPCAPGAME1 0x004fb370
 bool SEHCatcher::GetLogicalAddress(void* addr, char* szModule, DWORD len, DWORD& section, DWORD& offset)
 {
     MEMORY_BASIC_INFORMATION mbi;
@@ -634,6 +747,7 @@ bool SEHCatcher::GetLogicalAddress(void* addr, char* szModule, DWORD len, DWORD&
     return false; // Should never get here!
 }
 
+// FUNCTION: POPCAPGAME1 0x005064f0
 std::string SEHCatcher::GetFilename(const std::string& thePath)
 {
 	int aLastSlash = max((int) thePath.rfind('\\'), (int) thePath.rfind('/'));	
@@ -649,6 +763,7 @@ std::string SEHCatcher::GetFilename(const std::string& thePath)
 HWND gEditWindow = NULL;
 int aCount = 0;
 
+// FUNCTION: POPCAPGAME1 0x0051f660
 static LRESULT CALLBACK SEHProgressWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
@@ -709,6 +824,7 @@ static LRESULT CALLBACK SEHProgressWindowProc(HWND hWnd, UINT uMsg, WPARAM wPara
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
+// FUNCTION: POPCAPGAME1 0x0051f830
 static void CreateProgressWindow()
 {
 	WNDCLASSA wc;
@@ -779,6 +895,7 @@ static void CreateProgressWindow()
 	ShowWindow(aHWnd, SW_NORMAL);
 }
 
+// FUNCITON: POPCAPGAME1 0x00521170
 LRESULT CALLBACK SEHCatcher::SEHWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
@@ -812,6 +929,7 @@ LRESULT CALLBACK SEHCatcher::SEHWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, 
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
+// FUNCTION: POPCAPGAME1 0x0051f9a0
 LRESULT CALLBACK SEHCatcher::SubmitInfoWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
@@ -845,12 +963,50 @@ LRESULT CALLBACK SEHCatcher::SubmitInfoWindowProc(HWND hWnd, UINT uMsg, WPARAM w
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
+// TEMPLATE: POPCAPGAME1 0x00514c20
+// std::operator<<<std::char_traits<char> > 
+
+// TEMPLATE: POPCAPGAME1 0x0050fd20
+// std::basic_ostream<char,std::char_traits<char> >::sentry::sentry
+
+// TEMPLATE: POPCAPGAME1 0x0050fdb0
+// std::basic_ostream<char,std::char_traits<char> >::_Osfx
+
+// TEMPLATE: POPCAPGAME1 0x00514840
+// std::basic_ostream<char,std::char_traits<char> >::sentry::~sentry
+
+// TEMPLATE: POPCAPGAME1 0x00516d50
+// std::basic_ostream<char,std::char_traits<char> >::put
+
+// FUNCTION: POPCAPGAME1 0x00517c30
 void SEHCatcher::WriteToFile(const std::string& theErrorText)
 {
 	std::fstream aStream("crash.txt", std::ios::out);
 	aStream << theErrorText.c_str() << std::endl;
 }
 
+// TEMPLATE: POPCAPGAME1 0x0052afb0
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >,0> >::const_iterator::_Inc
+
+// TEMPLATE: POPCAPGAME1 0x00409580
+// std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Copy
+
+// TEMPLATE: POPCAPGAME1 0x0040aa30
+// std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Grow
+
+// TEMPLATE: POPCAPGAME1 0x00501ca0
+// std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Construct<char *>
+
+// TEMPLATE: POPCAPGAME1 0x00502c70
+// std::basic_string<char,std::char_traits<char>,std::allocator<char> >::replace(class std::_String_iterator<char, struct std::char_traits<char>, class std::allocator<char>>, class std::_String_iterator<char, struct std::char_traits<char>, class std::allocator<char>>, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const &)
+
+// TEMPLATE: POPCAPGAME1 0x00505710
+// std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Replace<char *>
+
+// TEMPLATE: POPCAPGAME1 0x0050faf0
+// std::map<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,std::basic_string<char,std::char_traits<char>,std::allocator<char> > > > >::~map<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,std::basic_string<char,std::char_traits<char>,std::allocator<char> > > > >
+
+// FUNCTION: POPCAPGAME1 0x0051cd50
 void SEHCatcher::SubmitReportThread(void *theArg)
 {
 	std::string aSeperator = "---------------------------7d3e1f30eec";
@@ -950,6 +1106,7 @@ void SEHCatcher::SubmitReportThread(void *theArg)
 	mSubmitReportTransfer.SendRequestString(mSubmitHost, aSendString);
 }
 
+// FUNCTION: POPCAPGAME1 0x0051fab0
 void SEHCatcher::ShowSubmitInfoDialog()
 {
 	WNDCLASSA wc;
@@ -1063,6 +1220,7 @@ void SEHCatcher::ShowSubmitInfoDialog()
 	ShowWindow(aHWnd, SW_NORMAL);
 }
 
+// FUNCTION: POPCAPGAME1 0x00521220
 void SEHCatcher::ShowErrorDialog(const std::string& theErrorTitle, const std::string& theErrorText)
 {
 	OSVERSIONINFO aVersionInfo;
@@ -1240,6 +1398,7 @@ void SEHCatcher::ShowErrorDialog(const std::string& theErrorTitle, const std::st
 	DeleteObject(aCourierNewFont);
 }
 
+// FUNCTION: POPCAPGAME1 0x00506590
 std::string SEHCatcher::GetSysInfo()
 {
 	std::string aDebugDump;

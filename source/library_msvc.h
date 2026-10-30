@@ -2594,3 +2594,57 @@
 
 // LIBRARY: POPCAPGAME1 0x005baaec
 // __crtGetLocaleInfoA_stat
+
+// LIBRARY: POPCAPGAME1 0x004fa630
+// std::locale::~locale
+
+// LIBRARY: POPCAPGAME1 0x0058b45e
+// std::_Mutex::_Unlock
+
+// LIBRARY: POPCAPGAME1 0x005060a0
+// std::ios_base::clear
+
+// LIBRARY: POPCAPGAME1 0x00502d00
+// std::runtime_error::runtime_error(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const &)
+
+// LIBRARY: POPCAPGAME1 0x0063fb20
+// __TI3?AVfailure@ios_base@std@@
+
+// LIBRARY: POPCAPGAME1 0x0058b455
+// std::_Mutex::_Lock
+
+// LIBRARY: POPCAPGAME1 0x0058d13f
+// _Mtxlock
+
+// LIBRARY: POPCAPGAME1 0x004fa7b0
+// std::ios_base::getloc
+
+// LIBRARY: POPCAPGAME1 0x004fa5c0
+// std::locale::facet::_Incref
+
+// LIBRARY: POPCAPGAME1 0x0058b196
+// std::locale::_Getgloballocale
+
+// LIBRARY: POPCAPGAME1 0x0063f964
+// __TI2?AVruntime_error@std@@
+
+// LIBRARY: POPCAPGAME1 0x0058b35a
+// std::_Locinfo::_Locinfo_ctor
+
+// LIBRARY: POPCAPGAME1 0x00505870
+// std::_Locinfo::_Locinfo
+
+// LIBRARY: POPCAPGAME1 0x004fffb0
+// std::_Locinfo::~_Locinfo
+
+// LIBRARY: POPCAPGAME1 0x0058ce35
+// std::_Fiopen(char const *, int, int)
+
+// LIBRARY: POPCAPGAME1 0x005061d0
+// std::ios_base::_Init
+
+// LIBRARY: POPCAPGAME1 0x0058ce90
+// std::uncaught_exception
+
+// LIBRARY: POPCAPGAME1 0x005a61f9
+// __uncaught_exception

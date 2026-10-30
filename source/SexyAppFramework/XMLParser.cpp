@@ -61,6 +61,13 @@ void XMLParser::Init()
 	mByteSwap = false;
 }
 
+// TEMPLATE: POPCAPGAME1 0x00431fc0
+// std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,std::basic_string<char,std::char_traits<char>,std::allocator<char> > >::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,std::basic_string<char,std::char_traits<char>,std::allocator<char> > >(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const &, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const &)
+
+// TEMPLATE: POPCAPGAME1 0x0050f3c0
+// std::_Tree<std::_Tmap_traits<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::less<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >,std::allocator<std::pair<std::basic_string<char,std::char_traits<char>,std::allocator<char> > const ,std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >,0> >::insert(struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>> const, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char>>> const &)
+
+// FUNCTION: POPCAPGAME1 0x005109f0
 bool XMLParser::AddAttribute(XMLElement* theElement, const SexyString& theAttributeKey, const SexyString& theAttributeValue)
 {
 	std::pair<XMLParamMap::iterator,bool> aRet;
@@ -745,11 +752,13 @@ bool XMLParser::NextElement(XMLElement* theElement)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004fadf0
 bool XMLParser::HasFailed()
 {
 	return mHasFailed;
 }
 
+// FUNCTION: POPCAPGAME1 0x00502df0
 SexyString XMLParser::GetErrorText()
 {
 	return mErrorText;
