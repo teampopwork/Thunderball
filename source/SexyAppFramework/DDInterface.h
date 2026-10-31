@@ -48,7 +48,7 @@ public:
 	LPDIRECTDRAWSURFACE		mPrimarySurface; // +0x60
 	LPDIRECTDRAWSURFACE		mSecondarySurface; // +0x64
 	LPDIRECTDRAWSURFACE		mDrawSurface; // +0x68
-	char					mUnk0x6c[16]; // +0x6c
+	LPDIRECTDRAWSURFACE		mScaleSurfaces[4]; // +0x6c
 	int						mWidth; // +0x7c
 	int						mHeight; // +0x80
 	Ratio					mAspect; // +0x84
@@ -78,7 +78,7 @@ public:
 	HWND					mHWnd; // +0xce0
 	bool					mIsWindowed; // +0xce4
 	DDImage*				mScreenImage; // +0xce8
-	DDImage*				mUnk0xcec; // +0xcec
+	DDImage*				mSecondaryScreenImage; // +0xcec
 	DDImageSet				mDDImageSet; // +0xcf0
 	bool					mVideoOnlyDraw;
 	ulong					mInitCount; // +0xd00
@@ -115,6 +115,7 @@ public:
 	HRESULT					CreateSurface(DDSURFACEDESC2 *theDesc, LPDIRECTDRAWSURFACE *theSurface, void*);
 	void					ClearSurface(LPDIRECTDRAWSURFACE theSurface);
 	bool					Do3DTest(HWND theHWND);
+	void					CreateScaleSurfaces(int theWidth, int theHeight);
 
 public:
 	DDInterface(SexyAppBase* theApp);

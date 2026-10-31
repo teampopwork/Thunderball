@@ -322,7 +322,7 @@ int DDInterface::Init(HWND theWindow, bool IsWindowed)
 	{
 		OutputDebug(_S("Hack aspect is                   [%2d:%2d]\n"), mApp->mWindowAspect.mNumerator, mApp->mWindowAspect.mDenominator);
 
-		if ( mApp->mEnableWindowAspect && mAspect < mApp->mWindowAspect )
+		if ( mApp->mEnableWindowAspect && mAspect != mApp->mWindowAspect )
 		{
 			mIsWidescreen = true;
 
@@ -409,16 +409,22 @@ int DDInterface::Init(HWND theWindow, bool IsWindowed)
 
 		// Associate the clipper with the window
 		aResult = aClipper->SetHWnd(0, theWindow);
-		if (SUCCEEDED(aResult)) 
+		if (SUCCEEDED(aResult))
 			aResult = mPrimarySurface->SetClipper(aClipper);
 
 		aClipper->Release();
+
+		// If the client area isn't the size of the draw buffer, present through the scale surfaces
+		RECT aClientRect;
+		GetClientRect(mHWnd, &aClientRect);
+		if ((aClientRect.right != mWidth) || (aClientRect.bottom != mHeight))
+			CreateScaleSurfaces(aClientRect.right, aClientRect.bottom);
 	}
 	else
 	{
 		OutputDebug(_S("Desktop is           %4lu x %4lu [%2d:%2d]\n"), mDesktopWidth, mDesktopHeight, mDesktopAspect.mNumerator, mDesktopAspect.mDenominator);
 
-		if ( mIs3D && mAspect < mDesktopAspect )
+		if ( mIs3D && (mAspect != mDesktopAspect || mDisplayWidth > mDesktopWidth || mDisplayHeight > mDesktopHeight) )
 		{
 			mIsWidescreen = true;
 
@@ -429,9 +435,9 @@ int DDInterface::Init(HWND theWindow, bool IsWindowed)
 
 			if ( mApp->mWidescreenAware )
 			{
-				// Setup the draw buffer(s) at the same aspect ratio as the desktop,
+				// Setup the draw buffer(s) at the wider of the requested and the desktop aspect ratio,
 				// but with the height requested by the application.
-				mAspect = mDisplayAspect;
+				mAspect = (mAspect < mDisplayAspect) ? mDisplayAspect : mAspect;
 				mWidth = mHeight * mAspect;
 
 				mPresentationRect.mWidth = mDisplayWidth;
@@ -443,7 +449,7 @@ int DDInterface::Init(HWND theWindow, bool IsWindowed)
 			{
 				// Set the dest rect for drawing the back buffer to the center of
 				// the wide display.
-				mPresentationRect.mWidth = mWidth * mDisplayHeight / mHeight;
+				mPresentationRect.mWidth = min(mWidth * mDisplayHeight / mHeight, mDisplayWidth);
 				mPresentationRect.mHeight = mDisplayHeight;
 				mPresentationRect.mX = ( mDisplayWidth - mPresentationRect.mWidth ) / 2;
 				mPresentationRect.mY = 0;
@@ -485,6 +491,9 @@ int DDInterface::Init(HWND theWindow, bool IsWindowed)
 
 		if (GotDXError(aResult,"GetAttachedSurface"))
 			return RESULT_SURFACE_FAIL;
+
+		mSecondaryScreenImage = new DDImage(this);
+		mSecondaryScreenImage->SetSurface(mSecondarySurface);
 
 		if (mIsWidescreen)
 		{
@@ -679,6 +688,56 @@ int DDInterface::Init(HWND theWindow, bool IsWindowed)
 	mInitialized = true;
 
 	return RESULT_OK;
+}
+
+// FUNCTION: POPCAPGAME1 0x004deb00
+void DDInterface::CreateScaleSurfaces(int theWidth, int theHeight)
+{
+	for (int i = 0; i < 4; i++)
+	{
+		if (mScaleSurfaces[i] != NULL)
+		{
+			mScaleSurfaces[i]->Release();
+			mScaleSurfaces[i] = NULL;
+		}
+	}
+
+	if ((mIsWindowed) && ((mWidth != theWidth) || (mHeight != theHeight)))
+	{
+		DDSURFACEDESC2 aDesc;
+		ZeroMemory(&aDesc, sizeof(aDesc));
+		aDesc.dwSize = sizeof(aDesc);
+		aDesc.dwFlags = DDSD_CAPS | DDSD_HEIGHT | DDSD_WIDTH;
+		aDesc.ddsCaps.dwCaps = DDSCAPS_OFFSCREENPLAIN | DDSCAPS_SYSTEMMEMORY;
+		if (mIs3D)
+			aDesc.ddsCaps.dwCaps = DDSCAPS_OFFSCREENPLAIN | DDSCAPS_VIDEOMEMORY | DDSCAPS_3DDEVICE;
+
+		int aWidth = mWidth;
+		int aHeight = mHeight;
+		int aNumSurfaces = 0;
+		HRESULT aResult;
+
+		while ((aHeight > theHeight*2) && (aNumSurfaces < 3))
+		{
+			aWidth /= 2;
+			aHeight /= 2;
+			aDesc.dwWidth = aWidth;
+			aDesc.dwHeight = aHeight;
+
+			aResult = CreateSurface(&aDesc, &mScaleSurfaces[aNumSurfaces++], NULL);
+			if (GotDXError(aResult, "CreateSurface Windowed DrawSurface"))
+				return;
+		}
+
+		aDesc.dwWidth = theWidth;
+		aDesc.dwHeight = theHeight;
+
+		aResult = CreateSurface(&aDesc, &mScaleSurfaces[aNumSurfaces], NULL);
+		if (GotDXError(aResult, "CreateSurface Windowed DrawSurface"))
+			return;
+	}
+
+	mPresentationRect = Rect(0, 0, theWidth, theHeight);
 }
 
 // FUNCTION: POPCAPGAME1 0x004e9440
