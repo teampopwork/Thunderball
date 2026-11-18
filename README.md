@@ -7,6 +7,13 @@ This project aims to decompile the English 1.01 executable of Peggle Deluxe from
  <img src="https://github.com/teampopwork/Thunderball/raw/refs/heads/gh-pages/progress.svg" alt="Progress" />
 </p>
 
+## Downloading Repository
+The repository contents may be downloaded using
+```
+git clone --recursive https://github.com/teampopwork/Thunderball.git
+```
+The `--recursive` flag is necessary to download submodules.
+
 ## Building
 Requirements:
  - CMake 3.25 or higher
