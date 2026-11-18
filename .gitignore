@@ -411,7 +411,6 @@ FodyWeavers.xsd
 reccmp-user.yml
 reccmp-build.yml
 
-msvc80/
 .vscode/
 popcapgame1.exe
 popcapgame1.json

@@ -1,3 +1,6 @@
 [submodule "3rdparty/directx9"]
 	path = 3rdparty/directx9
 	url = https://github.com/bananapizzuh/directx9
+[submodule "msvc80"]
+	path = msvc80
+	url = https://github.com/bananapizzuh/msvc80-sp1
