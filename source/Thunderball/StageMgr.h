@@ -50,6 +50,7 @@ public:
 	int mUnk0x8;
 	std::vector<SmartPtr<StageInfo>> mUnk0xc;
 	std::multimap<std::string, SmartPtr<LevelInfo>, StringLessNoCase> mUnk0x1c;
+	int mUnk0x24; // num retries?
 	std::vector<std::string> mUnk0x2c;
 
 	StageMgr(ThunderballApp* theApp);

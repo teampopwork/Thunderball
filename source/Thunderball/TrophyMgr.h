@@ -39,6 +39,7 @@ public:
 	ThunderballApp* mApp;
 	std::vector<TrophyPage> mPages;
 	std::map<int, TrophyInfo*> mTrophyInfos;
+	int mUnk0x20; // +0x20. max number of challenges?
 
 	TrophyMgr(ThunderballApp* theApp);
 	virtual ~TrophyMgr();

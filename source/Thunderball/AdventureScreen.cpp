@@ -7,6 +7,7 @@
 #include "ThunderButton.h"
 #include "ThunderCommon.h"
 #include "ThunderballApp.h"
+#include "TrophyMgr.h"
 
 #include <SexyAppFramework/Font.h>
 #include <SexyAppFramework/Graphics.h>
@@ -347,48 +348,79 @@ void AdventureScreen::DrawPersonalHighScores(Graphics* g, int theX, int theY)
 	}
 }
 
+// FUNCTION: POPCAPGAME1 0x004885a0
+void DoDrawStatInner(Graphics* g, int y, int rightX, int leftX, const SexyString& rightStr, const SexyString& labelStr)
+{
+	g->SetColor(Color::Color(ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp49,273", 0xffff00)));
+	g->DrawString(labelStr, leftX, y);
+	g->SetColor(ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp50,275", 0x88ff88));
+	int width = g->GetFont()->StringWidth(rightStr);
+	g->DrawString(rightStr, rightX - width, y);
+	return;
+}
+
+// FUNCTION: POPCAPGAME1 0x004896b0
+void DoDrawStat(Graphics* g, char* labelStr, int max, int stat, int leftX, int rightX, int y)
+{
+	SexyString statStr = CommaSeperate(stat);
+	if (0 < max) {
+		statStr += StrFormat(" / %d", max);
+	}
+	DoDrawStatInner(g, y, rightX, leftX, statStr, labelStr);
+}
+
 // FUNCTION: POPCAPGAME1 0x004897c0
 void AdventureScreen::DrawStats(Graphics* g, int theX, int theY, bool is_current)
 {
-	int width1 = ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp51,295", 0x118);
+	int width = ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp51,295", 0x118);
 	int titleX = ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp52,296", 0x8c);
 	char* title = "Your Current Stats";
 	if (!is_current) {
 		title = "Your All-Time Stats";
 	}
-	DrawAdventureFrame(g, theX, theY, width1, titleX, title);
+	DrawAdventureFrame(g, theX, theY, width, titleX, title);
 	int yOffset = ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp53,301", 0x19);
 	g->SetFont(FONT_OVERLOAD12OUTLINE);
 
 	GameStats* stats;
 	if (is_current) {
-		stats = &this->mCurProfile->mUnk0x12c;
+		stats = &mCurProfile->mUnk0x12c;
 	}
 	else {
-		stats = &this->mCurProfile->mUnk0x198;
+		stats = &mCurProfile->mUnk0x198;
 	}
 	int rowHeight = ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp54,305", 0) + g->GetFont()->GetHeight();
-	int x = ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp55,307", 10) + theX;
-	int width = (width1 + theX) - ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp56,308", 10);
-	g->DoDrawStat(stats->mUnk0x0, x, width, theY + yOffset);
-	int y = theY + yOffset + rowHeight;
-	g->DoDrawStat(stats->GetTotalFreeBalls(), x, width, y);
+	int leftX = ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp55,307", 10) + theX;
+	int rightX = (width + theX) - ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp56,308", 10);
+	int y = theY + yOffset;
+	DoDrawStat(g, "Shots:", 0, stats->mUnk0x0, leftX, rightX, y);
 	y += rowHeight;
-	g->DoDrawStat(stats->GetTotalStyleShots(), x, width, y);
+	DoDrawStat(g, "Free Balls:", 0, stats->GetTotalFreeBalls(), leftX, rightX, y);
 	y += rowHeight;
-	g->DoDrawStat(stats->mUnk0x4, x, width, y);
+	DoDrawStat(g, "Style Shots:", 0, stats->GetTotalStyleShots(), leftX, rightX, y);
 	y += rowHeight;
-	g->DoDrawStat(stats->mUnk0x8, x, width, y);
+	DoDrawStat(g, "Best Shot:", 0, stats->mUnk0x4, leftX, rightX, y);
 	y += rowHeight;
+	DoDrawStat(g, "Best Fever:", 0, stats->mUnk0x8, leftX, rightX, y);
+	y += rowHeight;
+	char* theLastLabel;
+	int theLastMax;
 	int theLastStat;
 	if (is_current) {
-		g->DoDrawStat(this->mCurProfile->mUnk0x204, x, width, y);
-		theLastStat = this->mCurProfile->mUnk0x20c;
+		DoDrawStat(g, "Total Score:", 0, mCurProfile->mUnk0x204, leftX, rightX, y);
+		theLastStat = mCurProfile->mUnk0x20c;
+		theLastMax = 0;
+		theLastLabel = "Retries:";
 	}
 	else {
-		g->DoDrawStat(this->mCurProfile->mUnk0x104, x, width, y);
-		theLastStat = this->mCurProfile->mUnk0x120;
+		int maxChallenges = mApp->mTrophyMgr->mUnk0x20;
+		int numDoneChallenges = mCurProfile->mUnk0x104;
+		DoDrawStat(g, "Challenges Finished:", maxChallenges, numDoneChallenges, leftX, rightX, y);
+		theLastMax = mApp->mStageMgr->mUnk0x24;
+		theLastStat = mCurProfile->mUnk0x120;
+		theLastLabel = "Levels 100% Cleared:";
 	}
-	g->DoDrawStat(theLastStat, x, width, rowHeight + y);
+	y += rowHeight;
+	DoDrawStat(g, theLastLabel, theLastMax, theLastStat, leftX, rightX, y);
 	return;
 }

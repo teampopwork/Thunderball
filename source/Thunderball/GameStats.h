@@ -8,9 +8,9 @@ class DataSync;
 class GameStats
 {
 public:
-    int mUnk0x0;
-    int mUnk0x4;
-    int mUnk0x8;
+    int mUnk0x0; // num shots?
+    int mUnk0x4; // best shot?
+    int mUnk0x8; // best fever?
     int mUnk0xc;
     int mUnk0x10;
     int mUnk0x14;

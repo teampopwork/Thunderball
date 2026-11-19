@@ -175,8 +175,6 @@ public:
 	int						GetWordWrappedHeight(int theWidth, const SexyString& theLine, int theLineSpacing = -1, int *theMaxWidth = NULL);
 
 	bool					Is3D() { return mIs3D; }
-	
-	void					DoDrawStat(int stat, int x, int width, int y);
 };
 
 class GraphicsAutoState
