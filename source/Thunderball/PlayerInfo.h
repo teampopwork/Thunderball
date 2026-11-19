@@ -49,9 +49,11 @@ public:
 	bool mUnk0xef;
 	std::multiset<int> mAdventureScores; // +0xf0
 	std::set<int> mUnk0xfc;              // +0xfc
+	int mUnk0x104; // +0x104
 	std::map<int, int, std::greater<int> > mUnk0x108; // +0x108
 	int mUnk0x114;
 	std::set<std::string, struct StringLessNoCase> mUnk0x118;        // +0x118
+	int mUnk0x120; // +0x120
 	int mUnk0x124;
 	int mUnk0x128;
 	GameStats mUnk0x12c;

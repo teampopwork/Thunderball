@@ -1425,3 +1425,8 @@ int	Graphics::GetWordWrappedHeight(int theWidth, const SexyString& theLine, int 
 
 	return aHeight;	
 }
+
+// STUB: POPCAPGAME1 0x004896b0
+void Graphics::DoDrawStat(int stat, int x, int width, int y)
+{
+}

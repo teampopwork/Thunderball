@@ -347,7 +347,48 @@ void AdventureScreen::DrawPersonalHighScores(Graphics* g, int theX, int theY)
 	}
 }
 
-// STUB: POPCAPGAME1 0x004897c0
-void AdventureScreen::DrawStats(Graphics* g, int theX, int theY, bool param_1)
+// FUNCTION: POPCAPGAME1 0x004897c0
+void AdventureScreen::DrawStats(Graphics* g, int theX, int theY, bool is_current)
 {
+	int width1 = ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp51,295", 0x118);
+	int titleX = ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp52,296", 0x8c);
+	char* title = "Your Current Stats";
+	if (!is_current) {
+		title = "Your All-Time Stats";
+	}
+	DrawAdventureFrame(g, theX, theY, width1, titleX, title);
+	int yOffset = ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp53,301", 0x19);
+	g->SetFont(FONT_OVERLOAD12OUTLINE);
+
+	GameStats* stats;
+	if (is_current) {
+		stats = &this->mCurProfile->mUnk0x12c;
+	}
+	else {
+		stats = &this->mCurProfile->mUnk0x198;
+	}
+	int rowHeight = ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp54,305", 0) + g->GetFont()->GetHeight();
+	int x = ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp55,307", 10) + theX;
+	int width = (width1 + theX) - ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp56,308", 10);
+	g->DoDrawStat(stats->mUnk0x0, x, width, theY + yOffset);
+	int y = theY + yOffset + rowHeight;
+	g->DoDrawStat(stats->GetTotalFreeBalls(), x, width, y);
+	y += rowHeight;
+	g->DoDrawStat(stats->GetTotalStyleShots(), x, width, y);
+	y += rowHeight;
+	g->DoDrawStat(stats->mUnk0x4, x, width, y);
+	y += rowHeight;
+	g->DoDrawStat(stats->mUnk0x8, x, width, y);
+	y += rowHeight;
+	int theLastStat;
+	if (is_current) {
+		g->DoDrawStat(this->mCurProfile->mUnk0x204, x, width, y);
+		theLastStat = this->mCurProfile->mUnk0x20c;
+	}
+	else {
+		g->DoDrawStat(this->mCurProfile->mUnk0x104, x, width, y);
+		theLastStat = this->mCurProfile->mUnk0x120;
+	}
+	g->DoDrawStat(theLastStat, x, width, rowHeight + y);
+	return;
 }
