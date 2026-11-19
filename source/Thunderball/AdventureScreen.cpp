@@ -7,6 +7,7 @@
 #include "ThunderButton.h"
 #include "ThunderCommon.h"
 #include "ThunderballApp.h"
+#include "TrophyMgr.h"
 
 #include <SexyAppFramework/Font.h>
 #include <SexyAppFramework/Graphics.h>
@@ -16,6 +17,45 @@
 #include <set>
 
 using namespace Sexy;
+
+// FUNCTION: POPCAPGAME1 0x00488710
+void DrawAdventureFrame(Graphics* g, int param_1, int param_2, int param_3, int param_4, const std::string& param_5)
+{
+	g->SetColor(Color(0, ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp14,142", 0x80)));
+	g->FillRect(param_1, param_2, param_3, param_4);
+
+	g->SetColor(Color(0, ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp15,144", 0x80)));
+	g->FillRect(
+		param_1,
+		param_2 - ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp17,145", 0x14),
+		param_3,
+		ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp16,145", 0x14)
+	);
+
+	g->SetFont(GetFontById(ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp18,147", 0xe)));
+	g->SetColor(Color(ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp19,148", 0xffd305)));
+	int aWidth = g->GetFont()->StringWidth(param_5);
+	g->DrawString(param_5, (param_3 - aWidth) / 2 + param_1, param_2 - ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp20,149", 0x10));
+	Rect aRect = Rect(
+		param_1 + ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp21,153", 8),
+		param_2 - ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp22,153", 0x1c),
+		param_3 + ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp24,153", 0x24),
+		param_4 + ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp23,153", 0x10)
+	);
+
+	g->DrawImageBox(aRect, IMAGE_DLG_BLUEFRAME);
+
+	if (ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp25,157", false)) {
+		Rect aRect2 = IMAGE_DLG_STAGEBAR->GetCelRect(0);
+		aRect = Rect(
+			param_1 - ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp26,160", 4),
+			param_2 - ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp27,160", 2),
+			param_2 + ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp28,160", 9),
+			aRect2.mHeight
+		);
+		g->DrawImageBox(aRect, IMAGE_DLG_STAGEBAR);
+	}
+}
 
 // SYNTHETIC: POPCAPGAME1 0x004886e0
 // Sexy::AdventureScreen::`scalar deleting destructor'
@@ -308,7 +348,79 @@ void AdventureScreen::DrawPersonalHighScores(Graphics* g, int theX, int theY)
 	}
 }
 
-// STUB: POPCAPGAME1 0x004897c0
-void AdventureScreen::DrawStats(Graphics* g, int theX, int theY, bool param_1)
+// FUNCTION: POPCAPGAME1 0x004885a0
+void DoDrawStatInner(Graphics* g, int y, int rightX, int leftX, const SexyString& rightStr, const SexyString& labelStr)
 {
+	g->SetColor(Color::Color(ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp49,273", 0xffff00)));
+	g->DrawString(labelStr, leftX, y);
+	g->SetColor(ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp50,275", 0x88ff88));
+	int width = g->GetFont()->StringWidth(rightStr);
+	g->DrawString(rightStr, rightX - width, y);
+	return;
+}
+
+// FUNCTION: POPCAPGAME1 0x004896b0
+void DoDrawStat(Graphics* g, char* labelStr, int max, int stat, int leftX, int rightX, int y)
+{
+	SexyString statStr = CommaSeperate(stat);
+	if (0 < max) {
+		statStr += StrFormat(" / %d", max);
+	}
+	DoDrawStatInner(g, y, rightX, leftX, statStr, labelStr);
+}
+
+// FUNCTION: POPCAPGAME1 0x004897c0
+void AdventureScreen::DrawStats(Graphics* g, int theX, int theY, bool is_current)
+{
+	int width = ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp51,295", 0x118);
+	int titleX = ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp52,296", 0x8c);
+	char* title = "Your Current Stats";
+	if (!is_current) {
+		title = "Your All-Time Stats";
+	}
+	DrawAdventureFrame(g, theX, theY, width, titleX, title);
+	int yOffset = ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp53,301", 0x19);
+	g->SetFont(FONT_OVERLOAD12OUTLINE);
+
+	GameStats* stats;
+	if (is_current) {
+		stats = &mCurProfile->mUnk0x12c;
+	}
+	else {
+		stats = &mCurProfile->mUnk0x198;
+	}
+	int rowHeight = ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp54,305", 0) + g->GetFont()->GetHeight();
+	int leftX = ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp55,307", 10) + theX;
+	int rightX = (width + theX) - ModVal(0, "SEXY_SEXYMODVAL.\\AdventureScreen.cpp56,308", 10);
+	int y = theY + yOffset;
+	DoDrawStat(g, "Shots:", 0, stats->mUnk0x0, leftX, rightX, y);
+	y += rowHeight;
+	DoDrawStat(g, "Free Balls:", 0, stats->GetTotalFreeBalls(), leftX, rightX, y);
+	y += rowHeight;
+	DoDrawStat(g, "Style Shots:", 0, stats->GetTotalStyleShots(), leftX, rightX, y);
+	y += rowHeight;
+	DoDrawStat(g, "Best Shot:", 0, stats->mUnk0x4, leftX, rightX, y);
+	y += rowHeight;
+	DoDrawStat(g, "Best Fever:", 0, stats->mUnk0x8, leftX, rightX, y);
+	y += rowHeight;
+	char* theLastLabel;
+	int theLastMax;
+	int theLastStat;
+	if (is_current) {
+		DoDrawStat(g, "Total Score:", 0, mCurProfile->mUnk0x204, leftX, rightX, y);
+		theLastStat = mCurProfile->mUnk0x20c;
+		theLastMax = 0;
+		theLastLabel = "Retries:";
+	}
+	else {
+		int maxChallenges = mApp->mTrophyMgr->mUnk0x20;
+		int numDoneChallenges = mCurProfile->mUnk0x104;
+		DoDrawStat(g, "Challenges Finished:", maxChallenges, numDoneChallenges, leftX, rightX, y);
+		theLastMax = mApp->mStageMgr->mUnk0x24;
+		theLastStat = mCurProfile->mUnk0x120;
+		theLastLabel = "Levels 100% Cleared:";
+	}
+	y += rowHeight;
+	DoDrawStat(g, theLastLabel, theLastMax, theLastStat, leftX, rightX, y);
+	return;
 }
