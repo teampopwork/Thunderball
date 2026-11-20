@@ -133,16 +133,16 @@ void CollisionMgr::Clear()
 // std::vector<Sexy::CollisionMgr::EndPoint,std::allocator<Sexy::CollisionMgr::EndPoint> >::insert
 
 // FUNCTION: POPCAPGAME1 0x0044d920
-void CollisionMgr::AddObj(PhysObj* param_1, float* param_2, float* param_3, std::vector<EndPoint>* param_4)
+void CollisionMgr::AddObj(PhysObj* param_1, float param_2, float param_3, std::vector<EndPoint>* param_4)
 {
 	EndPoint aEndPoint1;
 	aEndPoint1.mObject = param_1;
-	aEndPoint1.mValue1 = *param_2;
+	aEndPoint1.mValue1 = param_2;
 	aEndPoint1.mValue2 = true;
 
 	EndPoint aEndPoint2;
 	aEndPoint2.mObject = param_1;
-	aEndPoint2.mValue1 = *param_3;
+	aEndPoint2.mValue1 = param_3;
 	aEndPoint2.mValue2 = false;
 
 	std::vector<EndPoint>::iterator anItr;
@@ -185,8 +185,8 @@ void CollisionMgr::AddObj(PhysObj* param_1)
 		}
 	}
 
-	AddObj(param_1, &param_1->mUnk0x14, &param_1->mUnk0x18, &mObjects1);
-	AddObj(param_1, &param_1->mUnk0x18, &param_1->mUnk0x20, &mObjects2);
+	AddObj(param_1, param_1->mUnk0x14, param_1->mUnk0x18, &mObjects1);
+	AddObj(param_1, param_1->mUnk0x18, param_1->mUnk0x20, &mObjects2);
 }
 
 // FUNCTION: POPCAPGAME1 0x0045ad30
