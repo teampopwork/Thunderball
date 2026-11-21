@@ -121,7 +121,7 @@ Ball* DebugMgr::GetBallAt(float param_1, float param_2)
 			float dx = param_1 - ball->mUnk0xec;
 			float dy = param_2 - ball->mUnk0xf0;
 			float distance = dx * dx + dy * dy;
-			int radius = (int)(ball->mUnk0x13c + 0.5);
+			int radius = (int)(ball->radius + 0.5);
 			if (radius < 20) {
 				radius = 20;
 			}

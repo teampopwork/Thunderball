@@ -26,7 +26,7 @@ Ball::Ball(bool param_1)
     mUnk0x140 = param_1;
     mUnk0xe4 = 0;
     mUnk0x10 = (param_1 != 0 ? 1 : 0) + 2;
-    mUnk0x13c = mDefRadius;
+    radius = mDefRadius;
     mUnk0x14c = 0;
     mUnk0x150 = 0;
     mUnk0xf8 = 0;
@@ -84,7 +84,7 @@ bool Ball::EditGetSetValHook(std::string& param_1, bool param_2)
     {
         if (param_1 == "radius") 
         {
-            EditValSyncNum(mUnk0x13c, 2.0, 200.0);
+            EditValSyncNum(radius, 2.0, 200.0);
             
             if (param_2) 
             {
@@ -143,7 +143,7 @@ void Ball::SyncState(DataSync& theSync)
         theSync.SyncFloat(mUnk0xec);
         theSync.SyncFloat(mUnk0xf0);
     }
-    theSync.SyncFloat(mUnk0x13c);
+    theSync.SyncFloat(radius);
     if (mUnk0x10 == 2) {
         theSync.SyncFloat(mUnk0xf4);
         theSync.SyncFloat(mUnk0xf8);
@@ -224,10 +224,10 @@ void Ball::SyncState(DataSync& theSync)
 
     if (theSync.mReader != NULL) {
         bool bVar1 = mUnk0x161;
-        left = mUnk0xec - mUnk0x13c;
-        right = mUnk0x13c + mUnk0xec;
-        top = mUnk0xf0 - mUnk0x13c;
-        bottom = mUnk0xf0 + mUnk0x13c;
+        left = mUnk0xec - radius;
+        right = radius + mUnk0xec;
+        top = mUnk0xf0 - radius;
+        bottom = mUnk0xf0 + radius;
         mUnk0x104 = mUnk0xec;
         mUnk0x108 = mUnk0xf0;
         if (bVar1) {
@@ -247,10 +247,10 @@ void Ball::SetPos(float x, float y)
 {
     mUnk0xec = x;
     mUnk0xf0 = y;
-    left = x - mUnk0x13c;
-    right = mUnk0x13c + x;
-    top = y - mUnk0x13c;
-    bottom = mUnk0x13c + y;
+    left = x - radius;
+    right = radius + x;
+    top = y - radius;
+    bottom = radius + y;
 }
 
 // FUNCTION: POPCAPGAME1 0x00474eb0
@@ -375,10 +375,10 @@ void Ball::Update()
 		mUnk0x100 = aVelocity.y;
 	}
 
-	left = mUnk0xec - mUnk0x13c + (mUnk0xfc < 0.0f ? mUnk0xfc : 0.0f);
-	right = mUnk0xec + mUnk0x13c + (mUnk0xfc > 0.0f ? mUnk0xfc : 0.0f);
-	top = mUnk0xf0 - mUnk0x13c + (mUnk0x100 < 0.0f ? mUnk0x100 : 0.0f);
-	bottom = mUnk0xf0 + mUnk0x13c + (mUnk0x100 > 0.0f ? mUnk0x100 : 0.0f);
+	left = mUnk0xec - radius + (mUnk0xfc < 0.0f ? mUnk0xfc : 0.0f);
+	right = mUnk0xec + radius + (mUnk0xfc > 0.0f ? mUnk0xfc : 0.0f);
+	top = mUnk0xf0 - radius + (mUnk0x100 < 0.0f ? mUnk0x100 : 0.0f);
+	bottom = mUnk0xf0 + radius + (mUnk0x100 > 0.0f ? mUnk0x100 : 0.0f);
 	mUnk0x141 = false;
 	mUnk0x142 = false;
 	mUnk0x134 = mUnk0xec;
@@ -412,13 +412,13 @@ void Ball::Draw(Graphics* g)
                 local_8 = mUnk0xf0;
             }
 
-            if (mUnk0x13c == 6.0f) {
+            if (radius == 6.0f) {
                 if (mUnk0x18d) {
                     DrawHat(g);
                 }
 
-                local_c -= mUnk0x13c;
-                local_8 -= mUnk0x13c;
+                local_c -= radius;
+                local_8 -= radius;
                 g->SetColorizeImages(true);
                 g->SetColor(Color(0x60000000));
                 g->DrawImageF(IMAGE_BALLSHADOW, local_c - 2.0f, local_8 - 2.0f);
@@ -432,23 +432,23 @@ void Ball::Draw(Graphics* g)
                     DrawHat(g);
                 }
 
-                local_c -= mUnk0x13c;
-                local_8 -= mUnk0x13c;
+                local_c -= radius;
+                local_8 -= radius;
                 Board* aBoard = GetBoard();
                 float fVar3 = 0.0;
                 if (aBoard != NULL) {
                     fVar3 = aBoard->mUnk0x1c4 + ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Ball.cpp11,1241", 0.05f);
                 }
 
-                g->DrawImageRotatedF(IMAGE_FIREBALL, local_c - mUnk0x13c, local_8 - mUnk0x13c, fVar3, NULL);
+                g->DrawImageRotatedF(IMAGE_FIREBALL, local_c - radius, local_8 - radius, fVar3, NULL);
                 return;
             }
 
-            DrawCircle(g, local_c - 2.0f, local_8 - 2.0f, mUnk0x13c, IMAGE_BIGBALLSHADOW, NULL, 0);
-            DrawCircle(g, local_c, local_8, mUnk0x13c, IMAGE_BIGBALL, NULL, 0);
+            DrawCircle(g, local_c - 2.0f, local_8 - 2.0f, radius, IMAGE_BIGBALLSHADOW, NULL, 0);
+            DrawCircle(g, local_c, local_8, radius, IMAGE_BIGBALL, NULL, 0);
         } else {
             if (ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Ball.cpp10,1200", false)) {
-                DrawCircle(g, mUnk0xec, mUnk0xf0, mUnk0x13c, IMAGE_BIGBALL, NULL, 0);
+                DrawCircle(g, mUnk0xec, mUnk0xf0, radius, IMAGE_BIGBALL, NULL, 0);
                 return;
             }
         }
@@ -465,10 +465,10 @@ void Ball::Draw(Graphics* g)
         return;
     }
 
-    DrawCircle(g, mUnk0xec, mUnk0xf0, mUnk0x13c, IMAGE_DEFINNERPEG, NULL, 0);
+    DrawCircle(g, mUnk0xec, mUnk0xf0, radius, IMAGE_DEFINNERPEG, NULL, 0);
     g->SetColorizeImages(true);
     g->SetColor(Color(mUnk0x44));
-    DrawCircle(g, mUnk0xec, mUnk0xf0, mUnk0x13c - 1.0f, IMAGE_DEFOUTERPEG, NULL, 0);
+    DrawCircle(g, mUnk0xec, mUnk0xf0, radius - 1.0f, IMAGE_DEFOUTERPEG, NULL, 0);
     g->SetColorizeImages(false);
 }
 
@@ -479,8 +479,8 @@ void Ball::DrawShadow(Graphics* g)
         Rect aRect;
         aRect.mHeight = IMAGE_PEGSHADOW->mHeight;
         aRect.mWidth = IMAGE_PEGSHADOW->mWidth;
-        float local_c = (mUnk0xec - 3.0f) - mUnk0x13c;
-        float local_8 = (mUnk0xf0 - 3.0f) - mUnk0x13c;
+        float local_c = (mUnk0xec - 3.0f) - radius;
+        float local_8 = (mUnk0xf0 - 3.0f) - radius;
         bool bVar1 = mMover == NULL;
         if (bVar1) {
             aRect.mWidth -= 2;
@@ -497,16 +497,16 @@ void Ball::DrawShadow(Graphics* g)
         g->SetColorizeImages(true);
         g->SetColor(Color(ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Ball.cpp7,1127",0x90)));
         if (!g->mIs3D) {
-            if (mUnk0x13c != 10.0f) {
-                DrawCircle(g, mUnk0xec - 3.0f, mUnk0xf0 + 3.0f, mUnk0x13c, IMAGE_BIGBALLSHADOW, NULL, 0);
+            if (radius != 10.0f) {
+                DrawCircle(g, mUnk0xec - 3.0f, mUnk0xf0 + 3.0f, radius, IMAGE_BIGBALLSHADOW, NULL, 0);
             } else if (mMover == NULL) {
                 g->DrawImage(IMAGE_PEGSHADOW, (int)local_c, (int)local_8, aRect);
             } else {
                 gBallPegImage[8]->Draw(g, local_c, local_8);
             }
         } else {
-            if (mUnk0x13c != 10.0f) {
-                DrawCircle(g, mUnk0xec - 3.0f, mUnk0xf0 + 3.0f, mUnk0x13c, IMAGE_BIGBALLSHADOW, NULL, 0);
+            if (radius != 10.0f) {
+                DrawCircle(g, mUnk0xec - 3.0f, mUnk0xf0 + 3.0f, radius, IMAGE_BIGBALLSHADOW, NULL, 0);
             } else {
                 g->DrawImageF(IMAGE_PEGSHADOW, local_c, local_8, aRect);
             }
@@ -580,16 +580,16 @@ void Ball::SetAbsPos(float param_1, float param_2)
 // FUNCTION: POPCAPGAME1 0x00474fc0
 void Ball::SyncBounds()
 {
-    left = mUnk0xec - mUnk0x13c;
-    right = mUnk0x13c + mUnk0xec;
-    top = mUnk0xf0 - mUnk0x13c;
-    bottom = mUnk0x13c + mUnk0xf0;
+    left = mUnk0xec - radius;
+    right = radius + mUnk0xec;
+    top = mUnk0xf0 - radius;
+    bottom = radius + mUnk0xf0;
 }
 
 // FUNCTION: POPCAPGAME1 0x004770b0
 void Ball::SetRadius(float param_1)
 {
-    mUnk0x13c = param_1;
+    radius = param_1;
     SyncBounds();
 }
 
@@ -623,7 +623,7 @@ void Ball::StopFireballSound()
 // FUNCTION: POPCAPGAME1 0x00474fb0
 void Ball::SetFireballRadius()
 {
-    mUnk0x13c = 10.0f;
+    radius = 10.0f;
 }
 
 // FUNCTION: POPCAPGAME1 0x004770d0
@@ -635,7 +635,7 @@ void Ball::SetFireball(bool param_1)
         StartFireballSound();
     } else {
         StopFireballSound();
-        mUnk0x13c = mDefRadius;
+        radius = mDefRadius;
     }
 }
 
@@ -671,7 +671,7 @@ void Ball::DrawHat(Graphics* g)
 // FUNCTION: POPCAPGAME1 0x00475000
 bool Ball::CheckCollision(SexyVector2* param_1, SexyVector2* param_2, float param_3, float* param_4, SexyVector2* param_5)
 {
-    float fVar3 = (mUnk0x13c - 0.01f) + param_3;
+    float fVar3 = (radius - 0.01f) + param_3;
     fVar3 = fVar3 * fVar3;
 
     float fVar1 = mUnk0xec;
@@ -722,7 +722,7 @@ bool Ball::CheckCollision(PhysObj* param_1, float param_2, float param_3)
     SexyVector2 local_20 = SexyVector2(0.0f, 0.0f);
     SexyVector2 local_2c = SexyVector2(0.0f, 0.0f);
     SexyVector2 local_34 = SexyVector2(0.0f, 0.0f);
-    param_3 += mUnk0x13c;
+    param_3 += radius;
     if (param_1->mUnk0x10 == 5) {
         if (((Poly*)param_1)->CheckCollision(&local_1c, &local_14, param_3, &param_2, &local_c, &local_20, &local_34, &local_2c)) {
             return true;
@@ -769,7 +769,7 @@ void Ball::SetHat(bool param_1, bool param_2)
         aBall->mUnk0x18c = true;
         aBall->mUnk0x161 = true;
         aBall->mUnk0x24 = false;
-        aBall->mUnk0x13c = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Ball.cpp0,369", 0x14);
+        aBall->radius = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Ball.cpp0,369", 0x14);
         Board* aBoard = GetBoard();
         if (aBoard != NULL) {
             aBoard->AddObj(aBall);
@@ -813,7 +813,7 @@ void Ball::DoBallBallCollision(Ball* param_1)
     mUnk0xfc = local_24.x * -fVar5;
     mUnk0x100 = local_24.y * -fVar5;
 
-    float fVar1 = (mUnk0x13c - param_1->mUnk0x13c) - SexyVector2(mUnk0xec - param_1->mUnk0xec, mUnk0xf0 - param_1->mUnk0xf0).Magnitude();
+    float fVar1 = (radius - param_1->radius) - SexyVector2(mUnk0xec - param_1->mUnk0xec, mUnk0xf0 - param_1->mUnk0xf0).Magnitude();
     if (0.0f < fVar1) {
         local_24 *= fVar1;
         param_1->Translate(local_24.x, local_24.y);
@@ -831,8 +831,8 @@ void Ball::DoBallPegCollision(Ball* param_1)
 	float aDx = mUnk0xec - param_1->mUnk0xec;
 	float aDy = mUnk0xf0 - param_1->mUnk0xf0;
 	float aDistanceSquared = aDx * aDx + aDy * aDy;
-	float aThisRadius = mUnk0x13c;
-	float anOtherRadius = param_1->mUnk0x13c;
+	float aThisRadius = radius;
+	float anOtherRadius = param_1->radius;
 	SexyVector2 aNormal = SexyVector2(
 		param_1->mUnk0xec - mUnk0xec,
 		param_1->mUnk0xf0 - mUnk0xf0).Normalize();
@@ -920,7 +920,7 @@ void Ball::CheckBallCollision(Ball* param_1)
     float aDx = mUnk0xec - param_1->mUnk0xec;
     float aDy = mUnk0xf0 - param_1->mUnk0xf0;
     float aDistance = SexyVector2(aDx, aDy).Magnitude();
-    float aRadiusSum = mUnk0x13c + param_1->mUnk0x13c;
+    float aRadiusSum = radius + param_1->radius;
 
     (void)aDistance;
     (void)aRadiusSum;
@@ -1034,7 +1034,7 @@ bool Ball::DoCollideUpdate(std::vector<PhysObj*>* param_1, SexyVector2* param_2)
 			if (anObject->mUnk0x10 == 4)
 			{
 				didHit = ((Line*) anObject)->CheckCollision(
-					&aPosition, &aVelocity, mUnk0x13c, &aHitTime,
+					&aPosition, &aVelocity, radius, &aHitTime,
 					&aHitPoint, &aHitNormal, &aHitVelocity, true);
 				if (didHit)
 					anAngularVelocity = SexyVector2(0.0f, 0.0f);
@@ -1042,13 +1042,13 @@ bool Ball::DoCollideUpdate(std::vector<PhysObj*>* param_1, SexyVector2* param_2)
 			else if (anObject->mUnk0x10 == 5)
 			{
 				didHit = ((Poly*) anObject)->CheckCollision(
-					&aPosition, &aVelocity, mUnk0x13c, &aHitTime,
+					&aPosition, &aVelocity, radius, &aHitTime,
 					&aHitPoint, &aHitNormal, &aHitVelocity, &anAngularVelocity);
 			}
 			else if (anObject->mUnk0x10 == 3)
 			{
 				didHit = ((Ball*) anObject)->CheckCollision(
-					&aPosition, &aVelocity, mUnk0x13c, &aHitTime, &aHitPoint);
+					&aPosition, &aVelocity, radius, &aHitTime, &aHitPoint);
 			}
 
 			if (didHit)

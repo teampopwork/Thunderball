@@ -200,7 +200,7 @@ void Gun::CalcPoints()
 
 	float aRadius = Ball::mDefRadius;
 	if (mBall.get() != NULL)
-		aRadius = mBall->mUnk0x13c;
+		aRadius = mBall->radius;
 
 	SexyVector2 aPoints[4];
 	aPoints[0] = SexyVector2(mUnk0x114 + mUnk0x164, mUnk0x118);
