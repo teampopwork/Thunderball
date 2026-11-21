@@ -131,10 +131,10 @@ int Hole::GetClass()
 void Hole::EditDrawOutline(Graphics* g)
 {
 	g->DrawRect(
-		(int)(mUnk0x14 - 3.0),
-		(int)(mUnk0x18 - 3.0),
-		(int)(mUnk0x1c - mUnk0x14 + 6.0),
-		(int)(mUnk0x20 - mUnk0x18 + 6.0));
+		(int)(left - 3.0),
+		(int)(top - 3.0),
+		(int)(right - left + 6.0),
+		(int)(bottom - top + 6.0));
 	if (mUnk0xe4 != NULL) {
 		g->DrawLine(
 			(int)mUnk0xf4,
@@ -155,10 +155,10 @@ void Hole::Translate(float theDx, float theDy)
 {
 	mUnk0xf4 += theDx;
 	mUnk0xf8 += theDy;
-	mUnk0x14 += theDx;
-	mUnk0x1c += theDx;
-	mUnk0x18 += theDy;
-	mUnk0x20 += theDy;
+	left += theDx;
+	right += theDx;
+	top += theDy;
+	bottom += theDy;
 }
 
 // FUNCTION: POPCAPGAME1 0x00475600
@@ -207,10 +207,10 @@ void Hole::SetSize(int theWidth, int theHeight)
 	float aHalfHeight = (float)theHeight * 0.5;
 	mUnk0x104 = theWidth;
 	mUnk0x108 = theHeight;
-	mUnk0x14 = mUnk0xf4 - aHalfWidth;
-	mUnk0x1c = aHalfWidth + mUnk0xf4;
-	mUnk0x18 = mUnk0xf8 - aHalfHeight;
-	mUnk0x20 = aHalfHeight + mUnk0xf8;
+	left = mUnk0xf4 - aHalfWidth;
+	right = aHalfWidth + mUnk0xf4;
+	top = mUnk0xf8 - aHalfHeight;
+	bottom = aHalfHeight + mUnk0xf8;
 }
 
 // FUNCTION: POPCAPGAME1 0x004755f0

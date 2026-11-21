@@ -224,10 +224,10 @@ void Ball::SyncState(DataSync& theSync)
 
     if (theSync.mReader != NULL) {
         bool bVar1 = mUnk0x161;
-        mUnk0x14 = mUnk0xec - mUnk0x13c;
-        mUnk0x1c = mUnk0x13c + mUnk0xec;
-        mUnk0x18 = mUnk0xf0 - mUnk0x13c;
-        mUnk0x20 = mUnk0xf0 + mUnk0x13c;
+        left = mUnk0xec - mUnk0x13c;
+        right = mUnk0x13c + mUnk0xec;
+        top = mUnk0xf0 - mUnk0x13c;
+        bottom = mUnk0xf0 + mUnk0x13c;
         mUnk0x104 = mUnk0xec;
         mUnk0x108 = mUnk0xf0;
         if (bVar1) {
@@ -243,25 +243,25 @@ int Ball::GetClass()
 }
 
 // FUNCTION: POPCAPGAME1 0x00474e60
-void Ball::SetPos(float param_1, float param_2)
+void Ball::SetPos(float x, float y)
 {
-    mUnk0xec = param_1;
-    mUnk0xf0 = param_2;
-    mUnk0x14 = param_1 - mUnk0x13c;
-    mUnk0x1c = mUnk0x13c + param_1;
-    mUnk0x18 = param_2 - mUnk0x13c;
-    mUnk0x20 = mUnk0x13c + param_2;
+    mUnk0xec = x;
+    mUnk0xf0 = y;
+    left = x - mUnk0x13c;
+    right = mUnk0x13c + x;
+    top = y - mUnk0x13c;
+    bottom = mUnk0x13c + y;
 }
 
 // FUNCTION: POPCAPGAME1 0x00474eb0
-void Ball::Translate(float param_1, float param_2)
+void Ball::Translate(float dx, float dy)
 {
-    mUnk0xec += param_1;
-    mUnk0xf0 += param_2;
-    mUnk0x14 += param_1;
-    mUnk0x1c += param_1;
-    mUnk0x18 += param_2;
-    mUnk0x20 += param_2;
+    mUnk0xec += dx;
+    mUnk0xf0 += dy;
+    left += dx;
+    right += dx;
+    top += dy;
+    bottom += dy;
 }
 
 // FUNCTION: POPCAPGAME1 0x00475600
@@ -375,10 +375,10 @@ void Ball::Update()
 		mUnk0x100 = aVelocity.y;
 	}
 
-	mUnk0x14 = mUnk0xec - mUnk0x13c + (mUnk0xfc < 0.0f ? mUnk0xfc : 0.0f);
-	mUnk0x1c = mUnk0xec + mUnk0x13c + (mUnk0xfc > 0.0f ? mUnk0xfc : 0.0f);
-	mUnk0x18 = mUnk0xf0 - mUnk0x13c + (mUnk0x100 < 0.0f ? mUnk0x100 : 0.0f);
-	mUnk0x20 = mUnk0xf0 + mUnk0x13c + (mUnk0x100 > 0.0f ? mUnk0x100 : 0.0f);
+	left = mUnk0xec - mUnk0x13c + (mUnk0xfc < 0.0f ? mUnk0xfc : 0.0f);
+	right = mUnk0xec + mUnk0x13c + (mUnk0xfc > 0.0f ? mUnk0xfc : 0.0f);
+	top = mUnk0xf0 - mUnk0x13c + (mUnk0x100 < 0.0f ? mUnk0x100 : 0.0f);
+	bottom = mUnk0xf0 + mUnk0x13c + (mUnk0x100 > 0.0f ? mUnk0x100 : 0.0f);
 	mUnk0x141 = false;
 	mUnk0x142 = false;
 	mUnk0x134 = mUnk0xec;
@@ -557,7 +557,7 @@ bool Ball::IsCollidableWith(PhysObj* param_1)
         }
     }
     else if (mUnk0x4c < 11) {
-        if (param_1->mPegInfo != NULL && param_1->mUnk0x14 != 0 && param_1->mUnk0x24) {
+        if (param_1->mPegInfo != NULL && param_1->left != 0 && param_1->mUnk0x24) {
             return true;
         }
     }    
@@ -580,10 +580,10 @@ void Ball::SetAbsPos(float param_1, float param_2)
 // FUNCTION: POPCAPGAME1 0x00474fc0
 void Ball::SyncBounds()
 {
-    mUnk0x14 = mUnk0xec - mUnk0x13c;
-    mUnk0x1c = mUnk0x13c + mUnk0xec;
-    mUnk0x18 = mUnk0xf0 - mUnk0x13c;
-    mUnk0x20 = mUnk0x13c + mUnk0xf0;
+    left = mUnk0xec - mUnk0x13c;
+    right = mUnk0x13c + mUnk0xec;
+    top = mUnk0xf0 - mUnk0x13c;
+    bottom = mUnk0x13c + mUnk0xf0;
 }
 
 // FUNCTION: POPCAPGAME1 0x004770b0

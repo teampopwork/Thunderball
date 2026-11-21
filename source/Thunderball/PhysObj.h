@@ -28,10 +28,10 @@ public:
 
 	int mUnk0x10; // +0x10
 
-	float mUnk0x14; // +0x14
-	float mUnk0x18; // +0x18
-	float mUnk0x1c; // +0x1c
-	float mUnk0x20; // +0x20
+	float left; // +0x14. x of left of bounding box.
+	float top; // +0x18. y of top of bounding box.
+	float right; // +0x1c. x of right of bounding box.
+	float bottom; // +0x20. y of bottom of bounding box.
 
 	bool mUnk0x24;
 	bool mUnk0x25;

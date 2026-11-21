@@ -185,8 +185,8 @@ void CollisionMgr::AddObj(PhysObj* param_1)
 		}
 	}
 
-	AddObj(param_1, param_1->mUnk0x14, param_1->mUnk0x18, &mObjects1);
-	AddObj(param_1, param_1->mUnk0x18, param_1->mUnk0x20, &mObjects2);
+	AddObj(param_1, param_1->left, param_1->top, &mObjects1);
+	AddObj(param_1, param_1->top, param_1->bottom, &mObjects2);
 }
 
 // FUNCTION: POPCAPGAME1 0x0045ad30

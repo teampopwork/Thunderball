@@ -727,7 +727,7 @@ void Board::Draw(Graphics* g)
 			aGraphics2.DrawRect(local_14 - local_2c, local_44 - local_28, local_28, local_2c);
 		}
 
-		if (aBall->mUnk0x14 <= local_44 && (local_28 < aBall->mUnk0x1c != aBall->mUnk0x18 <= local_14) && aBall->mUnk0x18 <= local_14 && (local_2c < aBall->mUnk0x1c != aBall->mUnk0x20 == local_2c)) {
+		if (aBall->left <= local_44 && (local_28 < aBall->right != aBall->top <= local_14) && aBall->top <= local_14 && (local_2c < aBall->right != aBall->bottom == local_2c)) {
 			aBall->Draw(&aGraphics1);
 		}
 

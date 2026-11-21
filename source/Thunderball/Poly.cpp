@@ -201,8 +201,8 @@ void Poly::EditDrawOutline(Graphics* g)
 void Poly::EditDrawPoints(Graphics* g)
 {
 	EnsureLines();
-	float centerX = (mUnk0x1c + mUnk0x14) * 0.5f;
-	float centerY = (mUnk0x20 + mUnk0x18) * 0.5f;
+	float centerX = (right + left) * 0.5f;
+	float centerY = (bottom + top) * 0.5f;
 	if ((mUnk0x114 < centerX - 10.0f || mUnk0x114 > centerX + 10.0f ||
 		 mUnk0x118 < centerY - 10.0f || mUnk0x118 > centerY + 10.0f) &&
 		!PointInside(mUnk0x114, mUnk0x118)) {
@@ -246,16 +246,16 @@ bool Poly::EditContains(float param_1, float param_2, bool param_3)
 	int iVar4 = (int) param_2;
 	int iVar3 = (int) param_1;
 	if (iVar3 < iVar1 || iVar1 + 10 <= iVar3 || iVar4 < iVar2 || iVar2 + 10 <= iVar4) {
-		if (param_1 < mUnk0x14 - local_30) {
+		if (param_1 < left - local_30) {
 			return false;
 		}
-		if (local_30 < mUnk0x1c - param_1) {
+		if (local_30 < right - param_1) {
 			return false;
 		}
-		if (param_2 < mUnk0x18 - local_30) {
+		if (param_2 < top - local_30) {
 			return false;
 		}
-		if (local_30 + mUnk0x20 < param_2) {
+		if (local_30 + bottom < param_2) {
 			return false;
 		}
 
@@ -393,10 +393,10 @@ void Poly::SetPos(float param_1, float param_2)
 	float fVar2 = param_2 - mUnk0x118;
 	mUnk0x114 = param_1;
 	mUnk0x118 = param_2;
-	mUnk0x14 += fVar1;
-	mUnk0x1c += fVar1;
-	mUnk0x18 += fVar2;
-	mUnk0x20 += fVar2;
+	left += fVar1;
+	right += fVar1;
+	top += fVar2;
+	bottom += fVar2;
 }
 
 // FUNCTION: POPCAPGAME1 0x00476d30
@@ -645,10 +645,10 @@ void Poly::AddBubbles(int param_1)
 
 			int xPos = 0.0f;
 			if (!mUnk0x130) {
-				xPos = mUnk0x14;
+				xPos = left;
 			}
 			else {
-				xPos = mUnk0x1c;
+				xPos = right;
 			}
 			int yPos = mUnk0x118;
 
@@ -669,10 +669,10 @@ void Poly::ActualSetPos(float param_1, float param_2)
 	float fVar4 = param_2 - mUnk0x118;
 	mUnk0x114 = param_1;
 	mUnk0x118 = param_2;
-	mUnk0x14 = mUnk0x14 + fVar3;
-	mUnk0x1c = mUnk0x1c + fVar3;
-	mUnk0x18 = mUnk0x18 + fVar4;
-	mUnk0x20 = mUnk0x20 + fVar4;
+	left = left + fVar3;
+	right = right + fVar3;
+	top = top + fVar4;
+	bottom = bottom + fVar4;
 
 	int i = 0;
 	for (std::vector<SmartPtr<Line>>::iterator it = mUnk0x108.begin(); it != mUnk0x108.end(); ++it, i++) {
@@ -685,22 +685,22 @@ void Poly::ActualSetPos(float param_1, float param_2)
 // FUNCTION: POPCAPGAME1 0x0047bab0
 void Poly::CalcBoundingBox()
 {
-	mUnk0x14 = 1.0e12f;
-	mUnk0x18 = 1.0e12f;
-	mUnk0x1c = -1.0e12f;
-	mUnk0x20 = -1.0e12f;
+	left = 1.0e12f;
+	top = 1.0e12f;
+	right = -1.0e12f;
+	bottom = -1.0e12f;
 
 	for (std::vector<SmartPtr<Line>>::iterator it = mUnk0x108.begin(); it != mUnk0x108.end(); ++it)
 	{
 		Line* aLine = *it;
-		if (aLine->mUnk0x14 < mUnk0x14)
-			mUnk0x14 = aLine->mUnk0x14;
-		if (mUnk0x1c < aLine->mUnk0x1c)
-			mUnk0x1c = aLine->mUnk0x1c;
-		if (aLine->mUnk0x18 < mUnk0x18)
-			mUnk0x18 = aLine->mUnk0x18;
-		if (mUnk0x20 < aLine->mUnk0x20)
-			mUnk0x20 = aLine->mUnk0x20;
+		if (aLine->left < left)
+			left = aLine->left;
+		if (right < aLine->right)
+			right = aLine->right;
+		if (aLine->top < top)
+			top = aLine->top;
+		if (bottom < aLine->bottom)
+			bottom = aLine->bottom;
 	}
 }
 
@@ -785,10 +785,10 @@ void Poly::InitRotatedFromPoints(float param_1)
 // FUNCTION: POPCAPGAME1 0x0047a010
 void Poly::DelayedInitRotatedFromPoints(float param_1)
 {
-	mUnk0x18 = 1000000000000;
-	mUnk0x14 = 1000000000000;
-	mUnk0x20 = -1000000000000;
-	mUnk0x1c = -1000000000000;
+	top = 1000000000000;
+	left = 1000000000000;
+	bottom = -1000000000000;
+	right = -1000000000000;
 
 	float fVar1 = cos(param_1);
 	float fVar2 = sin(param_1);
@@ -799,17 +799,17 @@ void Poly::DelayedInitRotatedFromPoints(float param_1)
 		float fVar3 = fVar2 * y + fVar1 * x + mUnk0x114;
 		float fVar4 = (y * fVar1 - fVar2 * x) + mUnk0x118;
 
-		if (fVar3 < mUnk0x14) {
-			mUnk0x14 = fVar3;
+		if (fVar3 < left) {
+			left = fVar3;
 		}
-		if (mUnk0x1c < fVar3 && fVar3 != mUnk0x1c) {
-			mUnk0x1c = fVar3;
+		if (right < fVar3 && fVar3 != right) {
+			right = fVar3;
 		}
-		if (fVar4 < mUnk0x18) {
-			mUnk0x18 = fVar4;
+		if (fVar4 < top) {
+			top = fVar4;
 		}
-		if (mUnk0x20 <= fVar4 && fVar4 != mUnk0x20) {
-			mUnk0x20 = fVar4;
+		if (bottom <= fVar4 && fVar4 != bottom) {
+			bottom = fVar4;
 		}
 	}
 
@@ -889,10 +889,10 @@ bool Poly::EditIntersects(Rect* param_1)
 	}
 
 	Rect aBounds(
-		(int) mUnk0x14,
-		(int) mUnk0x18,
-		(int) (mUnk0x1c - mUnk0x14),
-		(int) (mUnk0x20 - mUnk0x18));
+		(int) left,
+		(int) top,
+		(int) (right - left),
+		(int) (bottom - top));
 	if (!aBounds.Intersects(*param_1))
 		return false;
 
@@ -954,10 +954,10 @@ bool Poly::CheckCollision(
 	SexyVector2* param_8
 )
 {
-	if (mUnk0x14 - 20.0f > param_1->x + param_3 ||
-		param_1->x - param_3 > mUnk0x1c + 20.0f ||
-		mUnk0x18 - 20.0f > param_1->y + param_3 ||
-		param_1->y - param_3 > mUnk0x20 + 20.0f)
+	if (left - 20.0f > param_1->x + param_3 ||
+		param_1->x - param_3 > right + 20.0f ||
+		top - 20.0f > param_1->y + param_3 ||
+		param_1->y - param_3 > bottom + 20.0f)
 	{
 		return false;
 	}
@@ -1273,10 +1273,10 @@ void Poly::SyncCommon(DataSync& theSync, bool param_2)
 			if (theSync.mWriter != NULL) {
 				EnsureLines();
 			}
-			theSync.SyncFloat(mUnk0x14);
-			theSync.SyncFloat(mUnk0x1c);
-			theSync.SyncFloat(mUnk0x18);
-			theSync.SyncFloat(mUnk0x20);
+			theSync.SyncFloat(left);
+			theSync.SyncFloat(right);
+			theSync.SyncFloat(top);
+			theSync.SyncFloat(bottom);
 			DataSync_SyncSTLVectorImplSimple(theSync, mUnk0xf8, DataSyncFunc_SyncSexyVector2());
 			DataSync_SyncSTLVectorImplSimple(theSync, mUnk0x108, DataSyncFunc_SyncClassPtr<Line>());
 		} else if (theSync.mReader != NULL) {
