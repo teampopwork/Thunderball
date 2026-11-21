@@ -1689,7 +1689,7 @@ void LogicMgr::SetWearHat(bool param_1)
 	if (aBall != NULL) {
 		aBall->SetHat(param_1, false);
 		if (param_1) {
-			aBall->SetAbsPos(aBall->mUnk0xec, aBall->mUnk0xf0);
+			aBall->SetAbsPos(aBall->centerX, aBall->centerY);
 		}
 	}
 }

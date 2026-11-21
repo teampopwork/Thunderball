@@ -226,8 +226,8 @@ bool Hole::CheckCollision(Ball* theBall)
 	float aCenterY = mUnk0xf8;
 	float aHalfWidth = (float)mUnk0x104 * 0.5f;
 	float aHalfHeight = (float)mUnk0x108 * 0.5f;
-	float aBallX = theBall->mUnk0xec;
-	float aBallY = theBall->mUnk0xf0;
+	float aBallX = theBall->centerX;
+	float aBallY = theBall->centerY;
 
 	if (aBallX < aCenterX - aHalfWidth ||
 		aBallX > aCenterX + aHalfWidth ||

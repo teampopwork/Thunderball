@@ -1562,7 +1562,7 @@ void Board::UpdateObjects(bool param_1)
 				aBall->DoNonCollideUpdate();
 			}
 
-			if ((float) (mUnk0x1b4 + 10) < aBall->mUnk0xf0 - aBall->radius || (float) (mUnk0x1b0 + 10) < aBall->mUnk0xec - aBall->radius || aBall->radius + aBall->mUnk0xec < -10.0f || aBall->radius + aBall->mUnk0xf0 < -10.0f) {
+			if ((float) (mUnk0x1b4 + 10) < aBall->centerY - aBall->radius || (float) (mUnk0x1b0 + 10) < aBall->centerX - aBall->radius || aBall->radius + aBall->centerX < -10.0f || aBall->radius + aBall->centerY < -10.0f) {
 				RemoveObj(aBall);
 			}
 			else if (bVar3 && (int) mUnk0x19c.size() < 4 && CheckForFever(aBall)) {
