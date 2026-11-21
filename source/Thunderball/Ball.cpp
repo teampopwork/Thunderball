@@ -38,7 +38,7 @@ Ball::Ball(bool param_1)
     mUnk0x170 = 0;
     mUnk0x160 = false;
     mUnk0x163 = true;
-    mUnk0x161 = false;
+    isFireball = false;
     mUnk0x164 = false;
     mUnk0x165 = false;
     mUnk0x142 = false;
@@ -130,7 +130,7 @@ void Ball::SyncState(DataSync& theSync)
     theSync.SyncBoolBit(mUnk0x163);
     theSync.SyncBoolBit(local_12);
     theSync.SyncBoolBit(local_13);
-    theSync.SyncBoolBit(mUnk0x161);
+    theSync.SyncBoolBit(isFireball);
     theSync.EndBit();
 
     if (!local_10) {
@@ -223,7 +223,7 @@ void Ball::SyncState(DataSync& theSync)
     }
 
     if (theSync.mReader != NULL) {
-        bool bVar1 = mUnk0x161;
+        bool bVar1 = isFireball;
         left = centerX - radius;
         right = radius + centerX;
         top = centerY - radius;
@@ -427,7 +427,7 @@ void Ball::Draw(Graphics* g)
                 return;
             }
 
-            if (mUnk0x161) {
+            if (isFireball) {
                 if (mUnk0x18d) {
                     DrawHat(g);
                 }
@@ -627,10 +627,10 @@ void Ball::SetFireballRadius()
 }
 
 // FUNCTION: POPCAPGAME1 0x004770d0
-void Ball::SetFireball(bool param_1)
+void Ball::SetFireball(bool fireball)
 {
-    mUnk0x161 = param_1;
-    if (param_1) {
+    isFireball = fireball;
+    if (fireball) {
         SetFireballRadius();
         StartFireballSound();
     } else {
@@ -767,7 +767,7 @@ void Ball::SetHat(bool param_1, bool param_2)
             mUnk0x188 = new Ball(false);
         }
         aBall->mUnk0x18c = true;
-        aBall->mUnk0x161 = true;
+        aBall->isFireball = true;
         aBall->mUnk0x24 = false;
         aBall->radius = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Ball.cpp0,369", 0x14);
         Board* aBoard = GetBoard();
@@ -859,7 +859,7 @@ void Ball::DoBallPegCollision(Ball* param_1)
 		anImpulse += anImpulse;
 	mUnk0x170 = fabs(anImpulse);
 
-	if (!mUnk0x161 || param_1->mPegInfo.get() == NULL)
+	if (!isFireball || param_1->mPegInfo.get() == NULL)
 	{
 		float aResponse = -(anImpulse / 999999995905.0) * 999999995904.0;
 		velocityX = aThisVX + aResponse * aNormal.x;
@@ -937,7 +937,7 @@ void Ball::DoLineCollision(
 )
 {
 	mUnk0x168 = *param_3;
-	if (mUnk0x161 && param_2->mPegInfo.get() != NULL)
+	if (isFireball && param_2->mPegInfo.get() != NULL)
 	{
 		if (mNotifyCollisionFunc != NULL)
 			mNotifyCollisionFunc(this, param_2);
@@ -1058,7 +1058,7 @@ bool Ball::DoCollideUpdate(std::vector<PhysObj*>* param_1, SexyVector2* param_2)
 		if (aHitObject == NULL)
 			break;
 
-		if (!mUnk0x161 || aHitObject->mPegInfo.get() == NULL)
+		if (!isFireball || aHitObject->mPegInfo.get() == NULL)
 		{
 			mUnk0x142 = true;
 			mUnk0x165 = true;
