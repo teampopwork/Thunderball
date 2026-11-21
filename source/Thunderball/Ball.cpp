@@ -147,8 +147,8 @@ void Ball::SyncState(DataSync& theSync)
     if (mUnk0x10 == 2) {
         theSync.SyncFloat(mUnk0xf4);
         theSync.SyncFloat(mUnk0xf8);
-        theSync.SyncFloat(mUnk0xfc);
-        theSync.SyncFloat(mUnk0x100);
+        theSync.SyncFloat(velocityX);
+        theSync.SyncFloat(velocityY);
         theSync.SyncFloat(mUnk0x134);
         theSync.SyncFloat(mUnk0x138);
         theSync.SyncLong(mUnk0xe4);
@@ -265,10 +265,10 @@ void Ball::Translate(float dx, float dy)
 }
 
 // FUNCTION: POPCAPGAME1 0x00475600
-void Ball::SetVelocity(float param_1, float param_2)
+void Ball::SetVelocity(float vx, float vy)
 {
-    mUnk0xfc = param_1;
-    mUnk0x100 = param_2;
+    velocityX = vx;
+    velocityY = vy;
 }
 
 // FUNCTION: POPCAPGAME1 0x0047a450
@@ -346,7 +346,7 @@ void Ball::Update()
 		}
 	}
 
-	mUnk0x100 += PhysObj::mGravity;
+	velocityY += PhysObj::mGravity;
 	if (mUnk0x18d)
 	{
 		float aMaxHatY = centerY + 2.0;
@@ -367,18 +367,18 @@ void Ball::Update()
 
 	float aMaxSpeed = ModVal(
 		0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Ball.cpp6,1055", 15.0f);
-	SexyVector2 aVelocity(mUnk0xfc, mUnk0x100);
+	SexyVector2 aVelocity(velocityX, velocityY);
 	if (aVelocity.MagnitudeSquared() > aMaxSpeed * aMaxSpeed)
 	{
 		aVelocity = aVelocity.Normalize() * aMaxSpeed;
-		mUnk0xfc = aVelocity.x;
-		mUnk0x100 = aVelocity.y;
+		velocityX = aVelocity.x;
+		velocityY = aVelocity.y;
 	}
 
-	left = centerX - radius + (mUnk0xfc < 0.0f ? mUnk0xfc : 0.0f);
-	right = centerX + radius + (mUnk0xfc > 0.0f ? mUnk0xfc : 0.0f);
-	top = centerY - radius + (mUnk0x100 < 0.0f ? mUnk0x100 : 0.0f);
-	bottom = centerY + radius + (mUnk0x100 > 0.0f ? mUnk0x100 : 0.0f);
+	left = centerX - radius + (velocityX < 0.0f ? velocityX : 0.0f);
+	right = centerX + radius + (velocityX > 0.0f ? velocityX : 0.0f);
+	top = centerY - radius + (velocityY < 0.0f ? velocityY : 0.0f);
+	bottom = centerY + radius + (velocityY > 0.0f ? velocityY : 0.0f);
 	mUnk0x141 = false;
 	mUnk0x142 = false;
 	mUnk0x134 = centerX;
@@ -566,9 +566,9 @@ bool Ball::IsCollidableWith(PhysObj* param_1)
 }
 
 // FUNCTION: POPCAPGAME1 0x00474dd0
-void Ball::SetAbsPos(float param_1, float param_2)
+void Ball::SetAbsPos(float x, float y)
 {
-    SetPos(param_1, param_2);
+    SetPos(x, y);
     mUnk0xf4 = centerX;
     mUnk0xf8 = centerY;
     mUnk0x134 = centerX;
@@ -642,13 +642,13 @@ void Ball::SetFireball(bool param_1)
 // FUNCTION: POPCAPGAME1 0x00475200
 void Ball::DoNonCollideUpdate()
 {
-    Translate(mUnk0xfc, mUnk0x100);
+    Translate(velocityX, velocityY);
 }
 
 // FUNCTION: POPCAPGAME1 0x00477a60
 void Ball::DrawHat(Graphics* g)
 {
-    float fVar2 = mUnk0xfc / ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Ball.cpp8,1164",3.0f);
+    float fVar2 = velocityX / ModVal(0,"SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Ball.cpp8,1164",3.0f);
     if ((-1.0f <= fVar2)) {
         if (fVar2 <= 1.0f) {
             fVar2 *= SEXY_PI / 4;
@@ -665,7 +665,7 @@ void Ball::DrawHat(Graphics* g)
     }
 
     g->DrawImageRotatedF(aHatImage, (mUnk0x104 + mUnk0x138 - centerX) - (aHatImage->mWidth / 2), 
-    (mUnk0x108 + mUnk0xfc - centerY - (aHatImage->mHeight / 2)) - ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Ball.cpp9,1168", 0x14), fVar2, NULL);
+    (mUnk0x108 + velocityX - centerY - (aHatImage->mHeight / 2)) - ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\Ball.cpp9,1168", 0x14), fVar2, NULL);
 }
 
 // FUNCTION: POPCAPGAME1 0x00475000
@@ -717,7 +717,7 @@ bool Ball::CheckCollision(SexyVector2* param_1, SexyVector2* param_2, float para
 bool Ball::CheckCollision(PhysObj* param_1, float param_2, float param_3)
 {
 	SexyVector2 local_1c = SexyVector2(centerX, centerY);
-    SexyVector2 local_14 = SexyVector2(mUnk0xfc, mUnk0x100);
+    SexyVector2 local_14 = SexyVector2(velocityX, velocityY);
     SexyVector2 local_c = SexyVector2(0.0f, 0.0f);
     SexyVector2 local_20 = SexyVector2(0.0f, 0.0f);
     SexyVector2 local_2c = SexyVector2(0.0f, 0.0f);
@@ -799,7 +799,7 @@ void Ball::DoBallBallCollision(Ball* param_1)
 {
     SexyVector2 local_2c(param_1->centerX - centerX, param_1->centerY - centerY);
     SexyVector2 local_24 = local_2c.Normalize();
-    float fVar5 = (local_24.y * (mUnk0x100 - param_1->mUnk0x100) + local_24.x * (mUnk0xfc - param_1->mUnk0xfc)) * 0.95f;
+    float fVar5 = (local_24.y * (velocityY - param_1->velocityY) + local_24.x * (velocityX - param_1->velocityX)) * 0.95f;
     fVar5 += fVar5;
 
     float fVar4 = fabsf(fVar5);
@@ -808,10 +808,10 @@ void Ball::DoBallBallCollision(Ball* param_1)
 
     fVar5 = fVar5 * 0.5f;
 
-    param_1->mUnk0xfc += fVar5 * local_24.x;
-    param_1->mUnk0x100 += fVar5 * local_24.y;
-    mUnk0xfc = local_24.x * -fVar5;
-    mUnk0x100 = local_24.y * -fVar5;
+    param_1->velocityX += fVar5 * local_24.x;
+    param_1->velocityY += fVar5 * local_24.y;
+    velocityX = local_24.x * -fVar5;
+    velocityY = local_24.y * -fVar5;
 
     float fVar1 = (radius - param_1->radius) - SexyVector2(centerX - param_1->centerX, centerY - param_1->centerY).Magnitude();
     if (0.0f < fVar1) {
@@ -837,10 +837,10 @@ void Ball::DoBallPegCollision(Ball* param_1)
 		param_1->centerX - centerX,
 		param_1->centerY - centerY).Normalize();
 
-	float aThisVX = mUnk0xfc;
-	float aThisVY = mUnk0x100;
-	float anOtherVX = param_1->mUnk0xfc;
-	float anOtherVY = param_1->mUnk0x100;
+	float aThisVX = velocityX;
+	float aThisVY = velocityY;
+	float anOtherVX = param_1->velocityX;
+	float anOtherVY = param_1->velocityY;
 	mUnk0x168 = -aNormal;
 
 	float aBounce = param_1->mUnk0x34;
@@ -862,8 +862,8 @@ void Ball::DoBallPegCollision(Ball* param_1)
 	if (!mUnk0x161 || param_1->mPegInfo.get() == NULL)
 	{
 		float aResponse = -(anImpulse / 999999995905.0) * 999999995904.0;
-		mUnk0xfc = aThisVX + aResponse * aNormal.x;
-		mUnk0x100 = aThisVY + aResponse * aNormal.y;
+		velocityX = aThisVX + aResponse * aNormal.x;
+		velocityY = aThisVY + aResponse * aNormal.y;
 		float anOverlap = aThisRadius + anOtherRadius - sqrtf(aDistanceSquared);
 		Translate(-anOverlap * aNormal.x, -anOverlap * aNormal.y);
 		if (param_1->mUnk0x2b)
@@ -899,10 +899,10 @@ void Ball::CheckBallCollision(Ball* param_1)
     SexyVector2 aDelta(param_1->centerX - centerX, param_1->centerY - centerY);
     aDelta = aDelta.Normalize();
 
-    float aThisVX = mUnk0xfc;
-    float aThisVY = mUnk0x100;
-    float aOtherVX = param_1->mUnk0xfc;
-    float aOtherVY = param_1->mUnk0x100;
+    float aThisVX = velocityX;
+    float aThisVY = velocityY;
+    float aOtherVX = param_1->velocityX;
+    float aOtherVY = param_1->velocityY;
 
     float aImpulse = (aDelta.y * (aThisVY - aOtherVY) + aDelta.x * (aThisVX - aOtherVX)) * 0.95f;
     aImpulse += aImpulse;
@@ -912,10 +912,10 @@ void Ball::CheckBallCollision(Ball* param_1)
     mUnk0x170 = aCollisionSpeed;
 
     aImpulse *= 0.5f;
-    param_1->mUnk0xfc = aOtherVX + aImpulse * aDelta.x;
-    param_1->mUnk0x100 = aDelta.y * aImpulse + aOtherVY;
-    mUnk0xfc = aThisVX - aDelta.x * aImpulse;
-    mUnk0x100 = aThisVY - aDelta.y * aImpulse;
+    param_1->velocityX = aOtherVX + aImpulse * aDelta.x;
+    param_1->velocityY = aDelta.y * aImpulse + aOtherVY;
+    velocityX = aThisVX - aDelta.x * aImpulse;
+    velocityY = aThisVY - aDelta.y * aImpulse;
 
     float aDx = centerX - param_1->centerX;
     float aDy = centerY - param_1->centerY;
@@ -972,8 +972,8 @@ void Ball::DoLineCollision(
 			*param_6 = SexyVector2(0.0f, 0.0f);
 		else
 			*param_6 = *param_3 * aRotationDot;
-		mUnk0xfc = param_5->x + aTangent.x + param_6->x;
-		mUnk0x100 = param_5->y + aTangent.y + param_6->y;
+		velocityX = param_5->x + aTangent.x + param_6->x;
+		velocityY = param_5->y + aTangent.y + param_6->y;
 	}
 	else
 	{
@@ -985,16 +985,16 @@ void Ball::DoLineCollision(
 		if (anAddedVelocity.Dot(*param_3) > 0.0f)
 			Translate(anAddedVelocity.x, anAddedVelocity.y);
 		*param_1 += anAddedVelocity;
-		mUnk0xfc = param_1->x;
-		mUnk0x100 = param_1->y;
+		velocityX = param_1->x;
+		velocityY = param_1->y;
 
 		float aMaxSpeed = param_2->mUnk0x3c;
 		if (aMaxSpeed > 0.0f &&
-			aMaxSpeed * aMaxSpeed < mUnk0xfc * mUnk0xfc + mUnk0x100 * mUnk0x100)
+			aMaxSpeed * aMaxSpeed < velocityX * velocityX + velocityY * velocityY)
 		{
-			SexyVector2 aVelocity = SexyVector2(mUnk0xfc, mUnk0x100).Normalize() * aMaxSpeed;
-			mUnk0xfc = aVelocity.x;
-			mUnk0x100 = aVelocity.y;
+			SexyVector2 aVelocity = SexyVector2(velocityX, velocityY).Normalize() * aMaxSpeed;
+			velocityX = aVelocity.x;
+			velocityY = aVelocity.y;
 		}
 	}
 
@@ -1020,7 +1020,7 @@ bool Ball::DoCollideUpdate(std::vector<PhysObj*>* param_1, SexyVector2* param_2)
 	while (true)
 	{
 		SexyVector2 aPosition(centerX, centerY);
-		SexyVector2 aVelocity(mUnk0xfc, mUnk0x100);
+		SexyVector2 aVelocity(velocityX, velocityY);
 		SexyVector2 aHitPoint(0.0f, 0.0f);
 		SexyVector2 aHitNormal(0.0f, 0.0f);
 		SexyVector2 aHitVelocity(0.0f, 0.0f);
@@ -1102,7 +1102,7 @@ bool Ball::DoCollideUpdate(std::vector<PhysObj*>* param_1, SexyVector2* param_2)
 			return didCollide;
 	}
 
-	centerX += aRemainingTime * mUnk0xfc;
-	centerY += aRemainingTime * mUnk0x100;
+	centerX += aRemainingTime * velocityX;
+	centerY += aRemainingTime * velocityY;
 	return didCollide;
 }

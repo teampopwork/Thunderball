@@ -1465,8 +1465,8 @@ void LogicMgr::DoFeverSlow()
 	mBoard->mSoundMgr->AddSound(SOUND_SLOWMO, 0.0f, 0, 0, 30, -1.0f);
 	if (mBoard->mUnk0x19c.size() == 1 && !mUnk0xfa) {
 		Ball* aBall = mBoard->mUnk0x19c.front();
-		float fVar1 = aBall->mUnk0x100;
-		float fVar5 = aBall->mUnk0xfc;
+		float fVar1 = aBall->velocityY;
+		float fVar5 = aBall->velocityX;
 		fVar1 = fVar5 * fVar5 + fVar1 * fVar1;
 		fVar5 = ModVal(0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\LogicMgr.cpp1245,3766", 1.0f);
 		if (fVar5 < fVar1 != (fVar5 == fVar1)) {

@@ -26,8 +26,8 @@ public:
     float centerY; // +0xf0
     float mUnk0xf4; // +0xf4
     float mUnk0xf8; // +0xf8
-    float mUnk0xfc; // +0xfc
-    float mUnk0x100; // +0x100
+    float velocityX; // +0xfc
+    float velocityY; // +0x100
     float mUnk0x104; // +0x104
     float mUnk0x108; // +0x108
     SexyVector2 mUnk0x10c[5];
