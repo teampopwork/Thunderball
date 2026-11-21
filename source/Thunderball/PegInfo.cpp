@@ -383,8 +383,8 @@ void PegInfo::DrawBall(Ball* param_1, Graphics* param_2)
 		cel += 4;
 	}
 
-	float x = param_1->mUnk0xec - param_1->mUnk0x13c;
-	float y = param_1->mUnk0xf0 - param_1->mUnk0x13c;
+	float x = param_1->centerX - param_1->radius;
+	float y = param_1->centerY - param_1->radius;
 
 	if (!param_2->mIs3D) {
 		if (param_1->mMover != NULL) {

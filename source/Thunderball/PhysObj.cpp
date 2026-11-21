@@ -102,13 +102,13 @@ int PhysObj::GetClass()
 // FUNCTION: POPCAPGAME1 0x0047d350
 float PhysObj::GetXPos()
 {
-	return (mUnk0x1c + mUnk0x14) * 0.5f;
+	return (right + left) * 0.5f;
 }
 
 // FUNCTION: POPCAPGAME1 0x0047d370
 float PhysObj::GetYPos()
 {
-	return (mUnk0x20 + mUnk0x18) * 0.5f;
+	return (bottom + top) * 0.5f;
 }
 
 // FUNCTION: POPCAPGAME1 0x0053ea70
@@ -119,10 +119,10 @@ void PhysObj::SetPos(float theX, float theY)
 // FUNCTION: POPCAPGAME1 0x00476b00
 void PhysObj::Translate(float theDx, float theDy)
 {
-	mUnk0x14 += theDx;
-	mUnk0x18 += theDx;
-	mUnk0x1c += theDy;
-	mUnk0x20 += theDy;
+	left += theDx;
+	top += theDx;
+	right += theDy;
+	bottom += theDy;
 }
 
 // FUNCTION: POPCAPGAME1 0x0053ea70
@@ -425,7 +425,7 @@ void PhysObj::EditDrawMovement(Graphics* g)
 // FUNCTION: POPCAPGAME1 0x00476b50
 void PhysObj::EditDrawOutline(Graphics* g)
 {
-	g->DrawRect((int) mUnk0x14, (int) mUnk0x18, (int) (mUnk0x1c - mUnk0x14), (int) (mUnk0x20 - mUnk0x18));
+	g->DrawRect((int) left, (int) top, (int) (right - left), (int) (bottom - top));
 }
 
 // FUNCTION: POPCAPGAME1 0x004797c0
@@ -528,7 +528,7 @@ void PhysObj::EditDoPointDrag(float param_1, float param_2)
 // FUNCTION: POPCAPGAME1 0x00476a30
 bool PhysObj::EditContains(float param_1, float param_2, bool param_3)
 {
-	if ((((param_1 < mUnk0x14) || (mUnk0x1c < param_1)) || (param_2 < mUnk0x18)) || (mUnk0x20 < param_2)) {
+	if ((((param_1 < left) || (right < param_1)) || (param_2 < top)) || (bottom < param_2)) {
 		return false;
 	}
 	else {
@@ -539,10 +539,10 @@ bool PhysObj::EditContains(float param_1, float param_2, bool param_3)
 // FUNCTION: POPCAPGAME1 0x00479740
 bool PhysObj::EditIntersects(Rect* param_1)
 {
-	int var1 = (int) mUnk0x14;
-	int var2 = (int) mUnk0x18;
-	int var3 = (int) (mUnk0x1c - mUnk0x14);
-	int var4 = (int) (mUnk0x20 - mUnk0x18);
+	int var1 = (int) left;
+	int var2 = (int) top;
+	int var3 = (int) (right - left);
+	int var4 = (int) (bottom - top);
 
 	if (param_1->mX < var1 + var3 &&
 		param_1->mY < var2 + var4 &&
@@ -734,10 +734,10 @@ bool PhysObj::EditGetSetValHook(const std::string& param_1, bool param_2)
 	else if (param_1 == "physobj_align") {
 		float fVar1 = GetOrigX();
 		float fVar2 = GetOrigY();
-		float fVar3 = fVar1 - mUnk0x14;
-		float fVar4 = 640.0f - (mUnk0x1c - fVar1);
-		float fVar5 = fVar2 - mUnk0x18;
-		float fVar6 = 480.0f - (mUnk0x20 - fVar2);
+		float fVar3 = fVar1 - left;
+		float fVar4 = 640.0f - (right - fVar1);
+		float fVar5 = fVar2 - top;
+		float fVar6 = 480.0f - (bottom - fVar2);
 
 		if (param_2) {
 			uint uVar1 = (int) mEditVal->ToNum() & 3;
@@ -1111,13 +1111,13 @@ void PhysObj::SyncState(DataSync& theSync)
 // FUNCTION: POPCAPGAME1 0x00476a00
 SexyVector2 PhysObj::GetCenter()
 {
-	return SexyVector2((mUnk0x1c + mUnk0x14) * 0.5, (mUnk0x20 + mUnk0x18) * 0.5);
+	return SexyVector2((right + left) * 0.5, (bottom + top) * 0.5);
 }
 
 // FUNCTION: POPCAPGAME1 0x004326e0
 bool PhysObj::FUN_004326e0(PhysObj* param_1)
 {
-	if (mUnk0x14 <= param_1->mUnk0x1c && (param_1->mUnk0x14 < mUnk0x1c != param_1->mUnk0x14 == mUnk0x1c && mUnk0x18 <= param_1->mUnk0x20 && (param_1->mUnk0x18 < mUnk0x20 != param_1->mUnk0x18 == mUnk0x20))) {
+	if (left <= param_1->right && (param_1->left < right != param_1->left == right && top <= param_1->bottom && (param_1->top < bottom != param_1->top == bottom))) {
 		return true;
 	}
 }

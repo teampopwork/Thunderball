@@ -202,19 +202,19 @@ void Line::SetPos(float theX, float theY)
 	mUnk0xf0 = mUnk0xe4 + theX;
 	mUnk0xf8 = mUnk0xe8 + theY;
 	mUnk0x10c = -(mUnk0x104 * theX + mUnk0x108 * theY);
-	mUnk0x14 = theX;
-	mUnk0x1c = mUnk0xf0;
-	mUnk0x18 = theY;
-	mUnk0x20 = mUnk0xf8;
+	left = theX;
+	right = mUnk0xf0;
+	top = theY;
+	bottom = mUnk0xf8;
 	if (mUnk0xf0 < theX) {
-		float aTemp = mUnk0x14;
-		mUnk0x14 = mUnk0x1c;
-		mUnk0x1c = aTemp;
+		float aTemp = left;
+		left = right;
+		right = aTemp;
 	}
-	if (mUnk0x20 < mUnk0x18) {
-		float aTemp = mUnk0x18;
-		mUnk0x18 = mUnk0x20;
-		mUnk0x20 = aTemp;
+	if (bottom < top) {
+		float aTemp = top;
+		top = bottom;
+		bottom = aTemp;
 	}
 }
 
@@ -260,19 +260,19 @@ void Line::Init(float param_1, float param_2, float param_3, float param_4)
 	mUnk0xf8 = param_4;
 	mUnk0xe4 = mUnk0xf0 - mUnk0xec;
 	mUnk0xe8 = mUnk0xf8 - mUnk0xf4;
-	mUnk0x14 = mUnk0xec;
-	mUnk0x1c = mUnk0xf0;
-	mUnk0x18 = mUnk0xf4;
-	mUnk0x20 = mUnk0xf8;
+	left = mUnk0xec;
+	right = mUnk0xf0;
+	top = mUnk0xf4;
+	bottom = mUnk0xf8;
 	if (mUnk0xf0 < mUnk0xec) {
-		float aTemp = mUnk0x14;
-		mUnk0x14 = mUnk0x1c;
-		mUnk0x1c = aTemp;
+		float aTemp = left;
+		left = right;
+		right = aTemp;
 	}
-	if (mUnk0x20 < mUnk0x18) {
-		float aTemp = mUnk0x18;
-		mUnk0x18 = mUnk0x20;
-		mUnk0x20 = aTemp;
+	if (bottom < top) {
+		float aTemp = top;
+		top = bottom;
+		bottom = aTemp;
 	}
 	if (fabs(mUnk0xf4 - mUnk0xf8) > fabs(mUnk0xec - mUnk0xf0)) {
 		mUnk0x110 = true;
@@ -423,9 +423,9 @@ bool Line::CheckEdgeTimeCollision(
 		SexyVector2 anEdgePoint = *param_1 - aNormal * param_3;
 		bool isOnEdge;
 		if (!mUnk0x110)
-			isOnEdge = mUnk0x14 <= anEdgePoint.x && anEdgePoint.x <= mUnk0x1c;
+			isOnEdge = left <= anEdgePoint.x && anEdgePoint.x <= right;
 		else
-			isOnEdge = mUnk0x18 <= anEdgePoint.y && anEdgePoint.y <= mUnk0x20;
+			isOnEdge = top <= anEdgePoint.y && anEdgePoint.y <= bottom;
 
 		if (!isOnEdge || param_3 < fabs(param_1->Dot(aNormal) + anOffset))
 			return false;
@@ -447,9 +447,9 @@ bool Line::CheckEdgeTimeCollision(
 	SexyVector2 anEdgePoint = aCenter - aNormal * param_3;
 	bool isOnEdge;
 	if (!mUnk0x110)
-		isOnEdge = mUnk0x14 <= anEdgePoint.x && anEdgePoint.x <= mUnk0x1c;
+		isOnEdge = left <= anEdgePoint.x && anEdgePoint.x <= right;
 	else
-		isOnEdge = mUnk0x18 <= anEdgePoint.y && anEdgePoint.y <= mUnk0x20;
+		isOnEdge = top <= anEdgePoint.y && anEdgePoint.y <= bottom;
 	if (!isOnEdge)
 		return false;
 
@@ -521,16 +521,16 @@ bool Line::CheckPenetration(
 	SexyVector2 anIntersection(0.0f, 0.0f);
 	if (!mUnk0x110)
 	{
-		if (param_1->x + param_2 < mUnk0x14)
+		if (param_1->x + param_2 < left)
 			return false;
-		if (mUnk0x1c < param_1->x - param_2)
+		if (right < param_1->x - param_2)
 			return false;
 	}
 	else
 	{
-		if (param_2 + param_1->y < mUnk0x18)
+		if (param_2 + param_1->y < top)
 			return false;
-		if (mUnk0x20 < param_1->y - param_2)
+		if (bottom < param_1->y - param_2)
 			return false;
 	}
 
@@ -593,10 +593,10 @@ bool Line::CheckCollision(
 	bool param_8
 )
 {
-	if (mUnk0x14 - 20.0f <= param_1->x + param_3 &&
-		param_1->x - param_3 <= mUnk0x1c + 20.0f &&
-		mUnk0x18 - 20.0f <= param_1->y + param_3 &&
-		param_1->y - param_3 <= mUnk0x20 + 20.0f)
+	if (left - 20.0f <= param_1->x + param_3 &&
+		param_1->x - param_3 <= right + 20.0f &&
+		top - 20.0f <= param_1->y + param_3 &&
+		param_1->y - param_3 <= bottom + 20.0f)
 	{
 		if (CheckPenetration(param_1, param_3, param_5, param_6, param_7))
 		{
@@ -626,8 +626,8 @@ bool Line::CheckCollision(
 // FUNCTION: POPCAPGAME1 0x00478ac0
 float Line::GetDistanceFromPoint(float param_1, float param_2)
 {
-	if ((mUnk0x110 && mUnk0x18 <= param_2 && param_2 <= mUnk0x20) ||
-		(!mUnk0x110 && mUnk0x14 <= param_1 && param_1 <= mUnk0x1c)) {
+	if ((mUnk0x110 && top <= param_2 && param_2 <= bottom) ||
+		(!mUnk0x110 && left <= param_1 && param_1 <= right)) {
 		return fabs(param_2 * mUnk0x108 + mUnk0x104 * param_1 + mUnk0x10c);
 	}
 
@@ -642,4 +642,3 @@ float Line::GetDistanceFromPoint(float param_1, float param_2)
 	}
 	return sqrtf(aDist2);
 }
-

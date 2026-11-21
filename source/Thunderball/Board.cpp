@@ -727,7 +727,7 @@ void Board::Draw(Graphics* g)
 			aGraphics2.DrawRect(local_14 - local_2c, local_44 - local_28, local_28, local_2c);
 		}
 
-		if (aBall->mUnk0x14 <= local_44 && (local_28 < aBall->mUnk0x1c != aBall->mUnk0x18 <= local_14) && aBall->mUnk0x18 <= local_14 && (local_2c < aBall->mUnk0x1c != aBall->mUnk0x20 == local_2c)) {
+		if (aBall->left <= local_44 && (local_28 < aBall->right != aBall->top <= local_14) && aBall->top <= local_14 && (local_2c < aBall->right != aBall->bottom == local_2c)) {
 			aBall->Draw(&aGraphics1);
 		}
 
@@ -1562,7 +1562,7 @@ void Board::UpdateObjects(bool param_1)
 				aBall->DoNonCollideUpdate();
 			}
 
-			if ((float) (mUnk0x1b4 + 10) < aBall->mUnk0xf0 - aBall->mUnk0x13c || (float) (mUnk0x1b0 + 10) < aBall->mUnk0xec - aBall->mUnk0x13c || aBall->mUnk0x13c + aBall->mUnk0xec < -10.0f || aBall->mUnk0x13c + aBall->mUnk0xf0 < -10.0f) {
+			if ((float) (mUnk0x1b4 + 10) < aBall->centerY - aBall->radius || (float) (mUnk0x1b0 + 10) < aBall->centerX - aBall->radius || aBall->radius + aBall->centerX < -10.0f || aBall->radius + aBall->centerY < -10.0f) {
 				RemoveObj(aBall);
 			}
 			else if (bVar3 && (int) mUnk0x19c.size() < 4 && CheckForFever(aBall)) {

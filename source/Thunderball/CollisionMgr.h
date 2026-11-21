@@ -47,7 +47,7 @@ public:
 	void RemoveObj(PhysObj* param_1);
 	void SortEndPoints(std::vector<EndPoint>* param_1);
 	void Clear();
-	void AddObj(PhysObj* param_1, float* param_2, float* param_3, std::vector<EndPoint>* param_4);
+	void AddObj(PhysObj* param_1, float param_2, float param_3, std::vector<EndPoint>* param_4);
 	void AddObj(PhysObj* param_1);
 	void NotifyCollision(PhysObj* param_1, PhysObj* param_2);
 	void Update(bool param_1);

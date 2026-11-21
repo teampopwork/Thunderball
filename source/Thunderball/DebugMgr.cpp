@@ -89,8 +89,8 @@ void DebugMgr::UpdateMouseBall()
 			mMouseOffsetX;
 		float targetY = (float)(gSexyApp->mWidgetManager->mLastMouseY - mBoard->mUnk0x1ac) +
 			mMouseOffsetY;
-		float velocityX = targetX - mMouseBall->mUnk0xec;
-		float velocityY = targetY - mMouseBall->mUnk0xf0;
+		float velocityX = targetX - mMouseBall->centerX;
+		float velocityY = targetY - mMouseBall->centerY;
 		float magnitude = sqrtf(velocityX * velocityX + velocityY * velocityY);
 		float maxVelocity = ModVal(
 			0, "SEXY_SEXYMODVALc:\\gamesrc\\cpp\\thunderball\\DebugMgr.cpp82,148", 10.0f);
@@ -118,10 +118,10 @@ Ball* DebugMgr::GetBallAt(float param_1, float param_2)
 		 it != mBoard->mUnk0x19c.end(); ++it) {
 		Ball* ball = *it;
 		if (!ball->mUnk0x140) {
-			float dx = param_1 - ball->mUnk0xec;
-			float dy = param_2 - ball->mUnk0xf0;
+			float dx = param_1 - ball->centerX;
+			float dy = param_2 - ball->centerY;
 			float distance = dx * dx + dy * dy;
-			int radius = (int)(ball->mUnk0x13c + 0.5);
+			int radius = (int)(ball->radius + 0.5);
 			if (radius < 20) {
 				radius = 20;
 			}
@@ -185,8 +185,8 @@ bool DebugMgr::MouseDown(int theX, int theY, int theClickCount)
 		theClickCount > 0 && mUnk0x4) {
 		SetMouseBall(GetBallAt((float)theX, (float)theY));
 		if (mMouseBall != NULL) {
-			mMouseOffsetX = mMouseBall->mUnk0xec - (float)theX;
-			mMouseOffsetY = mMouseBall->mUnk0xf0 - (float)theY;
+			mMouseOffsetX = mMouseBall->centerX - (float)theX;
+			mMouseOffsetY = mMouseBall->centerY - (float)theY;
 		}
 		return true;
 	}
